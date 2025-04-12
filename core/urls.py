@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, re_path
-from django.views.generic.base import TemplateView
+
+# from django.views.generic.base import TemplateView
 from django.views.static import serve
 
 urlpatterns = [
@@ -12,4 +13,6 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("", include("public_interface.urls")),
     path("administration/", include("administration.urls")),
+    path("career/", include("career.urls")),
+    path("products/", include("products.urls")),
 ]
