@@ -1,0 +1,102 @@
+{% include 'website/layout/header.html' %}
+{% load static %}
+<div class="main-div pt-0 header-bg-transparent header-logo-white">
+  <!-- blog-view -->
+  <section id="blog-view" class="pt-0 pb-0 view-items-page">
+    <div class="banner-cover">
+      <img width=""
+           height=""
+           alt=""
+           class="img-primary"
+           src="{% static 'public_interface/images/blog-view/banner-cover/banner-top.jpg' %}">
+      <div class="caption w-100 text-center">
+        <div class="wrapper">
+          <div class="row text-white">
+            <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
+              <h3 class="font-lnterbold">BLOG</h3>
+              <h5 class="font-lnterbold">
+                <a href="{% url 'index' %}">Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a href="{% url 'blog' %}">Blog</a>
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="padd_t_b_70">
+      <div class="wrapper">
+        <div class="row">
+          <div class="col-lg-3 col-md-3 order-2-zero-sm mt-50-zero-sm">
+            <div class="search-form">
+              <form>
+                <input class="form-control bg-x-light-blue"
+                       name="search"
+                       type="search"
+                       id="myInput"
+                       placeholder="Search..."
+                       maxlength="200">
+                <button class="btn bg-blue text-white">Search</button>
+              </form>
+            </div>
+            <div class="right-item">
+              <h4 class="font-lnterbold text-blue">RECENT BLOGS</h4>
+              {% for i in blogs %}
+                <a href="{% url 'blog_details' i.slug %}" style="text-decoration: none;">
+                  <div class="item border-b wow fadeInUp wow_item blog-items">
+                    <div class="row align-items-center">
+                      <p style="display: none;">{{ i.title }}</p>
+                      <div class="col-3">
+                        <img width=""
+                             height=""
+                             alt=""
+                             class="img-fluid"
+                             src="{% if i.blog_image %}{{ i.blog_image.first.image.url }}{% endif %}"
+                             alt="{{ i.image_alt }}">
+                      </div>
+                      <div class="col-9 ps-0">
+                        <div class="tilte text-blue dfg">{{ i.description|safe }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="col-lg-8 offset-lg-1 col-md-9 order-1-zero-sm"
+               data-aos="fade-up"
+               data-aos-duration="2000">
+            <div class="view-section text-blue">
+              <div class="title font-lnterbold">{{ data.title }}</div>
+              <div class="div-col">
+                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                <span>{{ data.date|date:"M d, Y" }}</span>
+              </div>
+              <div class="div-col">
+                <i class="fa fa-user-o" aria-hidden="true"></i>
+                <span>{{ data.name|default_if_none:"" }}</span>
+              </div>
+              <div class="bg-blue text-center p-30 pb-50 mt-30">
+                <div class="slick_slider_1 slick-dots-white mb-0">
+                  {% for i in data.blog_image.all %}
+                    <div class="item">
+                      <img width=""
+                           height=""
+                           alt=""
+                           class="img-fluid"
+                           src="{{ i.image.url }}"
+                           alt="{{ data.image_alt }}-{{ forloop.counter }}">
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <h5>{{ data.description|safe }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /blog-view -->
+</div>
+{% include 'website/layout/footer.html' %}
