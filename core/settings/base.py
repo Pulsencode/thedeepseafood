@@ -23,7 +23,8 @@ INSTALLED_APPS = [
 
 # Add External Apps Here
 EXTERNAL_APPS = [
-    "accounts.apps.AccountsConfig",  # Example - Need to Remove
+    "accounts.apps.AccountsConfig",
+    "public_interface.apps.PublicInterfaceConfig",
 ]
 
 INSTALLED_APPS += EXTERNAL_APPS
