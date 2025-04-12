@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+              content="A description of the page content goes here.">
+        <meta name="keywords" content="keyword1, keyword2, keyword3">
+        <!-- CSS Files -->
+        {% include "layout/links.html" %}
+        <title>
+            {% block title %}
+            {% endblock title %}
+        </title>
+    </head>
+    <body>
+        <!-- Header -->
+        {% include "layout/header.html" %}
+        <!-- Content -->
+        {% block content %}
+        {% endblock content %}
+        <!-- Footer -->
+        {% include "layout/footer.html" %}
+        <!-- JS Files -->
+        {% include "layout/scripts.html" %}
+    </body>
+</html>

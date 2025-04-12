@@ -1,0 +1,97 @@
+<!-- <div class="div-col"> -->
+<!-- <label class="font-lnterbold">Product code :</label> -->
+<!-- <div class="data font-lnterbold PCODE">{{data.sub_categories}}</div> -->
+<!-- </div> -->
+<!-- <div class="div-col"> -->
+<!-- <label class="font-lnterbold">Product code :</label> -->
+<!-- <div class="data font-lnterbold PCODE">{{data.product_code}}</div> -->
+<!-- </div> -->
+<!-- <div class="div-col"> -->
+<!-- <label class="font-lnterbold">Price :</label> -->
+<!-- <div class="data font-lnterbold PPRICE">{{data.price}}</div> -->
+<!-- </div> -->
+<style>
+    .data {
+        white-space: pre-line;
+        /* Keeps line breaks from your text input */
+    }
+
+    /* Mobile-specific styling */
+    @media (max-width: 768px) {
+        .data {
+            display: block;
+            /* Ensure each item in .data appears on its own line */
+            line-height: 1.5;
+            /* Adjust line height for readability */
+        }
+    }
+</style>
+{% if data.net_weight %}
+    <div class="div-col">
+        <label class="font-lnterbold">NET WEIGHT :</label>
+        <div class="data font-lnterbold PNET text-capitalize">{{ data.net_weight|lower }}</div>
+    </div>
+{% endif %}
+<!-- <div class="mt-15"></div> -->
+{% if data.ingredients %}
+    <div class="mt-15"></div>
+    <div class="div-col">
+        <label class="font-lnterbold">INGREDIENTS :</label>
+        <div class="data font-lnterbold PIND text-capitalize">{{ data.ingredients|lower }}</div>
+    </div>
+{% endif %}
+<!-- <div class="mt-15"></div> -->
+<!-- <div class="div-col"> -->
+<!-- <label class="font-lnterbold">USE INSTRUCTION :</label> -->
+<!-- <div class="data font-lnterbold d-block PINS">{{data.instructions}}</div> -->
+<!-- </div> -->
+{% if data.storage_instructions %}
+    <div class="mt-15"></div>
+    <div class="div-col">
+        <label class="font-lnterbold">STORAGE INSTRUCTION :</label>
+        <div class="data font-lnterbold d-block PSINS text-capitalize">{{ data.storage_instructions|lower }}</div>
+    </div>
+{% endif %}
+{% if data.origin %}
+    <div class="mt-15"></div>
+    <div class="div-col">
+        <label class="font-lnterbold">ORIGIN :</label>
+        <div class="data font-lnterbold PCAU text-capitalize">{{ data.origin|lower }}</div>
+    </div>
+{% endif %}
+{% if data.shelf_life %}
+    <div class="mt-15"></div>
+    <div class="div-col">
+        <label class="font-lnterbold">SHELF LIFE :</label>
+        <div class="data font-lnterbold PCAU text-capitalize">{{ data.shelf_life|lower }}</div>
+    </div>
+{% endif %}
+{% if data.how_to_cook %}
+    <div class="mt-15"></div>
+    <div class="div-col">
+        <label class="font-lnterbold">HOW TO COOK :</label>
+        <div class="data font-lnterbold PCAU text-capitalize">{{ data.how_to_cook|lower }}</div>
+    </div>
+{% endif %}
+{% if data.causion %}
+    <div class="mt-15"></div>
+    <div class="div-col">
+        <label class="font-lnterbold">ALLERGEN INFORMATION :</label>
+        {% comment %} Here Allergen information is stored as caudion in the model and in the database {% endcomment %}
+        <div class="data font-lnterbold d-block PSINS text-capitalize">{{ data.causion|lower }}</div>
+    </div>
+{% endif %}
+{% if data.description %}
+    <div class="mt-15"></div>
+    <div class="div-col">
+        <div class="row">
+            <div class="col">
+                <label class="font-lnterbold">NUTRITIONAL FACTS :</label>
+            </div>
+            <div class="col">
+                {% comment %} NUTRITIONAL facts is description in model {% endcomment %}
+                <div class="data font-lnterbold PDES text-capitalize">{{ data.description|safe|lower }}</div>
+            </div>
+        </div>
+    </div>
+{% endif %}
