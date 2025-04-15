@@ -1,110 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 <head>
-  <style>
-  .slider, .slide {
-    height: 100vh;
-
-
-.slide {
-  position: relative;
-}
-.slide .slide__img {
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-}
-
-.slide .slide__img img {
-  width: 100%;
-  height: 100vh;
-  opacity: 1 !important;
-      object-fit: cover;
-}
-
-
-.slick-dotted .slick-slider {
-  margin-bottom: 30px;
-}
-
-
-
-.slick-nav {
-  --active: #fff;
-  --border: rgba(255, 255, 255, .12);
-  width: 44px;
-  height: 44px;
-  position: absolute;
-  cursor: pointer;
-  top: calc(50% - 44px);
-}
-.slick-nav.prev-arrow {
-  left: 3%;
-  transform: scaleX(-1);
-  z-index: 999;
-}
-.slick-nav.next-arrow {
-  left: auto;
-  right: 3%;
-}
-.slick-nav i {
-  display: block;
-  position: absolute;
-  margin: -10px 0 0 -10px;
-  width: 20px;
-  height: 20px;
-  left: 50%;
-  top: 50%;
-}
-.slick-nav i:before, .slick-nav i:after {
-  content: "";
-  width: 10px;
-  height: 2px;
-  border-radius: 1px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  background: var(--active);
-  margin: -1px 0 0 -5px;
-  display: block;
-  transform-origin: 9px 50%;
-}
-.slick-nav i:before {
-  transform: rotate(-40deg);
-}
-.slick-nav i:after {
-  transform: rotate(40deg);
-}
-.slick-nav:before, .slick-nav:after {
-  content: "";
-  display: block;
-  position: absolute;
-  left: 1px;
-  right: 1px;
-  top: 1px;
-  bottom: 1px;
-  border-radius: 50%;
-  border: 2px solid var(--border);
-}
-
-.slick-nav.animate svg {
-  -webkit-animation: stroke 1s ease forwards 0.3s;
-          animation: stroke 1s ease forwards 0.3s;
-}
-.slick-nav.animate i {
-  -webkit-animation: arrow 1.6s ease forwards;
-          animation: arrow 1.6s ease forwards;
-}
-.slick-nav.animate i:before {
-  -webkit-animation: arrowUp 1.6s ease forwards;
-          animation: arrowUp 1.6s ease forwards;
-}
-.slick-nav.animate i:after {
-  -webkit-animation: arrowDown 1.6s ease forwards;
-          animation: arrowDown 1.6s ease forwards;
-}
-
-  </style>
+  
   <style>
     .whatsapp-button {
       position: fixed;
@@ -179,48 +76,6 @@
     <div class="main-div pt-0 header-bg-transparent header-bg-black show-logo-oceano footer-bg-black">
       <!-- brands -->
       <section id="brands" class="pt-0 pb-0 font-aref-ruqaa">
-        <!-- <div class="banner-cover"> -->
-        <!-- <div class="row"> -->
-        <!-- <div class="slick_slider_1" id="brand-main-slider"> -->
-        <!-- <div class="item"> -->
-        <!-- <div class="wow fadeInUp wow_item"> -->
-        <!-- <img width=""
-      height=""
-      alt=""
-      class="img-primary h-100-vh"
-      src="{% static 'public_interface/images/brands/banner-cover/banner-top.jpg' %}"> -->
-        <!-- </div> -->
-        <!-- </div> -->
-        <!-- <div class="item"> -->
-        <!-- <div class="wow fadeInUp wow_item"> -->
-        <!-- <img width=""
-      height=""
-      alt=""
-      class="img-primary h-100-vh"
-      src="{% static 'public_interface/images/brands/banner-cover/w1.jpg' %}"> -->
-        <!-- </div> -->
-        <!-- </div> -->
-        <!-- <div class="item"> -->
-        <!-- <div class="wow fadeInUp wow_item"> -->
-        <!-- <img width=""
-      height=""
-      alt=""
-      class="img-primary h-100-vh"
-      src="{% static 'public_interface/images/brands/banner-cover/w2.jpg' %}"> -->
-        <!-- </div> -->
-        <!-- </div> -->
-        <!-- </div> -->
-        <!-- </div> -->
-        <!-- <div class="caption w-100 text-center"> -->
-        <!-- <div class="wrapper"> -->
-        <!-- <div class="row text-white"> -->
-        <!-- <div class="col-12" data-aos="fade-down" data-aos-duration="2000"> -->
-        <!-- <h3 class="text-pre-line">PREMIUM <span class="font-aref-ruqaabold">DIVE TO</span> DELICACY</h3> -->
-        <!-- </div> -->
-        <!-- </div> -->
-        <!-- </div> -->
-        <!-- </div> -->
-        <!-- </div> -->
         <div class="premium padd_t_b_50">
           <div class="wrapper">
             <div class="row justify-content-center text-center">
@@ -244,50 +99,7 @@
           </div>
           <div id="oceano_product"></div>
         </div>
-        <div class="rady-to-eat text-white padd_t_b_50">
-          <div class="wrapper">
-            <div class="row">
-              <div class="col-12 pt-20">
-                <div class="section-head text-center">
-                  <h1 class="font-aref-ruqaabold">OCEANO PRODUCTS</h1>
-                  <hr class="bg-white">
-                </div>
-                <div id="prod">
-                  <ul class="nav nav-tabs border-0 justify-content-center pt-20">
-                    {% for c in category %}
-                      <li class="nav-item">
-                        <a href="javascript:void(0);"
-                           class="nav-link text-white btn {% if forloop.first %}active{% endif %}"
-                           data-name="{{ c.name }}"
-                           onclick="loadProductContent(this)">{{ c.name }}</a>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
-                <div class="tab-content pt-20">
-                  <div class="tab-pane fade show active">
-                    <div class="row justify-content-center">
-                      <div class="col-lg-12 MOREBTN"
-                           data-aos="fade-right"
-                           data-aos-duration="1000">
-                        <div class="row pt-50" id="MixItUp">{% include 'website/brands/products_list.html' %}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row text-center pt-50">
-                    <div class="col-12">
-                      <button class="btn btn-more VIEWMORE"
-                              id="loadMoreButton"
-                              data-total="{{ total_product }}"
-                              data-limit="4"
-                              onclick="loadmoreproduct(this)">View More</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        
       </div>
       <div class="highlights padd_t_b_50">
         <div class="wrapper">
