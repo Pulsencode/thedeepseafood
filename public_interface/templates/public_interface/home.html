@@ -1,485 +1,386 @@
 {% extends "public_interface/layout/public_base.html" %}
 {% load static %}
-<div class="main-div pt-0 header-bg-transparent header-logo-lg">
-  <!-- indro -->
-  <section id="indro" class="pt-0 pb-0">
-    <div class="wrapper pe-10">
-      <div class="expand-btns font-lntermedium gormex_exp">
-        <div class="button">
-          <span class="icon">
-            <i>
-              <img width=""
-                   height=""
-                   alt=""
-                   src="{% static 'public_interface/images/general/gl.png' %}"
-                   style="width:20px;
-                          height:20px">
-            </i>
-          </span>
-          <a class="text" href="https://gourmex.ae/" target="_blank">Gourmex</a>
+{% block content %}
+  <div class="main-div pt-0 header-bg-transparent header-logo-lg">
+    <!-- indro -->
+    <section id="indro" class="pt-0 pb-0">
+      <div class="wrapper pe-10">
+        <div class="expand-btns font-lntermedium gormex_exp">
+          <div class="button">
+            <span class="icon">
+              <i>
+                <img width=""
+                     height=""
+                     alt=""
+                     src="{% static 'public_interface/images/general/gl.png' %}"
+                     style="width:20px;
+                            height:20px">
+              </i>
+            </span>
+            <a class="text" href="https://gourmex.ae/" target="_blank">Gourmex</a>
+          </div>
         </div>
-      </div>
-      <div class="row h-595-px-lg-all">
-        <div class="col-lg-5 position-relative">
-          <div class="row">
-            <div class="col-lg-11 offset-lg-1">
-              <div class="content">
-                <div class="carousel slide" data-bs-ride="carousel" data-bs-pause="false">
-                  <div class="carousel-inner">
-                    <div class="carousel-item active">
-                      <h2 class="font-lnterextrabold"
-                          data-aos="fade-right"
-                          data-aos-duration="1500">
-                        38 Years of
-                        excellence
-                        in quality and service
-                      </h2>
-                    </div>
-                    <div class="carousel-item">
-                      <h2 class="font-lnterextrabold"
-                          data-aos="fade-right"
-                          data-aos-duration="1500">
-                        Always fresh,
-                        Only the best.
-                      </h2>
-                    </div>
-                    <div class="carousel-item">
-                      <h2 class="font-lnterextrabold"
-                          data-aos="fade-right"
-                          data-aos-duration="1500">
-                        38 Years of
-                        international
-                        trade and global success
-                      </h2>
+        <div class="row h-595-px-lg-all">
+          <div class="col-lg-5 position-relative">
+            <div class="row">
+              <div class="col-lg-11 offset-lg-1">
+                <div class="content">
+                  <div class="carousel slide" data-bs-ride="carousel" data-bs-pause="false">
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <h2 class="font-lnterextrabold"
+                            data-aos="fade-right"
+                            data-aos-duration="1500">
+                          38 Years of
+                          excellence
+                          in quality and service
+                        </h2>
+                      </div>
+                      <div class="carousel-item">
+                        <h2 class="font-lnterextrabold"
+                            data-aos="fade-right"
+                            data-aos-duration="1500">
+                          Always fresh,
+                          Only the best.
+                        </h2>
+                      </div>
+                      <div class="carousel-item">
+                        <h2 class="font-lnterextrabold"
+                            data-aos="fade-right"
+                            data-aos-duration="1500">
+                          38 Years of
+                          international
+                          trade and global success
+                        </h2>
+                      </div>
                     </div>
                   </div>
+                  <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover"
+                     href="">
+                    <span>Explore More</span>
+                    <img width=""
+                         height=""
+                         alt=""
+                         src="{% static 'public_interface/images/icons/right-arrow.png' %} ">
+                  </a>
                 </div>
-                <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover"
-                   href="">
-                  <span>Explore More</span>
-                  <img width=""
-                       height=""
-                       alt=""
-                       src="{% static 'public_interface/images/icons/right-arrow.png' %} ">
-                </a>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-lg-7 position-relative">
-          <div class="slider overflow-hidden">
-            <div class="head">
-              <div class="title font-lnterbold"
+          <div class="col-lg-7 position-relative">
+            <div class="slider overflow-hidden">
+              <div class="head">
+                <div class="title font-lnterbold"
+                     data-aos="fade-up"
+                     data-aos-duration="500">
+                  Catering your seafood needs
+                  from the world
+                </div>
+                <div class="d-flex">
+                  <div class="line" data-aos="fade-up" data-aos-duration="500"></div>
+                </div>
+              </div>
+              <div class="slick_slider_4 slick-overflow-initial"
                    data-aos="fade-up"
                    data-aos-duration="500">
-                Catering your seafood needs
-                from the world
-              </div>
-              <div class="d-flex">
-                <div class="line" data-aos="fade-up" data-aos-duration="500"></div>
-              </div>
-            </div>
-            <div class="slick_slider_4 slick-overflow-initial"
-                 data-aos="fade-up"
-                 data-aos-duration="500">
-              <div class="item card-hover-zoom">
-                <img width=""
-                     height=""
-                     alt=""
-                     class="img-primary"
-                     src="{% static 'public_interface/images/local.jpg' %}">
-                <div class="info">
-                  <div class="title font-lnterbold">Local Catch</div>
-                  <a class="btn bg-blue text-white rounded-25 btn-icon">
-                    <span>Know More</span>
-                    <img width=""
-                         height=""
-                         alt=""
-                         src="{% static 'public_interface/images/icons/right-arrow.png' %}">
-                  </a>
-                </div>
-                <a class="primary-btn" href="?type=Local Catch"></a>
-              </div>
-              <div class="item card-hover-zoom">
-                <img width=""
-                     height=""
-                     alt=""
-                     class="img-primary"
-                     src="{% static 'public_interface/images/impoted.jpg' %}">
-                <div class="info">
-                  <div class="title font-lnterbold">Imported</div>
-                  <a class="btn bg-blue text-white rounded-25 btn-icon">
-                    <span>Know More</span>
-                    <img width=""
-                         height=""
-                         alt=""
-                         src="{% static 'public_interface/images/icons/right-arrow.png' %}">
-                  </a>
-                </div>
-                <a class="primary-btn" href="?type=Imported"></a>
-              </div>
-              <div class="item card-hover-zoom">
-                <img width=""
-                     height=""
-                     alt=""
-                     class="img-primary"
-                     src="{% static 'public_interface/images/value.jpg' %}">
-                <div class="info">
-                  <div class="title font-lnterbold">Value Added</div>
-                  <a class="btn bg-blue text-white rounded-25 btn-icon">
-                    <span>Know More</span>
-                    <img width=""
-                         height=""
-                         alt=""
-                         src="{% static 'public_interface/images/icons/right-arrow.png' %}">
-                  </a>
-                </div>
-                <a class="primary-btn" href="?type=Value Added"></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-5">
-          <div class="position-relative">
-            <div class="row bottom-btns">
-              <div class="col-xl-6 col-lg-5 hide_mob lap_none">
-                <a class="btn btn-zoom-hover font-lnterbold btn-scroll"
-                   href="#section_products">
+                <div class="item card-hover-zoom">
                   <img width=""
                        height=""
                        alt=""
-                       src="{% static 'public_interface/images/icons/scroll.png' %}">
-                  <span>SCROLL</span>
-                </a>
-              </div>
-              <div class="col-xl-6 col-lg-7 ">
-                <button class="btn btn-zoom-hover font-lnterbold btn-video show_file_btn pb-4"
-                        type="button"
-                        data-file-src="https://www.youtube.com/embed/VQuifNvwfoA">
+                       class="img-primary"
+                       src="{% static 'public_interface/images/local.jpg' %}">
+                  <div class="info">
+                    <div class="title font-lnterbold">Local Catch</div>
+                    <a class="btn bg-blue text-white rounded-25 btn-icon">
+                      <span>Know More</span>
+                      <img width=""
+                           height=""
+                           alt=""
+                           src="{% static 'public_interface/images/icons/right-arrow.png' %}">
+                    </a>
+                  </div>
+                  <a class="primary-btn" href="?type=Local Catch"></a>
+                </div>
+                <div class="item card-hover-zoom">
                   <img width=""
                        height=""
                        alt=""
-                       src="{% static 'public_interface/images/icons/video.png' %}">
-                  <span class="line"></span>
-                  <span>WATCH VIDEO</span>
-                </button>
+                       class="img-primary"
+                       src="{% static 'public_interface/images/impoted.jpg' %}">
+                  <div class="info">
+                    <div class="title font-lnterbold">Imported</div>
+                    <a class="btn bg-blue text-white rounded-25 btn-icon">
+                      <span>Know More</span>
+                      <img width=""
+                           height=""
+                           alt=""
+                           src="{% static 'public_interface/images/icons/right-arrow.png' %}">
+                    </a>
+                  </div>
+                  <a class="primary-btn" href="?type=Imported"></a>
+                </div>
+                <div class="item card-hover-zoom">
+                  <img width=""
+                       height=""
+                       alt=""
+                       class="img-primary"
+                       src="{% static 'public_interface/images/value.jpg' %}">
+                  <div class="info">
+                    <div class="title font-lnterbold">Value Added</div>
+                    <a class="btn bg-blue text-white rounded-25 btn-icon">
+                      <span>Know More</span>
+                      <img width=""
+                           height=""
+                           alt=""
+                           src="{% static 'public_interface/images/icons/right-arrow.png' %}">
+                    </a>
+                  </div>
+                  <a class="primary-btn" href="?type=Value Added"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-5">
+            <div class="position-relative">
+              <div class="row bottom-btns">
+                <div class="col-xl-6 col-lg-5 hide_mob lap_none">
+                  <a class="btn btn-zoom-hover font-lnterbold btn-scroll"
+                     href="#section_products">
+                    <img width=""
+                         height=""
+                         alt=""
+                         src="{% static 'public_interface/images/icons/scroll.png' %}">
+                    <span>SCROLL</span>
+                  </a>
+                </div>
+                <div class="col-xl-6 col-lg-7 ">
+                  <button class="btn btn-zoom-hover font-lnterbold btn-video show_file_btn pb-4"
+                          type="button"
+                          data-file-src="https://www.youtube.com/embed/VQuifNvwfoA">
+                    <img width=""
+                         height=""
+                         alt=""
+                         src="{% static 'public_interface/images/icons/video.png' %}">
+                    <span class="line"></span>
+                    <span>WATCH VIDEO</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="video-container">
-      <video class="cover"
-             poster="{% static 'public_interface/images/index/indro/poster.gif' %}"
-             autoplay
-             loop
-             muted
-             playsinline>
-        <source src="{% static 'public_interface/images/index/indro/HEADER_VIDEO.mp4' %}"
-                type="video/mp4">
-        <source src="{% static 'public_interface/images/index/indro/HEADER_VIDEO.webm' %}"
-                type="video/webm">
-      </video>
-    </div>
-    <a class="box" href="#bott">
-      <span></span>
-      <span></span>
-      <span></span>
-    </a>
-    <div class="cover-vertical"></div>
-  </section>
-  <!-- /indro -->
-   {% include "public_interface/components/home_product_area.html" %}
-   {% include "public_interface/components/why_choose_us.html" %}
-  <!-- /years_36 -->
-  <!-- brands_we_deal -->
-  {% include "public_interface/components/home_brands.html" %}
-  <!-- /export_market -->
-  <!-- satisfaction -->
-  <section id="satisfaction">
-    <div class="wrapper">
-      <div class="row pt-30 text-center">
-        <div class="col-12">
-          <div class="section-head" data-aos="fade-down" data-aos-duration="500">
-            <h1 class="text-blue font-lnterbold">CERTIFICATIONS & ACCREDIATIONS</h1>
-            <h5 class="text-blue text-center">Commited to customer satisfaction.</h5>
-          </div>
-        </div>
-      </div>
-      <div class="row pt-35">
-        <div class="slick_slider_6">
-          {% for c in certification %}
-            <div class="item">
-              <div class="wow fadeInUp wow_item">
-                <img width=""
-                     height=""
-                     alt=""
-                     class="img-primary"
-                     src="{{ c.image.url }}"
-                     alt="{{ c.image_alt }}">
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- /satisfaction -->
-  <!-- testimonials -->
-  {% include "public_interface/components/home_testimonials.html" %}
-  <!-- /testimonials -->
-  <div class="expand-btns font-lntermedium">
-    <div class="button">
-      <span class="icon">
-        <i class="fa fa-facebook" aria-hidden="true"></i>
-      </span>
-      <a class="text"
-         href="https://www.facebook.com/thedeepseafood"
-         target="_blank">Facebook</a>
-    </div>
-    <div class="button">
-      <span class="icon">
-        <i class="fa fa-instagram" aria-hidden="true"></i>
-      </span>
-      <a class="text"
-         href="https://www.instagram.com/thedeepseafood/"
-         target="_blank">Instagram</a>
-    </div>
-    <div class="button">
-      <span class="icon">
-        <i class="fa fa-linkedin" aria-hidden="true"></i>
-      </span>
-      <a class="text"
-         href="https://www.linkedin.com/company/thedeepseafood"
-         target="_blank">Linkedin</a>
-    </div>
-    <div class="button">
-      <span class="icon">
-        <i>
-          <img width=""
-               height=""
-               alt=""
-               src="{% static 'public_interface/images/general/gl.png' %}"
-               style="width:20px;
-                      height:20px">
-        </i>
-      </span>
-      <a class="text" href="https://gourmex.ae/" target="_blank">Gourmex</a>
-    </div>
-  </div>
-</div>
-<!-- modal_show_file -->
-<div class="modal fade modal-show-file"
-     id="modal_show_file"
-     data-bs-backdrop="static"
-     data-bs-keyboard="false"
-     tabindex="-1"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-body">
-        <button type="button"
-                class="btn-close remove_src"
-                data-bs-dismiss="modal"
-                aria-label="Close"></button>
-        <embed id="file_src" class="h-80-vh w-100">
-      </div>
-    </div>
-  </div>
-</div>
-<!-- modal_show_file -->
-<!-- modal_show_file_2 -->
-<div class="modal fade modal-show-file"
-     id="modal_show_file_2"
-     data-bs-backdrop="static"
-     data-bs-keyboard="false"
-     tabindex="-1"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-body">
-        <button type="button"
-                class="btn-close remove_src_2"
-                data-bs-dismiss="modal"
-                aria-label="Close"></button>
-        <video controls autoplay loop id="file_src_2">
-          <source class="h-100-vh w-100" type="video/mp4">
+      <div class="video-container">
+        <video class="cover"
+               poster="{% static 'public_interface/images/index/indro/poster.gif' %}"
+               autoplay
+               loop
+               muted
+               playsinline>
+          <source src="{% static 'public_interface/images/index/indro/HEADER_VIDEO.mp4' %}"
+                  type="video/mp4">
+          <source src="{% static 'public_interface/images/index/indro/HEADER_VIDEO.webm' %}"
+                  type="video/webm">
         </video>
       </div>
+      <a class="box" href="#bott">
+        <span></span>
+        <span></span>
+        <span></span>
+      </a>
+      <div class="cover-vertical"></div>
+    </section>
+    <!-- /indro -->
+    {% include "public_interface/components/home_specialities.html" %}
+    {% include "public_interface/components/why_choose_us.html" %}
+    <!-- /years_36 -->
+    <!-- brands_we_deal -->
+    {% include "public_interface/components/home_brands.html" %}
+    {% include "public_interface/components/home_export_market.html" %}
+    {% include "public_interface/components/home_certifications.html" %}
+    <!-- testimonials -->
+    {% include "public_interface/components/home_testimonials.html" %}
+    <div class="expand-btns font-lntermedium">
+      <div class="button">
+        <span class="icon">
+          <i class="fa fa-facebook" aria-hidden="true"></i>
+        </span>
+        <a class="text"
+           href="https://www.facebook.com/thedeepseafood"
+           target="_blank">Facebook</a>
+      </div>
+      <div class="button">
+        <span class="icon">
+          <i class="fa fa-instagram" aria-hidden="true"></i>
+        </span>
+        <a class="text"
+           href="https://www.instagram.com/thedeepseafood/"
+           target="_blank">Instagram</a>
+      </div>
+      <div class="button">
+        <span class="icon">
+          <i class="fa fa-linkedin" aria-hidden="true"></i>
+        </span>
+        <a class="text"
+           href="https://www.linkedin.com/company/thedeepseafood"
+           target="_blank">Linkedin</a>
+      </div>
+      <div class="button">
+        <span class="icon">
+          <i>
+            <img width=""
+                 height=""
+                 alt=""
+                 src="{% static 'public_interface/images/general/gl.png' %}"
+                 style="width:20px;
+                        height:20px">
+          </i>
+        </span>
+        <a class="text" href="https://gourmex.ae/" target="_blank">Gourmex</a>
+      </div>
     </div>
   </div>
-</div>
-<!-- Counter script -->
-<!-- <script> -->
-<!-- function animateCount(element, target, duration) { -->
-<!-- $({ count: $(element).text() }).animate( -->
-<!-- { count: target }, -->
-<!-- { -->
-<!-- duration: duration, -->
-<!-- step: function () { -->
-<!-- $(element).text(Math.floor(this.count)); -->
-<!-- }, -->
-<!-- complete: function () { -->
-<!-- $(element).text(target); -->
-<!-- }, -->
-<!-- } -->
-<!-- ); -->
-<!-- } -->
-<!-- function initCounters() { -->
-<!-- $('.animate_count').each(function () { -->
-<!-- var targetValue = $(this).data('number'); -->
-<!-- animateCount(this, targetValue, 2000);  -->
-<!-- }); -->
-<!-- } -->
-<!-- $(document).ready(function () { -->
-<!-- initCounters(); -->
-<!-- }); -->
-<!-- </script> -->
-<script>
-  function animateCount(element, target, duration) {
-    $({ count: $(element).text() }).animate(
-      { count: target },
-      {
-        duration: duration,
-        step: function () {
-          $(element).text(Math.floor(this.count));
+  <!-- modal_show_file -->
+  <div class="modal fade modal-show-file"
+       id="modal_show_file"
+       data-bs-backdrop="static"
+       data-bs-keyboard="false"
+       tabindex="-1"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button"
+                  class="btn-close remove_src"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+          <embed id="file_src" class="h-80-vh w-100">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal_show_file -->
+  <!-- modal_show_file_2 -->
+  <div class="modal fade modal-show-file"
+       id="modal_show_file_2"
+       data-bs-backdrop="static"
+       data-bs-keyboard="false"
+       tabindex="-1"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button"
+                  class="btn-close remove_src_2"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+          <video controls autoplay loop id="file_src_2">
+            <source class="h-100-vh w-100" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function animateCount(element, target, duration) {
+      $({ count: $(element).text() }).animate(
+        { count: target },
+        {
+          duration: duration,
+          step: function () {
+            $(element).text(Math.floor(this.count));
+          },
+          complete: function () {
+            $(element).text(target);
+          },
+        }
+      );
+    }
+    
+    function initCounters() {
+      $(".animate_count").each(function () {
+        var targetValue = $(this).data("number");
+        animateCount(this, targetValue, 2000);
+      });
+    }
+    
+    // Function to check if the section is intersecting with the viewport
+    function isIntersecting(entry) {
+      return entry.isIntersecting || entry.intersectionRatio > 0;
+    }
+    
+    // Intersection Observer callback
+    function intersectionCallback(entries, observer) {
+      entries.forEach((entry) => {
+        if (isIntersecting(entry)) {
+          // If section is intersecting, initialize counters
+          initCounters();
+        } else {
+          // If section is not intersecting, reset counters
+          $(".animate_count").text("0");
+        }
+      });
+    }
+    
+    // Create an Intersection Observer instance
+    const observer = new IntersectionObserver(intersectionCallback);
+    
+    // Observe the section
+    observer.observe(document.getElementById("years_36"));
+    
+    // Smooth scrolling to the target section when clicking on the "SCROLL" button
+    $(".btn-scroll").click(function (e) {
+      e.preventDefault();
+      var targetSection = $("#section_products");
+      $("html, body").animate(
+        {
+          scrollTop: targetSection.offset().top,
         },
-        complete: function () {
-          $(element).text(target);
-        },
-      }
-    );
-  }
-
-  function initCounters() {
-    $('.animate_count').each(function () {
-      var targetValue = $(this).data('number');
-      animateCount(this, targetValue, 2000);
+        1000
+      ); // You can adjust the duration as needed
     });
-  }
-
-  // Function to check if the section is intersecting with the viewport
-  function isIntersecting(entry) {
-    return entry.isIntersecting || entry.intersectionRatio > 0;
-  }
-
-  // Intersection Observer callback
-  function intersectionCallback(entries, observer) {
-    entries.forEach(entry => {
-      if (isIntersecting(entry)) {
-        // If section is intersecting, initialize counters
-        initCounters();
-      } else {
-        // If section is not intersecting, reset counters
-        $('.animate_count').text('0');
-      }
+    
+    // Show video modal when clicking on the "WATCH VIDEO" button
+    $(".btn-video").click(function () {
+      var videoSrc = $(this).data("file-src");
+      showModalWithVideo(videoSrc);
     });
-  }
-
-  // Create an Intersection Observer instance
-  const observer = new IntersectionObserver(intersectionCallback);
-
-  // Observe the section
-  observer.observe(document.getElementById('years_36'));
-</script>
-<!-- <script> -->
-<!-- var counted = false; -->
-<!-- // Function to check if the element is in view -->
-<!-- function isElementInViewport(elem) { -->
-<!-- var rect = elem.getBoundingClientRect(); -->
-<!-- return ( -->
-<!-- rect.top >= 0 && -->
-<!-- rect.left >= 0 && -->
-<!-- rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && -->
-<!-- rect.right <= (window.innerWidth || document.documentElement.clientWidth) -->
-<!-- ); -->
-<!-- } -->
-<!-- // Function to animate the counting -->
-<!-- function animateCount(element, target, duration) { -->
-<!-- $({ count: $(element).text() }).animate( -->
-<!-- { count: target }, -->
-<!-- { -->
-<!-- duration: duration, -->
-<!-- step: function () { -->
-<!-- $(element).text(Math.floor(this.count)); -->
-<!-- }, -->
-<!-- complete: function () { -->
-<!-- $(element).text(target); -->
-<!-- }, -->
-<!-- } -->
-<!-- ); -->
-<!-- } -->
-<!-- // Function to initialize counting for each element when it's in view -->
-<!-- function initCountersWhenInView() { -->
-<!-- if (!counted && isElementInViewport($('.col-md-7.ps-0')[0])) { -->
-<!-- $('.animate_count').each(function () { -->
-<!-- var targetValue = $(this).data('number'); -->
-<!-- animateCount(this, targetValue, 2000); // You can adjust the duration as needed -->
-<!-- }); -->
-<!-- counted = true; -->
-<!-- } -->
-<!-- } -->
-<!-- // Call the initialization function when the document is ready -->
-<!-- $(document).ready(function () { -->
-<!-- initCountersWhenInView(); -->
-<!-- // Call the counting function when scrolling -->
-<!-- $(window).scroll(function () { -->
-<!-- initCountersWhenInView(); -->
-<!-- }); -->
-<!-- }); -->
-<!-- </script> -->
-<script>
-  // Smooth scrolling to the target section when clicking on the "SCROLL" button
-  $(".btn-scroll").click(function(e) {
-    e.preventDefault();
-    var targetSection = $("#section_products");
-    $('html, body').animate({
-      scrollTop: targetSection.offset().top
-    }, 1000); // You can adjust the duration as needed
-  });
-
-  // Show video modal when clicking on the "WATCH VIDEO" button
-  $(".btn-video").click(function() {
-    var videoSrc = $(this).data('file-src');
-    showModalWithVideo(videoSrc);
-  });
-
-  // Function to show a modal with an embedded video
-  function showModalWithVideo(videoSrc) {
-    // You can implement your modal logic here
-    // For example, use a library like Bootstrap modal or create your own modal
-    <!-- alert("Opening video: " + videoSrc); -->
-  }
-</script>
-<script>
-    $(document).ready(function(){
-      $('#why-slider').slick({
+    
+    // Function to show a modal with an embedded video
+    function showModalWithVideo(videoSrc) {
+      // You can implement your modal logic here
+      // For example, use a library like Bootstrap modal or create your own modal
+      alert("Opening video: " + videoSrc);
+    }
+    
+    $(document).ready(function () {
+      $("#why-slider").slick({
         dots: true, // Add dots navigation
         infinite: true,
         speed: 500,
         slidesToShow: 3,
-		autoplay: true, 
-		autoplaySpeed: 3000,	
+        autoplay: true,
+        autoplaySpeed: 3000,
         slidesToScroll: 1,
         responsive: [
           {
             breakpoint: 768,
             settings: {
               slidesToShow: 2,
-              slidesToScroll: 1
-            }
+              slidesToScroll: 1,
+            },
           },
           {
             breakpoint: 576,
             settings: {
               slidesToShow: 1,
-              slidesToScroll: 1
-            }
-          }
-        ]
+              slidesToScroll: 1,
+            },
+          },
+        ],
       });
     });
-</script>
+  </script>
+{% endblock content %}

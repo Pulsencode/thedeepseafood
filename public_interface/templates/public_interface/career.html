@@ -1,4 +1,4 @@
-{% include 'website/layout/header.html' %}
+{% include 'public_interface/layout/header.html' %}
 {% load static %}
 {% load custom_filters %}
 
@@ -13,7 +13,7 @@
             <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
               <h3 class="font-lnterbold">CAREER</h3>
               <h5 class="font-lnterbold">
-                <a href="{% url 'index' %}">Home</a>
+                <a href="{% url "home" %}">Home</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a>Career</a>
               </h5>
@@ -326,4 +326,4 @@
         <!-- }); -->
     <!-- }); -->
 <!-- </script> -->
-{% include 'website/layout/footer.html' %}
+{% include 'public_interface/layout/footer.html' %}

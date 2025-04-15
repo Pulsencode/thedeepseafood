@@ -1,4 +1,4 @@
-{% include 'website/layout/header.html' %}
+{% include 'public_interface/layout/header.html' %}
 {% load static %}
 <style>
   .country_nav_url {
@@ -40,7 +40,7 @@
             </div>
             <div class="card mt-30" data-aos="fade-up" data-aos-duration="1000">
 
-              <form method="post" class="form" action="{% url 'send_email' %}" id="contactform">
+              <form method="post" class="form" action="#" id="contactform">
                 {% csrf_token %}
                 <div class="body">
                   <div class="row">
@@ -376,4 +376,4 @@
 </div>
 
 
-{% include 'website/layout/footer.html' %}
+{% include 'public_interface/layout/footer.html' %}
