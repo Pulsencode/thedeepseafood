@@ -1,0 +1,28 @@
+<section id="satisfaction">
+    <div class="wrapper">
+        <div class="row pt-30 text-center">
+            <div class="col-12">
+                <div class="section-head" data-aos="fade-down" data-aos-duration="500">
+                    <h1 class="text-blue font-lnterbold">CERTIFICATIONS & ACCREDIATIONS</h1>
+                    <h5 class="text-blue text-center">Commited to customer satisfaction.</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-35">
+            <div class="slick_slider_6">
+                {% for c in certification %}
+                    <div class="item">
+                        <div class="wow fadeInUp wow_item">
+                            <img width=""
+                                 height=""
+                                 alt=""
+                                 class="img-primary"
+                                 src="{{ c.image.url }}"
+                                 alt="{{ c.image_alt }}">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

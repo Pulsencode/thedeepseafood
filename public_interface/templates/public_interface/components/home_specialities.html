@@ -1,0 +1,98 @@
+{% load static %}
+<!-- section_products -->
+<section id="section_products bott" class="bg-x-light-blue pb-50">
+    <div class="arrowbounce">
+        <div class="animarea">
+            <a class="aroow_bt" href="#ew"></a>
+        </div>
+    </div>
+    <div class="wrapper pt-20" id="ew">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-head text-center">
+                    <h1 class="text-blue font-lnterbold res-mt"
+                        data-aos="fade-up"
+                        data-aos-duration="1500">OUR SPECIALITIES</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 pt-25 res-pt-15">
+                <div class="position-relative">
+                    <ul class="nav nav-tabs nav-tabs-bg border-0 justify-content-center"
+                        data-aos="fade-up"
+                        data-aos-duration="1500">
+                        <li class="nav-item">
+                            <a class="nav-link active ALLCAT" onclick="get_product_list('All',this)">All</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link  ALLCAT"
+                               onclick="get_product_list('Local Catch',this)">Local Catch</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link CATSELE" onclick="get_product_list('Imported',this)">Imported</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link CATSELE"
+                               onclick="get_product_list('Value Added',this)">Value Added</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content pt-md-30">
+                    <div class="tab-pane fade show active"
+                         data-aos="fade-up"
+                         data-aos-duration="1500">
+                        <div class="row card-white-image APPENDPRO" id="index_product">{% include "public_interface/product_list.html" %}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /section_products -->
+<!-- innovated -->
+<section id="innovated" class="pt-0-lg-all pb-0-lg-all">
+    <div class="wrapper pe-0-lg-all">
+        <div class="row align-items-center">
+            <div class="col-lg-4 col-12">
+                <div class="section-head" data-aos="fade-right" data-aos-duration="500">
+                    <h1 class="text-white font-lnterbold">INNOVATIVE PRODUCTS AND SERVICES</h1>
+                    <h5 class="text-white">
+                        We use premium products and provide the best services in the industry. At all levels
+                        of the supply chain and through the entire logistics process, we are dedicated to quality and safety and
+                        follow best industry practices.
+                        We closely work with our customer's preferences and needs to improve our services.
+                    </h5>
+                    <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover"
+                       href="">
+                        <span>Read More</span>
+                        <img width=""
+                             height=""
+                             alt=""
+                             src="{% static 'public_interface/images/icons/right-arrow.png' %}">
+                    </a>
+                </div>
+            </div>
+            <div class="offset-lg-2 col-lg-6 col-12"
+                 data-aos="fade-left"
+                 data-aos-duration="500">
+                <div class="card-thumbnail">
+                    <img width=""
+                         height=""
+                         alt=""
+                         class="img-primary"
+                         src="{% static 'public_interface/images/general/thumb.png' %}">
+                    <button class="btn-play show_file_btn"
+                            type="button"
+                            data-file-src="https://www.youtube.com/embed/VQuifNvwfoA">
+                        <i class="fa fa-play" aria-hidden="true"></i>
+                    </button>
+                    <div class="caption">
+                        <div class="title font-lntermedium">Watch us.. Know us..</div>
+                        <div class="dec">A video showcasing our products and services</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

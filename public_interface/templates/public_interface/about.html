@@ -1,4 +1,4 @@
-{% include 'website/layout/header.html' %}
+{% include 'public_interface/layout/header.html' %}
 {% load static %}
 <div class="main-div pt-0 header-bg-transparent header-logo-white">
   <!-- about -->
@@ -15,7 +15,7 @@
             <div class="col-12" data-aos="fade-down" data-aos-duration="1000">
               <h3 class="font-lnterbold">ABOUT US</h3>
               <h5 class="font-lnterbold">
-                <a href="{% url 'index' %}">Home</a>
+                <a href="{% url "home" %}">Home</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a>About</a>
               </h5>
@@ -567,7 +567,7 @@
 <div class="title text-blue font-lnterbold">SEND US YOUR ENQUIRY</div>
 </div>
 <script src="{% static 'public_interface/modules/slick-slider/custom.js' %}" type="text/javascript"></script>
-<form method="post" class="form" id="contactform" action="{% url 'send_email' %}">
+<form method="post" class="form" id="contactform" action="#">
 {% csrf_token %}
 <div class="body">
 <div class="row">
