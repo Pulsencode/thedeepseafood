@@ -54,7 +54,7 @@
                   </div>
                 </div>
                 <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover"
-                   href="{% url 'about' %}">
+                   href="#">
                   <span>Explore More</span>
                   <img width=""
                        height=""
@@ -97,7 +97,7 @@
                          src="{% static 'public_interface/images/icons/right-arrow.png' %}">
                   </a>
                 </div>
-                <a class="primary-btn" href="{% url 'product' %}?type=Local Catch"></a>
+                <a class="primary-btn" href="#?type=Local Catch"></a>
               </div>
               <div class="item card-hover-zoom">
                 <img width=""
@@ -115,7 +115,7 @@
                          src="{% static 'public_interface/images/icons/right-arrow.png' %}">
                   </a>
                 </div>
-                <a class="primary-btn" href="{% url 'product' %}?type=Imported"></a>
+                <a class="primary-btn" href="#?type=Imported"></a>
               </div>
               <div class="item card-hover-zoom">
                 <img width=""
@@ -133,7 +133,7 @@
                          src="{% static 'public_interface/images/icons/right-arrow.png' %}">
                   </a>
                 </div>
-                <a class="primary-btn" href="{% url 'product' %}?type=Value Added"></a>
+                <a class="primary-btn" href="#?type=Value Added"></a>
               </div>
             </div>
           </div>
@@ -231,7 +231,7 @@
           <div class="tab-pane fade show active"
                data-aos="fade-up"
                data-aos-duration="1500">
-            <div class="row card-white-image APPENDPRO" id="index_product">{% include "website/index/product_list.html" %}</div>
+            <div class="row card-white-image APPENDPRO" id="index_product">#</div>
           </div>
         </div>
       </div>
@@ -252,7 +252,7 @@
               We closely work with our customer's preferences and needs to improve our services.
             </h5>
             <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover"
-               href="{% url 'about' %}">
+               href="#">
               <span>Read More</span>
               <img width=""
                    height=""
@@ -596,7 +596,7 @@
             {% if b.logo %}
               <div class="item card-hover-up">
                 {% if b.name == 'Oceano' %}
-                  <a class="primary-url" href="{% url 'brands' %}">
+                  <a class="primary-url" href="#">
                     <img width=""
                          height=""
                          class="img-fluid m-h-120-px pe-10-md-all"
