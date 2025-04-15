@@ -25,6 +25,9 @@ INSTALLED_APPS = [
 EXTERNAL_APPS = [
     "accounts.apps.AccountsConfig",
     "public_interface.apps.PublicInterfaceConfig",
+    "administration.apps.AdministrationConfig",
+    "career.apps.CareerConfig",
+    "products.apps.ProductsConfig"
 ]
 
 INSTALLED_APPS += EXTERNAL_APPS
