@@ -1,18 +1,32 @@
 from django.db import models
 from autoslug import AutoSlugField
 
+from company.models import Brand
 
-class Brand(models.Model):
-    name = models.TextField(null=True)
+
+class Product(models.Model):
+    brand = models.ForeignKey(
+        Brand,
+        null=True,
+        blank=True,
+        related_name="product_brand",
+        on_delete=models.CASCADE,
+    )
     sequence = models.PositiveIntegerField(null=True)
-    logo = models.FileField(upload_to="brand_img", null=True, blank=True)
+    type = models.TextField(null=True)
 
+    name = models.CharField(max_length=100, null=False, blank=False)
+    image = models.FileField(upload_to="product_img", null=True)
+    homepage = models.BooleanField(null=False, blank=True, default=False)
     status = models.BooleanField(null=False, blank=True, default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-
-    def __str__(self) -> str:
-        return self.name
+    slug = AutoSlugField(
+        populate_from="name",
+        editable=True,
+        always_update=True,
+        null=True,
+    )
 
 
 # class RecipeDetails(models.Model):
@@ -62,32 +76,6 @@ class Brand(models.Model):
 
 #     def __str__(self) -> str:
 #         return self.recipe.title
-
-
-class Product(models.Model):
-    brand = models.ForeignKey(
-        Brand,
-        null=True,
-        blank=True,
-        related_name="product_brand",
-        on_delete=models.CASCADE,
-    )
-    sequence = models.PositiveIntegerField(null=True)
-    type = models.TextField(null=True)
-
-    name = models.CharField(max_length=100, null=False, blank=False)
-    image = models.FileField(upload_to="product_img", null=True)
-    homepage = models.BooleanField(null=False, blank=True, default=False)
-    status = models.BooleanField(null=False, blank=True, default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    slug = AutoSlugField(
-        populate_from="name",
-        editable=True,
-        always_update=True,
-        null=True,
-    )
-
 
 # class ProductDetails(models.Model):
 #     product = models.ForeignKey(Product,related_name='product_details',null=True,on_delete=models.CASCADE)
