@@ -1,0 +1,81 @@
+<button class="btn toggle-enquiry toggle_enquiry enqry-btn">ENQUIRY NOW</button>
+<div class="enquiry bg-x-light-blue">
+  <button class="btn close-btn text-blue toggle_enquiry btn-zoom-hover">
+    <i class="fa fa-times-circle" aria-hidden="true"></i>
+  </button>
+  <div class="head text-center">
+    <div class="title text-blue font-lnterbold">SEND US YOUR ENQUIRY</div>
+  </div>
+  <form method="post" class="form" id="contactform" action="#">
+    {% csrf_token %}
+    <div class="body">
+      <div class="row">
+        <div class="col-12">
+          <input
+            class="form-control text-blue"
+            name="name"
+            type="text"
+            maxlength="50"
+            placeholder="Your Name"
+            required
+          />
+        </div>
+        <div class="col-12">
+          <input
+            class="form-control text-blue"
+            name="phone"
+            type="text"
+            maxlength="15"
+            placeholder="Phone Number"
+            required
+            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+          />
+        </div>
+        <div class="col-12" id="email">
+          <input
+            class="form-control text-blue"
+            name="email"
+            type="email"
+            maxlength="100"
+            placeholder="Email"
+            required=""
+          />
+          <b><span class="text-danger formerror"></span></b>
+          <input type="hidden" name="honey" />
+        </div>
+        <div class="col-12">
+          <input
+            class="form-control text-blue"
+            name="location"
+            type="text"
+            maxlength="100"
+            placeholder="Location"
+            required
+          />
+        </div>
+        <div class="col-12">
+          <textarea
+            class="form-control text-blue h-60-px"
+            name="message"
+            maxlength="500"
+            placeholder="Message"
+            required
+          ></textarea>
+        </div>
+        <br />
+        <span class="text-danger formerror"></span>
+        <br />
+        <input type="hidden" name="honey" />
+      </div>
+    </div>
+    <div class="foot text-center">
+      <button
+        type="submit"
+        id="submitButton"
+        class="BTN_SUBMIT btn btn-primary font-lntermedium"
+      >
+        Send Enquiry
+      </button>
+    </div>
+  </form>
+</div>
