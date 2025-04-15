@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, re_path
+from django.conf.urls.static import static
+
 
 # from django.views.generic.base import TemplateView
 from django.views.static import serve
@@ -17,3 +19,5 @@ urlpatterns = [
     path("products/", include("products.urls")),
     path("company/", include("company.urls")),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
