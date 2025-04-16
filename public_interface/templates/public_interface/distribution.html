@@ -1,7 +1,6 @@
-{% include 'public_interface/layout/header.html' %}
+{% extends 'public_interface/layout/public_base.html' %}
 {% load static %}
-
-
+{% block content %}
 <div class="main-div pt-0 header-bg-transparent header-logo-white">
   <!-- distribution -->
   <section id="distribution" class="pt-0 pb-0">
@@ -163,6 +162,4 @@
   </section>
   <!-- /export_market -->
 </div>
-{% include 'public_interface/layout/footer.html' %}
-
-
+{% endblock content %}

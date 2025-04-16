@@ -1,0 +1,61 @@
+<div class="rady-to-eat text-white padd_t_b_50">
+    <div class="wrapper">
+        <div class="row">
+            <div class="col-12 pt-20">
+                <div class="section-head text-center">
+                    <h1 class="font-aref-ruqaabold">OCEANO PRODUCTS</h1>
+                    <hr class="bg-white">
+                </div>
+                <div id="prod">
+                    <ul class="nav nav-tabs border-0 justify-content-center pt-20">
+                        {% for c in category %}
+                            <li class="nav-item">
+                                <a href="#"
+                                   class="nav-link text-white btn {% if forloop.first %}active{% endif %}"
+                                   data-name="{{ c.name }}"
+                                   onclick="loadProductContent(this)">{{ c.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="tab-content pt-20">
+                    <div class="tab-pane fade show active">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12 MOREBTN"
+                                 data-aos="fade-right"
+                                 data-aos-duration="1000">
+                                <div class="row pt-50" id="MixItUp">{% include "public_interface/components/oceano_products_list.html" %}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row text-center pt-50">
+                        <div class="col-12">
+                            <button class="btn btn-more VIEWMORE"
+                                    id="loadMoreButton"
+                                    data-total="{{ total_product }}"
+                                    data-limit="4"
+                                    onclick="loadmoreproduct(this)">View More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        const productItems = $(".mix");
+        const loadMoreButton = $("#loadMoreButton");
+        const totalProduct = loadMoreButton.data('total');
+        loadMoreButton.hide();
+    
+        const itemsToShow = 4;
+        console.log('**',productItems.length)
+        console.log('**',totalProduct)
+        if (totalProduct>4) {
+            loadMoreButton.show();
+        } else {
+            loadMoreButton.hide();
+        }
+    });
+</script>

@@ -1,15 +1,22 @@
 {% load static %}
 {% for p in product %}
-<div class="col-lg-3 col-md-4 col-6 pt-20">
-    <div class="item card-hover-up">
-        <img width="" height="" alt="" class="img-primary" src="{{p.image.url}}" alt="{{p.image_alt}}">
-        <div class="info">
-            <div class="title font-lntermedium">{{p.name}}</div>
-   
-                <img width="" height="" alt="" src="{% static 'public_interface/images/icons/right-arrow-blue.png' %}" class="product-img-33">
-
+    <div class="col-lg-3 col-md-4 col-6 pt-20">
+        <div class="item card-hover-up">
+            <img width=""
+                 height=""
+                 alt=""
+                 class="img-primary"
+                 src="{{ p.image.url }}"
+                 alt="{{ p.image_alt }}">
+            <div class="info">
+                <div class="title font-lntermedium">{{ p.name }}</div>
+                <img width=""
+                     height=""
+                     alt=""
+                     src="{% static 'public_interface/images/icons/right-arrow-blue.png' %}"
+                     class="product-img-33">
+            </div>
+            <a class="primary-btn" href="{% url 'product_details' p.slug_product %}"></a>
         </div>
-        <a class="primary-btn" href="{% url 'product_details' p.slug_product %}"></a>
     </div>
-</div>
 {% endfor %}

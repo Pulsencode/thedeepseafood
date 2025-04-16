@@ -3,22 +3,12 @@
   <header>
     <div class="row">
       <div class="col-md-8 col-4">
-        <a class="a-logo" href="#">
+        <a class="a-logo" href="{% url "home" %}">
           <img class="logo white_logo"
                width=""
                height=""
                alt=""
-               src="{% static 'website/assets/general/images/logo-white.png' %} ">
-          <img class="logo blue_logo"
-               width=""
-               height=""
-               alt=""
-               src="{% static 'website/assets/general/images/logo.png' %}">
-          <img class="logo logo-oceano"
-               width=""
-               height=""
-               alt=""
-               src="{% static 'website/assets/public/images/general/logo-oceano-white.png' %}">
+               src="{% static 'public_interface/images/general/logo-white.png' %} ">
         </a>
       </div>
       <div class="col-md-4 col-8 text-end">
@@ -37,7 +27,7 @@
          width=""
          height=""
          alt=""
-         src="{% static 'website/assets/general/images/icons/whatsapp.png' %}">
+         src="{% static 'public_interface/images/icons/whatsapp.png' %}">
   </a>
   <!-- sidebar -->
   <div class="sidebar-area toggle_sidebar"></div>
@@ -99,14 +89,4 @@
     </div>
   </div>
   <!-- /sidebar -->
-</div>
-<div class="sticky-icon">
-  <a href="https://gourmex.ae/" target="_blank" class="Instagram">
-    <i>
-      <img width=""
-           height=""
-           alt=""
-           src="{% static 'public_interface/images/general/gl.png' %}">
-    </i>
-  </a>
 </div>
