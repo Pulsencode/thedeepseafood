@@ -80,30 +80,32 @@ class RecipeImage(TimestampBase):
         return self.recipe.title
 
 
-# class ProductDetails(models.Model):
-#     product = models.ForeignKey(Product,related_name='product_details',null=True,on_delete=models.CASCADE)
-#     category = models.ForeignKey(
-#         Category,
-#         null=True,
-#         blank=True,
-#         related_name="product_category",
-#         on_delete=models.CASCADE,
-#     )
-#     sub_categories = models.TextField(null=True)
-#     price = models.CharField(max_length=100, null=True, blank=True)
-#     product_code = models.CharField(max_length=100, null=True, blank=True)
-#     net_weight = models.CharField(max_length=100, null=True, blank=True)
-#     description = models.TextField(null=True, blank=True) # used as nutrition facts
-#     ingredients = models.TextField(null=True, blank=True)
-#     instructions = models.TextField(null=True, blank=True)
-#     storage_instructions = models.TextField(null=True, blank=True)
-#     shelf_life = models.TextField(null=True, blank=True)
-#     how_to_cook = models.TextField(null=True, blank=True)
-#     causion = models.TextField(null=True, blank=True) # Caution is used as the allergen Information
-#     grade = models.CharField(max_length=2000, null=True, blank=True)
-#     origin = models.CharField(max_length=100, null=True, blank=True)
-#     packing = models.CharField(max_length=2000, null=True, blank=True)
-#     status = models.BooleanField(null=False, blank=True, default=True)
+class ProductDetails(models.Model):
+    product = models.ForeignKey(
+        Product, related_name="product_details", null=True, on_delete=models.CASCADE
+    )
+    category = models.ForeignKey(
+        Category,
+        null=True,
+        blank=True,
+        related_name="product_category",
+        on_delete=models.CASCADE,
+    )
+    sub_categories = models.TextField(null=True)
+    price = models.CharField(max_length=100, null=True, blank=True)
+    product_code = models.CharField(max_length=100, null=True, blank=True)
+    net_weight = models.CharField(max_length=100, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)  # used as nutrition facts
+    ingredients = models.TextField(null=True, blank=True)
+    instructions = models.TextField(null=True, blank=True)
+    storage_instructions = models.TextField(null=True, blank=True)
+    shelf_life = models.TextField(null=True, blank=True)
+    how_to_cook = models.TextField(null=True, blank=True)
+    allergen_information = models.TextField(null=True, blank=True)
+    grade = models.CharField(max_length=2000, null=True, blank=True)
+    origin = models.CharField(max_length=100, null=True, blank=True)
+    packing = models.CharField(max_length=2000, null=True, blank=True)
+    status = models.BooleanField(null=False, blank=True, default=True)
 
-#     def __str__(self) -> str:
-#         return self.product.name
+    def __str__(self) -> str:
+        return self.product.name

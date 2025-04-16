@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from autoslug import AutoSlugField
 
@@ -59,24 +60,37 @@ class Brand(StatusTimestampBase):
         return self.name
 
 
-class SEO(StatusTimestampBase):
-    PAGE = (
-        ("/", "Home"),
-        ("/blog/", "Blog"),
-        ("/products/", "Products"),
-        ("/career/", "Career"),
-        ("/about/", "About"),
-        ("/news-room/", "NewsRoom"),
+class SEO(models.Model):
+    PAGE_NAME_CHOICES = [
+        ("hm", "Home"),
+        ("abt", "About"),
+        ("svc", "Services"),
+        ("prd", "Products"),
+        ("car", "Career"),
+        ("con", "Contact"),
+        ("blg", "Blogs"),
+        ("nws", "News"),
+    ]
+    page_name = models.CharField(max_length=20, choices=PAGE_NAME_CHOICES, unique=True)
+    meta_title = models.CharField(max_length=100)
+    meta_author = models.CharField(max_length=100)
+    meta_description = models.TextField()
+    meta_keywords = models.CharField(max_length=255, blank=True)
+    meta_json_ld = models.TextField(blank=True)
+    slug = AutoSlugField(
+        populate_from="page_name",
+        editable=True,
+        always_update=True,
+        null=True,
+        blank=True,
+        unique=True,
     )
-    page = models.CharField(max_length=150, choices=PAGE, null=True)
-    meta_title = models.TextField(null=True)
-    meta_tag = models.TextField(null=True)
-    meta_keyword = models.TextField(null=True)
-    canonical = models.TextField(null=True)
-    image_alt = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return self.page
+        return self.page_name
+
+    def get_absolute_url(self):
+        return reverse(self.page_name)
 
 
 class ManagementTeam(StatusTimestampBase):
@@ -126,7 +140,7 @@ class BlogDetails(StatusTimestampBase):
 
 class BlogImage(TimestampBase):
     blog = models.ForeignKey(BlogDetails, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="Blog")
+    image = models.ImageField(upload_to="blog")
 
 
 class NewsDetails(StatusTimestampBase):
@@ -197,109 +211,3 @@ class PromotionImage(TimestampBase):
         on_delete=models.CASCADE,
     )
     image = models.ImageField(upload_to="promotion", null=True)
-
-
-# class Seo(models.Model):
-#     page = models.TextField(null=True,blank=True)
-#     title_tag = models.TextField(null=True)
-#     metatag = models.TextField(null=True)
-#     keyword = models.TextField(null=True)
-#     canonical = models.TextField(null=True)
-#     status = models.BooleanField( default=True)
-#     created = models.DateTimeField(auto_now_add=True)
-#     updated = models.DateTimeField(auto_now=True)
-
-#     def __str__(self):
-#         return self.page
-# class CompanyTestimonial(models.Model):
-#     name = models.TextField( null=True)
-#     message = models.TextField(null=True)
-#     image = models.ImageField(upload_to='testimonialimg',null=True)
-#     image_alt = models.TextField(null=True,blank=True)
-#     status = models.BooleanField(null=False, blank=True, default=True)
-#     created = models.DateTimeField(auto_now_add=True)
-#     updated = models.DateTimeField(auto_now=True)
-
-# class Aboutus(models.Model):
-#     image = models.ImageField(upload_to='aboutusimg',null=True)
-#     title = models.TextField(null=True)
-
-#     status = models.BooleanField( default=True)
-#     created = models.DateTimeField(auto_now_add=True)
-#     updated = models.DateTimeField(auto_now=True)
-
-
-# class BlogDetails(models.Model):
-#     title = models.TextField(null=True)
-#     slug= AutoSlugField(populate_from='title', null=True, blank=True,unique=True,max_length=255)
-#     name = models.TextField(null=True)
-#     description = models.TextField(null=True)
-#     location = models.TextField(null=True)
-#     date = models.DateField(null=True)
-#     title_tag = models.TextField(null=True)
-#     metatag = models.TextField(null=True)
-#     keyword = models.TextField(null=True)
-#     canonical = models.TextField(null=True)
-#     image_alt = models.TextField(null=True,blank=True)
-
-#     status = models.BooleanField(null=False, blank=True, default=True)
-#     created = models.DateTimeField(auto_now_add=True)
-#     updated = models.DateTimeField(auto_now=True)
-
-#     def __str__(self):
-#         return self.title
-
-#     def save(self, *args, **kwargs):
-#         if self.title and (not self.slug or self.slug != self.title):
-#             self.slug = AutoSlugField(populate_from='title', unique=True).slugify(self.title)
-#         super(BlogDetails, self).save(*args, **kwargs)
-
-
-# class BlogImage(models.Model):
-#     blog = models.ForeignKey(
-#         BlogDetails,
-#         null=False,
-#         related_name="blog_image",
-#         on_delete=models.CASCADE,
-#     )
-#     image = models.ImageField(upload_to='blogimg',null=True)
-
-#     created = models.DateTimeField(auto_now_add=True)
-#     updated = models.DateTimeField(auto_now=True)
-
-
-# class Certification(models.Model):
-#     image = models.ImageField(upload_to='certificationimg',null=True)
-#     image_alt = models.TextField(null=True,blank=True)
-
-#     status = models.BooleanField( default=True)
-#     created = models.DateTimeField(auto_now_add=True)
-#     updated = models.DateTimeField(auto_now=True)
-
-
-# class Supermarkets(models.Model):
-#     image = models.ImageField(upload_to='supermarketimg',null=True)
-#     image_alt = models.TextField(null=True,blank=True)
-#     status = models.BooleanField(null=False, blank=True, default=True)
-#     created = models.DateTimeField(auto_now_add=True)
-#     updated = models.DateTimeField(auto_now=True)
-
-
-# class Aboutus(models.Model):
-#     image = models.ImageField(upload_to='aboutusimg',null=True)
-#     title = models.TextField(null=True)
-
-#     status = models.BooleanField( default=True)
-#     created = models.DateTimeField(auto_now_add=True)
-#     updated = models.DateTimeField(auto_now=True)
-
-
-# class ManagementTeam(models.Model):
-#     designation = models.TextField(null=True)
-#     name = models.TextField(null=True)
-#     sequence = models.PositiveIntegerField(null=True)
-#     image = models.ImageField(upload_to='teamimg',null=True)
-#     image_alt = models.TextField(null=True,blank=True)
-#     status = models.BooleanField(null=False, blank=True, default=True)
-#     created = models.DateTimeField(auto_now_add=True)
-#     updated = models.DateTimeField(auto_now=True)

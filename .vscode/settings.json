@@ -1,6 +1,7 @@
 {
     "djlint.showInstallError": false,
     "cSpell.words": [
+        "autoslug",
         "dotenv",
         "Kolkata",
         "levelname",
