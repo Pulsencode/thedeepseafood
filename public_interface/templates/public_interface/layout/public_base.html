@@ -16,21 +16,22 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <link rel="shortcut icon"
               type="image/ico"
-              href="{% static 'public_interface/images/favicon.ico' %}">
+              href="{% static 'public_interface/images/general/logo.png' %}">
         <meta property="og:image"
-              content="{% static 'public_interface/images/logo.png' %}">
+              content="{% static 'public_interface/images/general/logo-white.png' %}">
         <meta property="og:description"
               content="We supply our products domestically and internationally depending on market needs. We offer extensive seafood baskets that are live, chilled, fresh, and frozen.">
         <meta property="og:url" content="">
         <meta property="og:title"
               content="37 Years of excellence in quality & service.">
         <!-- seo section -->
-        <title>{{ data.title_tag }}</title>
         <link rel="canonical" href="{{ data.canonical }}" />
         <meta name="description" content="{{ data.metatag }}" />
         <meta name="keywords" content="{{ data.keyword }}">
         <!-- CSS Files -->
         {% include "public_interface/layout/links.html" %}
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <title>
             {% block title %}
             {% endblock title %}
@@ -44,7 +45,7 @@
         {% endblock content %}
         <!-- Footer -->
         {% include "public_interface/layout/footer.html" %}
-        <!-- JS Files -->
+        <!-- Scripts -->
         {% include "public_interface/layout/scripts.html" %}
         <!-- message -->
         {% for message in messages %}

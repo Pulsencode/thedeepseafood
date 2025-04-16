@@ -1,0 +1,22 @@
+.font-aref-ruqaa {
+    font-family: aref_ruqaaregular;}
+.font-aref-ruqaabold {
+    font-family: aref_ruqaabold;}
+
+
+
+@font-face {
+    font-family: 'aref_ruqaabold';
+    src: url('aref_ruqaa_bold-webfont.woff2') format('woff2'),
+         url('aref_ruqaa_bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'aref_ruqaaregular';
+    src: url('aref_ruqaa_regular-webfont.woff2') format('woff2'),
+         url('aref_ruqaa_regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

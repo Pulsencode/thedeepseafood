@@ -42,3 +42,20 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        const productItems = $(".mix");
+        const loadMoreButton = $("#loadMoreButton");
+        const totalProduct = loadMoreButton.data('total');
+        loadMoreButton.hide();
+    
+        const itemsToShow = 4;
+        console.log('**',productItems.length)
+        console.log('**',totalProduct)
+        if (totalProduct>4) {
+            loadMoreButton.show();
+        } else {
+            loadMoreButton.hide();
+        }
+    });
+</script>

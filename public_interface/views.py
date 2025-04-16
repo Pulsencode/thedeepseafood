@@ -41,7 +41,7 @@ def blog_details(request, slug):
 
 def distribution_channel(request):
     context = {"page_title": "Leading Wholesale Seafood Supplier in UAE"}
-    return render(request, "public_interface/distribution_channel.html", context)
+    return render(request, "public_interface/distribution.html", context)
 
 
 def news_room(request):
@@ -51,7 +51,7 @@ def news_room(request):
 
 def brand(request):
     context = {"page_title": "Explore oceano"}
-    return render(request, "public_interface/about.html", context)
+    return render(request, "public_interface/oceano.html", context)
 
 
 def terms_and_condition(request):

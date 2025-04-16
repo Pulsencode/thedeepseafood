@@ -1,6 +1,6 @@
-{% include "public_interface/layout/header.html" %}
+{% extends "public_interface/layout/public_base.html" %}
 {% load static %}
-<div class="main-div pt-0 header-bg-transparent header-logo-white">
+{% block content %}
   <!-- about -->
   <section id="about" class="pt-0">
     <div class="banner-cover">
@@ -214,3 +214,4 @@
   {% include "public_interface/components/about_locations.html" %}
 </section>
 {% include "public_interface/components/about_enquiry_form.html" %}
+{% endblock content %}

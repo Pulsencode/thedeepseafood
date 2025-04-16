@@ -31,7 +31,7 @@
                         <h2 class="font-lnterextrabold"
                             data-aos="fade-right"
                             data-aos-duration="1500">
-                          38 Years of
+                          39 Years of
                           excellence
                           in quality and service
                         </h2>
@@ -48,7 +48,7 @@
                         <h2 class="font-lnterextrabold"
                             data-aos="fade-right"
                             data-aos-duration="1500">
-                          38 Years of
+                          39 Years of
                           international
                           trade and global success
                         </h2>
@@ -56,7 +56,7 @@
                     </div>
                   </div>
                   <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover"
-                     href="">
+                     href="{% url "about" %}">
                     <span>Explore More</span>
                     <img width=""
                          height=""
@@ -80,15 +80,15 @@
                   <div class="line" data-aos="fade-up" data-aos-duration="500"></div>
                 </div>
               </div>
-              <div class="slick_slider_4 slick-overflow-initial"
+              <div class="slick_slider_4 slick-overflow-initial row"
                    data-aos="fade-up"
                    data-aos-duration="500">
-                <div class="item card-hover-zoom">
+                <div class="item col-md-3 card-hover-zoom">
                   <img width=""
                        height=""
                        alt=""
                        class="img-primary"
-                       src="{% static 'public_interface/images/local.jpg' %}">
+                       src="{% static 'public_interface/images/general/local.jpg' %}">
                   <div class="info">
                     <div class="title font-lnterbold">Local Catch</div>
                     <a class="btn bg-blue text-white rounded-25 btn-icon">
@@ -101,12 +101,12 @@
                   </div>
                   <a class="primary-btn" href="?type=Local Catch"></a>
                 </div>
-                <div class="item card-hover-zoom">
+                <div class="item col-md-3 card-hover-zoom">
                   <img width=""
                        height=""
                        alt=""
                        class="img-primary"
-                       src="{% static 'public_interface/images/impoted.jpg' %}">
+                       src="{% static 'public_interface/images/general/impoted.jpg' %}">
                   <div class="info">
                     <div class="title font-lnterbold">Imported</div>
                     <a class="btn bg-blue text-white rounded-25 btn-icon">
@@ -119,12 +119,12 @@
                   </div>
                   <a class="primary-btn" href="?type=Imported"></a>
                 </div>
-                <div class="item card-hover-zoom">
+                <div class="item col-md-3 card-hover-zoom">
                   <img width=""
                        height=""
                        alt=""
                        class="img-primary"
-                       src="{% static 'public_interface/images/value.jpg' %}">
+                       src="{% static 'public_interface/images/general/value.jpg' %}">
                   <div class="info">
                     <div class="title font-lnterbold">Value Added</div>
                     <a class="btn bg-blue text-white rounded-25 btn-icon">
@@ -183,19 +183,61 @@
                   type="video/mp4">
           <source src="{% static 'public_interface/images/index/indro/HEADER_VIDEO.webm' %}"
                   type="video/webm">
+          Your browser does not support the video tag.
         </video>
       </div>
-      <a class="box" href="#bott">
-        <span></span>
-        <span></span>
-        <span></span>
-      </a>
+      <a class="box" href="#bott"></a>
       <div class="cover-vertical"></div>
     </section>
     <!-- /indro -->
     {% include "public_interface/components/home_specialities.html" %}
+    <!-- innovated -->
+    <section id="innovated" class="pt-0-lg-all pb-0-lg-all">
+      <div class="wrapper pe-0-lg-all">
+        <div class="row align-items-center">
+          <div class="col-lg-4 col-12">
+            <div class="section-head" data-aos="fade-right" data-aos-duration="500">
+              <h1 class="text-white font-lnterbold">INNOVATIVE PRODUCTS AND SERVICES</h1>
+              <h5 class="text-white">
+                We use premium products and provide the best services in the industry. At all levels
+                of the supply chain and through the entire logistics process, we are dedicated to quality and safety and
+                follow best industry practices.
+                We closely work with our customer's preferences and needs to improve our services.
+              </h5>
+              <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover"
+                 href="">
+                <span>Read More</span>
+                <img width=""
+                     height=""
+                     alt=""
+                     src="{% static 'public_interface/images/icons/right-arrow.png' %}">
+              </a>
+            </div>
+          </div>
+          <div class="offset-lg-2 col-lg-6 col-12"
+               data-aos="fade-left"
+               data-aos-duration="500">
+            <div class="card-thumbnail">
+              <img width=""
+                   height=""
+                   alt=""
+                   class="img-primary"
+                   src="{% static 'public_interface/images/general/thumb.png' %}">
+              <button class="btn-play show_file_btn"
+                      type="button"
+                      data-file-src="https://www.youtube.com/embed/VQuifNvwfoA">
+                <i class="fa fa-play" aria-hidden="true"></i>
+              </button>
+              <div class="caption">
+                <div class="title font-lntermedium">Watch us.. Know us..</div>
+                <div class="dec">A video showcasing our products and services</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     {% include "public_interface/components/why_choose_us.html" %}
-    <!-- /years_36 -->
     <!-- brands_we_deal -->
     {% include "public_interface/components/home_brands.html" %}
     {% include "public_interface/components/home_export_market.html" %}
@@ -226,60 +268,6 @@
         <a class="text"
            href="https://www.linkedin.com/company/thedeepseafood"
            target="_blank">Linkedin</a>
-      </div>
-      <div class="button">
-        <span class="icon">
-          <i>
-            <img width=""
-                 height=""
-                 alt=""
-                 src="{% static 'public_interface/images/general/gl.png' %}"
-                 style="width:20px;
-                        height:20px">
-          </i>
-        </span>
-        <a class="text" href="https://gourmex.ae/" target="_blank">Gourmex</a>
-      </div>
-    </div>
-  </div>
-  <!-- modal_show_file -->
-  <div class="modal fade modal-show-file"
-       id="modal_show_file"
-       data-bs-backdrop="static"
-       data-bs-keyboard="false"
-       tabindex="-1"
-       aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-body">
-          <button type="button"
-                  class="btn-close remove_src"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"></button>
-          <embed id="file_src" class="h-80-vh w-100">
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- modal_show_file -->
-  <!-- modal_show_file_2 -->
-  <div class="modal fade modal-show-file"
-       id="modal_show_file_2"
-       data-bs-backdrop="static"
-       data-bs-keyboard="false"
-       tabindex="-1"
-       aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-body">
-          <button type="button"
-                  class="btn-close remove_src_2"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"></button>
-          <video controls autoplay loop id="file_src_2">
-            <source class="h-100-vh w-100" type="video/mp4">
-          </video>
-        </div>
       </div>
     </div>
   </div>
@@ -355,32 +343,6 @@
       alert("Opening video: " + videoSrc);
     }
     
-    $(document).ready(function () {
-      $("#why-slider").slick({
-        dots: true, // Add dots navigation
-        infinite: true,
-        speed: 500,
-        slidesToShow: 3,
-        autoplay: true,
-        autoplaySpeed: 3000,
-        slidesToScroll: 1,
-        responsive: [
-          {
-            breakpoint: 768,
-            settings: {
-              slidesToShow: 2,
-              slidesToScroll: 1,
-            },
-          },
-          {
-            breakpoint: 576,
-            settings: {
-              slidesToShow: 1,
-              slidesToScroll: 1,
-            },
-          },
-        ],
-      });
-    });
+    
   </script>
 {% endblock content %}

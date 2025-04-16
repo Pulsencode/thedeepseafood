@@ -1,0 +1,260 @@
+/* dataTable */
+/* dataTables_wrapper */
+.dataTables_wrapper {
+  padding-bottom: 20px;
+}
+
+/* dataTables_filter */
+.data-table-search-hide .dataTables_wrapper .dataTables_filter {
+  display: none;
+}
+
+/* table */
+table.dataTable {
+  padding-bottom: 10px;
+}
+table.dataTable > :not(:first-child) {
+  border-bottom: 1px solid #dee2e5;
+}
+table.dataTable thead th,
+table.dataTable thead td {
+  border-bottom: 1px solid #dee2e5;
+}
+table.dataTable.no-footer {
+  border: none;
+}
+
+/* parent */
+table.dataTable tbody tr.parent {
+  position: relative;
+}
+table.dataTable tbody tr.parent td:first-child {
+  border-left: 7px solid #e33c39;
+}
+table.dataTable tbody tr.parent td {
+  border-bottom-width: 0;
+  background-color: #f9f9f9;
+}
+
+/* child */
+table.dataTable > tbody > tr td.child {
+  background-color: #f9f9f9;
+  text-align: left;
+  padding-left: 60px;
+}
+
+/* dtr-title */
+table.dataTable > tbody > tr.child span.dtr-title {
+  display: initial;
+}
+table.dataTable > tbody > tr.child span.dtr-title::after {
+  content: ":";
+  margin-left: 5px;
+}
+
+/* dtr-details */
+table.dataTable > tbody > tr.child ul.dtr-details > li {
+  border-bottom: none;
+}
+
+/* collapsed */
+table.dataTable.dtr-inline.collapsed > thead > tr[role="row"] > th:first-child {
+  padding-left: 65px;
+}
+table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child {
+  padding-left: 55px;
+}
+table.dataTable.dtr-inline.collapsed
+  > tbody
+  > tr[role="row"]
+  > td:first-child:before,
+table.dataTable.dtr-inline.collapsed
+  > tbody
+  > tr.parent
+  > td:first-child:before {
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  left: 15px;
+  border: none;
+  box-shadow: none;
+  font-family: FontAwesome;
+  background-color: #a4a4a4;
+}
+table.dataTable.dtr-inline.collapsed
+  > tbody
+  > tr[role="row"]
+  > td:first-child:before {
+  content: "\f107";
+}
+table.dataTable.dtr-inline.collapsed
+  > tbody
+  > tr.parent
+  > td:first-child:before {
+  content: "\f106";
+  background-color: #3184d8;
+  left: 8px;
+}
+
+/* dataTables_paginate */
+.dataTables_wrapper .dataTables_paginate {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+  background-color: transparent;
+  min-width: auto;
+  font-size: 12px;
+  color: #515151 !important;
+  border-radius: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 0 6px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background: #515151 !important;
+  color: #fff !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.next,
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous {
+  width: 20px;
+  height: 20px;
+  line-height: 17px;
+  text-align: center;
+  background-color: #eaeaea;
+  font-size: 20px;
+  border-radius: 50%;
+  color: #515151;
+  padding: 0;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.next:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous:hover {
+  background-color: #eaeaea;
+  color: #515151;
+}
+
+/* dataTables_info */
+.dataTables_wrapper .dataTables_info {
+  font-size: 11px;
+}
+
+/* .dataTables_wrapper .dataTables_length */
+.dataTables_wrapper .dataTables_length {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 75px;
+  height: 31px;
+  white-space: nowrap;
+  overflow: hidden;
+  color: transparent;
+  background-color: #ededed;
+  border-radius: 5px;
+}
+.dataTables_wrapper .dataTables_length label::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 3px;
+  width: 21px;
+  height: 25px;
+  background-image: url("./images/length-icon.png");
+  background-repeat: no-repeat;
+  background-position: left;
+}
+.dataTables_wrapper .dataTables_length select {
+  font-size: 12px;
+  padding: 4px 5px;
+  color: #4d4f50;
+  outline: none;
+  width: 50px;
+  position: absolute;
+  left: 24px;
+  top: 4px;
+  border: none;
+  background: transparent;
+}
+
+/* dataTables_filter */
+.dataTables_wrapper .dataTables_filter {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 15px;
+  float: left;
+}
+.dataTables_wrapper .dataTables_filter::after {
+  content: "\f002";
+  font-family: FontAwesome;
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  color: #b7b7b7;
+  font-size: 19px;
+}
+.dataTables_wrapper .dataTables_filter label {
+  display: block;
+}
+.dataTables_wrapper .dataTables_filter input {
+  font-size: 13px;
+  padding: 6px 35px 6px 15px;
+  display: block;
+  width: 100%;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.dataTables_wrapper .dataTables_filter input:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+}
+
+/* dt-buttons */
+.dataTables_wrapper .dt-buttons {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+  float: right;
+}
+.dataTables_wrapper .dt-buttons button {
+  position: relative;
+  flex: 1 1 auto;
+  background-color: #f4f4f4;
+  color: #7c7ba1;
+  min-width: 50px;
+  border: none;
+  padding: 5px;
+  font-size: 11px;
+  margin-left: 0;
+  border-radius: 5px;
+  font-family: airbnb_cereal_appmedium;
+}
+.dataTables_wrapper .dt-buttons button:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.dataTables_wrapper .dt-buttons button:nth-child(n + 3) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.dataTables_wrapper .dt-buttons button:nth-of-type(2) {
+  border: 1px solid #ccc;
+  border-width: 0 1px;
+  border-radius: 0;
+}
