@@ -1,7 +1,6 @@
-# from django.urls import path
-
-# from public_interface.views import home_page
+from django.urls import path
+from administration import views
 
 urlpatterns = [
-    # path("", home_page, name="home_page"),
+    path("", views.LoginView.as_view(), name="login_view"),
 ]

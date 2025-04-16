@@ -143,30 +143,29 @@ class BlogImage(TimestampBase):
     image = models.ImageField(upload_to="blog")
 
 
-class NewsDetails(StatusTimestampBase):
-    title = models.TextField(null=True)
-    sequence = models.PositiveIntegerField(null=True)
-    name = models.TextField(null=True)
-    type = models.TextField(null=True)
-    description = models.TextField(null=True)
-    location = models.TextField(null=True)
-    date = models.DateField(null=True)
+class NewsDetails(StatusTimestampBase):  # assuming StatusTimestampBase is already optimized
+    title = models.CharField(max_length=255, null=True, blank=True)
+    sequence = models.PositiveIntegerField(null=True, blank=True)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    type = models.CharField(max_length=100, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    location = models.CharField(max_length=255, null=True, blank=True)
+    date = models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return self.title or "Untitled News"
 
 
 class NewsGalleryImage(models.Model):
     news = models.ForeignKey(
         NewsDetails,
-        null=False,
-        related_name="news_image",
+        related_name="news_images",
         on_delete=models.CASCADE,
     )
-    image = models.ImageField(upload_to="news", null=True)
+    image = models.ImageField(upload_to="news/", null=True, blank=True)
 
     def __str__(self):
-        return f"{self.news.title} - Slider {self.pk}"
+        return f"{self.news.title or 'Untitled'} - Image {self.pk}"
 
 
 class EventGallery(StatusTimestampBase):
