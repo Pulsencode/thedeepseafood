@@ -3,15 +3,29 @@ from django.db import models
 from autoslug import AutoSlugField
 
 
-class StatusTimestampBase(models.Model):
+class TimestampBase(models.Model):
+    """
+        Common base model for items with  timestamps.
+    .
+    """
+
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class StatusTimestampBase(TimestampBase):
     """
         Common base model for items with status and timestamps.
     .
     """
 
     status = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
 
 
 class Certification(StatusTimestampBase):
@@ -75,7 +89,7 @@ class ManagementTeam(StatusTimestampBase):
         return self.name
 
 
-class HistoryDetails(models.Model):
+class HistoryDetails(StatusTimestampBase):
     year = models.TextField(null=True)
     title = models.TextField(null=True)
     description = models.TextField(null=True)
@@ -85,21 +99,37 @@ class HistoryDetails(models.Model):
         return self.year
 
 
-class BlogDetails(models.Model):
-    title = models.TextField(null=True)
-    slug = AutoSlugField(
-        populate_from="title", null=True, blank=True, unique=True, max_length=255
+class HistoryImage(TimestampBase):
+    history = models.ForeignKey(
+        HistoryDetails,
+        null=False,
+        related_name="history_image",
+        on_delete=models.CASCADE,
     )
+    image = models.ImageField(upload_to="history", null=True)
+    is_active = models.BooleanField(null=False, blank=True, default=True)
+
+
+class BlogDetails(StatusTimestampBase):
+    title = models.TextField(null=True)
     name = models.TextField(null=True)
     description = models.TextField(null=True)
     location = models.TextField(null=True)
     date = models.DateField(null=True)
+    slug = AutoSlugField(
+        populate_from="title", null=True, blank=True, unique=True, max_length=255
+    )
 
     def __str__(self):
         return self.title
 
 
-class NewsDetails(models.Model):
+class BlogImage(TimestampBase):
+    blog = models.ForeignKey(BlogDetails, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="Blog")
+
+
+class NewsDetails(StatusTimestampBase):
     title = models.TextField(null=True)
     sequence = models.PositiveIntegerField(null=True)
     name = models.TextField(null=True)
@@ -110,6 +140,63 @@ class NewsDetails(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class NewsGalleryImage(models.Model):
+    news = models.ForeignKey(
+        NewsDetails,
+        null=False,
+        related_name="news_image",
+        on_delete=models.CASCADE,
+    )
+    image = models.ImageField(upload_to="news", null=True)
+
+    def __str__(self):
+        return f"{self.news.title} - Slider {self.pk}"
+
+
+class EventGallery(StatusTimestampBase):
+    title = models.TextField(null=True)
+    sequence = models.PositiveIntegerField(null=True)
+    name = models.TextField(null=True)
+    description = models.TextField(null=True)
+    location = models.TextField(null=True)
+    date = models.DateField(null=True)
+
+    def __str__(self):
+        return self.title
+
+
+class EventGalleryImage(TimestampBase):
+    event = models.ForeignKey(
+        EventGallery,
+        null=False,
+        related_name="gallery_image",
+        on_delete=models.CASCADE,
+    )
+    image = models.ImageField(upload_to="event_gallery", null=True)
+    is_active = models.BooleanField(null=False, blank=True, default=True)
+
+    def __str__(self):
+        return f"{self.event.title} - Slider {self.pk}"
+
+
+class PromotionDetails(StatusTimestampBase):
+    title = models.TextField(null=True)
+    name = models.TextField(null=True)
+    description = models.TextField(null=True)
+    location = models.TextField(null=True)
+    date = models.DateField(null=True)
+
+
+class PromotionImage(TimestampBase):
+    promotion = models.ForeignKey(
+        PromotionDetails,
+        null=False,
+        related_name="promo_image",
+        on_delete=models.CASCADE,
+    )
+    image = models.ImageField(upload_to="promotion", null=True)
 
 
 # class Seo(models.Model):
