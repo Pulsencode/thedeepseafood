@@ -1,7 +1,9 @@
 from django.db import models
 
+from company.models import StatusTimestampBase
 
-class JobPosting(models.Model):
+
+class JobPosting(StatusTimestampBase):
     category = models.TextField(null=True)  # IT ,marketing
     status = models.BooleanField(null=False, blank=True, default=True)
     title = models.TextField(null=True)
@@ -9,12 +11,9 @@ class JobPosting(models.Model):
     description = models.TextField(null=True)
     job_type = models.TextField(null=True)  # Hybrid,full time
     salary = models.TextField(null=True)
-    status = models.BooleanField(null=False, blank=True, default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
 
-class ApplicationDetails(models.Model):
+class ApplicationDetails(StatusTimestampBase):
     NOTICE_PERIOD_CHOICES = [
         ("immediate", "Immediate Join"),
         ("2_weeks", "2 Weeks"),
@@ -37,7 +36,3 @@ class ApplicationDetails(models.Model):
     message = models.TextField(null=True, blank=True)
     upload_cv = models.FileField(upload_to="cv", null=True)
     cover_letter = models.FileField(upload_to="cover_letter", null=True)
-
-    status = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
