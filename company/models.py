@@ -36,10 +36,16 @@ class Certification(StatusTimestampBase):
 class Supermarkets(StatusTimestampBase):
     images = models.ImageField(upload_to="supermarkets", null=True)
 
+    class Meta:
+        verbose_name_plural = "Supermarkets"
+
 
 class AboutUs(StatusTimestampBase):
     image = models.ImageField(upload_to="about_us", null=True)
     title = models.TextField(null=True)
+
+    class Meta:
+        verbose_name_plural = "About Us"
 
     def __str__(self) -> str:
         return self.title
@@ -134,16 +140,21 @@ class BlogDetails(StatusTimestampBase):
         populate_from="title", null=True, blank=True, unique=True, max_length=255
     )
 
+    class Meta:
+        verbose_name_plural = "Blog Details"
+
     def __str__(self):
         return self.title
 
 
 class BlogImage(TimestampBase):
-    blog = models.ForeignKey(BlogDetails, on_delete=models.CASCADE)
+    blog = models.ForeignKey(BlogDetails, on_delete=models.CASCADE,related_name="blog_image")
     image = models.ImageField(upload_to="blog")
 
 
-class NewsDetails(StatusTimestampBase):  # assuming StatusTimestampBase is already optimized
+class NewsDetails(
+    StatusTimestampBase
+):  # assuming StatusTimestampBase is already optimized
     title = models.CharField(max_length=255, null=True, blank=True)
     sequence = models.PositiveIntegerField(null=True, blank=True)
     name = models.CharField(max_length=255, null=True, blank=True)
@@ -154,6 +165,9 @@ class NewsDetails(StatusTimestampBase):  # assuming StatusTimestampBase is alrea
 
     def __str__(self):
         return self.title or "Untitled News"
+
+    class Meta:
+        verbose_name_plural = "News Details"
 
 
 class NewsGalleryImage(models.Model):
@@ -201,12 +215,15 @@ class PromotionDetails(StatusTimestampBase):
     location = models.TextField(null=True)
     date = models.DateField(null=True)
 
+    class Meta:
+        verbose_name_plural = "Promotion Details"
+
 
 class PromotionImage(TimestampBase):
     promotion = models.ForeignKey(
         PromotionDetails,
         null=False,
-        related_name="promo_image",
+        related_name="promotion",
         on_delete=models.CASCADE,
     )
     image = models.ImageField(upload_to="promotion", null=True)

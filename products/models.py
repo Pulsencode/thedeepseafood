@@ -29,9 +29,9 @@ class Product(TimestampBase):
         on_delete=models.CASCADE,
     )
     sequence = models.PositiveIntegerField(null=True)
-    type = models.TextField(null=True)
+    type = models.CharField(max_length=200, null=True)
     name = models.CharField(max_length=100, null=False, blank=False)
-    image = models.FileField(upload_to="product", null=True)
+    image = models.ImageField(upload_to="product", null=True)
     homepage = models.BooleanField(null=False, blank=True, default=False)
     slug = AutoSlugField(
         populate_from="name",
