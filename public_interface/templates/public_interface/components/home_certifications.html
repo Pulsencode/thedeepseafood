@@ -16,23 +16,9 @@
                         <div class="wow fadeInUp wow_item">
                             <img width=""
                                  height=""
-                                 alt=""
                                  class="img-primary"
                                  src="{{ c.image.url }}"
                                  alt="{{ c.image_alt }}">
-                        </div>
-                    </div>
-                {% empty %}
-                    <div class="item">
-                        <div class="wow fadeInUp wow_item">
-                            {% for i in "12345"|make_list %}
-                                <img width=""
-                                     height=""
-                                     alt=""
-                                     class="img-primary"
-                                     src="{% static 'public_interface/images/index/satisfaction/1.png' %}"
-                                     alt="Certification Image">
-                            {% endfor %}
                         </div>
                     </div>
                 {% endfor %}

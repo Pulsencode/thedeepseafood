@@ -69,6 +69,7 @@ def product_details(request, slug):
 
 
 def career(request):
+
     context = {
         "page_title": "Careers at The Deep Seafood Company",
         "all_jobs": JobPosting.objects.filter(status=True),
@@ -89,6 +90,10 @@ def apply_job(request):
                 for errors in error_list:
                     messages.error(request, errors)
             return redirect("career")
+
+    context = {"page_title": "Careers at The Deep Seafood Company"}
+    return render(request, "public_interface/career.html", context)
+
 
 
 def contact(request):

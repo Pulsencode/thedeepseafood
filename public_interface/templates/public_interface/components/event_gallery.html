@@ -16,7 +16,9 @@
             <div class="slick_slider_1 slick-dots-blue">
               {% for i in g.gallery_image.all %}
                 <div class="item">
-                  <img width="" height="" alt="" class="img-fluid"
+                  <img width=""
+                       height=""
+                       class="img-fluid"
                        src="{{ i.image.url }}"
                        alt="{{ g.image_alt }}-{{ forloop.counter }}">
                 </div>
@@ -42,7 +44,10 @@
             <div class="slick_slider_1 slick-dots-blue">
               {% for i in g.gallery_image.all %}
                 <div class="item">
-                  <img width="" height="" alt="" class="img-fluid"
+                  <img width=""
+                       height=""
+                       alt=""
+                       class="img-fluid"
                        src="{{ i.image.url }}"
                        alt="{{ g.image_alt }}-{{ forloop.counter }}">
                 </div>
@@ -54,12 +59,6 @@
     </div>
   {% endif %}
 {% endfor %}
-<!-- <div class="col-12 text-center mt-40"> -->
-<!-- <a href="javascript:void(0)" class="btn bg-white text-blue rounded-25 btn-icon btn-zoom-hover btn-more" id="loadMore"  data-total="{{total_events}}" data-limit="4" onclick="loadmoreEvents(this)"> -->
-<!-- <span>Load More</span> -->
-<!-- <img width="" height="" alt="" src="{% static 'public_interface/images/icons/right-arrow-blue.png' %}"> -->
-<!-- </a> -->
-<!-- </div> -->
 <script>
 	$('.slick_slider_1').slick({
   slidesToShow: 1,

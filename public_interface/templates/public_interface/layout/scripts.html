@@ -1,10 +1,23 @@
 {% load static %}
-<!-- Bootstrap JS -->
+
+<!-- 1) jQuery (needed by Bootstrap, Slick, etc.) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- 2) Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- 3) Slick Slider JS -->
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <!-- Plugins JS -->
 <script src="{% static 'public_interface/modules/slick-slider/slick.min.js' %}"></script>
 <script src="{% static 'public_interface/modules/slick-slider/custom.js' %}"></script>
+<!-- 4) Slick‑Animation (after slick.js) -->
+<script src="https://alexandrebuffet.fr/codepen/slider/slick-animation.min.js"></script>
+
+<!-- 5) AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<!-- 6) Your other plugins -->
 <script src="{% static 'public_interface/modules/chosen-select/chosen.jquery.js' %}"></script>
 <script src="{% static 'public_interface/modules/aos/aos.js' %}"></script>
 <script src="{% static 'public_interface/modules/datepicker/jquery-ui.js' %}"></script>
@@ -12,11 +25,16 @@
 <script src="{% static 'public_interface/modules/gsap/gsap.min.js' %}"></script>
 <script src="{% static 'public_interface/modules/gsap/ScrollTrigger.min.js' %}"></script>
 
-<!-- Initialize AOS -->
+<!-- 7) Initialize AOS & any other global inits -->
 <script>
-  AOS.init({ duration: 1000, once: true });
+  AOS.init({
+      duration: 800,
+      once: true,
+      offset: 120,
+      disable: window.innerWidth < 768
+    });
 </script>
 
-<!-- Custom JS -->
+<!-- 8) Your custom JS -->
 <script src="{% static 'public_interface/js/custom.js' %}"></script>
 <script src="{% static 'public_interface/js/bootstrap-select.min.js' %}"></script>

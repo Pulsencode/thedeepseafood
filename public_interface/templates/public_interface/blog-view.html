@@ -1,5 +1,6 @@
-{% include 'public_interface/layout/header.html' %}
+{% extends 'public_interface/layout/public_base.html' %}
 {% load static %}
+{% block content %}
 <div class="main-div pt-0 header-bg-transparent header-logo-white">
   <!-- blog-view -->
   <section id="blog-view" class="pt-0 pb-0 view-items-page">
@@ -42,10 +43,10 @@
             <div class="right-item">
               <h4 class="font-lnterbold text-blue">RECENT BLOGS</h4>
               {% for i in blogs %}
-                <a href="{% url 'blog_details' i.slug %}" style="text-decoration: none;">
+                <a href="{% url 'blog_details' i.slug %}" class="text-decoration-none">
                   <div class="item border-b wow fadeInUp wow_item blog-items">
                     <div class="row align-items-center">
-                      <p style="display: none;">{{ i.title }}</p>
+                      <p>{{ i.title }}</p>
                       <div class="col-3">
                         <img width=""
                              height=""
@@ -99,4 +100,4 @@
   </section>
   <!-- /blog-view -->
 </div>
-{% include 'public_interface/layout/footer.html' %}
+{% endblock content %}
