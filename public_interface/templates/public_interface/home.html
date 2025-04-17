@@ -31,7 +31,7 @@
                         <h2 class="font-lnterextrabold"
                             data-aos="fade-right"
                             data-aos-duration="1500">
-                          39 Years of
+                          38 Years of
                           excellence
                           in quality and service
                         </h2>
@@ -48,7 +48,7 @@
                         <h2 class="font-lnterextrabold"
                             data-aos="fade-right"
                             data-aos-duration="1500">
-                          39 Years of
+                          38 Years of
                           international
                           trade and global success
                         </h2>
@@ -69,21 +69,20 @@
           </div>
           <div class="col-lg-7 position-relative">
             <div class="slider overflow-hidden">
-              <div class="head">
-                <div class="title font-lnterbold"
-                     data-aos="fade-up"
-                     data-aos-duration="500">
-                  Catering your seafood needs
-                  from the world
-                </div>
-                <div class="d-flex">
-                  <div class="line" data-aos="fade-up" data-aos-duration="500"></div>
-                </div>
-              </div>
-              <div class="slick_slider_4 slick-overflow-initial row"
+              <!-- Slick Slider Container -->
+              <div class="slick_slider_4 slick-overflow-initial"
                    data-aos="fade-up"
                    data-aos-duration="500">
-                <div class="item col-md-3 card-hover-zoom">
+                <div class="head w-100">
+                  <div class="title font-lnterbold"
+                       data-aos="fade-up"
+                       data-aos-duration="500">Catering your seafood needs from the world</div>
+                  <div class="d-flex w-50 d-md-block d-none">
+                    <div class="line" data-aos="fade-up" data-aos-duration="500"></div>
+                  </div>
+                </div>
+                <!-- Slide 1 -->
+                <div class="item card-hover-zoom">
                   <img width=""
                        height=""
                        alt=""
@@ -91,7 +90,7 @@
                        src="{% static 'public_interface/images/general/local.jpg' %}">
                   <div class="info">
                     <div class="title font-lnterbold">Local Catch</div>
-                    <a class="btn bg-blue text-white rounded-25 btn-icon">
+                    <a class="btn bg-blue text-white rounded-25 btn-icon w-auto">
                       <span>Know More</span>
                       <img width=""
                            height=""
@@ -101,7 +100,8 @@
                   </div>
                   <a class="primary-btn" href="?type=Local Catch"></a>
                 </div>
-                <div class="item col-md-3 card-hover-zoom">
+                <!-- Slide 1 -->
+                <div class="item card-hover-zoom">
                   <img width=""
                        height=""
                        alt=""
@@ -119,7 +119,7 @@
                   </div>
                   <a class="primary-btn" href="?type=Imported"></a>
                 </div>
-                <div class="item col-md-3 card-hover-zoom">
+                <div class="item card-hover-zoom">
                   <img width=""
                        height=""
                        alt=""
@@ -342,7 +342,5 @@
       // For example, use a library like Bootstrap modal or create your own modal
       alert("Opening video: " + videoSrc);
     }
-    
-    
   </script>
 {% endblock content %}

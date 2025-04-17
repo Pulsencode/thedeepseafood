@@ -1,0 +1,112 @@
+{% extends "public_interface/layout/public_base.html" %}
+{% load static %}
+{% block content %}
+  <div class="main-div pt-0 header-bg-transparent header-logo-white">
+    <section id="news-view" class="pt-0 pb-0 view-items-page">
+      <div class="banner-cover">
+        <img width=""
+             height=""
+             alt=""
+             class="img-primary"
+             src="{% static 'public_interface/images/news-room/banner-cover/news-room-banner.jpg' %}">
+        <div class="caption w-100 text-center">
+          <div class="wrapper">
+            <div class="row text-white">
+              <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
+                <h3 class="font-lnterbold">NEWS</h3>
+                <h5 class="font-lnterbold">
+                  <a href="{% url "home" %}">Home</a>
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  <a href="#">Room News</a>
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  <a>{{ data.title }}</a>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pt-70 pb-70">
+        <div class="wrapper">
+          <div class="row">
+            <div class="col-lg-3 col-md-3 order-2-zero-sm mt-50-zero-sm">
+              <div class="search-form">
+                <form>
+                  <input name="news" hidden value="#">
+                  <input class="form-control bg-x-light-blue"
+                         name="search"
+                         type="search"
+                         placeholder="Search..."
+                         maxlength="200"
+                         id="myInput">
+                  <button class="btn bg-blue text-white">Search</button>
+                </form>
+              </div>
+              <div class="right-item">
+                <h4 class="font-lnterbold text-blue">RECENT NEWS</h4>
+                {% for s in news %}
+                  <a href="{% url 'news_details' s.id %}" class="text-decoration-none">
+                    <div class="item border-b wow fadeInUp wow_item news-item">
+                      <div class="row align-items-center">
+                        <p>{{ s.title }}</p>
+                        <div class="col-3">
+                          <img width=""
+                               height=""
+                               alt=""
+                               class="img-fluid"
+                               src="{% if s.news_image %}{{ s.news_image.first.image.url }}{% endif %}"
+                               alt="{{ s.image_alt }}">
+                        </div>
+                        <div class="col-9 ps-0">
+                          <div class="tilte">{{ s.description|truncatechars:50 }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="col-lg-8 offset-lg-1 col-md-9 order-1-zero-sm">
+              <div class="view-section" data-aos="fade-up" data-aos-duration="2000">
+                <div class="title font-lnterbold">{{ data.title }}</div>
+                {% if data.date %}
+                  <div class="div-col">
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    <span>{{ data.date|date:'d/m/Y' }}</span>
+                  </div>
+                {% endif %}
+                {% if data.name %}
+                  <div class="div-col">
+                    <i class="fa fa-user-o" aria-hidden="true"></i>
+                    <span>{{ data.name }}</span>
+                  </div>
+                {% endif %}
+                {% if data.location %}
+                  <div class="div-col">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <span>{{ data.location }}</span>
+                  </div>
+                {% endif %}
+                <div class="text-center pb-20 mt-30">
+                  <div class="slick_slider_1 slick-dots-white mb-0">
+                    {% for i in data.news_image.all %}
+                      <div class="item">
+                        <img width=""
+                             height=""
+                             alt=""
+                             class="img-fluid news-img11"
+                             src="{{ i.image.url }}"
+                             alt="{{ data.image_alt }}">
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                <h5>{{ data.description }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock content %}
