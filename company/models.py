@@ -148,7 +148,9 @@ class BlogDetails(StatusTimestampBase):
 
 
 class BlogImage(TimestampBase):
-    blog = models.ForeignKey(BlogDetails, on_delete=models.CASCADE,related_name="blog_image")
+    blog = models.ForeignKey(
+        BlogDetails, on_delete=models.CASCADE, related_name="blog_image"
+    )
     image = models.ImageField(upload_to="blog")
 
 
