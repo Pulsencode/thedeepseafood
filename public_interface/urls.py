@@ -9,11 +9,7 @@ urlpatterns = [
     path("career/apply-job", views.apply_job, name="apply_job"),
     path("product/", views.product, name="product"),
     path("product/detail/<slug:slug>", views.product_details, name="product_details"),
-
     path("brand/oceano/", views.brand, name="brand"),
-
-
-
     path("blogs/", views.blogs, name="blogs"),
     path("blog/details/<slug:slug>", views.blogs, name="blogs"),
     path("contact/", views.contact, name="contact"),
