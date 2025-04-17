@@ -7,7 +7,7 @@
           <img class="logo white_logo"
                width=""
                height=""
-               alt=""
+               alt="logo"
                src="{% static 'public_interface/images/general/logo-white.png' %} ">
         </a>
       </div>
@@ -15,30 +15,36 @@
         <div class="d-grid gap-2 d-flex justify-content-end align-items-center">
           <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover me-2 px-3 py-1 fs-12 cntact-header"
              href="{% url 'contact' %}">Contact Us</a>
-          <button class="toggle-sidebar toggle_sidebar" type="button"></button>
+          <button id="mainSidebarToggle" class="hamburger-btn" type="button">
+            <span class="empty"></span>
+            <span class="empty"></span>
+            <span class="empty"></span>
+          </button>
         </div>
       </div>
     </div>
   </header>
+  <!-- WhatsApp Sticky -->
   <a target="_blank"
      href="https://api.whatsapp.com/send?phone=+971564182895&text=Hello,%20Deep%20Seafood"
-     class="whatsapp_sticky">
+     class="whatsapp-sticky">
     <img class="logo"
          width=""
          height=""
-         alt=""
+         alt="whatsapp-logo"
          src="{% static 'public_interface/images/icons/whatsapp.png' %}">
   </a>
-  <!-- sidebar -->
-  <div class="sidebar-area toggle_sidebar"></div>
-  <div class="sidebar">
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay"></div>
+  <!-- Main Sidebar -->
+  <aside class="main-sidebar">
     <div class="text-end">
-      <button class="toggle-sidebar toggle_sidebar btn-zoom-hover">
+      <button id="mainSidebarClose" class="sidebar-close-btn">
         <i class="fa fa-times-circle" aria-hidden="true"></i>
       </button>
     </div>
     <div class="inner">
-      <ul class="nav-list font-lntermedium">
+      <ul class="sidebar-nav-list font-lntermedium">
         <div class="row align-items-center">
           <div class="col-sm-5">
             <li>
@@ -60,7 +66,7 @@
               <ul class="dropdown-menu dropdown-menu-end oceano-navbar"
                   aria-labelledby="navbarDropdown">
                 <li class="sub-mm">
-                  <a class="dropdown-item" href="{% url "brand" %}">Oceano</a>
+                  <a class="dropdown-item" href="{% url "oceano" %}">Oceano</a>
                 </li>
               </ul>
             </li>
@@ -87,6 +93,5 @@
         </div>
       </ul>
     </div>
-  </div>
-  <!-- /sidebar -->
+  </aside>
 </div>

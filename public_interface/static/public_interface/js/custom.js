@@ -17,6 +17,28 @@ $(document).ready(function () {
   }
 });
 
+// sidebar
+$(document).ready(function() {
+  // Toggle sidebar
+  $('#mainSidebarToggle').click(function(e) {
+    e.preventDefault();
+    $('.main-sidebar, .sidebar-overlay').addClass('active');
+  });
+
+  // Close sidebar
+  $('#mainSidebarClose, .sidebar-overlay').click(function(e) {
+    e.preventDefault();
+    $('.main-sidebar, .sidebar-overlay').removeClass('active');
+  });
+
+  // Close on ESC key
+  $(document).keyup(function(e) {
+    if (e.keyCode === 27) {
+      $('.main-sidebar, .sidebar-overlay').removeClass('active');
+    }
+  });
+});
+
 // date_pick  
 $(document).ready(function () {
   $(".date_pick").datepicker({
@@ -120,3 +142,34 @@ function get_product_list(src) {
     },
   });
 }
+
+
+// Init slick slider + animation
+$('.slider').slick({
+  autoplay: true,
+  speed: 1500,
+  lazyLoad: 'progressive',
+  arrows: false,
+  dots: false,
+	loop:true,  
+	pauseOnHover:false,
+	prevArrow: '<div class="slick-nav prev-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
+	nextArrow: '<div class="slick-nav next-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
+}).slickAnimation();
+
+
+
+$('.slick-nav').on('click touch', function(e) {
+
+    e.preventDefault();
+
+    let arrow = $(this);
+
+    if(!arrow.hasClass('animate')) {
+        arrow.addClass('animate');
+        setTimeout(() => {
+            arrow.removeClass('animate');
+        }, 1600);
+    }
+
+});
