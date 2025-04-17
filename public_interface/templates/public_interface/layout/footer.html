@@ -198,10 +198,10 @@
                     <a href="{% url "about" %}">About us</a>
                   </li>
                   <li>
-                    <a href="#">Products</a>
+                    <a href="{% url "product" %}">Products</a>
                   </li>
                   <li>
-                    <a href="#">Brands</a>
+                    <a href="{% url "oceano" %}">Brands</a>
                   </li>
                   <li>
                     <a href="{% url 'distribution' %}">Distribution Channel</a>
@@ -209,13 +209,18 @@
                 </div>
                 <div class="col-sm-7">
                   <li>
-                    <a href="#">News Room</a>
+                    <a href="{% url 'news_room' %}">News Room</a>
                   </li>
                   <li>
-                    <a href="#">Career</a>
+                    <a href="{% url 'career' %}">Career</a>
                   </li>
+                  {% if blog %}
+                    <li>
+                      <a href="{% url 'blog' %}">Blog</a>
+                    </li>
+                  {% endif %}
                   <li>
-                    <a href="#">Contact us</a>
+                    <a href="{% url 'contact' %}">Contact us</a>
                   </li>
                 </div>
               </div>

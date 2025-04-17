@@ -22,7 +22,7 @@ def product_details(request, slug):
 
 def career(request):
     context = {"page_title": "Careers at The Deep Seafood Company"}
-    return render(request, "public_interface/about.html", context)
+    return render(request, "public_interface/career.html", context)
 
 
 def contact(request):

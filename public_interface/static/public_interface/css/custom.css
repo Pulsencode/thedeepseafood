@@ -2080,10 +2080,6 @@ body.modal-open .modal {
     margin-bottom: 90px;
   }
 
-  #indro .slider .head .d-flex {
-    display: inline-block !important;
-  }
-
   #indro .slider .head .line {
     left: 0;
     width: 100%;
@@ -2094,7 +2090,7 @@ body.modal-open .modal {
 #indro .slider .item {
   margin-right: 20px;
   position: relative;
-  height: 215px;
+  height: 259px;
 }
 
 #indro .slider .item::before {
@@ -2147,13 +2143,18 @@ body.modal-open .modal {
 }
 
 #indro .slider .item .info .btn-icon {
-  padding: 3px 4px;
-  font-size: 12px;
+  padding: 2px 3px;
+  font-size: 11px;
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 91px;
 }
 
 #indro .slider .item .info .btn-icon img {
-  height: 6px;
-  margin-left: 5px;
+  /* height: 10px; */
+  /* margin-left: 3px; */
+  margin: auto 5px;
+  padding: 0px;
 }
 
 @media (max-width: 767px) {
@@ -3522,7 +3523,7 @@ body.modal-open .modal {
 #distribution .item .card-img {
   background-color: #fff;
   border-radius: 10px;
-  padding: 50px 25px;
+  padding: 50px 50px;
 }
 
 #distribution .item .card-img img {
@@ -6753,4 +6754,23 @@ div#mySlider img {
 .slick_slider_presence .card-hover-up:hover {
   transform: translateY(-10px);
   z-index: 2;
+}
+
+.nav-item-special {
+  text-transform: uppercase;
+  background-color: #0d5189 !important;
+  color: #fff !important;
+  margin-left: 2px;
+  margin-right: 2px;
+  margin-bottom: 5px;
+  min-width: 67px;
+  font-size: 10px;
+  text-align: center;
+  padding: 6px 12px;
+  border-radius: 9px;
+  border: none;
+}
+.nav-item-special:not(.active){
+ cursor: pointer;
+ opacity: 0.6;
 }

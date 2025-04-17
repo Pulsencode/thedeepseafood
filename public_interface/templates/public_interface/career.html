@@ -1,7 +1,7 @@
-{% include 'public_interface/layout/header.html' %}
+{% extends 'public_interface/layout/public_base.html' %}
 {% load static %}
-{% load custom_filters %}
-
+{% comment %} {% load custom_filters %} {% endcomment %}
+{% block content %}
 <div class="main-div pt-0 header-bg-transparent header-logo-white">
   <!-- career -->
   <section id="career" class="pt-0">
@@ -116,10 +116,10 @@
 							<p class="loc">{{ career.location }}</p>
 						</div>
 						<div class="fes career-job-types ms-2 location-box" data-types="{{ types_list|join:',' }}">
-							{% for type in types_list|get_for_index:forloop.counter0 %}
+							{% comment %} {% for type in types_list|get_for_index:forloop.counter0 %}
 								<!-- <a href="javascript:void(0)" class="ctype"></a> -->
 								<p class="ctype">{{ type }}</p>
-							{% endfor %}
+							{% endfor %} {% endcomment %}
 						</div>
 					</div>
                 </div>
@@ -185,7 +185,7 @@
       aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-          <form method="post" class="form" enctype="multipart/form-data" action="{% url 'job_email' %}" id="contactform">
+          <form method="post" class="form" enctype="multipart/form-data" action="." id="contactform">
             {% csrf_token %}
             <div class="modal-header text-blue d-block text-center p-b-0 border-0">
               <h4 class="font-bold">JOB APPLICATION FORM</h4>
@@ -326,4 +326,4 @@
         <!-- }); -->
     <!-- }); -->
 <!-- </script> -->
-{% include 'public_interface/layout/footer.html' %}
+{% endblock content %}
