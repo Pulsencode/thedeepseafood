@@ -1,0 +1,184 @@
+{% include 'superadmin/layout/header.html' %}
+{% load static %}
+<!--app-content open-->
+<div class="main-content app-content mt-0">
+    <div class="side-app">
+        <!-- CONTAINER -->
+        <div class="main-container container-fluid">
+            <!-- PAGE-HEADER -->
+            <div class="page-header">
+                <h1 class="page-title">Recipe</h1>
+                <div>
+                    <a class="btn btn-primary" href="{% url 'recipe_view' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
+                </div>
+            </div>
+            <!-- PAGE-HEADER END -->
+
+            <!-- ROW OPEN -->
+            <form method="post" enctype="multipart/form-data" id="myform" >
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4 col-xl-4 col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Add New Image*</h4>
+                            </div>
+                            <div class="card-body">
+                            
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12 mb-4 mb-lg-0">
+                                            <input type="file" class="dropify" data-bs-height="180" multiple name="files" {% if not sliders %}required{% endif %} />
+                                        
+                                        </div>
+
+                                    </div>
+                                    {% if sliders %}
+                                                        <!-- Show existing slider images -->
+                                                        <div class="existing-slider-images">
+                                                            {% for slider in sliders %}
+                                                                <img src="{{ slider.image.url }}" alt="Slider Image" class="existing-slider-img" id="slider{{ slider.id }}" />
+                                                                <button type="button" id="btn-del{{ slider.id }}" class="delete-image-btn" style="margin-top: 10px;  background: #0aa3ce; color: #fff; padding: 4px 26px; border: 0px; border-radius: 2px; " data-image-id="{{ slider.id }}" >Delete</button>
+                                                            
+
+                                                            {% endfor %}
+                                                        </div>
+                                            {% endif %}
+                                
+                            </div>
+                            
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-8 col-xl-8 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form>
+                                    <div class="row col-lg-12">
+                                        <div class="form-group col-lg-6 col-12">
+                                            <label for="" class="form-label"> Title*</label>
+                                            <input type="text" class="form-control" id="" placeholder="Title" name="title" value="{{list.title}}" required>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Brand*</label>
+                                                <select name="brand" class="form-control form-select select2 select2-hidden-accessible" data-bs-placeholder="Select Country" tabindex="-1" aria-hidden="true" required>
+                                                    <option value="">Select Brand</option>
+                                                    {% for s in brands %}
+                                                    <option {% if list.brand.id == s.id %} selected{% endif %} value="{{s.id}}">{{s.name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group col-lg-12 col-12">
+
+                                            <div class="form-group">
+                                                <div class="multi-field-wrapper ">
+                                                    <div class="multi-fields">
+                                                        <div class="multi-field">
+                                                            <div class="row">
+                                                                
+                                                                <div class="col-lg-12" style="padding-right:0px">
+                                                                    
+                                                                    <div class="form-group">
+                                                                        <label>Ingredients</label>
+                                                                        <textarea type="text" name="title[]"
+                                                                            class="form-control form-control-lg"
+                                                                            placeholder="" ></textarea>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- <div class="col-lg-6" style="padding-right:0px"> -->
+                                                                    <!-- <div class="form-group"> -->
+                                                                        <!-- <label>Quantity</label> -->
+
+                                                                        <!-- <input type="text" name="amount[]" -->
+                                                                            <!-- class="form-control form-control-lg" -->
+                                                                            <!-- placeholder="" > -->
+                                                                        
+                                                                    <!-- </div> -->
+                                                                <!-- </div> -->
+
+                                                            </div>
+                                                            <button type="button"
+                                                                class="remove-field float-right btn btn-danger btn-sm icon-btn ml-2 "><i
+                                                                    class="mdi mdi-delete"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <button type="button" type="button"
+                                                            class=" add-field btn btn-info btn-sm icon-btn ml-2 mb-2">
+                                                            Add New<i class="mdi mdi-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                {% if list %}
+                                                                    {% for why in whyc %}
+                                                                    <div class="multi-field">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12"
+                                                                                style="padding-right: 0px">
+                                                                                <div class="form-group">
+                                                                                    <label>Title</label>
+                                                                                    <textarea type="text" name="title[]"
+                                                                                        id="why_title_{{ forloop.counter }}"
+                                                                                        class="form-control form-control-lg"
+                                                                                        placeholder="Heading"
+                                                                                        value="{{ why.title }}"></textarea>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <!-- <div class="col-lg-6" -->
+                                                                                <!-- style="padding-right: 0px"> -->
+                                                                                <!-- <div class="form-group"> -->
+                                                                                    <!-- <label>Amount</label> -->
+                                                                                    <!-- <input type="text" name="amount[]" -->
+                                                                                        <!-- id="why_desc_{{ forloop.counter }}" -->
+                                                                                        <!-- class="form-control form-control-lg txt-desc" -->
+                                                                                        <!-- placeholder="Description" maxlength="120" -->
+                                                                                        <!-- value="{{ why.amount }}"> -->
+                                                                                <!-- </div> -->
+                                                                            <!-- </div> -->
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="button"
+                                                                        class="delete-spec-btn btn btn-danger btn-sm icon-btn ml-2"
+                                                                        data-spec-index="{{ forloop.counter }}"><i
+                                                                            class="mdi mdi-delete"></i></button>
+                                                                    {% endfor %}
+                                                                    {% endif %}
+                                            </div>
+                                        </div>
+										<div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1" class="form-label">Instructions*</label>
+                                                <textarea id="" class="form-control" name="desc" required>{{list.description|safe}}</textarea>
+                                            </div>
+                                        
+                                        </div>
+										<div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1" class="form-label">Image Alt</label>
+                                                <input type="text" class="form-control" placeholder="image alt" name="image_alt" value="{% if list.image_alt %}{{list.image_alt}}{% endif %}">
+                                            </div>
+                                        
+                                        </div>
+                                        <div class="form-group col-lg-12 col-12">
+                                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                                            <a href="{% url 'recipe_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                                        </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- ROW CLOSED -->
+                    </div>
+                    <!-- CONTAINER END -->
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--app-content close-->
+
+    {% include 'superadmin/layout/footer.html' %}

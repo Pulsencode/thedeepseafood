@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            /* Light blue background */
+            color: #333;
+            /* Dark text for contrast */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container to center content */
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        /* Styles for Not Found section */
+        .not-found {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 6rem;
+            /* Large size for 404 */
+            color: #ff6347;
+            /* Tomato color */
+        }
+
+        h2 {
+            font-size: 2rem;
+            /* Medium size for the subtitle */
+            color: #5f9ea0;
+            /* Medium Sea Green */
+        }
+
+        p {
+            font-size: 1.2rem;
+            /* Smaller size for the paragraph */
+            margin: 10px 0;
+        }
+
+        /* Home button styles */
+        .home-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4682b4;
+            /* Steel Blue */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        /* Home button hover effect */
+        .home-button:hover {
+            background-color: #5f9ea0;
+            /* Change color on hover */
+        }
+
+        /* Seafood image styles */
+        .seafood-image img {
+            max-width: 100%;
+            /* Responsive image */
+            height: auto;
+            /* Maintain aspect ratio */
+            border-radius: 10px;
+            /* Slightly rounded corners */
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1rem;
+                /* Adjust size for smaller screens */
+            }
+
+            h2 {
+                font-size: 1rem;
+                /* Adjust size for smaller screens */
+            }
+
+            p {
+                font-size: 1rem;
+                /* Adjust size for smaller screens */
+            }
+
+            .home-button {
+                padding: 8px 15px;
+                /* Adjust padding for smaller screens */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="seafood-image">
+            <img src="{% static 'website/assets/general/images/logo.png' %}" style="width:100px; height:100px;"> </i>
+        </div>
+        <div class="not-found">
+            <h1>404</h1>
+            <h2>Oops! We couldn't find that.</h2>
+            <p>It seems the seafood you're looking for is swimming elsewhere.</p>
+            <a href="/" class="home-button">Back To Home</a>
+        </div>
+        
+    </div>
+</body>
+
+</html>

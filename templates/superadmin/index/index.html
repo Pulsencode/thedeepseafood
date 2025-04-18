@@ -1,0 +1,306 @@
+{% include 'superadmin/layout/header.html' %}
+{% load static %}
+<!--app-content open-->
+
+<div class="main-content app-content mt-0">
+    <div class="side-app">
+        <!-- CONTAINER -->
+
+        <div class="main-container container-fluid">
+            <!-- PAGE-HEADER -->
+            <div class="page-header">
+                <h1 class="page-title">Dashboard</h1>
+            </div>
+
+            <!-- PAGE-HEADER END -->
+
+            <!-- ROW OPEN -->
+            <div class="row row-cards">
+			{% if request.user.username == "DeepSeaAdmin" %}
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'brand_view' %}">
+                        <div class="card bg-primary img-card box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{brand}}</h2>
+                                        <p class="text-white mb-0">Brand</p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fe fe-image text-white fs-30 me-2 mt-2"></i> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+				
+				
+                <!-- COL END -->
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'category_view' %}">
+                        <div class="card bg-warning img-card box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{category}}</h2>
+                                        <p class="text-white mb-0">Category</p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fe fe-grid text-white fs-30 me-2 mt-2"></i> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- COL END -->
+                <!-- <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6"> -->
+                    <!-- <a href="{% url 'job_category_view' %}"> -->
+                        <!-- <div class="card bg-danger img-card box-primary-shadow"> -->
+                            <!-- <div class="card-body"> -->
+                                <!-- <div class="d-flex"> -->
+                                    <!-- <div class="text-white"> -->
+                                        <!-- <h2 class="mb-0 number-font">{{job}}</h2> -->
+                                        <!-- <p class="text-white mb-0">Job Category </p> -->
+                                    <!-- </div> -->
+                                    <!-- <div class="ms-auto"> <i class="fe fe-briefcase text-white fs-30 me-2 mt-2"></i> -->
+                                    <!-- </div> -->
+                                <!-- </div> -->
+                            <!-- </div> -->
+                        <!-- </div> -->
+                    <!-- </a> -->
+                <!-- </div> -->
+                <!-- COL END -->
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'recipe_view' %}">
+                        <div class="card bg-warning-gradient img-card box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{recipe}}</h2>
+                                        <p class="text-white mb-0">Recipe </p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fe fe-layers text-white fs-30 me-2 mt-2"></i> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- COL END -->
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'gallery_view' %}">
+                        <div class="card bg-info-gradient img-card box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{gallery}}</h2>
+                                        <p class="text-white mb-0">Event Gallery</p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fe fe-book-open text-white fs-30 me-2 mt-2"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- COL END -->
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'news_view' %}">
+                        <div class="card bg-primary-gradient img-card box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{news}}</h2>
+                                        <p class="text-white mb-0">News</p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fe fe-folder text-white fs-30 me-2 mt-2"></i> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- COL END -->
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'promotion_view' %}">
+                        <div class="card bg-success img-card box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{promo}}</h2>
+                                        <p class="text-white mb-0">Promotion information </p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fa fa-empire text-white fs-30 me-2 mt-2"></i> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- COL END -->
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'blog_view' %}">
+                        <div class="card bg-secondary-gradient img-card box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{blog}}</h2>
+                                        <p class="text-white mb-0">Blog</p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fe fe-tv text-white fs-30 me-2 mt-2"></i> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- COL END -->
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'team_view' %}">
+                        <div class="card bg-danger-gradient img-card box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{team}}</h2>
+                                        <p class="text-white mb-0">Management Team</p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fa fa-gg-circle text-white fs-30 me-2 mt-2"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- COL END -->
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'testimonial_view' %}">
+                        <div class="card bg-info img-card box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{testi}}</h2>
+                                        <p class="text-white mb-0">Testimonial</p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fe fe-users text-white fs-30 me-2 mt-2"></i> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'history_view' %}">
+                        <div class="card bg-orange box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{history}}</h2>
+                                        <p class="text-white mb-0">History</p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fe fe-zap text-white fs-30 me-2 mt-2"></i> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- COL END -->
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'contact_view' %}">
+                        <div class="card bg-pink box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{contact}}</h2>
+                                        <p class="text-white mb-0">Contact us</p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fe fe-file-text text-white fs-30 me-2 mt-2"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- COL END -->
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'enquiry_view' %}">
+                        <div class="card bg-gray box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{enquiry}}</h2>
+                                        <p class="text-white mb-0">Enquiry</p>
+                                    </div>
+                                    <div class="ms-auto"> <i class=" fe fe-smartphone text-white fs-30 me-2 mt-2"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- COL END -->
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'product_view' %}">
+                        <div class="card bg-cyan box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{product}}</h2>
+                                        <p class="text-white mb-0">Product</p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fa fa-adn text-white fs-30 me-2 mt-2"></i> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+				
+
+				{% endif %}
+				{% if request.user.username == "DeepSeaHR" %}
+				<!-- COL END -->
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'career_view' %}">
+                        <div class="card bg-secondary box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{career}}</h2>
+                                        <p class="text-white mb-0">Career</p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fe fe-box text-white fs-30 me-2 mt-2"></i> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!-- COL END -->
+                <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
+                    <a href="{% url 'application_view' %}">
+                        <div class="card bg-gray-dark box-primary-shadow">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="text-white">
+                                        <h2 class="mb-0 number-font">{{appli}}</h2>
+                                        <p class="text-white mb-0">Application </p>
+                                    </div>
+                                    <div class="ms-auto"> <i class="fe fe-settings text-white fs-30 me-2 mt-2"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+				{% endif %}
+                <!-- COL END -->
+               
+            </div>
+            <!-- ROW CLOSED -->
+
+
+        </div>
+
+        <!-- CONTAINER END -->
+
+    </div>
+
+</div>
+
+<!--app-content close-->
+
+
+
+{% include 'superadmin/layout/footer.html' %}

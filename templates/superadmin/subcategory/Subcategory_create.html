@@ -1,0 +1,54 @@
+{% include 'superadmin/layout/header.html' %}
+{% load static %}
+
+<!--app-content open-->
+<div class="main-content app-content mt-0">
+    <div class="side-app">
+        <!-- CONTAINER -->
+        <div class="main-container container-fluid">
+
+            <!-- PAGE-HEADER -->
+            <div class="page-header">
+                <h1 class="page-title">Category</h1>
+                <div>
+                    <a class="btn btn-primary" href="{% url 'subcategory_view' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
+                </div>
+            </div>
+            <!-- PAGE-HEADER END -->
+
+            <!-- ROW OPEN -->
+            <form method="post" enctype="multipart/form-data" id="myform">
+                {% csrf_token %}
+                <div class="row">
+
+
+                    <div class="col-md-8 col-xl-8 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                
+                                    <div class="row col-lg-12">
+                                        
+                                        <div class="form-group col-lg-12">
+                                            <label for="" class="form-label"> Subcategory*</label>
+                                            <input type="text" class="form-control" id="" placeholder="Name" name="name" value="{{list.name}}" required>
+                                        </div>
+                                        <div class="form-group col-lg-12 col-12">
+                                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                                            <a href="{% url 'subcategory_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                                        </div>
+                                    </div>
+                            
+                            </div>
+
+                        </div>
+                        <!-- ROW CLOSED -->
+
+                    </div>
+                    <!-- CONTAINER END -->
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--app-content close-->
+
+    {% include 'superadmin/layout/footer.html' %}
