@@ -13,9 +13,6 @@ DEBUG = os.getenv("DEBUG", default=False)
 
 ALLOWED_HOSTS = ["*"]
 
-
-# Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -56,7 +53,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
-
 
 DATABASES = {
     "default": {
@@ -119,8 +115,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "deepseafood.connect@gmail.com"
-EMAIL_HOST_PASSWORD = "ncvnqforaddaidyl"
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
 
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 200 * 1024 * 1024
