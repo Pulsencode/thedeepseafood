@@ -54,7 +54,7 @@ def product(request):
         "page_title": "Product",
         "all_products": Product.objects.filter(status=True),
     }
-    return render(request, "public_interface/product_list.html", context)
+    return render(request, "public_interface/products.html", context)
 
 
 def product_details(request, slug):

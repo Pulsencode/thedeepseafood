@@ -156,7 +156,7 @@
           <div class="slick_history_nav arrows-vector arrows-white ps-50 pe-50"
                data-aos="fade-up"
                data-aos-duration="1000">
-            {% for i in history %}
+            {% comment %} {% for i in history %} {% endcomment %}
               <div class="item">
                 <img width=""
                      height=""
@@ -168,7 +168,7 @@
                      src="{% static 'public_interface/images/about-page/history/Ship2.png' %}">
                 <div class="title font-lnterbold">{{ i.year }}</div>
               </div>
-            {% endfor %}
+            {% comment %} {% endfor %} {% endcomment %}
           </div>
         </div>
       </div>
@@ -181,7 +181,7 @@
           <div class="slick_history_for mt-25"
                data-aos="fade-up"
                data-aos-duration="1000">
-            {% for i in history %}
+            {% comment %} {% for i in history %} {% endcomment %}
               <div class="item card-hover-up">
                 <div class="section-head" data-aos="fade-up" data-aos-duration="1000">
                   <h1 class="text-white font-lnterbold">{{ i.title }}</h1>
@@ -203,7 +203,7 @@
                   </div>
                 {% endif %}
               </div>
-            {% endfor %}
+            {% comment %} {% endfor %} {% endcomment %}
           </div>
         </div>
       </div>
