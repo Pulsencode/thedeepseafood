@@ -1,23 +1,56 @@
+import base64
+from datetime import datetime
+
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.mixins import UserPassesTestMixin
+
+# import os
+from django.core.files.base import ContentFile
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template import loader
+from django.urls import reverse
 from django.views import View
 from django.views.generic import TemplateView
-from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
-from deepapp.models import *
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 from deepapp.constant_variables import PAGINATION_COUNT
 from deepapp.helper import is_ajax, renderhelper
-from django.template import loader
-from django.http import JsonResponse
-from datetime import datetime
-from django.db.models import Q
-import base64
-import os
-from django.core.files.base import ContentFile
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.urls import reverse
+
+# from django.contrib.auth.decorators import login_required
+from deepapp.models import (
+    Aboutus,
+    ApplicationDetails,
+    BlogDetails,
+    BlogImage,
+    Brand,
+    Category,
+    Certification,
+    CompanyTestimonial,
+    ContactUsDetails,
+    EnquiryDetails,
+    EventGallery,
+    EventGalleryImage,
+    HistoryDetails,
+    HistoryImage,
+    JobCategory,
+    ManagementTeam,
+    NewsDetails,
+    NewsGalleryImage,
+    Product,
+    ProductDetails,
+    PromotionDetails,
+    PromotionImage,
+    RecipeDetails,
+    RecipeImage,
+    RecipeIngredients,
+    Seo,
+    Subcategory,
+    Supermarkets,
+    VaccancyDetails,
+)
 
 
 class LoginView(TemplateView):
@@ -575,7 +608,7 @@ class RecipeUpdateView(UserPassesTestMixin, TemplateView):
         brand_instance = request.POST.get("brand")
         brand = Brand.objects.get(id=brand_instance)
         ingredient_titles = request.POST.getlist("title[]")
-        ingredient_amounts = request.POST.getlist("amount[]")
+        # ingredient_amounts = request.POST.getlist("amount[]")
 
         # Update recipe details
         data.title = name
@@ -757,7 +790,7 @@ class GalleryUpdateView(UserPassesTestMixin, TemplateView):
 
     def post(self, request, id):
         data = EventGallery.objects.get(pk=id)
-        sliders = data.gallery_image.all()
+        # sliders = data.gallery_image.all()
         title = request.POST.get("title")
         # name = request.POST.get('name')
         location = request.POST.get("location")
@@ -927,7 +960,7 @@ class NewsUpdateView(UserPassesTestMixin, TemplateView):
 
     def post(self, request, id):
         data = NewsDetails.objects.get(pk=id)
-        sliders = data.news_image.all()
+        # sliders = data.news_image.all()
         title = request.POST.get("title")
         name = request.POST.get("name")
         sequence = request.POST.get("sequence")
@@ -1089,7 +1122,7 @@ class PromotionUpdateView(UserPassesTestMixin, TemplateView):
 
     def post(self, request, id):
         data = PromotionDetails.objects.get(pk=id)
-        sliders = data.promo_image.all()
+        # sliders = data.promo_image.all()
         title = request.POST.get("title")
         name = request.POST.get("name")
         location = request.POST.get("location")
@@ -1251,7 +1284,7 @@ class BlogUpdateView(UserPassesTestMixin, TemplateView):
 
     def post(self, request, id):
         data = BlogDetails.objects.get(pk=id)
-        sliders = data.blog_image.all()
+        # sliders = data.blog_image.all()
         title = request.POST.get("title")
         name = request.POST.get("name")
         location = request.POST.get("location")
@@ -1858,7 +1891,7 @@ class HistoryUpdateView(UserPassesTestMixin, TemplateView):
 
     def post(self, request, id):
         data = HistoryDetails.objects.get(pk=id)
-        sliders = data.history_image.all()
+        # sliders = data.history_image.all()
         title = request.POST.get("title")
         year = request.POST.get("year")
         desc = request.POST.get("desc")
@@ -1904,8 +1937,8 @@ class ContactListView(UserPassesTestMixin, TemplateView):
 
         search = request.GET.get("search")
         delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
+        # status = request.GET.get("status")
+        # sts = request.GET.get("sts")
 
         cd = ContactUsDetails.objects.all().order_by("-id")
 
@@ -1961,8 +1994,8 @@ class EnquiryListView(UserPassesTestMixin, TemplateView):
 
         search = request.GET.get("search")
         delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
+        # status = request.GET.get("status")
+        # sts = request.GET.get("sts")
         start = request.GET.get("start")
         end = request.GET.get("end")
         start_date = None
@@ -2803,7 +2836,7 @@ class SupermarketListView(UserPassesTestMixin, TemplateView):
         path = "supermarket"
         page = request.GET.get("page", 1)
 
-        search = request.GET.get("search")
+        # search = request.GET.get("search")
         delete = request.GET.get("delete")
         status = request.GET.get("status")
         sts = request.GET.get("sts")
@@ -2864,13 +2897,13 @@ class SupermarketCreateView(UserPassesTestMixin, TemplateView):
         return self.request.user.username == "DeepSeaAdmin"
 
     def post(self, request, *args, **kwargs):
-        image = request.POST.get("supermarket-image")
-        image_alt = request.POST.get("image_alt")
-        format, imgstr = image.split(";base64,")
-        ext = format.split("/")[-1]
-        image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
+        # image = request.POST.get("supermarket-image")
+        # image_alt = request.POST.get("image_alt")
+        # format, imgstr = image.split(";base64,")
+        # ext = format.split("/")[-1]
+        # image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
 
-        supermarket = Supermarkets.objects.create(image=image_data, image_alt=image_alt)
+        # supermarket = Supermarkets.objects.create(image=image_data, image_alt=image_alt)
         messages.success(request, "Supermarket Added Successfully...!!")
         return redirect("supermarket_view")
 
