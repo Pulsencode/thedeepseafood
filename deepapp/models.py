@@ -1,7 +1,6 @@
-from django.db import models
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from .utils import *
 from autoslug import AutoSlugField
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.db import models
 
 
 class UserManager(BaseUserManager):
@@ -418,15 +417,6 @@ class Product(models.Model):
 
     def __str__(self) -> str:
         return self.name
-
-    # def save(self ,*args,**kwargs):
-    # self.slug_product = generate_slug(self.name)
-    # super(Product, self).save(*args,**kwargs)
-
-    def save(self, *args, **kwargs):
-        if not self.id or self.title_changed():
-            self.slug_product = generate_slug(self.name)
-        super(Product, self).save(*args, **kwargs)
 
     def title_changed(self):
         if self.id:
