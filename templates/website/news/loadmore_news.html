@@ -1,0 +1,35 @@
+{% load static %}
+{% for n in data %}
+          <div class="col-lg-4 col-sm-6 pt-30 news-box">
+            <div class="item bg-x-light-blue news_card ">
+				<div>
+					{% if n.news_image.all %}
+					
+					<img src="{{n.news_image.first.image.url}}" class="fixed_img" alt="{{n.image_alt}}">
+					{% endif %}
+				</div>
+
+                <div class="news_footer">
+			    <div>
+				<div class="title font-lnterbold">{{n.title|truncatechars:40}}</div>
+              <div class="dec font-lntermedium txt_news">{{n.description}}</div>
+				</div>
+               <div>
+					<div class="date font-lntermedium">{{n.date|date:'d/m/Y'}}</div>
+					<div class="date font-lntermedium">  <i class="fa fa-map-marker me-2" aria-hidden="true"></i>{{n.location}}</div>
+					<a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover mt-3" href="{% url 'news_details' n.id %}">
+						<span>Read More</span>
+						<img src="{% static 'website/assets/public/images/icons/right-arrow.png' %}">
+					</a>
+			   </div>
+			   </div>
+            </div>
+          </div>
+          {% endfor %}
+		  
+		  <div class="col-12 text-center mt-40">
+            <a href="javascript:void(0)" class="btn bg-white text-blue rounded-25 btn-icon btn-zoom-hover btn-more" id="loadMore" data-type="{{type}}" data-total="{{total_news}}" data-limit="4" onclick="loadmore(this)">
+              <span>Load More</span>
+              <img src="{% static 'website/assets/public/images/icons/right-arrow-blue.png' %}">
+            </a>
+          </div>

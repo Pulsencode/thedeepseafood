@@ -1,0 +1,140 @@
+{% load static %}
+<input type="hidden" id="page" name="page" value="{{page}}">
+<table class="table border-top table-bordered mb-0 table-hover">
+    <thead>
+        <tr>
+            <th>Sl No</th>
+            <th>Sequence</th>
+            <th>Name</th>
+            <!-- <th>brand</th> -->
+            <!-- <th>category</th>
+            <th>sub category</th> -->
+            <th>type</th>
+            <!-- <th>product code</th>
+            <th>price</th>
+            <th>net weight</th>
+            <th>origin</th>
+            <th>grade</th>
+            <th>packing</th>
+            <th>description </th>
+            <th>ingredients</th>
+            <th>instruction</th>
+            <th>storage instruction</th>
+            <th>causion</th> -->
+            <th>image</th>
+            <th>home page</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if datas %}
+        {% for d in datas %}
+        <tr>
+            <td>{{datas.start_index|add:forloop.counter0}}</td>
+            <td>{{d.sequence}}</td>
+            <td>{{d.name}}</td>
+         
+            <td>{{d.type}}</td>
+            
+            
+            <td>
+                {% if d.image %}
+                <a href="{{d.image.url}}" data-lightbox="image-{{ forloop.counter }}">
+                    <img src="{{d.image.url}}" style="width:90px;"></a>
+                {% endif %}
+            </td>
+            <td>
+                <div class="material-switch">
+                    <input id="someSwitchOptionSuccess1{{d.id}}" name="someSwitchOption0011" type="checkbox" {% if d.homepage == True %} onclick="changehomepagestatus({{d.id}}, 0)" checked {% else %} onclick="changehomepagestatus({{d.id}}, 1)" {% endif %}/>
+
+                    <label for="someSwitchOptionSuccess1{{d.id}}" class="label-success"></label>
+                </div>
+            </td>
+            <td>
+                <div class="material-switch">
+                    <input id="someSwitchOptionSuccess{{d.id}}" name="someSwitchOption001" type="checkbox" {% if d.status == True %} onclick="changeproductstatus({{d.id}},0)" checked {% else %}onclick="changeproductstatus({{d.id}},1)" {% endif %} />
+                    <label for="someSwitchOptionSuccess{{d.id}}" class="label-success"></label>
+                </div>
+            </td>
+            
+            <td>
+                <a class="btn btn-info btn-sm mb-1" href="{% url 'product_update' d.id %}?page={{ page }}""><i class="side-menu__icon fe fe-edit"></i></a>
+
+                <button class="btn btn-danger btn-sm mb-1"  ><i class="side-menu__icon fe fe-trash"  onclick="show_modal({{d.id}})"></i></button>
+
+            </td>
+        </tr>
+        
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan='10'>
+                <center>No record found</center>
+            </td>
+        </tr>
+        {% endif %}
+
+    </tbody>
+</table>
+
+<div class="pagination_section pb-5">
+    {% if datas %}
+    Showing {{ datas.start_index }}-{{ datas.end_index }} of {{ datas.paginator.count }}
+    {% endif %}
+    <!--Pagination-->
+    {% if datas.has_other_pages %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if datas.has_previous %}
+            <li class="page-item">
+            <a class="page-link" href="javascript:void(0)" onclick="return product_view('{{ datas.previous_page_number }}');">Previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Previous</a>
+            </li>
+        {% endif %}
+        {% if datas.number == 1 %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">First</a>
+            </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return product_view('{{ 1 }}');">First</a></li>
+        {% endif %}
+        {% for i in datas.paginator.page_range %}
+            {% if datas.number > i and i > datas.number|add:-5 %}
+            <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return product_view('{{ i }}');">{{ i }}</a></li>
+            {% endif %}
+            {% if datas.number == i %}
+            <li class="page-item active" aria-current="page">
+            <span class="page-link">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+            </span>
+            </li>
+            {% endif  %}
+            {% if datas.number < i and i < datas.number|add:5 %}
+            <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return product_view('{{ i }}');">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if datas.number == datas.paginator.num_pages %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Last</a>
+            </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return product_view('{{ datas.paginator.num_pages }}');">Last</a></li>
+        {% endif %}
+        {% if datas.has_next %}
+            <li class="page-item">
+            <a class="page-link"  href="javascript:void(0)" onclick="return product_view('{{ datas.next_page_number }}');">Next</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Next</a>
+            </li>
+        {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div> 

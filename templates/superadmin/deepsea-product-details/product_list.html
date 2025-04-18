@@ -1,0 +1,370 @@
+{% load static %}
+<input type="hidden" id="page" name="page" value="{{page}}">
+<table class="table border-top table-bordered mb-0 table-hover">
+    <thead>
+        <tr>
+            <th>Sl No</th>
+            <th class="psticky">Product</th>
+            <!-- <th>brand</th> -->
+            <th>category</th>
+            <th>sub category</th>
+            <!-- <th>type</th> -->
+            <th>product code</th>
+            <th>price</th>
+            <th>net weight</th>
+            <th>origin</th>
+            <th>grade</th>
+            <th>packing</th>
+            <th>description </th>
+            <th>ingredients</th>
+            <th>instruction</th>
+            <th>storage instruction</th>
+            <th>causion</th>
+            <!-- <th>image</th> -->
+            <!-- <th>home page</th> -->
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if datas %}
+        {% for d in datas %}
+        <tr>
+            <td>{{datas.start_index|add:forloop.counter0}}</td>
+            <td class="psticky">{{d.product.name}}</td>
+            <!-- <td>{{d.brand}}</td> -->
+            <td>
+                <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#category{{d.id}}"><i
+                class="side-menu__icon fe fe-eye"></i></a>
+            </td>
+            <td>
+                <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#subcategory{{d.id}}"><i
+                class="side-menu__icon fe fe-eye"></i></a>
+            </td>
+            <!-- <td>{{d.type}}</td> -->
+            <td>
+                <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#code{{d.id}}"><i
+                class="side-menu__icon fe fe-eye"></i></a>
+            </td>
+            <td>
+                <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#price{{d.id}}"><i
+                    class="side-menu__icon fe fe-eye"></i></a>
+            </td>
+            <td>
+                <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#net{{d.id}}"><i
+                class="side-menu__icon fe fe-eye"></i></a>
+            </td>
+            <td>
+                <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#origin{{d.id}}"><i
+                class="side-menu__icon fe fe-eye"></i></a>
+            </td>
+            <td>
+                <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#grade{{d.id}}"><i
+                class="side-menu__icon fe fe-eye"></i></a>
+            </td>
+            <td>
+                <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#packing{{d.id}}"><i
+                class="side-menu__icon fe fe-eye"></i></a>
+            </td>
+            <td>
+                <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#desc{{d.id}}"><i
+                    class="side-menu__icon fe fe-eye"></i></a>
+            </td>
+            <td>
+                <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#ingredients{{d.id}}"><i
+                class="side-menu__icon fe fe-eye"></i></a>
+            </td>
+            <td>
+                <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#instruction{{d.id}}"><i
+                class="side-menu__icon fe fe-eye"></i></a>
+            </td>
+            <td>
+                <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#storage{{d.id}}"><i
+                class="side-menu__icon fe fe-eye"></i></a>
+            </td>
+            <td>
+                <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#causion{{d.id}}"><i
+                class="side-menu__icon fe fe-eye"></i></a>
+            </td>
+            
+            
+          
+            <td>
+                <div class="material-switch">
+                    <input id="someSwitchOptionSuccess{{d.id}}" name="someSwitchOption001" type="checkbox" {% if d.status == True %} onclick="changeproductsstatus({{d.id}},0)" checked {% else %}onclick="changeproductsstatus({{d.id}},1)" {% endif %} />
+                    <label for="someSwitchOptionSuccess{{d.id}}" class="label-success"></label>
+                </div>
+            </td>
+            
+            <td>
+                <a class="btn btn-info btn-sm mb-1" href="{% url 'product_details_update' d.id %}?page={{ page }}"><i class="side-menu__icon fe fe-edit"></i></a>
+
+                <button class="btn btn-danger btn-sm mb-1"  ><i class="side-menu__icon fe fe-trash"  onclick="show_modal({{d.id}})"></i></button>
+
+            </td>
+        </tr>
+        <!-- modal -->
+
+        <div class="modal  fade" id="desc{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+
+                        
+                        <p class="text-center">{{d.description}}</p>
+                       
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- category -->
+
+        <div class="modal  fade" id="category{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        
+                            
+                            <p class="text-center">{{d.category}}</p>
+                  
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- sub category -->
+
+        <div class="modal  fade" id="subcategory{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                       
+                                <p class="text-center">{{ d.sub_categories }}</p>
+                       
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- code -->
+
+        <div class="modal  fade" id="code{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                    
+                        
+                        <p class="text-center">{{d.product_code}}</p>
+                     
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- price -->
+
+        <div class="modal  fade" id="price{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                     
+                        
+                        <p class="text-center">{{d.price}}</p>
+                    
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- net -->
+
+        <div class="modal  fade" id="net{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                
+                        
+                        <p class="text-center">{{d.net_weight}}</p>
+               
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- origin -->
+
+        <div class="modal  fade" id="origin{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                         
+                        
+                        <p class="text-center">{{d.origin}}</p>
+                     
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- causion -->
+
+        <div class="modal  fade" id="causion{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                          
+                        
+                        <p class="text-center">{{d.causion}}</p>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- grade -->
+
+        <div class="modal  fade" id="grade{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                    
+                        
+                        <p class="text-center">{{d.grade}}</p>
+                     
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- packing -->
+
+        <div class="modal  fade" id="packing{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                           
+                        
+                        <p class="text-center">{{d.packing}}</p>
+                   
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ingredients -->
+
+        <div class="modal  fade" id="ingredients{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                         
+                    
+                        <p class="text-center">{{d.ingredients}}</p>
+                       
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- instruction -->
+
+        <div class="modal  fade" id="instruction{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                      
+                        
+                        <p class="text-center">{{d.instructions}}</p>
+                    
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- storage -->
+
+        <div class="modal  fade" id="storage{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                         
+                        
+                        <p class="text-center">{{d.storage_instructions}}</p>
+                    
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan='10'>
+                <center>No record found</center>
+            </td>
+        </tr>
+        {% endif %}
+
+    </tbody>
+</table>
+
+<div class="pagination_section pb-5">
+    {% if datas %}
+    Showing {{ datas.start_index }}-{{ datas.end_index }} of {{ datas.paginator.count }}
+    {% endif %}
+    <!--Pagination-->
+    {% if datas.has_other_pages %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if datas.has_previous %}
+            <li class="page-item">
+            <a class="page-link" href="javascript:void(0)" onclick="return productss_view('{{ datas.previous_page_number }}');">Previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Previous</a>
+            </li>
+        {% endif %}
+        {% if datas.number == 1 %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">First</a>
+            </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return productss_view('{{ 1 }}');">First</a></li>
+        {% endif %}
+        {% for i in datas.paginator.page_range %}
+            {% if datas.number > i and i > datas.number|add:-5 %}
+            <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return productss_view('{{ i }}');">{{ i }}</a></li>
+            {% endif %}
+            {% if datas.number == i %}
+            <li class="page-item active" aria-current="page">
+            <span class="page-link">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+            </span>
+            </li>
+            {% endif  %}
+            {% if datas.number < i and i < datas.number|add:5 %}
+            <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return productss_view('{{ i }}');">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if datas.number == datas.paginator.num_pages %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Last</a>
+            </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return productss_view('{{ datas.paginator.num_pages }}');">Last</a></li>
+        {% endif %}
+        {% if datas.has_next %}
+            <li class="page-item">
+            <a class="page-link"  href="javascript:void(0)" onclick="return productss_view('{{ datas.next_page_number }}');">Next</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Next</a>
+            </li>
+        {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div> 

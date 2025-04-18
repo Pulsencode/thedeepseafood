@@ -1,0 +1,21 @@
+{% load static %}
+{% for c in categories %}
+    {% for p in product %}
+    <div class="col-lg-3 col-md-4 col-6 pt-20">
+        <div class="item card-hover-up">
+            <img class="img-primary" src="{{p.image.url}}" alt="{{p.image_alt}}">
+            <div class="info">
+                <div>
+				<div class="title font-lntermedium serach_nameme">{{p.name}}</div>
+                <div class="category">{{ c.name }}</div>
+				</div>
+                <a class="btn btn-icon" style="width:fit-content;">
+                    <!-- <span>View Item</span> -->
+                    <img src="{% static 'website/assets/public/images/icons/right-arrow-blue.png' %}">
+                </a>
+            </div>
+            <a class="primary-btn "  href="{% url 'product_details' p.slug_product %}"></a>
+        </div>
+    </div>
+    {% endfor %}
+{% endfor %}

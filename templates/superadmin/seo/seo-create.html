@@ -1,0 +1,114 @@
+{% include 'superadmin/layout/header.html' %}
+{% load static %}
+<style>
+    .select-drop{
+        width: 100%;
+        display: block;
+    width: 100%;
+    padding: 0.475rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #4d5875;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #e9edf4;
+    border-radius: 7px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .select-drop:focus-visible{
+        outline: none !important;
+    }
+    .check-flex{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .sub-l{
+        cursor: pointer;
+    }
+</style>
+<!--app-content open-->
+<div class="main-content app-content mt-0">
+    <div class="side-app">
+        <!-- CONTAINER -->
+        <div class="main-container container-fluid">
+            <!-- PAGE-HEADER -->
+            <div class="page-header">
+                <h1 class="page-title">SEO</h1>
+                <div>
+                    <a class="btn btn-primary" href="{% url 'product_view' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
+                </div>
+            </div>
+            <!-- PAGE-HEADER END -->
+
+            <!-- ROW OPEN -->
+            <form method="post" enctype="multipart/form-data" id="myform">
+                {% csrf_token %}
+                <div class="row">
+                  
+
+                    <div class="col-md-8 col-xl-8 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                            
+                                    <div class="row col-lg-12">
+                                       
+                                       
+                                        
+                                        <div class="form-group col-lg-6 col-12" >
+                                            <label class="form-label">Page*</label>
+                                            <select name="page" class="select-drop " required>
+                                                <option value="">Select page</option>
+                                                <option {% if list.page == 'Home' %}selected{% endif %} value="Home">Home</option>
+                                                <option {% if list.page == 'About' %}selected{% endif %} value="About">About</option>
+                                                <option {% if list.page == 'Product' %}selected{% endif %} value="Product">Product</option>
+                                                <option {% if list.page == 'Oceano' %}selected{% endif %} value="Oceano">Oceano</option>
+                                                <option {% if list.page == 'Distribution Channel' %}selected{% endif %} value="Distribution Channel">Distribution Channel</option>
+                                                <option {% if list.page == 'News Room' %}selected{% endif %} value="News Room">News Room</option>
+                                                <option {% if list.page == 'Career' %}selected{% endif %} value="Career">Career</option>
+                                                <option {% if list.page == 'Contact Us' %}selected{% endif %} value="Contact Us">Contact Us</option>
+                                                <option {% if list.page == 'Blogs' %}selected{% endif %} value="Blogs">Blogs</option>
+                                                
+                                            </select>
+                                        </div>
+										
+                                        
+                                        
+                                        
+                                        <div class="row">
+                                            <h6>SEO section :</h6><br>
+                                            <div class="form-group col-lg-6 col-12">
+                                                <label for="" class="form-label"> Title tag</label>
+                                                <input type="text" class="form-control" id="" placeholder="Title tag" name="title_tag" value="{{list.title_tag}}" >
+                                            </div>
+                                            <div class="form-group col-lg-6 col-12">
+                                                <label for="" class="form-label"> Meta description</label>
+                                                <input type="text" class="form-control" id="" placeholder="Meta description" name="metatag" value="{{list.metatag}}" >
+                                            </div>
+                                            <div class="form-group col-lg-6 col-12">
+                                                <label for="" class="form-label"> Keyword tag</label>
+                                                <input type="text" class="form-control" id="" placeholder="Keyword tag" name="keyword" value="{{list.keyword}}" >
+                                            </div>
+                                            <div class="form-group col-lg-6 col-12">
+                                                <label for="" class="form-label"> Canonical url</label>
+                                                <input type="text" class="form-control" id="" placeholder="Canonical url" name="canonical" value="{{list.canonical}}" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-12 col-12">
+                                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                                            <a href="{% url 'seo_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                        </div>
+                        <!-- ROW CLOSED -->
+                    </div>
+                    <!-- CONTAINER END -->
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--app-content close-->
+
+    {% include 'superadmin/layout/footer.html' %}

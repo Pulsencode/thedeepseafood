@@ -1,0 +1,188 @@
+{% load static %}
+<input type="hidden" id="page" name="page" value="{{page}}">
+<table class="table border-top table-bordered mb-0 table-hover">
+    <thead>
+        <tr>
+            <th>Sl No</th>
+            <th>Title</th>
+            <th>Brand</th>
+            <th>Instructions</th>
+            <th>Images</th>
+            <th>Ingredients</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if datas %}
+        {% for d in datas %}
+        <tr>
+            <td>{{datas.start_index|add:forloop.counter0}}</td>
+            <td>{{d.title}}</td>
+            <td>{{d.brand}}</td>
+            <td>
+                <a href="javascript:void(0)" class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#desc{{d.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#slider{{d.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#Ingredients{{d.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+
+            </td>
+            <td>
+                <div class="material-switch">
+                    <input id="someSwitchOptionSuccess{{d.id}}" name="someSwitchOption001" type="checkbox" {% if d.status == True %} onclick="changerecipestatus({{d.id}},0)" checked {% else %}onclick="changerecipestatus({{d.id}},1)" {% endif %} />
+                    <label for="someSwitchOptionSuccess{{d.id}}" class="label-success"></label>
+                </div>
+            </td>
+            <td>
+                <a class="btn btn-info btn-sm mb-1" href="{% url 'recipe_update' d.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+
+                <button class="btn btn-danger btn-sm mb-1"  ><i class="side-menu__icon fe fe-trash"  onclick="show_modal({{d.id}})"></i></button>
+
+            </td>
+        </tr>
+        <div class="modal  fade" id="desc{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+
+                        <p class="text-center">{{d.description|safe}}</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- modal for slider-->
+
+        <div class="modal  fade" id="slider{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-md modal-dialog-centered text-center" role="document">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Slider Images</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% if d.rec_image.exists %}
+                            {% for slider in d.rec_image.all %}
+                            <a href="{{slider.image.url}}" data-lightbox="images" data-title="">
+                                <img src="{{slider.image.url}}" height="100" width="100"></a>
+                            {% endfor %}
+                        {% else %}
+                        <p>No slider images available for this event</p>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- modal for ingerdients-->
+
+        <div class="modal fade" id="Ingredients{{d.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-md modal-dialog-centered text-center" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="table-responsive"> 
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                <h3>Ingredients</h3>
+                                {% for s in d.rec_ind.all %}
+                                <h5>{{s.title}}</h5>
+                                {% endfor %}
+                            </div>
+                            <!-- <div class="col-lg-6"> -->
+                                <!-- <h3>Description</h3> -->
+                                <!-- {% for s in d.rec_ind.all %} -->
+                                <!-- <h5>{{s.amount}}</h5> -->
+                                <!-- {% endfor %} -->
+                            <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan='10'>
+                <center>No record found</center>
+            </td>
+        </tr>
+        {% endif %}
+
+    </tbody>
+</table>
+
+<div class="pagination_section pb-5">
+    
+    {% if datas %}
+    Showing {{ datas.start_index }}-{{ datas.end_index }} of {{ datas.paginator.count }}
+    
+    {% endif %}
+    <!--Pagination-->
+    {% if datas.has_other_pages %}
+    
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if datas.has_previous %}
+            <li class="page-item">
+            <a class="page-link" href="javascript:void(0)" onclick="return recipe_view('{{ datas.previous_page_number }}');">Previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Previous</a>
+            </li>
+        {% endif %}
+        {% if datas.number == 1 %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">First</a>
+            </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return recipe_view('{{ 1 }}');">First</a></li>
+        {% endif %}
+        {% for i in datas.paginator.page_range %}
+            {% if datas.number > i and i > datas.number|add:-5 %}
+            <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return recipe_view('{{ i }}');">{{ i }}</a></li>
+            {% endif %}
+            {% if datas.number == i %}
+            <li class="page-item active" aria-current="page">
+            <span class="page-link">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+            </span>
+            </li>
+            {% endif  %}
+            {% if datas.number < i and i < datas.number|add:5 %}
+            <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return recipe_view('{{ i }}');">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if datas.number == datas.paginator.num_pages %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Last</a>
+            </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return recipe_view('{{ datas.paginator.num_pages }}');">Last</a></li>
+        {% endif %}
+        {% if datas.has_next %}
+            <li class="page-item">
+            <a class="page-link"  href="javascript:void(0)" onclick="return recipe_view('{{ datas.next_page_number }}');">Next</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Next</a>
+            </li>
+        {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div> 
