@@ -16,10 +16,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import TemplateView
 
-from deepapp.constant_variables import PAGINATION_COUNT
 from deepapp.helper import is_ajax, renderhelper
-
-# from django.contrib.auth.decorators import login_required
 from deepapp.models import (
     Aboutus,
     ApplicationDetails,
@@ -187,7 +184,7 @@ class BrandListView(UserPassesTestMixin, TemplateView):
                     datas = None
                 if datas:
                     datas.delete()
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -200,7 +197,7 @@ class BrandListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -305,7 +302,7 @@ class CategoryListView(UserPassesTestMixin, TemplateView):
                     datas = None
                 if datas:
                     datas.delete()
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -318,7 +315,7 @@ class CategoryListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -421,7 +418,7 @@ class JobCategoryListView(TemplateView):
                     datas = None
                 if datas:
                     datas.delete()
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -434,7 +431,7 @@ class JobCategoryListView(TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -515,7 +512,7 @@ class RecipeListView(UserPassesTestMixin, TemplateView):
                     datas = None
                 if datas:
                     datas.delete()
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -528,7 +525,7 @@ class RecipeListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -713,7 +710,7 @@ class GalleryListView(UserPassesTestMixin, TemplateView):
                     datas = None
                 if datas:
                     datas.delete()
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -726,7 +723,7 @@ class GalleryListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -872,7 +869,7 @@ class NewsListView(UserPassesTestMixin, TemplateView):
                     datas = None
                 if datas:
                     datas.delete()
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -885,7 +882,7 @@ class NewsListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -1052,7 +1049,7 @@ class PromotionListView(UserPassesTestMixin, TemplateView):
                     datas = None
                 if datas:
                     datas.delete()
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -1065,7 +1062,7 @@ class PromotionListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -1200,7 +1197,7 @@ class BlogListView(UserPassesTestMixin, TemplateView):
                     datas = None
                 if datas:
                     datas.delete()
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -1213,7 +1210,7 @@ class BlogListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -1372,7 +1369,7 @@ class TeamListView(UserPassesTestMixin, TemplateView):
                     datas = None
                 if datas:
                     datas.delete()
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -1385,7 +1382,7 @@ class TeamListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -1496,7 +1493,7 @@ class TestimonialListView(UserPassesTestMixin, TemplateView):
                     datas = None
                 if datas:
                     datas.delete()
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -1509,7 +1506,7 @@ class TestimonialListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -1615,7 +1612,7 @@ class CareerListView(UserPassesTestMixin, TemplateView):
                     datas = None
                 if datas:
                     datas.delete()
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -1628,7 +1625,7 @@ class CareerListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -1761,7 +1758,7 @@ class ApplicationListView(UserPassesTestMixin, TemplateView):
                     datas = None
                 if datas:
                     datas.delete()
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -1774,7 +1771,7 @@ class ApplicationListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -1826,7 +1823,7 @@ class HistoryListView(UserPassesTestMixin, TemplateView):
                     datas = None
                 if datas:
                     datas.delete()
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -1839,7 +1836,7 @@ class HistoryListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -1954,7 +1951,7 @@ class ContactListView(UserPassesTestMixin, TemplateView):
                 if datas:
                     datas.delete()
 
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -1967,7 +1964,7 @@ class ContactListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -2026,7 +2023,7 @@ class EnquiryListView(UserPassesTestMixin, TemplateView):
                     created__date__gte=start_date, created__date__lte=end_date
                 )
 
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -2039,7 +2036,7 @@ class EnquiryListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -2133,7 +2130,7 @@ class ProductListView(UserPassesTestMixin, TemplateView):
                 if datas:
                     datas.delete()
 
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -2146,7 +2143,7 @@ class ProductListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -2297,7 +2294,7 @@ class ProductDetailsListView(UserPassesTestMixin, TemplateView):
                 if datas:
                     datas.delete()
 
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -2310,7 +2307,7 @@ class ProductDetailsListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -2492,7 +2489,7 @@ class BrandProductListView(UserPassesTestMixin, TemplateView):
                 if datas:
                     datas.delete()
 
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -2505,7 +2502,7 @@ class BrandProductListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -2660,7 +2657,7 @@ class BrandProductDetailsListView(UserPassesTestMixin, TemplateView):
                 if datas:
                     datas.delete()
 
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -2673,7 +2670,7 @@ class BrandProductDetailsListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -2864,7 +2861,7 @@ class SupermarketListView(UserPassesTestMixin, TemplateView):
                 if datas:
                     datas.delete()
 
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -2877,7 +2874,7 @@ class SupermarketListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -2970,7 +2967,7 @@ class SubcategoryListView(TemplateView):
                 if datas:
                     datas.delete()
 
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -2983,7 +2980,7 @@ class SubcategoryListView(TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -3065,7 +3062,7 @@ class CertificationListView(UserPassesTestMixin, TemplateView):
                 if datas:
                     datas.delete()
 
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -3078,7 +3075,7 @@ class CertificationListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -3179,7 +3176,7 @@ class AboutusListView(UserPassesTestMixin, TemplateView):
                 if datas:
                     datas.delete()
 
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -3192,7 +3189,7 @@ class AboutusListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
@@ -3284,7 +3281,7 @@ class SeoListView(UserPassesTestMixin, TemplateView):
                 if datas:
                     datas.delete()
 
-            paginator = Paginator(cd, PAGINATION_COUNT)
+            paginator = Paginator(cd, 10)
             try:
                 datas = paginator.get_page(page)
             except PageNotAnInteger:
@@ -3297,7 +3294,7 @@ class SeoListView(UserPassesTestMixin, TemplateView):
             html_content = template.render(context, request)
             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, PAGINATION_COUNT)
+        paginator = Paginator(cd, 10)
         try:
             datas = paginator.get_page(page)
         except PageNotAnInteger:
