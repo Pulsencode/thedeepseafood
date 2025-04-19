@@ -18,7 +18,7 @@
                 <h5 class="font-lnterbold">
                   <a href="{% url "home" %}">Home</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
-                  <a href="javascript:void(0)">Blog</a>
+                  <a href="#">Blog</a>
                 </h5>
               </div>
             </div>
@@ -58,7 +58,8 @@
                   </div>
                   <div class="dfg mt-2">{{ i.description|safe }}</div>
                   <a class="btn bg-blue text-white rounded-25 btn-sm mt-15 btn-icon"
-                     href="{% url 'blog_details' i.slug %}">
+                     {% comment %} href="{% url 'blog_details' i.slug %}" {% endcomment %}
+                     >
                     <span>Read More</span>
                     <img width=""
                          height=""

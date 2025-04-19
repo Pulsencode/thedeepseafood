@@ -66,14 +66,14 @@
               <a href="{% url 'product' %}"
                  class="{% if 'product' in request.path %}active{% endif %}">Products</a>
             </li>
-            <li class="nav-item dropdown">
+            {% comment %} <li class="nav-item dropdown">
               <a class="dropdown-toggle" href="#" id="brandsDropdown">Brands</a>
               <ul class="dropdown-menu border-0">
                 <li>
                   <a href="#">Oceano</a>
                 </li>
               </ul>
-            </li>
+            </li> {% endcomment %}
             <li>
               <a href="{% url 'distribution' %}"
                  class="{% if 'distribution' in request.path %}active{% endif %}">Distribution Channel</a>
@@ -91,12 +91,12 @@
               <a href="{% url 'career' %}"
                  class="{% if 'career' in request.path %}active{% endif %}">Careers</a>
             </li>
-            {% if blog %}
+            {% comment %} {% if blog %} {% endcomment %}
               <li>
                 <a href="{% url 'blogs' %}"
                    class="{% if 'blogs' in request.path %}active{% endif %}">Blog</a>
               </li>
-            {% endif %}
+            {% comment %} {% endif %} {% endcomment %}
             <li>
               <a href="{% url 'contact' %}"
                  class="{% if 'contact' in request.path %}active{% endif %}">Contact</a>

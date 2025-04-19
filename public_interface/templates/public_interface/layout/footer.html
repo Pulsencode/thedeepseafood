@@ -200,9 +200,9 @@
                   <li>
                     <a href="{% url "product" %}">Products</a>
                   </li>
-                  <li>
+                  {% comment %} <li>
                     <a href="">Brands</a>
-                  </li>
+                  </li> {% endcomment %}
                   <li>
                     <a href="{% url 'distribution' %}">Distribution Channel</a>
                   </li>
@@ -214,11 +214,11 @@
                   <li>
                     <a href="{% url 'career' %}">Career</a>
                   </li>
-                  {% if blog %}
+                  {% comment %} {% if blog %} {% endcomment %}
                     <li>
-                      <a href="{% url 'blog' %}">Blog</a>
+                      <a href="{% url 'blogs' %}">Blog</a>
                     </li>
-                  {% endif %}
+                  {% comment %} {% endif %} {% endcomment %}
                   <li>
                     <a href="{% url 'contact' %}">Contact us</a>
                   </li>
@@ -227,8 +227,8 @@
             </ul>
           </div>
           <div class="links">
-            <a class="btn btn-zoom-hover" href="{% url "terms_and_conditions" %}">Terms and Conditions</a>
-            <a class="btn btn-zoom-hover" href="{% url "privacy_policy" %}">Privacy Policy</a>
+            <a class="btn btn-zoom-hover border-0" href="{% url "terms_and_conditions" %}">Terms and Conditions</a>
+            <a class="btn btn-zoom-hover border-0" href="{% url "privacy_policy" %}">Privacy Policy</a>
           </div>
           <div class="copyright">
             <span>Copyright @2024 The Deep Seafood Company.</span>
