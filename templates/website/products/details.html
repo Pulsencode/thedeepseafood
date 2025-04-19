@@ -1,95 +1,82 @@
 {% load custom_filters %}
-
-
- <div class="div-col">
+<div class="div-col">
     <div class="data">
-	{% for sub_category in data.sub_categories|split_by_comma %}
-            <button class="sub-d-btn" >{{ sub_category }}</button>
+        {% for sub_category in data.sub_categories|split_by_comma %}
+            <button class="sub-d-btn">{{ sub_category }}</button>
         {% endfor %}
-	</div>
+    </div>
 </div>
-
-
 <div class="div-col mt-2">
     <label class="font-lnterbold">Category :</label>
-    <div class="data">{{cat_name}}</div>
+    <div class="data">{{ cat_name }}</div>
 </div>
-<!-- <div class="div-col"> -->
-    <!-- <label class="font-lnterbold">Sub Categories :</label> -->
-    <!-- <div class="data"> -->
-	<!-- {% for sub_category in data.sub_categories|split_by_comma %} -->
-            <!-- <button class="sub-d-btn" >{{ sub_category }}</button> -->
-            
-        <!-- {% endfor %} -->
-	<!-- </div> -->
-<!-- </div> -->
 {% if data.product_code %}
-<hr class="bg-blue">
-<div class="div-col">
-    <label class="font-lnterbold">Product Code :</label>
-    <div class="data">{{data.product_code}}</div>
-</div>
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Product Code :</label>
+        <div class="data">{{ data.product_code }}</div>
+    </div>
 {% endif %}
 {% if data.grade %}
-<hr class="bg-blue">
-<div class="div-col">
-    <label class="font-lnterbold">Grade :</label>
-    <div class="data">{{data.grade}}</div>
-</div>
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Grade :</label>
+        <div class="data">{{ data.grade }}</div>
+    </div>
 {% endif %}
 {% if data.origin %}
-<hr class="bg-blue">
-<div class="div-col">
-    <label class="font-lnterbold">Origin :</label>
-    <div class="data">{{data.origin}}</div>
-</div>
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Origin :</label>
+        <div class="data">{{ data.origin }}</div>
+    </div>
 {% endif %}
 {% if data.price %}
-<hr class="bg-blue">
-<div class="div-col">
-    <label class="font-lnterbold">Price :</label>
-    <div class="data">{{data.price}}</div>
-</div>
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Price :</label>
+        <div class="data">{{ data.price }}</div>
+    </div>
 {% endif %}
 {% if data.net_weight %}
-<hr class="bg-blue">
-<div class="div-col">
-    <label class="font-lnterbold">Net Weight :</label>
-    <div class="data">{{data.net_weight}}</div>
-</div>
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Net Weight :</label>
+        <div class="data">{{ data.net_weight }}</div>
+    </div>
 {% endif %}
 {% if data.description %}
-<hr class="bg-blue">
-<div class="div-col">
-    <label class="font-lnterbold">Description :</label>
-    <div class="data d-block">{{data.description}}</div>
-</div>
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Description :</label>
+        <div class="data d-block">{{ data.description }}</div>
+    </div>
 {% endif %}
 {% if data.packing %}
-<hr class="bg-blue">
-<div class="div-col">
-    <label class="font-lnterbold">Packing :</label>
-    <div class="data d-block">{{data.packing}}</div>
-</div>
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Packing :</label>
+        <div class="data d-block">{{ data.packing }}</div>
+    </div>
 {% endif %}
 {% if data.ingredients %}
-<hr class="bg-blue">
-<div class="div-col">
-    <label class="font-lnterbold">Ingredients :</label>
-    <div class="data d-block">{{data.ingredients}}</div>
-</div>
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Ingredients :</label>
+        <div class="data d-block">{{ data.ingredients }}</div>
+    </div>
 {% endif %}
 {% if data.storage_instructions %}
-<hr class="bg-blue">
-<div class="div-col">
-    <label class="font-lnterbold">Storage Instructions :</label>
-    <div class="data d-block">{{data.storage_instructions}}</div>
-</div>
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Storage Instructions :</label>
+        <div class="data d-block">{{ data.storage_instructions }}</div>
+    </div>
 {% endif %}
 {% if data.causion %}
-<hr class="bg-blue">
-<div class="div-col">
-    <label class="font-lnterbold">Caution :</label>
-    <div class="data d-block">{{data.causion}}</div>
-</div>
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Caution :</label>
+        <div class="data d-block">{{ data.causion }}</div>
+    </div>
 {% endif %}
