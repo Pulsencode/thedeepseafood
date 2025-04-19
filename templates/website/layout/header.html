@@ -1,170 +1,108 @@
-<!doctype html>
 {% load static %}
-<html lang="en">
-
-<head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RZ20QPH6D6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-RZ20QPH6D6');
-</script>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="shortcut icon" type="image/ico" href="{% static 'website/assets/general/images/logo.png' %}">
-  <meta property="og:image" content="{% static 'website/assets/general/images/logo.png' %}">
-  <meta property="og:description"
-    content="We supply our products domestically and internationally depending on market needs. We offer extensive seafood baskets that are live, chilled, fresh, and frozen.">
-
-
-	<!-- seo section -->
-	
-  <title>{% if data.title_tag %}{{data.title_tag}}{% endif %}</title>
-  <link rel=“canonical” href=”{% if data.canonical %}{{data.canonical}}{% endif %}” />
-  <meta name="description" content="{% if data.metatag %}{{data.metatag}}{% endif %}"/>
-  <meta name="keywords" content="{% if data.keyword %}{{data.keyword}}{% endif %}">
-	<!-- seo end -->
-
-  
-  
-  <link href="{% static 'website/assets/general/fonts/webfonts/airbnbcereal/font-airbnbcereal.css' %}" rel="stylesheet"
-    type="text/css">
-  <link href="{% static 'website/assets/general/fonts/fontawesome/v4.7/css/font-awesome.min.css' %}" rel="stylesheet"
-    type="text/css">
-  <link href="{% static 'website/assets/general/modules/bootstrap5/css/bootstrap.min.css' %}" rel="stylesheet"
-    type="text/css">
-  <link href="{% static 'website/assets/public/modules/aos/aos.css' %}" rel="stylesheet" type="text/css" />
-  <link href="{% static 'website/assets/public/modules/animate/animate.min.css' %}" rel="stylesheet" type="text/css" />
-  <link href="{% static 'website/assets/general/modules/chosen-select/chosen.css' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'website/assets/general/modules/datepicker/jquery-ui.css' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'website/assets/general/modules/slick-slider/slick.min.css' %}" rel="stylesheet"
-    type="text/css" />
-  <link href="{% static 'website/assets/general/modules/slick-slider/slick-theme.min.css' %}" rel="stylesheet"
-    type="text/css" />
-  <link href="{% static 'website/assets/general/modules/slick-slider/custom.css' %}" rel="stylesheet" type="text/css" />
-  <link href="{% static 'website/assets/public/fonts/webfonts/lnter/font-lnter.css' %}" rel="stylesheet"
-    type="text/css">
-  <link href="{% static 'website/assets/general/css/custom.css' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'website/assets/public/css/custom.css' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'website/assets/public/css/select2.min.css' %}" rel="stylesheet" type="text/css">
-
-  <!-- jquery -->
-  <script src="{% static 'website/assets/general/modules/jquery/jquery-3.3.1.min.js' %}"
-    type="text/javascript"></script>
-
-
-</head>
-
-<body>
-  <div class="pre_loader pre-loader"></div><!-- pre-loader -->
-
-
-
-
-  <div class="main-div pt-0 header-bg-transparent header-logo-lg">
-
-    <header>
-      <div class="row">
-        <div class="col-md-8 col-4">
-          <a class="a-logo" href="{% url 'index' %}">
-		  <img class="logo white_logo" src="{% static 'website/assets/general/images/logo-white.png' %} ">
-            <img class="logo blue_logo" src="{% static 'website/assets/general/images/logo.png' %}">
-            
-            <img class="logo logo-oceano" src="{% static 'website/assets/public/images/general/logo-oceano-white.png' %}">
-          </a>
-        </div>
-        <div class="col-md-4 col-8 text-end">
-          <div class="d-grid gap-2 d-flex justify-content-end align-items-center">
-		            <!-- <a class=" text-white gl-logo  me-2 px-3 py-1 fs-12 cntact-header" -->
-                           <!-- href="https://gourmex.ae/" target="_blank"> -->
-						  <!-- <img src="{% static 'website/assets/public/images/general/gourme.png' %}">    -->
-					<!-- </a> -->
-			  
-            <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover me-2 px-3 py-1 fs-12 cntact-header"
-              href="{% url 'contact' %}">Contact Us</a>
-            <button class="toggle-sidebar toggle_sidebar" type="button">
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-          </div>
-        </div>
+<div class="main-div pt-0 header-bg-transparent header-logo-lg">
+  <header>
+    <div class="row">
+      <div class="col-md-8 col-4">
+        <a class="a-logo" href="{% url 'index' %}">
+          <img width=""
+               height=""
+               alt=""
+               class="logo white_logo"
+               src="{% static 'website/assets/general/images/logo-white.png' %} ">
+          <img width=""
+               height=""
+               alt=""
+               class="logo blue_logo"
+               src="{% static 'website/assets/general/images/logo.png' %}">
+          <img width=""
+               height=""
+               alt=""
+               class="logo logo-oceano"
+               src="{% static 'website/assets/public/images/general/logo-oceano-white.png' %}">
+        </a>
       </div>
-    </header>
-	
-	<a  target="_blank" href="https://api.whatsapp.com/send?phone=+971564182895&text=Hello,%20Deep Seafood" class="whatsapp_sticky">
-	    <img class="logo" src="{% static 'website/assets/general/images/icons/whatsapp.png' %}">
-	 </a>
-
-    <!-- sidebar -->
-    <div class="sidebar-area toggle_sidebar"></div>
-    <div class="sidebar">
-      <div class="text-end">
-        <button class="toggle-sidebar toggle_sidebar btn-zoom-hover">
-          <i class="fa fa-times-circle" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="inner">
-
-        <ul class="nav-list font-lntermedium">
-          <div class="row align-items-center">
-            <div class="col-sm-5">
-              <li>
-                <a href="{% url 'index' %}">Home Page</a>
-              </li>
-              <li>
-                <a href="{% url 'about' %}">About us</a>
-              </li>
-              <li>
-                <a href="{% url 'product' %}">Products</a>
-              </li>
-              <!-- <li> -->
-                <!-- <a href="{% url 'brands' %}">Brands</a> -->
-              <!-- </li> -->
-			  
-			  
-		<li class="nav-item dropdown nav-br-drop">
-         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Brands
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end oceano-navbar" aria-labelledby="navbarDropdown">
-            <li class="sub-mm"><a class="dropdown-item" href="{% url 'brands' %}">Oceano</a></li>
-          </ul>
-        </li>
-			  
-			  
-			  
-              <li>
-                <a href="{% url 'distribution' %}">Distribution Channel</a>
-              </li>
-            </div>
-            <div class="col-sm-7">
-
-              <li>
-                <a href="{% url 'newsroom' %}">News Room</a>
-              </li>
-
-              <li>
-                <a href="{% url 'careers' %}">Career</a>
-              </li>
-			  {% if blog %}
-			  <li>
-                <a href="{% url 'blog' %}">Blog</a>
-              </li>
-			  {% endif %}
-			 
-              <li>
-                <a href="{% url 'contact' %}">Contact us</a>
-              </li>
-
-            </div>
-          </div>
-        </ul>
+      <div class="col-md-4 col-8 text-end">
+        <div class="d-grid gap-2 d-flex justify-content-end align-items-center">
+          <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover me-2 px-3 py-1 fs-12 cntact-header"
+             href="{% url 'contact' %}">Contact Us</a>
+          <button class="toggle-sidebar toggle_sidebar" type="button">
+            <span class="empty"></span>
+            <span class="empty"></span>
+            <span class="empty"></span>
+          </button>
+        </div>
       </div>
     </div>
-    <!-- /sidebar -->
+  </header>
+  <a target="_blank"
+     href="https://api.whatsapp.com/send?phone=+971564182895&text=Hello,%20Deep Seafood"
+     class="whatsapp_sticky">
+    <img width=""
+         height=""
+         alt=""
+         class="logo"
+         src="{% static 'website/assets/general/images/icons/whatsapp.png' %}">
+  </a>
+  <!-- sidebar -->
+  <div class="sidebar-area toggle_sidebar"></div>
+  <div class="sidebar">
+    <div class="text-end">
+      <button class="toggle-sidebar toggle_sidebar btn-zoom-hover">
+        <i class="fa fa-times-circle" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="inner">
+      <ul class="nav-list font-lntermedium">
+        <div class="row align-items-center">
+          <div class="col-sm-5">
+            <li>
+              <a href="{% url 'index' %}">Home Page</a>
+            </li>
+            <li>
+              <a href="{% url 'about' %}">About us</a>
+            </li>
+            <li>
+              <a href="{% url 'product' %}">Products</a>
+            </li>
+            <!-- <li> -->
+            <!-- <a href="{% url 'brands' %}">Brands</a> -->
+            <!-- </li> -->
+            <li class="nav-item dropdown nav-br-drop">
+              <a class="nav-link dropdown-toggle"
+                 href="#"
+                 id="navbarDropdown"
+                 role="button"
+                 data-bs-toggle="dropdown"
+                 aria-expanded="false">Brands</a>
+              <ul class="dropdown-menu dropdown-menu-end oceano-navbar"
+                  aria-labelledby="navbarDropdown">
+                <li class="sub-mm">
+                  <a class="dropdown-item" href="{% url 'brands' %}">Oceano</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="{% url 'distribution' %}">Distribution Channel</a>
+            </li>
+          </div>
+          <div class="col-sm-7">
+            <li>
+              <a href="{% url 'newsroom' %}">News Room</a>
+            </li>
+            <li>
+              <a href="{% url 'careers' %}">Career</a>
+            </li>
+            {% if blog %}
+              <li>
+                <a href="{% url 'blog' %}">Blog</a>
+              </li>
+            {% endif %}
+            <li>
+              <a href="{% url 'contact' %}">Contact us</a>
+            </li>
+          </div>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
