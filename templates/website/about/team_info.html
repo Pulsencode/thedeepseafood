@@ -1,0 +1,34 @@
+<div class="team padd_t_70 bg-x-light-blue">
+    <div class="wrapper">
+        <div class="row text-center">
+            <div class="col-12">
+                <div class="section-head">
+                    <h1 class="text-blue font-lnterbold">MANAGEMENT TEAM</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-12 pt-20">
+                <div class="slick_slider_team arrows-vector ps-50 pe-50">
+                    {% for t in teams %}
+                        <div class="item  wow fadeInUp wow_item pb-70">
+                            <div class="card-hover-up">
+                                <div class="card-img">
+                                    <img width=""
+                                         height=""
+                                         alt=""
+                                         src="{{ t.image.url }}"
+                                         alt="{{ t.image_alt }}">
+                                </div>
+                                <div class="info bg-blue">
+                                    <div class="name font-lnterbold">{{ t.name }}</div>
+                                    <div class="dec text-m-light-blue">{{ t.designation }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
