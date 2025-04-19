@@ -1,15 +1,3 @@
-<!-- <div class="div-col"> -->
-<!-- <label class="font-lnterbold">Product code :</label> -->
-<!-- <div class="data font-lnterbold PCODE">{{data.sub_categories}}</div> -->
-<!-- </div> -->
-<!-- <div class="div-col"> -->
-<!-- <label class="font-lnterbold">Product code :</label> -->
-<!-- <div class="data font-lnterbold PCODE">{{data.product_code}}</div> -->
-<!-- </div> -->
-<!-- <div class="div-col"> -->
-<!-- <label class="font-lnterbold">Price :</label> -->
-<!-- <div class="data font-lnterbold PPRICE">{{data.price}}</div> -->
-<!-- </div> -->
 <style>
     .data {
         white-space: pre-line;
@@ -32,7 +20,6 @@
         <div class="data font-lnterbold PNET text-capitalize">{{ data.net_weight|lower }}</div>
     </div>
 {% endif %}
-<!-- <div class="mt-15"></div> -->
 {% if data.ingredients %}
     <div class="mt-15"></div>
     <div class="div-col">
@@ -40,11 +27,6 @@
         <div class="data font-lnterbold PIND text-capitalize">{{ data.ingredients|lower }}</div>
     </div>
 {% endif %}
-<!-- <div class="mt-15"></div> -->
-<!-- <div class="div-col"> -->
-<!-- <label class="font-lnterbold">USE INSTRUCTION :</label> -->
-<!-- <div class="data font-lnterbold d-block PINS">{{data.instructions}}</div> -->
-<!-- </div> -->
 {% if data.storage_instructions %}
     <div class="mt-15"></div>
     <div class="div-col">

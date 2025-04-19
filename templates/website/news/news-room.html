@@ -1,218 +1,54 @@
-{% include 'website/layout/header.html' %}
+{% extends "website/layout/public_base.html" %}
 {% load static %}
-
-<div class="main-div pt-0 header-bg-transparent header-logo-white">
-  <!-- news-room -->
-  <section id="news-room" class="pt-0 pb-0">
-    <div class="banner-cover">
-      <img class="img-primary"
-        src="{% static 'website/assets/public/images/news-room/banner-cover/news-room-banner.jpg' %}">
-      <div class="caption w-100 text-center">
-        <div class="wrapper">
-          <div class="row text-white">
-            <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
-              <h3 class="font-lnterbold">NEWS ROOM</h3>
-              <h5 class="font-lnterbold">
-                <a href="{% url 'index' %}">Home</a>
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                <a>News Room</a>
-              </h5>
+{% block content %}
+  <div class="main-div pt-0 header-bg-transparent header-logo-white">
+    <section id="news-room" class="pt-0 pb-0">
+      <div class="banner-cover">
+        <img class="img-primary"
+             width=""
+             height=""
+             alt="News Room Banner"
+             src="{% static 'website/assets/public/images/news-room/banner-cover/news-room-banner.jpg' %}">
+        <div class="caption w-100 text-center">
+          <div class="wrapper">
+            <div class="row text-white">
+              <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
+                <h3 class="font-lnterbold">NEWS ROOM</h3>
+                <h5 class="font-lnterbold">
+                  <a href="{% url 'index' %}">Home</a>
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  <a>News Room</a>
+                </h5>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="event-gallery padd_t_b_70">
-      <div class="wrapper">
-        <div class="row text-center">
-          <!-- <div class="col-lg-6 col-md-12"> -->
-            <!-- <div class="section-head"> -->
-              <!-- <h1 class="text-blue font-lnterbold text-start"></h1> -->
-            <!-- </div> -->
-          <!-- </div> -->
-		  <div class="col-lg-12 col-md-12 col-12" >
-		     <div class="list_side d-flex prod_tab_sc">
-				<div class="NEWS-NWE exhibition" >
-				   <a href="javascript:void(0)" onclick="getEvents()" class="active" > Events/Exhibitions </a> 
-				 </div>
-			     <div class="NEWS-NWE company" >
-				    <a href="javascript:void(0)" onclick="getNews()">Company News</a>
-				 </div>
-				 <div class="NEWS-NWE global" >
-				    <a href="javascript:void(0)" onclick="getGlobalNews()">Global News</a>
-				 </div>
-				 
-				 <!-- <div class="NEWS-NWE" > -->
-				    <!-- <a href="javascript:void(0)" onclick="getPromotions()"> Promotions </a> -->
-				 <!-- </div> -->
-				 
-			 </div>
-		   </div>
+      <div class="event-gallery padd_t_b_70">
+        <div class="wrapper">
+          <div class="row text-center">
+            <div class="col-lg-12 col-md-12 col-12">
+              <div class="list_side d-flex prod_tab_sc">
+                <div class="NEWS-NWE exhibition">
+                  <a href="#events" onclick="getEvents()" class="active">Events/Exhibitions</a>
+                </div>
+                <div class="NEWS-NWE company">
+                  <a href="#company-news" onclick="getNews()">Company News</a>
+                </div>
+                <div class="NEWS-NWE global">
+                  <a href="#global-news" onclick="getGlobalNews()">Global News</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col-lg-12 col-md-12 col-12">
+              <div class="row" id="newsroom-data">{% include "website/news/event_gallery.html" %}</div>
+            </div>
+          </div>
         </div>
-        <!-- <div class="row"> -->
-          <!-- {% for g in gallery %} -->
-          <!-- {% if not forloop.counter|divisibleby:"2" %} -->
-          <!-- <div class="col-12 pt-50 row-item"> -->
-            <!-- <div class="item text-blue" data-aos="fade-up" data-aos-duration="1000"> -->
-              <!-- <div class="row"> -->
-                <!-- <div class="col-lg-6 col-item"> -->
-                  <!-- <div class="info"> -->
-                    <!-- <div class="title font-lnterbold">{{g.title}}</div> -->
-                    <!-- <div class="dec">{{g.description|safe}}</div> -->
-                    <!-- <div class="date">{{g.date|date:'d/m/Y'}}</div> -->
-                    <!-- <div class="location">{{g.location}}</div> -->
-                  <!-- </div> -->
-                <!-- </div> -->
-                <!-- <div class="col-lg-6 col-item"> -->
-                  <!-- <div class="slick_slider_1 slick-dots-blue"> -->
-                    <!-- {% for i in g.gallery_image.all %} -->
-                    <!-- <div class="item"> -->
-                      <!-- <img class="img-fluid" -->
-                        <!-- src="{{i.image.url}}"> -->
-                    <!-- </div> -->
-                    <!-- {% endfor %} -->
-                    
-
-                  <!-- </div> -->
-                <!-- </div> -->
-              <!-- </div> -->
-            <!-- </div> -->
-          <!-- </div> -->
-          <!-- {% else %} -->
-
-          <!-- <div class="col-12 pt-50 row-item"> -->
-            <!-- <div class="item text-blue" data-aos="fade-up" data-aos-duration="1000"> -->
-              <!-- <div class="row"> -->
-                <!-- <div class="col-lg-6 col-item"> -->
-                  <!-- <div class="info"> -->
-                    <!-- <div class="title font-lnterbold">{{g.title}}</div> -->
-                    <!-- <div class="dec">{{g.description|safe}}</div> -->
-                    <!-- <div class="date">{{g.date|date:'d/m/Y'}}</div> -->
-                    <!-- <div class="location">{{g.location}}</div> -->
-                  <!-- </div> -->
-                <!-- </div> -->
-                <!-- <div class="col-lg-6 col-item"> -->
-                  <!-- <div class="slick_slider_1 slick-dots-blue"> -->
-
-                    <!-- {% for i in g.gallery_image.all %} -->
-                    <!-- <div class="item"> -->
-                      <!-- <img class="img-fluid" -->
-                        <!-- src="{{i.image.url}}"> -->
-                    <!-- </div> -->
-                    <!-- {% endfor %} -->
-                    
-
-                  <!-- </div> -->
-                <!-- </div> -->
-              <!-- </div> -->
-            <!-- </div> -->
-          <!-- </div> -->
-          <!-- {% endif %} -->
-          <!-- {% endfor %} -->
-
-          
-           
-        <!-- </div> -->
-		 
-		 <div class="row ">
-	
-		   <div class="col-lg-12 col-md-12 col-12" >
-		    <div class="row" id="newsroom-data">
-				{% include 'website/news/event_gallery.html' %}
-			</div>
-		   </div>
-		   
-		 </div>
-		
       </div>
-    </div>
-    <!-- {%  if news %} -->
-    <!-- <div class="news pt-70 pb-70 bg-blue"> -->
-      <!-- <div class="wrapper"> -->
-        <!-- <div class="row text-center"> -->
-          <!-- <div class="col-12"> -->
-            <!-- <div class="section-head" data-aos="fade-down" data-aos-duration="1000"> -->
-              <!-- <h1 class="text-white font-lnterbold">NEWS</h1> -->
-              <!-- <h5 class="text-white">Find all the latest news, press releases and company announcements.</h5> -->
-            <!-- </div> -->
-          <!-- </div> -->
-        <!-- </div> -->
-        <!-- <div class="row"> -->
-          <!-- {% for n in news %} -->
-          <!-- <div class="col-lg-4 col-sm-6 pt-30"> -->
-            <!-- <div class="item bg-x-light-blue wow fadeInUp wow_item"> -->
-              <!-- <div class="title font-lnterbold">{{n.title|truncatechars:40}}</div> -->
-              <!-- <div class="dec font-lntermedium">{{n.description|truncatechars:110}}</div> -->
-              <!-- <div class="date font-lntermedium">{{n.date|date:'d/m/Y'}}</div> -->
-              <!-- <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover" href="{% url 'news_details' n.id %}"> -->
-                <!-- <span>Read More</span> -->
-                <!-- <img src="{% static 'website/assets/public/images/icons/right-arrow.png' %}"> -->
-              <!-- </a> -->
-            <!-- </div> -->
-          <!-- </div> -->
-          <!-- {% endfor %} -->
-        <!-- </div> -->
-        <!-- <div class="row text-center pt-40"> -->
-          <!-- <div class="col-12"> -->
-            <!-- <a class="btn bg-white text-blue rounded-25 btn-icon btn-zoom-hover btn-more" href="{% url 'news_lists' %}"> -->
-              <!-- <span>See all news</span> -->
-              <!-- <img src="{% static 'website/assets/public/images/icons/right-arrow-blue.png' %}"> -->
-            <!-- </a> -->
-          <!-- </div> -->
-        <!-- </div> -->
-      <!-- </div> -->
-    <!-- </div> -->
-    <!-- {% endif %} -->
-
-    <!-- {% if promotion %} -->
-    <!-- <div class="promotion-info pt-70 pb-70"> -->
-      <!-- <div class="wrapper"> -->
-        <!-- <div class="row text-center"> -->
-          <!-- <div class="col-12"> -->
-            <!-- <div class="section-head" data-aos="fade-down" data-aos-duration="1000"> -->
-              <!-- <h1 class="text-blue font-lnterbold">PROMOTION INFORMATION</h1> -->
-              <!-- <h5 class="line-height-22 text-blue pt-10">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis -->
-                <!-- quod asperiores ducimus veritatis molestias minus necessitatibus.</h5> -->
-            <!-- </div> -->
-          <!-- </div> -->
-        <!-- </div> -->
-        <!-- <div class="row justify-content-center pt-20"> -->
-          <!-- <div class="col-lg-10"> -->
-            <!-- {% for i in promotion %} -->
-            <!-- <div class="row row-item item pt-20"> -->
-              <!-- <div class="col-md-6 col-item"> -->
-                <!-- <div class="slick_slider_1 slick-dots-blue"> -->
-                  <!-- {% for p in i.promo_image.all %} -->
-                  <!-- <div class="item"> -->
-                    <!-- <img class="img-fluid" -->
-                      <!-- src="{{p.image.url}}"> -->
-                  <!-- </div> -->
-                  <!-- {% endfor %} -->
-                <!-- </div> -->
-              <!-- </div> -->
-              <!-- <div class="col-md-6 col-item text-blue"> -->
-                <!-- <div class="title font-lnterbold">{{i.title}}</div> -->
-                <!-- <div class="dec">{{i.description|truncatechars:250}}</div> -->
-                <!-- <div class="date"> -->
-                  <!-- <i class="fa fa-calendar" aria-hidden="true"></i> -->
-                  <!-- <span>{{i.date|date:'d/m/Y'}}</span> -->
-                <!-- </div> -->
-                <!-- <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover" href="{% url 'promotion_details' i.id %}"> -->
-                  <!-- <span>Read More</span> -->
-                  <!-- <img src="{% static 'website/assets/public/images/icons/right-arrow.png' %}"> -->
-                <!-- </a> -->
-              <!-- </div> -->
-            <!-- </div> -->
-            <!-- {% endfor %} -->
-          <!-- </div> -->
-        <!-- </div> -->
-
-      <!-- </div> -->
-    <!-- </div> -->
-    <!-- {% endif %} -->
-  </section>
-  <!-- /news-room -->
-
-</div>
-
-{% include 'website/layout/footer.html' %}
+    </section>
+    <!-- /news-room -->
+  </div>
+{% endblock content %}

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load static %}
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found</title>
-    <style>
+    {% load static %}
+    <head>
+        <meta charset="UTF-8">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="404">
+        <meta name="keywords" content="404">
+        <title>404 - Page Not Found</title>
+        <style>
         /* Basic Reset */
         * {
             margin: 0;
@@ -109,22 +111,22 @@
                 /* Adjust padding for smaller screens */
             }
         }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <div class="seafood-image">
-            <img src="{% static 'website/assets/general/images/logo.png' %}" style="width:100px; height:100px;"> </i>
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="seafood-image">
+                <img src="{% static 'website/assets/general/images/logo.png' %}"
+                     width="100px"
+                     height="100px"
+                     alt="Logo">
+            </div>
         </div>
         <div class="not-found">
             <h1>404</h1>
             <h2>Oops! We couldn't find that.</h2>
             <p>It seems the seafood you're looking for is swimming elsewhere.</p>
-            <a href="/" class="home-button">Back To Home</a>
+            <a href="{% url "index" %}" class="home-button">Back To Home</a>
         </div>
-        
-    </div>
-</body>
-
+    </body>
 </html>

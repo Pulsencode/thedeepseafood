@@ -1,168 +1,229 @@
-{% include 'website/layout/header.html' %}
+{% extends "website/layout/public_base.html" %}
 {% load static %}
-
-
-<div class="main-div pt-0 header-bg-transparent header-logo-white">
-  <!-- distribution -->
-  <section id="distribution" class="pt-0 pb-0">
-    <div class="banner-cover">
-      <img class="img-primary" src="{% static 'website/assets/public/images/distribution/banner-cover/Distribution-banner.jpeg' %}">
-      <div class="caption w-100 text-center">
+{% block content %}
+  <div class="main-div pt-0 header-bg-transparent header-logo-white">
+    <section id="distribution" class="pt-0 pb-0">
+      <div class="banner-cover">
+        <img width=""
+             height=""
+             alt="Distribution Channel Banner"
+             class="img-primary"
+             src="{% static 'website/assets/public/images/distribution/banner-cover/Distribution-banner.jpeg' %}">
+        <div class="caption w-100 text-center">
+          <div class="wrapper">
+            <div class="row text-white">
+              <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
+                <h3 class="font-lnterbold">DISTRIBUTION CHANNEL</h3>
+                <h5 class="font-lnterbold">
+                  <a href="{% url 'index' %}">Home</a>
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  <a>Distribution Channel</a>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="serve bg-x-light-blue padd_t_b_70">
         <div class="wrapper">
-          <div class="row text-white">
-            <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
-              <h3 class="font-lnterbold">DISTRIBUTION CHANNEL</h3>
-              <h5 class="font-lnterbold">
-                <a href="{% url 'index' %}">Home</a>
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                <a>Distribution Channel</a>
-              </h5>
+          <div class="row justify-content-center text-center">
+            <div class="col-lg-9">
+              <div class="section-head" data-aos="fade-up" data-aos-duration="1000">
+                <h1 class="text-blue font-lnterbold">WE SERVE TO</h1>
+                <h5 class="text-blue text-center">We serve our high-quality products to</h5>
+              </div>
+            </div>
+          </div>
+          <div class="row text-center pt-40"
+               data-aos="fade-down"
+               data-aos-duration="1000">
+            <div class="col-12">
+              <div class="slick_slider_4 arrows-vector ps-50 pe-50">
+                <div class="item">
+                  <div class="card-img">
+                    <img width=""
+                         height=""
+                         alt="Market Image"
+                         class="img-fluid"
+                         src="{% static 'website/assets/public/images/distribution/serve/icons/1.png' %}">
+                  </div>
+                  <div class="title text-blue font-lnterbold">market</div>
+                </div>
+                <div class="item">
+                  <div class="card-img">
+                    <img width=""
+                         height=""
+                         alt="Hotel Image"
+                         class="img-fluid"
+                         src="{% static 'website/assets/public/images/distribution/serve/icons/2.png' %}">
+                  </div>
+                  <div class="title text-blue font-lnterbold">Hotel</div>
+                </div>
+                <div class="item">
+                  <div class="card-img">
+                    <img width=""
+                         height=""
+                         alt="Restaurent Image"
+                         class="img-fluid"
+                         src="{% static 'website/assets/public/images/distribution/serve/icons/3.png' %}">
+                  </div>
+                  <div class="title text-blue font-lnterbold">restaurant</div>
+                </div>
+                <div class="item">
+                  <div class="card-img">
+                    <img width=""
+                         height=""
+                         alt="Catering Image"
+                         class="img-fluid"
+                         src="{% static 'website/assets/public/images/distribution/serve/icons/4.png' %}">
+                  </div>
+                  <div class="title text-blue font-lnterbold">catering</div>
+                </div>
+                <div class="item">
+                  <div class="card-img">
+                    <img width=""
+                         height=""
+                         alt="Horeca Image"
+                         class="img-fluid"
+                         src="{% static 'website/assets/public/images/distribution/serve/icons/Horeca.png' %}">
+                  </div>
+                  <div class="title text-blue font-lnterbold">Horeca</div>
+                </div>
+                <div class="item">
+                  <div class="card-img">
+                    <img width=""
+                         height=""
+                         alt="Trading Image"
+                         class="img-fluid"
+                         src="{% static 'website/assets/public/images/distribution/serve/icons/Trading.png' %}">
+                  </div>
+                  <div class="title text-blue font-lnterbold">Trading</div>
+                </div>
+                <div class="item">
+                  <div class="card-img">
+                    <img width=""
+                         height=""
+                         alt="Retail Image"
+                         class="img-fluid"
+                         src="{% static 'website/assets/public/images/distribution/serve/icons/Retail.png' %}">
+                  </div>
+                  <div class="title text-blue font-lnterbold">Retail</div>
+                </div>
+                <div class="item">
+                  <div class="card-img">
+                    <img width=""
+                         height=""
+                         alt="Exports Image"
+                         class="img-fluid"
+                         src="{% static 'website/assets/public/images/distribution/serve/icons/export.png' %}">
+                  </div>
+                  <div class="title text-blue font-lnterbold">Exports</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="serve bg-x-light-blue padd_t_b_70">
+    </section>
+    <!-- export_market -->
+    <section id="export_market" class="bg-section">
       <div class="wrapper">
-        <div class="row justify-content-center text-center">
-          <div class="col-lg-9">
-            <div class="section-head" data-aos="fade-up" data-aos-duration="1000">
-              <h1 class="text-blue font-lnterbold">WE SERVE TO</h1>
-              <h5 class="text-blue text-center">We serve our high-quality products to</h5>
+        <div class="row pt-30">
+          <div class="col-lg-3 col-md-4"
+               data-aos="fade-right"
+               data-aos-duration="1000">
+            <div class="section-head">
+              <h1 class="text-blue font-lnterbold">IMPORT MARKET</h1>
+              <h5 class="text-blue">Our presence at various countries.</h5>
             </div>
+            <table class="text-blue font-lntermedium load_more_item">
+              <tbody>
+                <tr>
+                  <td>
+                    <img width=""
+                         height=""
+                         alt="South America"
+                         src="{% static 'website/assets/public/images/icons/location.png' %}">
+                  </td>
+                  <td>South America</td>
+                </tr>
+                <tr>
+                  <td>
+                    <img width=""
+                         height=""
+                         alt="North America"
+                         src="{% static 'website/assets/public/images/icons/location.png' %}">
+                  </td>
+                  <td>North America</td>
+                </tr>
+                <tr>
+                  <td>
+                    <img width=""
+                         height=""
+                         alt="Asia"
+                         src="{% static 'website/assets/public/images/icons/location.png' %}">
+                  </td>
+                  <td>ASIA</td>
+                </tr>
+                <tr>
+                  <td>
+                    <img width=""
+                         height=""
+                         alt="Africa"
+                         src="{% static 'website/assets/public/images/icons/location.png' %}">
+                  </td>
+                  <td>AFRICA</td>
+                </tr>
+                <tr>
+                  <td>
+                    <img width=""
+                         height=""
+                         alt="Australia"
+                         src="{% static 'website/assets/public/images/icons/location.png' %}">
+                  </td>
+                  <td>AUSTRALIA</td>
+                </tr>
+                <tr>
+                  <td>
+                    <img width=""
+                         height=""
+                         alt="Europe"
+                         src="{% static 'website/assets/public/images/icons/location.png' %}">
+                  </td>
+                  <td>Europe</td>
+                </tr>
+                <tr>
+                  <td>
+                    <img width=""
+                         height=""
+                         alt="Middle East"
+                         src="{% static 'website/assets/public/images/icons/location.png' %}">
+                  </td>
+                  <td>MIDDLE EAST</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td></td>
+                  <td>
+                    <button class="btn btn_load and-more text-blue">And more</button>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
-        </div>
-        <div class="row text-center pt-40" data-aos="fade-down" data-aos-duration="1000">
-          <div class="col-12">
-            <div class="slick_slider_4 arrows-vector ps-50 pe-50">
-              <div class="item">
-                <div class="card-img">
-                  <img class="img-fluid" src="{% static 'website/assets/public/images/distribution/serve/icons/1.png' %}">
-                </div>
-                <div class="title text-blue font-lnterbold">market</div>
-              </div>
-              <div class="item">
-                <div class="card-img">
-                  <img class="img-fluid" src="{% static 'website/assets/public/images/distribution/serve/icons/2.png' %}">
-                </div>
-                <div class="title text-blue font-lnterbold">Hotel</div>
-              </div>
-              <div class="item">
-                <div class="card-img">
-                  <img class="img-fluid" src="{% static 'website/assets/public/images/distribution/serve/icons/3.png' %}">
-                </div>
-                <div class="title text-blue font-lnterbold">restaurant</div>
-              </div>
-              <div class="item">
-                <div class="card-img">
-                  <img class="img-fluid" src="{% static 'website/assets/public/images/distribution/serve/icons/4.png' %}">
-                </div>
-                <div class="title text-blue font-lnterbold">catering</div>
-              </div>
-              <div class="item">
-                <div class="card-img">
-                  <img class="img-fluid" src="{% static 'website/assets/public/images/distribution/serve/icons/Horeca.png' %}">
-                </div>
-                <div class="title text-blue font-lnterbold">Horeca</div>
-              </div>
-              <div class="item">
-                <div class="card-img">
-                  <img class="img-fluid" src="{% static 'website/assets/public/images/distribution/serve/icons/Trading.png' %}">
-                </div>
-                <div class="title text-blue font-lnterbold">Trading</div>
-              </div>
-              <div class="item">
-                <div class="card-img">
-                  <img class="img-fluid" src="{% static 'website/assets/public/images/distribution/serve/icons/Retail.png' %}">
-                </div>
-                <div class="title text-blue font-lnterbold">Retail</div>
-              </div>
-              <div class="item">
-                <div class="card-img">
-                  <img class="img-fluid" src="{% static 'website/assets/public/images/distribution/serve/icons/export.png' %}">
-                </div>
-                <div class="title text-blue font-lnterbold">Exports</div>
-              </div>
-            </div>
+          <div class="col-lg-9 col-md-8 mt-50-zero-sm"
+               data-aos="fade-left"
+               data-aos-duration="1000">
+            <img width=""
+                 height=""
+                 alt=""
+                 class="img-fluid"
+                 src="{% static 'website/assets/public/images/distribution/export-market/IMPORT-MARKET.gif' %}">
           </div>
         </div>
       </div>
-    </div>     
-  </section>
-  <!-- /distribution -->
-  
-  <!-- export_market -->
-  <section id="export_market" class="bg-section"> 
-    <div class="wrapper">
-      <div class="row pt-30">
-        <div class="col-lg-3 col-md-4" data-aos="fade-right" data-aos-duration="1000">
-          <div class="section-head">
-            <h1 class="text-blue font-lnterbold">IMPORT MARKET</h1>
-            <h5 class="text-blue">Our presence at various countries.</h5>
-          </div>
-         <table class="text-blue font-lntermedium load_more_item">
-          <tbody>
-            <tr>
-              <td>
-                <img src="{% static 'website/assets/public/images/icons/location.png' %}">
-              </td>
-              <td>South America</td>
-            </tr>
-            <tr>
-              <td>
-                <img src="{% static 'website/assets/public/images/icons/location.png' %}">
-              </td>
-              <td>North America</td>
-            </tr>
-            <tr>
-              <td>
-                <img src="{% static 'website/assets/public/images/icons/location.png' %}">
-              </td>
-              <td>ASIA</td>
-            </tr>
-            <tr>
-              <td>
-                <img src="{% static 'website/assets/public/images/icons/location.png' %}">
-              </td>
-              <td>AFRICA</td>
-            </tr>
-            <tr>
-              <td>
-                <img src="{% static 'website/assets/public/images/icons/location.png' %}">
-              </td>
-              <td>AUSTRALIA</td>
-            </tr>
-            <tr>
-              <td>
-                <img src="{% static 'website/assets/public/images/icons/location.png' %}">
-              </td>
-              <td>Europe</td>
-            </tr>
-            <tr>
-              <td>
-                <img src="{% static 'website/assets/public/images/icons/location.png' %}">
-              </td>
-              <td>MIDDLE EAST</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td></td>
-              <td>
-                <button class="btn btn_load and-more text-blue">And more</button>
-              </td>
-            </tr>
-          </tfoot>
-         </table> 
-        </div>
-        <div class="col-lg-9 col-md-8 mt-50-zero-sm" data-aos="fade-left" data-aos-duration="1000">
-          <img class="img-fluid" src="{% static 'website/assets/public/images/distribution/export-market/IMPORT-MARKET.gif' %}" >
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- /export_market -->
-</div>
-{% include 'website/layout/footer.html' %}
-
-
+    </section>
+    <!-- /export_market -->
+  </div>
+{% endblock content %}
