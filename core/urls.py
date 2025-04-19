@@ -9,5 +9,11 @@ urlpatterns = [
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
     path("admin/", admin.site.urls),
     path("superadmin/", include("deepapp.urls")),
-    path("", include("website.urls")),
+    path("website/", include("website.urls")),
+    path("", include("public_interface.urls")),
+    path("company/", include("company.urls")),
+    path("career/", include("career.urls")),
+    path("products/", include("products.urls")),
+    path("accounts/", include("accounts.urls")),
+    path("administration/", include("administration.urls")),
 ]
