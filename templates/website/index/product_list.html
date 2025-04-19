@@ -1,39 +1,36 @@
 {% load static %}
 {% for p in product %}
-<div class="col-lg-3 col-md-4 col-6 pt-20">
-    <div class="item card-hover-up">
-        <img class="img-primary" src="{{p.image.url}}" alt="{{p.image_alt}}">
-        <div class="info">
-            <div class="title font-lntermedium">{{p.name}}</div>
-                <img src="{% static 'website/assets/public/images/icons/right-arrow-blue.png' %}" class="arrow_sm" >
+    <div class="col-lg-3 col-md-4 col-6 pt-20">
+        <div class="item card-hover-up">
+            <img width=""
+                 height=""
+                 class="img-primary"
+                 src="{{ p.image.url }}"
+                 alt="{{ p.image_alt }}">
+            <div class="info">
+                <div class="title font-lntermedium">{{ p.name }}</div>
+                <img width=""
+                     height=""
+                     alt="Blue Arrow"
+                     src="{% static 'website/assets/public/images/icons/right-arrow-blue.png' %}"
+                     class="arrow_sm">
+            </div>
+            <a class="primary-btn" href="{% url 'product_details' p.slug_product %}"></a>
         </div>
-        <a class="primary-btn" href="{% url 'product_details' p.slug_product %}"></a>
     </div>
-</div>
 {% endfor %}
-
-
 <div class="col-lg-3 col-md-4 col-6 pt-20">
     <div class="item card-hover-up">
-        <img class="img-primary" src="{% static 'website/assets/public/images/index/products/new-card1.jpg' %}">
+        <img class="img-primary"
+             width=""
+             height=""
+             alt="Image for More Products"
+             src="{% static 'website/assets/public/images/index/products/new-card1.jpg' %}">
         <div class="info bg-blue">
             <div class="title font-lntermedium text-white">VIEW MORE</div>
-               <i class="fa fa-angle-double-right fs-20 text-white " aria-hidden="true"></i>
+            <i class="fa fa-angle-double-right fs-20 text-white " aria-hidden="true"></i>
         </div>
-        <a class="primary-btn" {% if type %}href="{% url 'product' %}?type={{type}}"{% else %}href="{% url 'product' %}"{% endif %}></a>
+        <a class="primary-btn"
+           {% if type %}href="{% url 'product' %}?type={{ type }}"{% else %}href="{% url 'product' %}"{% endif %}></a>
     </div>
 </div>
-
-<!-- <div class="col-lg-3 col-md-4 col-6 pt-20"> -->
-    <!-- <div class="item card-hover-up more-card"> -->
-        <!-- <img class="img-primary" src="{% static 'website/assets/public/images/index/products/new-card1.jpg' %}"> -->
-        <!-- <div class="info bg-blue"> -->
-            <!-- <a class="btn btn-icon text-center"> -->
-                <!-- <span class="title font-lntermedium text-white">VIEW MORE</span> -->
-                <!-- <i class="fa fa-angle-double-right fs-20 text-white" aria-hidden="true"></i> -->
-            <!-- </a> -->
-        <!-- </div> -->
-        <!-- <div class="more-card-overlay"></div> -->
-        <!-- <a class="primary-btn" href="{% url 'product' %}?type={{type}}"></a> -->
-    <!-- </div> -->
-<!-- </div> -->
