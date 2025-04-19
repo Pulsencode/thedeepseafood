@@ -1,6 +1,6 @@
 from django import template
 
-from deepapp.models import Product
+from products.models import Product
 
 register = template.Library()
 

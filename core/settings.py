@@ -24,6 +24,10 @@ INSTALLED_APPS = [
     "website",
     "company",
     "administration",
+    "accounts",
+    "products",
+    "public_interface",
+    "career",
 ]
 
 MIDDLEWARE = [
@@ -106,7 +110,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-AUTH_USER_MODEL = "deepapp.User"
+AUTH_USER_MODEL = "accounts.User"
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
