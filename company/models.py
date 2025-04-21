@@ -114,7 +114,7 @@ class EventImage(StatusTimestampBase, ImageBase):
     event = models.ForeignKey(
         Event,
         null=False,
-        related_name="gallery_image",
+        related_name="event_image",
         on_delete=models.CASCADE,
     )
 
