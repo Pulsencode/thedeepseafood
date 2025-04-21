@@ -99,11 +99,11 @@ urlpatterns = [
         views.CertificationCreateView.as_view(),
         name="certification_add",
     ),
-    path("about-view", views.AboutusListView.as_view(), name="about_view"),
-    path(
-        "about-update/<int:id>/", views.AboutusUpdateView.as_view(), name="about_update"
-    ),
-    path("about-add", views.AboutusCreateView.as_view(), name="about_add"),
+    # path("about-view", views.AboutusListView.as_view(), name="about_view"),
+    # path(
+    #     "about-update/<int:id>/", views.AboutusUpdateView.as_view(), name="about_update"
+    # ),
+    # path("about-add", views.AboutusCreateView.as_view(), name="about_add"),
     path("seo-view", views.SeoListView.as_view(), name="seo_view"),
     path("seo-update/<int:id>/", views.SeoUpdateView.as_view(), name="seo_update"),
     path("seo-add", views.SeoCreateView.as_view(), name="seo_add"),

@@ -3,12 +3,16 @@ from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
 from autoslug import AutoSlugField
 from django.core.validators import MinValueValidator, MaxValueValidator
+import uuid
 
 
 def image_upload_path(instance, filename):
+    """Here we are using uuid to generate a unique filename for the image.
+    Because instance.id is None until the object is saved."""
     model_name = instance.__class__.__name__.lower()
-    obj_id = instance.id if instance.id else "temp"
-    return f"{model_name}/{obj_id}/{filename}"
+    ext = filename.split(".")[-1]
+    filename = f"{uuid.uuid4()}.{ext}"
+    return f"{model_name}/{filename}"
 
 
 class TimestampBase(models.Model):
@@ -53,14 +57,6 @@ class StatusTimestampBase(TimestampBase):
         abstract = True
 
 
-""" Not used"""
-# class AboutUs(StatusTimestampBase, ImageBase):
-#     title = models.CharField(max_length=200)
-
-#     class Meta:
-#         verbose_name_plural = "About Us"
-
-
 class SEO(StatusTimestampBase):
     PAGE_NAME_CHOICES = [
         ("hm", "Home"),
@@ -95,33 +91,28 @@ class SEO(StatusTimestampBase):
 
 
 class Brand(StatusTimestampBase, ImageBase):
-    name = models.CharField(max_length=100, null=True)
+    name = models.CharField(max_length=100, blank=True)
     sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
 
     def __str__(self):
         return self.name
 
 
-class EventGallery(StatusTimestampBase):
+class Event(StatusTimestampBase):
     title = models.CharField(max_length=350)
-    sequence = models.PositiveIntegerField(null=True)
+    sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
     name = models.CharField(max_length=150)
     description = models.TextField(null=True)
     location = models.CharField(max_length=255)
     date = models.DateField(null=True)
-    image_alt = models.CharField(
-        max_length=125,
-        null=True,
-        blank=True,
-    )
 
     def __str__(self):
         return self.title
 
 
-class EventGalleryImage(StatusTimestampBase, ImageBase):  # is active
+class EventImage(StatusTimestampBase, ImageBase):
     event = models.ForeignKey(
-        EventGallery,
+        Event,
         null=False,
         related_name="gallery_image",
         on_delete=models.CASCADE,
@@ -131,31 +122,30 @@ class EventGalleryImage(StatusTimestampBase, ImageBase):  # is active
         return f"{self.event.title} - Slider {self.pk}"
 
 
-class NewsDetails(StatusTimestampBase):
-    TYPE = (("company news", "Company News"), ("global news", "Global News"))
+class News(StatusTimestampBase):
+    TYPE_CHOICES = (("company news", "Company News"), ("global news", "Global News"))
     title = models.CharField(max_length=350)
-    sequence = models.PositiveIntegerField(null=True)
-    name = models.CharField(max_length=200)
-    type = models.CharField(max_length=200, choices=TYPE)
-    description = models.TextField(null=True)
+    sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
+    name = models.CharField(
+        max_length=200
+    )  # TODO Need to change to user and add a foreign key
+    type = models.CharField(max_length=200, choices=TYPE_CHOICES)
+    content = models.TextField(
+        null=True
+    )  # TODO Need to change to the one in the blog model
     location = models.CharField(max_length=255)
     date = models.DateField(null=True)
-    image_alt = models.CharField(
-        max_length=125,
-        null=True,
-        blank=True,
-    )
 
     def __str__(self):
-        return self.title or "Untitled News"
+        return self.title
 
     class Meta:
         verbose_name_plural = "News Details"
 
 
-class NewsGalleryImage(TimestampBase, ImageBase):
+class NewsImage(TimestampBase, ImageBase):
     news = models.ForeignKey(
-        NewsDetails,
+        News,
         null=False,
         related_name="news_image",
         on_delete=models.CASCADE,
@@ -165,7 +155,9 @@ class NewsGalleryImage(TimestampBase, ImageBase):
         return f"{self.news.title} - Slider {self.pk}"
 
 
-class PromotionDetails(StatusTimestampBase):
+class Promotion(StatusTimestampBase):
+    """TODO Need to check if this field is used in the app"""
+
     title = models.CharField(max_length=255)
     name = models.CharField(max_length=150)
     description = models.TextField(null=True)
@@ -178,15 +170,19 @@ class PromotionDetails(StatusTimestampBase):
 
 class PromotionImage(TimestampBase, ImageBase):
     promotion = models.ForeignKey(
-        PromotionDetails,
+        Promotion,
         null=False,
         related_name="promotion_image",
         on_delete=models.CASCADE,
     )
 
 
-class BlogDetails(StatusTimestampBase):
+class Blog(StatusTimestampBase):
     title = models.CharField(max_length=350)
+    name = models.CharField(max_length=255)
+    content = models.TextField(null=True)
+    location = models.CharField(max_length=255)
+    date = models.DateField(null=True)
     slug = AutoSlugField(
         populate_from="title",
         editable=True,
@@ -195,16 +191,6 @@ class BlogDetails(StatusTimestampBase):
         blank=True,
         unique=True,
         max_length=100,
-    )
-
-    name = models.CharField(max_length=255)
-    description = models.TextField(null=True)
-    location = models.CharField(max_length=255)
-    date = models.DateField(null=True)
-    image_alt = models.CharField(
-        max_length=125,
-        null=True,
-        blank=True,
     )
 
     def __str__(self):
@@ -216,7 +202,7 @@ class BlogDetails(StatusTimestampBase):
 
 class BlogImage(TimestampBase, ImageBase):
     blog = models.ForeignKey(
-        BlogDetails,
+        Blog,
         null=False,
         related_name="blog_image",
         on_delete=models.CASCADE,
@@ -224,25 +210,24 @@ class BlogImage(TimestampBase, ImageBase):
 
 
 class ManagementTeam(StatusTimestampBase, ImageBase):
-    role = models.CharField(max_length=150)
     name = models.CharField(max_length=150)
-    sequence = models.PositiveIntegerField(null=True)
+    role = models.CharField(max_length=150)
+    sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
 
 
 class CompanyTestimonial(StatusTimestampBase, ImageBase):
     name = models.CharField(max_length=350)
-    message = models.TextField(null=True)
+    quote = models.TextField()
 
 
 class Certification(StatusTimestampBase, ImageBase):
-    image_alt = models.CharField(
-        max_length=125,
-        null=True,
-        blank=True,
-    )
+    sequence = models.IntegerField(null=True)  # TODO no change needed
+
+    class Meta:
+        ordering = ["sequence"]
 
 
-class ContactUsDetails(StatusTimestampBase):
+class ContactUs(StatusTimestampBase):
     name = models.CharField(max_length=200)
     location = models.CharField(max_length=255)
     email = models.EmailField(null=True, blank=True)
@@ -250,44 +235,33 @@ class ContactUsDetails(StatusTimestampBase):
     message = models.TextField(null=True)
 
 
-# active
-
-
 class Supermarkets(StatusTimestampBase, ImageBase):
-    image_alt = models.CharField(
-        max_length=125,
-        null=True,
-        blank=True,
-    )
+    sequence = models.IntegerField(null=True)  # TODO no change needed
+
+    class Meta:
+        ordering = ["sequence"]
 
 
-class EnquiryDetails(StatusTimestampBase):  # active
-    product = models.CharField(max_length=255)
+class Enquiry(StatusTimestampBase):
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     email = models.EmailField(null=True, blank=True)
-    mobile_no = PhoneNumberField(blank=True)
+    mobile_number = PhoneNumberField(blank=True)
     message = models.TextField(null=True)
 
 
-class HistoryDetails(StatusTimestampBase):
+class History(StatusTimestampBase):
     year = models.PositiveIntegerField(
         null=True, validators=[MinValueValidator(1000), MaxValueValidator(9999)]
     )
     title = models.CharField(max_length=500)
     description = models.TextField(null=True)
-    image_alt = models.CharField(
-        max_length=125,
-        null=True,
-        blank=True,
-    )
 
 
 class HistoryImage(StatusTimestampBase, ImageBase):  # active
-    """is_active"""
 
     history = models.ForeignKey(
-        HistoryDetails,
+        History,
         null=False,
         related_name="history_image",
         on_delete=models.CASCADE,

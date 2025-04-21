@@ -11,7 +11,7 @@ from django.views import View
 from django.views.generic import TemplateView
 
 from company.models import (
-    AboutUs,
+    # AboutUs,
     BlogDetails,
     Brand,
     Certification,
@@ -106,15 +106,15 @@ class AboutView(TemplateView):
         teams = ManagementTeam.objects.filter(status=True).order_by("sequence")
         history = HistoryDetails.objects.filter(status=True).order_by("id")
         blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        about1 = AboutUs.objects.filter(status=True).order_by("-id")[:1]
-        about2 = AboutUs.objects.filter(status=True).order_by("-id")[1:2]
-        about3 = AboutUs.objects.filter(status=True).order_by("-id")[2:3]
-        about4 = AboutUs.objects.filter(status=True).order_by("-id")[3:4]
+        # about1 = AboutUs.objects.filter(status=True).order_by("-id")[:1]
+        # about2 = AboutUs.objects.filter(status=True).order_by("-id")[1:2]
+        # about3 = AboutUs.objects.filter(status=True).order_by("-id")[2:3]
+        # about4 = AboutUs.objects.filter(status=True).order_by("-id")[3:4]
         # context["data"] = SEO.objects.filter(page="About").first()
-        context["about1"] = about1
-        context["about2"] = about2
-        context["about3"] = about3
-        context["about4"] = about4
+        # context["about1"] = about1
+        # context["about2"] = about2
+        # context["about3"] = about3
+        # context["about4"] = about4
         context["blog"] = blog
         context["history"] = history
         context["teams"] = teams
@@ -513,7 +513,7 @@ class NewsRoomView(TemplateView):
         total_events = EventGallery.objects.filter(status=True).count()
 
         blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        context["data"] = SEO.objects.filter(page="News Room").first()
+        # context["data"] = SEO.objects.filter(page="News Room").first()
         context["blog"] = blog
         context["gallery"] = gallery
         context["total_events"] = total_events

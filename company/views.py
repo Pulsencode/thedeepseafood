@@ -13,7 +13,7 @@ from django.core.files.base import ContentFile
 import base64
 
 from company.models import (
-    AboutUs,
+    # AboutUs,
     BlogDetails,
     BlogImage,
     Brand,
@@ -1572,109 +1572,109 @@ class CertificationUpdateView(UserPassesTestMixin, TemplateView):
         return redirect("certification_view")
 
 
-class AboutusListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/aboutus/aboutus_list.html"
+# class AboutusListView(UserPassesTestMixin, TemplateView):
+#     template_name = "superadmin/aboutus/aboutus_list.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+#     def test_func(self):
+#         return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "aboutus"
-        page = request.GET.get("page", 1)
+#     def get(self, request, *args, **kwargs):
+#         context = {}
+#         path = "aboutus"
+#         page = request.GET.get("page", 1)
 
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
+#         search = request.GET.get("search")
+#         delete = request.GET.get("delete")
+#         status = request.GET.get("status")
+#         sts = request.GET.get("sts")
 
-        cd = AboutUs.objects.all().order_by("-id")
+#         cd = AboutUs.objects.all().order_by("-id")
 
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(title__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                AboutUs.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = AboutUs.objects.get(id=item_id)
-                except AboutUs.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
+#         if is_ajax(request):
+#             if search:
+#                 cd = cd.filter(title__icontains=search)
+#             if sts:
+#                 cd = cd.filter(status=sts)
+#             if status:
+#                 if status == "1":
+#                     status = True
+#                 else:
+#                     status = False
+#                 item_id = request.GET.get("item_id")
+#                 AboutUs.objects.filter(id=item_id).update(status=status)
+#             if delete:
+#                 item_id = request.GET.get("item_id")
+#                 try:
+#                     datas = AboutUs.objects.get(id=item_id)
+#                 except AboutUs.DoesNotExist:
+#                     datas = None
+#                 if datas:
+#                     datas.delete()
 
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
+#             paginator = Paginator(cd, 10)
+#             try:
+#                 datas = paginator.get_page(page)
+#             except PageNotAnInteger:
+#                 datas = paginator.get_page(1)
+#             except EmptyPage:
+#                 datas = paginator.get_page(paginator.num_pages)
+#             context["datas"] = datas
+#             context["page"] = page
+#             template = loader.get_template(self.template_name)
+#             html_content = template.render(context, request)
+#             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-        return renderhelper(request, "aboutus", "aboutus_view", context)
-
-
-class AboutusCreateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/aboutus/aboutus_create.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def post(self, request, *args, **kwargs):
-        image = request.FILES.get("image")
-        title = request.POST.get("title")
-
-        about = AboutUs(image=image, title=title)
-        about.save()
-        messages.success(request, "About Us Added Successfully...!!")
-        return redirect("about_view")
+#         paginator = Paginator(cd, 10)
+#         try:
+#             datas = paginator.get_page(page)
+#         except PageNotAnInteger:
+#             datas = paginator.get_page(1)
+#         except EmptyPage:
+#             datas = paginator.get_page(paginator.num_pages)
+#         context["datas"] = datas
+#         context["page"] = page
+#         context["path"] = path
+#         return renderhelper(request, "aboutus", "aboutus_view", context)
 
 
-class AboutusUpdateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/aboutus/aboutus_create.html"
+# class AboutusCreateView(UserPassesTestMixin, TemplateView):
+#     template_name = "superadmin/aboutus/aboutus_create.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+#     def test_func(self):
+#         return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, id):
-        data = AboutUs.objects.get(pk=id)
-        return render(request, self.template_name, {"list": data})
+#     def post(self, request, *args, **kwargs):
+#         image = request.FILES.get("image")
+#         title = request.POST.get("title")
 
-    def post(self, request, id):
-        data = AboutUs.objects.get(pk=id)
-        image = request.FILES.get("image")
-        title = request.POST.get("title")
+#         about = AboutUs(image=image, title=title)
+#         about.save()
+#         messages.success(request, "About Us Added Successfully...!!")
+#         return redirect("about_view")
 
-        if image:
-            data.image = image
-        data.title = title
-        data.save()
 
-        messages.success(request, "About Us Updated Successfully...!!")
-        return redirect("about_view")
+# class AboutusUpdateView(UserPassesTestMixin, TemplateView):
+#     template_name = "superadmin/aboutus/aboutus_create.html"
+
+#     def test_func(self):
+#         return self.request.user.username == "DeepSeaAdmin"
+
+#     def get(self, request, id):
+#         data = AboutUs.objects.get(pk=id)
+#         return render(request, self.template_name, {"list": data})
+
+#     def post(self, request, id):
+#         data = AboutUs.objects.get(pk=id)
+#         image = request.FILES.get("image")
+#         title = request.POST.get("title")
+
+#         if image:
+#             data.image = image
+#         data.title = title
+#         data.save()
+
+#         messages.success(request, "About Us Updated Successfully...!!")
+#         return redirect("about_view")
 
 
 class SeoListView(UserPassesTestMixin, TemplateView):
