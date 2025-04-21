@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.text import slugify
 from company.models import Brand
 
 
@@ -11,11 +11,11 @@ class Category(models.Model):
         related_name="brand",
         on_delete=models.CASCADE,
     )
-    sequence = models.PositiveIntegerField(null=True)
-    name = models.TextField(null=True)
-    image = models.FileField(upload_to="categoryimg", null=True)
+    sequence = models.PositiveIntegerField(default=0)
+    name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to="categoryimg", blank=True)
 
-    status = models.BooleanField(null=False, blank=True, default=True)
+    status = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -30,10 +30,11 @@ class RecipeDetails(models.Model):
         blank=True,
         on_delete=models.CASCADE,
     )
-    title = models.TextField(null=True)
-    description = models.TextField(null=True)
-    image_alt = models.TextField(null=True, blank=True)
-    status = models.BooleanField(null=False, blank=True, default=True)
+    title = models.CharField(max_length=200)
+    description = models.CharField(max_length=350, blank=True, null=True)
+    image = models.ImageField(upload_to="recipeimg")
+    image_alt = models.CharField(max_length=100, blank=True)
+    status = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -44,17 +45,16 @@ class RecipeDetails(models.Model):
 class RecipeIngredients(models.Model):
     recipe = models.ForeignKey(
         RecipeDetails,
-        null=False,
         on_delete=models.CASCADE,
-        related_name="rec_ind",
+        related_name="ingredients",
     )
-    title = models.TextField(null=True, blank=True)
-    amount = models.CharField(max_length=100, null=True, blank=True)
+    title = models.CharField(max_length=150, blank=True)
+    amount = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return self.recipe.title
+        return f"{self.recipe.title} - {self.title}"
 
 
 class Product(models.Model):
@@ -65,31 +65,30 @@ class Product(models.Model):
         related_name="product_brand",
         on_delete=models.CASCADE,
     )
-    sequence = models.PositiveIntegerField(null=True)
-    type = models.TextField(null=True)
+    sequence = models.PositiveIntegerField(default=0)
+    type = models.CharField(max_length=150, blank=True)
     slug_product = models.SlugField(
-        default="", editable=False, null=True, blank=True, max_length=250
+        max_length=250, unique=True, blank=True, editable=False
     )
-    name = models.CharField(max_length=100, null=False, blank=False)
-    image = models.FileField(upload_to="productimg", null=True)
-    title_tag = models.TextField(null=True)
-    metatag = models.TextField(null=True)
-    keyword = models.TextField(null=True)
-    canonical = models.TextField(null=True)
-    image_alt = models.TextField(null=True, blank=True)
-    homepage = models.BooleanField(null=False, blank=True, default=False)
-    status = models.BooleanField(null=False, blank=True, default=True)
+    name = models.CharField(max_length=150)
+    image_alt = models.CharField(max_length=100, blank=True)
+    homepage = models.BooleanField(default=False)
+    status = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    def __str__(self) -> str:
-        return self.name
+    def save(self, *args, **kwargs):
+        if not self.slug_product or self.title_changed():
+            self.slug_product = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def title_changed(self):
         if self.id:
-            original = Product.objects.get(pk=self.id)
-            return self.name != original.name
+            return self.name != Product.objects.get(pk=self.id).name
         return False
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class ProductDetails(models.Model):
@@ -100,26 +99,23 @@ class ProductDetails(models.Model):
         Category,
         null=True,
         blank=True,
-        related_name="product_category",
+        related_name="product_details",
         on_delete=models.CASCADE,
     )
-    sub_categories = models.TextField(null=True)
-    price = models.CharField(max_length=100, null=True, blank=True)
-    product_code = models.CharField(max_length=100, null=True, blank=True)
-    net_weight = models.CharField(max_length=100, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)  # used as nutrition facts
-    ingredients = models.TextField(null=True, blank=True)
-    instructions = models.TextField(null=True, blank=True)
-    storage_instructions = models.TextField(null=True, blank=True)
-    shelf_life = models.TextField(null=True, blank=True)
-    how_to_cook = models.TextField(null=True, blank=True)
-    causion = models.TextField(
-        null=True, blank=True
-    )  # Caution is used as the allergen Information
-    grade = models.CharField(max_length=2000, null=True, blank=True)
-    origin = models.CharField(max_length=100, null=True, blank=True)
-    packing = models.CharField(max_length=2000, null=True, blank=True)
-    status = models.BooleanField(null=False, blank=True, default=True)
+    sub_categories = models.CharField(max_length=100, null=True)
+    price = models.IntegerField(blank=True, null=True)
+    product_code = models.CharField(max_length=100, blank=True, unique=True)
+    net_weight = models.CharField(max_length=100, blank=True)
+    nutrition = models.TextField(blank=True)
+    ingredients = models.TextField(blank=True)
+    instructions = models.TextField(blank=True)
+    storage_instructions = models.TextField(blank=True)
+    shelf_life = models.CharField(max_length=150, blank=True)
+    how_to_cook = models.TextField(blank=True)
+    allergic = models.TextField(blank=True)
+    grade = models.CharField(max_length=2000, blank=True)
+    origin = models.CharField(max_length=100, blank=True)
+    packing = models.CharField(max_length=2000, blank=True)
 
     def __str__(self) -> str:
         return self.product.name
@@ -141,8 +137,10 @@ class RecipeImage(models.Model):
 
 
 class Subcategory(models.Model):
-    name = models.TextField(null=True)
-
+    name = models.CharField(max_length=200)
     status = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return self.name
