@@ -120,7 +120,6 @@ class EventGallery(StatusTimestampBase):
 
 
 class EventGalleryImage(StatusTimestampBase, ImageBase):  # is active
-
     event = models.ForeignKey(
         EventGallery,
         null=False,
