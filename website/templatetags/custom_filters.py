@@ -34,3 +34,8 @@ def product_belongs_to_category_filter(product_id, category_id):
         ).exists()
     except Product.DoesNotExist:
         return False
+
+
+@register.filter
+def split(value, arg):
+    return value.split(arg)
