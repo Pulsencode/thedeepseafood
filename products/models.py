@@ -1,9 +1,9 @@
 from django.db import models
-from django.utils.text import slugify
-from company.models import Brand
+from company.models import Brand, StatusTimestampBase, ImageBase, TimestampBase
+from autoslug import AutoSlugField
 
 
-class Category(models.Model):
+class Category(StatusTimestampBase, ImageBase):
     brand = models.ForeignKey(
         Brand,
         null=True,
@@ -13,17 +13,12 @@ class Category(models.Model):
     )
     sequence = models.PositiveIntegerField(default=0)
     name = models.CharField(max_length=200)
-    image = models.ImageField(upload_to="categoryimg", blank=True)
 
-    status = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
 
-class RecipeDetails(models.Model):
+class RecipeDetails(StatusTimestampBase, ImageBase):
     brand = models.ForeignKey(
         Brand,
         null=True,
@@ -32,17 +27,13 @@ class RecipeDetails(models.Model):
     )
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=350, blank=True, null=True)
-    image = models.ImageField(upload_to="recipeimg")
     image_alt = models.CharField(max_length=100, blank=True)
-    status = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return self.title
 
 
-class RecipeIngredients(models.Model):
+class RecipeIngredients(TimestampBase):
     recipe = models.ForeignKey(
         RecipeDetails,
         on_delete=models.CASCADE,
@@ -50,14 +41,12 @@ class RecipeIngredients(models.Model):
     )
     title = models.CharField(max_length=150, blank=True)
     amount = models.IntegerField(default=0)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f"{self.recipe.title} - {self.title}"
 
 
-class Product(models.Model):
+class Product(StatusTimestampBase):
     brand = models.ForeignKey(
         Brand,
         null=True,
@@ -67,27 +56,21 @@ class Product(models.Model):
     )
     sequence = models.PositiveIntegerField(default=0)
     type = models.CharField(max_length=150, blank=True)
-    slug_product = models.SlugField(
-        max_length=250, unique=True, blank=True, editable=False
+    slug = AutoSlugField(
+        populate_from="title",
+        editable=True,
+        always_update=True,
+        null=True,
+        blank=True,
+        unique=True,
+        max_length=100,
     )
+
     name = models.CharField(max_length=150)
     image_alt = models.CharField(max_length=100, blank=True)
     homepage = models.BooleanField(default=False)
-    status = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        if not self.slug_product or self.title_changed():
-            self.slug_product = slugify(self.name)
-        super().save(*args, **kwargs)
-
-    def title_changed(self):
-        if self.id:
-            return self.name != Product.objects.get(pk=self.id).name
-        return False
-
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
 
@@ -121,26 +104,20 @@ class ProductDetails(models.Model):
         return self.product.name
 
 
-class RecipeImage(models.Model):
+class RecipeImage(ImageBase, TimestampBase):
     recipe = models.ForeignKey(
         RecipeDetails,
         null=False,
         on_delete=models.CASCADE,
-        related_name="rec_image",
+        related_name="recipe_image",
     )
-    image = models.ImageField(upload_to="recipeimg", null=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.recipe.title
 
 
-class Subcategory(models.Model):
+class Subcategory(StatusTimestampBase):
     name = models.CharField(max_length=200)
-    status = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
