@@ -1,4 +1,4 @@
-{% load static %}
+{% load static custom_filters %}
 <section id="export_market" class="bg-section">
     <div class="wrapper">
         <div class="row pt-30">
@@ -11,69 +11,19 @@
                 </div>
                 <table class="text-blue font-lntermedium load_more_item">
                     <tbody>
-                        <tr>
-                            <td>
-                                <img width=""
-                                     height=""
-                                     alt="South America"
-                                     src="{% static 'website/assets/public/images/icons/location.png' %}">
-                            </td>
-                            <td>South America</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img width=""
-                                     height=""
-                                     alt="North America"
-                                     src="{% static 'website/assets/public/images/icons/location.png' %}">
-                            </td>
-                            <td>North America</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img width=""
-                                     height=""
-                                     alt="Asia"
-                                     src="{% static 'website/assets/public/images/icons/location.png' %}">
-                            </td>
-                            <td>ASIA</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img width=""
-                                     height=""
-                                     alt="Africa"
-                                     src="{% static 'website/assets/public/images/icons/location.png' %}">
-                            </td>
-                            <td>AFRICA</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img width=""
-                                     height=""
-                                     alt="Australia"
-                                     src="{% static 'website/assets/public/images/icons/location.png' %}">
-                            </td>
-                            <td>AUSTRALIA</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img width=""
-                                     height=""
-                                     alt="Europe"
-                                     src="{% static 'website/assets/public/images/icons/location.png' %}">
-                            </td>
-                            <td>Europe</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img width=""
-                                     height=""
-                                     alt="Middle East"
-                                     src="{% static 'website/assets/public/images/icons/location.png' %}">
-                            </td>
-                            <td>MIDDLE EAST</td>
-                        </tr>
+                        {% with "South America,North America,Asia,Africa,Australia,Europe,Middle East" as regions_list %}
+                            {% for region in regions_list|split:"," %}
+                                <tr>
+                                    <td>
+                                        <img width=""
+                                             height=""
+                                             alt="Location icon for {{ region|title }}"
+                                             src="{% static 'website/assets/public/images/icons/location.png' %}">
+                                    </td>
+                                    <td>{{ region|upper }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endwith %}
                     </tbody>
                     <tfoot>
                         <tr>
@@ -90,7 +40,8 @@
                  data-aos-duration="1000">
                 <img width=""
                      height=""
-                     alt=""
+                     loading="lazy"
+                     alt="Animated map showing import sources to the UAE of The Deep Seafood Company, with directional arrows highlighting international trade partnerships and supply routes"
                      class="img-fluid"
                      src="{% static 'website/assets/public/images/distribution/export-market/IMPORT-MARKET.gif' %}">
             </div>
