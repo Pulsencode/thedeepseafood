@@ -11,7 +11,7 @@ from django.views import View
 from django.views.generic import TemplateView
 
 from company.models import (
-    Aboutus,
+    AboutUs,
     BlogDetails,
     Brand,
     Certification,
@@ -22,7 +22,7 @@ from company.models import (
     HistoryDetails,
     ManagementTeam,
     NewsDetails,
-    Seo,
+    SEO,
     Supermarkets,
     PromotionDetails,
 )
@@ -58,7 +58,7 @@ class IndexView(TemplateView):
         certification = Certification.objects.filter(status=True).order_by("-id")
         # Log product information
         # logger.info(f"Product information: {product}")
-        context["data"] = Seo.objects.filter(page="Home").first()
+        # context["data"] = SEO.objects.filter(page="Home").first()
         context["certification"] = certification
         context["testimonial"] = testimonial
         context["type"] = type
@@ -106,11 +106,11 @@ class AboutView(TemplateView):
         teams = ManagementTeam.objects.filter(status=True).order_by("sequence")
         history = HistoryDetails.objects.filter(status=True).order_by("id")
         blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        about1 = Aboutus.objects.filter(status=True).order_by("-id")[:1]
-        about2 = Aboutus.objects.filter(status=True).order_by("-id")[1:2]
-        about3 = Aboutus.objects.filter(status=True).order_by("-id")[2:3]
-        about4 = Aboutus.objects.filter(status=True).order_by("-id")[3:4]
-        context["data"] = Seo.objects.filter(page="About").first()
+        about1 = AboutUs.objects.filter(status=True).order_by("-id")[:1]
+        about2 = AboutUs.objects.filter(status=True).order_by("-id")[1:2]
+        about3 = AboutUs.objects.filter(status=True).order_by("-id")[2:3]
+        about4 = AboutUs.objects.filter(status=True).order_by("-id")[3:4]
+        # context["data"] = SEO.objects.filter(page="About").first()
         context["about1"] = about1
         context["about2"] = about2
         context["about3"] = about3
@@ -136,7 +136,7 @@ class ProductView(TemplateView):
                 brand__name="Deep Sea", status=True
             ).order_by("sequence")
         blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        context["data"] = Seo.objects.filter(page="Product").first()
+        # context["data"] = SEO.objects.filter(page="Product").first()
         context["blog"] = blog
         context["type"] = type
         context["product"] = product
@@ -322,7 +322,7 @@ class BrandView(TemplateView):
             .count()
         )
         blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        context["data"] = Seo.objects.filter(page="Oceano").first()
+        # context["data"] = SEO.objects.filter(page="Oceano").first()
         context["blog"] = blog
         # print(total_product,'***')
         context["category"] = category
@@ -500,7 +500,7 @@ class DistributionView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["data"] = Seo.objects.filter(page="Distribution Channel").first()
+        # context["data"] = SEO.objects.filter(page="Distribution Channel").first()
         return context
 
 
@@ -513,7 +513,7 @@ class NewsRoomView(TemplateView):
         total_events = EventGallery.objects.filter(status=True).count()
 
         blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        context["data"] = Seo.objects.filter(page="News Room").first()
+        context["data"] = SEO.objects.filter(page="News Room").first()
         context["blog"] = blog
         context["gallery"] = gallery
         context["total_events"] = total_events
@@ -706,7 +706,7 @@ class CareerView(TemplateView):
         types_list = [career.type.split(", ") for career in careers]
         print(types_list)
         blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        context["data"] = Seo.objects.filter(page="Career").first()
+        # context["data"] = SEO.objects.filter(page="Career").first()
         context["blog"] = blog
         context["types_list"] = types_list
         context["careers"] = careers
@@ -719,7 +719,7 @@ class BlogView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        context["data"] = Seo.objects.filter(page="Blogs").first()
+        # context["data"] = SEO.objects.filter(page="Blogs").first()
         context["blog"] = blog
         return context
 
@@ -748,7 +748,7 @@ class ContactView(TemplateView):
         context = super().get_context_data(**kwargs)
         branch = self.request.GET.get("branch")
         blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        context["data"] = Seo.objects.filter(page="Contact Us").first()
+        # context["data"] = SEO.objects.filter(page="Contact Us").first()
         context["blog"] = blog
         context["branch"] = branch
         return context

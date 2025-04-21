@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     "products",
     "public_interface",
     "career",
+    "phonenumber_field",
+
 ]
 
 MIDDLEWARE = [

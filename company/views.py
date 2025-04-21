@@ -13,7 +13,7 @@ from django.core.files.base import ContentFile
 import base64
 
 from company.models import (
-    Aboutus,
+    AboutUs,
     BlogDetails,
     BlogImage,
     Brand,
@@ -30,7 +30,7 @@ from company.models import (
     NewsGalleryImage,
     PromotionDetails,
     PromotionImage,
-    Seo,
+    SEO,
     Supermarkets,
 )
 
@@ -1588,7 +1588,7 @@ class AboutusListView(UserPassesTestMixin, TemplateView):
         status = request.GET.get("status")
         sts = request.GET.get("sts")
 
-        cd = Aboutus.objects.all().order_by("-id")
+        cd = AboutUs.objects.all().order_by("-id")
 
         if is_ajax(request):
             if search:
@@ -1601,12 +1601,12 @@ class AboutusListView(UserPassesTestMixin, TemplateView):
                 else:
                     status = False
                 item_id = request.GET.get("item_id")
-                Aboutus.objects.filter(id=item_id).update(status=status)
+                AboutUs.objects.filter(id=item_id).update(status=status)
             if delete:
                 item_id = request.GET.get("item_id")
                 try:
-                    datas = Aboutus.objects.get(id=item_id)
-                except Aboutus.DoesNotExist:
+                    datas = AboutUs.objects.get(id=item_id)
+                except AboutUs.DoesNotExist:
                     datas = None
                 if datas:
                     datas.delete()
@@ -1647,7 +1647,7 @@ class AboutusCreateView(UserPassesTestMixin, TemplateView):
         image = request.FILES.get("image")
         title = request.POST.get("title")
 
-        about = Aboutus(image=image, title=title)
+        about = AboutUs(image=image, title=title)
         about.save()
         messages.success(request, "About Us Added Successfully...!!")
         return redirect("about_view")
@@ -1660,11 +1660,11 @@ class AboutusUpdateView(UserPassesTestMixin, TemplateView):
         return self.request.user.username == "DeepSeaAdmin"
 
     def get(self, request, id):
-        data = Aboutus.objects.get(pk=id)
+        data = AboutUs.objects.get(pk=id)
         return render(request, self.template_name, {"list": data})
 
     def post(self, request, id):
-        data = Aboutus.objects.get(pk=id)
+        data = AboutUs.objects.get(pk=id)
         image = request.FILES.get("image")
         title = request.POST.get("title")
 
@@ -1693,7 +1693,7 @@ class SeoListView(UserPassesTestMixin, TemplateView):
         status = request.GET.get("status")
         sts = request.GET.get("sts")
 
-        cd = Seo.objects.all().order_by("-id")
+        cd = SEO.objects.all().order_by("-id")
 
         if is_ajax(request):
             if search:
@@ -1706,12 +1706,12 @@ class SeoListView(UserPassesTestMixin, TemplateView):
                 else:
                     status = False
                 item_id = request.GET.get("item_id")
-                Seo.objects.filter(id=item_id).update(status=status)
+                SEO.objects.filter(id=item_id).update(status=status)
             if delete:
                 item_id = request.GET.get("item_id")
                 try:
-                    datas = Seo.objects.get(id=item_id)
-                except Seo.DoesNotExist:
+                    datas = SEO.objects.get(id=item_id)
+                except SEO.DoesNotExist:
                     datas = None
                 if datas:
                     datas.delete()
@@ -1755,7 +1755,7 @@ class SeoCreateView(UserPassesTestMixin, TemplateView):
         keyword = request.POST.get("keyword")
         canonical = request.POST.get("canonical")
 
-        seo = Seo(
+        seo = SEO(
             page=page,
             title_tag=title_tag,
             metatag=metatag,
@@ -1774,11 +1774,11 @@ class SeoUpdateView(UserPassesTestMixin, TemplateView):
         return self.request.user.username == "DeepSeaAdmin"
 
     def get(self, request, id):
-        data = Seo.objects.get(pk=id)
+        data = SEO.objects.get(pk=id)
         return render(request, self.template_name, {"list": data})
 
     def post(self, request, id):
-        data = Seo.objects.get(pk=id)
+        data = SEO.objects.get(pk=id)
         page = request.POST.get("page")
         title_tag = request.POST.get("title_tag")
         metatag = request.POST.get("metatag")
