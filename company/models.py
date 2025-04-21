@@ -31,6 +31,11 @@ class ImageBase(models.Model):
     """
 
     image = models.ImageField(upload_to=image_upload_path, null=True)
+    image_alt = models.CharField(
+        max_length=125,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         abstract = True
@@ -48,11 +53,12 @@ class StatusTimestampBase(TimestampBase):
         abstract = True
 
 
-class AboutUs(StatusTimestampBase, ImageBase):
-    title = models.CharField(max_length=200)
+""" Not used"""
+# class AboutUs(StatusTimestampBase, ImageBase):
+#     title = models.CharField(max_length=200)
 
-    class Meta:
-        verbose_name_plural = "About Us"
+#     class Meta:
+#         verbose_name_plural = "About Us"
 
 
 class SEO(StatusTimestampBase):
@@ -88,15 +94,9 @@ class SEO(StatusTimestampBase):
         return reverse(self.page_name)
 
 
-class Brand(StatusTimestampBase):
+class Brand(StatusTimestampBase, ImageBase):
     name = models.CharField(max_length=100, null=True)
-    sequence = models.PositiveIntegerField(null=True)
-    logo = models.ImageField(upload_to=image_upload_path)
-    image_alt = models.CharField(
-        max_length=125,
-        null=True,
-        blank=True,
-    )
+    sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
 
     def __str__(self):
         return self.name
@@ -227,21 +227,11 @@ class ManagementTeam(StatusTimestampBase, ImageBase):
     role = models.CharField(max_length=150)
     name = models.CharField(max_length=150)
     sequence = models.PositiveIntegerField(null=True)
-    image_alt = models.CharField(
-        max_length=125,
-        null=True,
-        blank=True,
-    )
 
 
 class CompanyTestimonial(StatusTimestampBase, ImageBase):
     name = models.CharField(max_length=350)
     message = models.TextField(null=True)
-    image_alt = models.CharField(
-        max_length=125,
-        null=True,
-        blank=True,
-    )
 
 
 class Certification(StatusTimestampBase, ImageBase):
@@ -294,6 +284,8 @@ class HistoryDetails(StatusTimestampBase):
 
 
 class HistoryImage(StatusTimestampBase, ImageBase):  # active
+    """is_active"""
+
     history = models.ForeignKey(
         HistoryDetails,
         null=False,
