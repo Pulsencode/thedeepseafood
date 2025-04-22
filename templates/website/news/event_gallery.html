@@ -1,5 +1,5 @@
 {% load static %}
-{% for g in gallery %}
+{% for g in all_events %}
   {% if not forloop.counter|divisibleby:"2" %}
     <div class="col-12 padd_t_50 row-item news-box">
       <div class="item text-blue">
@@ -14,7 +14,7 @@
           </div>
           <div class="col-lg-6 col-item">
             <div class="slick_slider_1 slick-dots-blue">
-              {% for i in g.gallery_image.all %}
+              {% for i in g.news_image.all %}
                 <div class="item">
                   <img class="img-fluid"
                        width=""

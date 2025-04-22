@@ -3,7 +3,7 @@ import base64
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin
 
-# import os
+# # import os
 from django.core.files.base import ContentFile
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
@@ -15,7 +15,7 @@ from django.views import View
 from django.views.generic import TemplateView
 
 from deepapp.helper import is_ajax, renderhelper
-from company.models import Brand, EventGalleryImage
+from company.models import Brand, Event
 from products.models import (
     Category,
     Product,
@@ -336,7 +336,7 @@ def delete_recipeslider(request, image_id):
         image.image.delete()  # Delete the image file
         image.delete()  # Delete the database record
         return JsonResponse({"success": True})
-    except EventGalleryImage.DoesNotExist:
+    except Event.DoesNotExist:
         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)

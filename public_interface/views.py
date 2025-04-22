@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMessage, send_mail
@@ -12,60 +12,301 @@ from django.views.generic import TemplateView
 
 from company.models import (
     # AboutUs,
-    BlogDetails,
+    Blog,
     Brand,
     Certification,
     CompanyTestimonial,
-    ContactUsDetails,
-    EnquiryDetails,
-    EventGallery,
-    HistoryDetails,
+    ContactUs,
+    Enquiry,
+    Event,
+    History,
     ManagementTeam,
-    NewsDetails,
-    SEO,
+    News,
+    # SEO,
     Supermarkets,
-    PromotionDetails,
+    Promotion,
 )
 from career.models import VaccancyDetails, ApplicationDetails
 from products.models import Category, Product, ProductDetails, RecipeDetails
 
 
-class MeetingView(TemplateView):
-    template_name = "meeting.html"
+def home(request):
+    all_products = Product.objects.all().order_by("sequence")
+    homepage_products = Product.objects.filter(homepage=True).order_by("sequence")[:9]
+
+    # If no homepage marked, show the first 9 of all products
+    if not homepage_products:
+        display_products = all_products[:9]
+    else:
+        display_products = homepage_products
+
+    context = {
+        "page_title": "Home",
+        "all_certifications": Certification.objects.filter(status=True),
+        "all_brands": Brand.objects.filter(status=True).order_by("sequence"),
+        "all_products": homepage_products,
+        "all_testimonials": CompanyTestimonial.objects.filter(status=True),
+        "display_products": display_products,
+    }
+    return render(request, "website/index/index.html", context)
 
 
-class CatalogueView(TemplateView):
-    template_name = "catalogue.html"
+def about(request):
+    context = {
+        "page_title": "About Us",
+        # "about": AboutUs.objects.filter(status=True),
+        "management_team": ManagementTeam.objects.filter(status=True),
+        "history": History.objects.all(),
+    }
+    return render(request, "website/about/about.html", context)
 
 
-class IndexView(TemplateView):
-    template_name = "website/index/index.html"
+def blog(request):
+    context = {"all_blogs": Blog.objects.filter(status=True)}
+    return render(request, "website/blog/blog.html", context)
+
+
+def blog_details(request, slug):
+    blogs = get_object_or_404(Blog, slug=slug)
+    recent_blogs = Blog.objects.filter(status=True).exclude(id=blogs.id).order_by("-id")
+    context = {"blog_details": blogs, "recent_blogs": recent_blogs}
+    return render(request, "website/blog/blog-view.html", context)
+
+
+def product(request):
+    context = {
+        "page_title": "Products",
+        "all_products": Product.objects.filter(status=True).order_by("sequence"),
+    }
+    return render(request, "website/products/products.html", context)
+
+
+def product_details(request, slug):
+    product = get_object_or_404(ProductDetails, slug=slug)
+    related_products = (
+        Product.objects.filter(status=True).exclude(id=product.id).order_by("sequence")
+    )
+
+    context = {"product": product, "related_products": related_products}
+
+    return render(request, "website/products/product-view.html", context)
+
+
+def distribution_channel(request):
+    context = {"page_title": "Leading Wholesale Seafood Supplier in UAE"}
+    return render(request, "website/distribution/distribution.html", context)
+
+
+def contact(request):
+    context = {"page_title": "Contact The Deep Seafood Company"}
+    return render(request, "website/contact/contact.html", context)
+
+
+def career(request):
+
+    context = {
+        "page_title": "Careers at The Deep Seafood Company",
+        "all_jobs": VaccancyDetails.objects.filter(status=True),
+    }
+    return render(request, "website/career/career.html", context)
+
+
+def news_room(request):
+    context = {
+        "page_title": "Latest News & update",
+        "news": News.objects.filter(status=True, type="company news"),
+        # "news": News.objects.filter(status=True, type="global news"),
+        "all_events": Event.objects.filter(status=True),
+    }
+    return render(request, "website/news/news-room.html", context)
+
+
+def news_detail(request, pk):
+    news = get_object_or_404(News, id=pk)
+    recent_news = News.objects.filter(status=True).exclude(id=news.id)
+    context = {"news_detail": news, "recent_news": recent_news}
+    return render(request, "website/news/news-view.html", context)
+
+
+def brand(request):
+    context = {
+        "page_title": "Explore oceano",
+        "supermarkets": Supermarkets.objects.filter(status=True),
+    }
+    return render(request, "public_interface/oceano.html", context)
+
+
+def meeting(request):
+    return render(request, "meeting.html")
+
+
+def catalogue(request):
+    return render(request, "catalogue.html")
+
+
+def terms_and_condition(request):
+    context = {"page_title": "Terms and Conditions"}
+
+    return render(request, "termsandconditions.html", context)
+
+
+def privacy_policy(request):
+    context = {"page_title": "Privacy Policy"}
+
+    return render(request, "privacy_policy.html", context)
+
+
+# class IndexView(TemplateView):
+#     template_name = "website/index/index.html"
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         brand = (
+#             Brand.objects.filter(status=True)
+#             .exclude(name="Deep Sea")
+#             .order_by("sequence")
+#         )
+#         category = Category.objects.filter(status=True).order_by("-id")
+#         product = Product.objects.filter(
+#             brand__name="Deep Sea", status=True, homepage=True
+#         ).order_by("sequence")[:9]
+#         blog = Blog.objects.filter(status=True).order_by("-id")
+#         testimonial = CompanyTestimonial.objects.filter(status=True).order_by("-id")
+#         type = ""
+#         certification = Certification.objects.filter(status=True).order_by("-id")
+
+#         context["certification"] = certification
+#         context["testimonial"] = testimonial
+#         context["type"] = type
+
+#         context["product"] = product
+#         context["category"] = category
+#         context["brands"] = brand
+#         return context
+
+
+# class ProductView(TemplateView):
+#     template_name = "website/products/products.html"
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         type = self.request.GET.get("type")
+#         if type:
+#             product = Product.objects.filter(
+#                 brand__name="Deep Sea", type=type, status=True
+#             ).order_by("sequence")
+#         else:
+#             product = Product.objects.filter(
+#                 brand__name="Deep Sea", status=True
+#             ).order_by("sequence")
+#         blog = Blog.objects.filter(status=True).order_by("-id")
+#         # context["data"] = SEO.objects.filter(page="Product").first()
+#         context["blog"] = blog
+#         context["type"] = type
+#         context["product"] = product
+#         return context
+
+
+# class ProductDetailsView(TemplateView):
+#     template_name = "website/products/product-view.html"
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         slug_product = self.kwargs["slug_product"]
+#         product = Product.objects.get(slug_product=slug_product)
+#         cat = (
+#             product.product_details.filter(status=True)
+#             .order_by("category__sequence")
+#             .values_list("category__id", flat=True)
+#             .distinct()
+#             .first()
+#         )
+#         cat_name = (
+#             product.product_details.filter(status=True)
+#             .order_by("category__sequence")
+#             .values_list("category__name", flat=True)
+#             .distinct()
+#             .first()
+#         )
+# cat = Category.objects.filter(status=True,brand__name='Deep Sea').order_by('-id').first()
+# data = ProductDetails.objects.filter(product=product,category=cat)
+# print(data.price)
+# try:
+#     data = ProductDetails.objects.filter(product=product, category=cat).first()
+# except ProductDetails.DoesNotExist:
+#     data = None
+# list = (
+#     Product.objects.filter(status=True, brand__name="Deep Sea")
+#     .exclude(slug_product=slug_product)
+#     .order_by("sequence")[:6]
+# )
+# category = Category.objects.filter(
+#     status=True, brand__name="Deep Sea"
+# ).order_by("sequence")
+# blog = Blog.objects.filter(status=True).order_by("-id")
+# context["blog"] = blog
+# context["category"] = category
+# context["cat_name"] = cat_name
+# context["cat"] = cat
+# context["list"] = list
+# context["data"] = data
+# context["product"] = product
+# return context
+
+
+# class BlogDetailsView(TemplateView):
+#     template_name = "website/blog/blog-view.html"
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         slug = self.kwargs["slug"]
+#         data = Blog.objects.get(slug=slug)
+#         blog = Blog.objects.filter(status=True).exclude(slug=slug).order_by("-id")
+#         # list = BlogDetails.objects.filter(status=True).order_by('-id')
+#         # context['blog'] = list
+#         context["data"] = data
+#         context["blogs"] = blog
+#         return context
+
+
+# class NewsRoomView(TemplateView):
+#     template_name = "website/news/news-room.html"
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         gallery = Event.objects.filter(status=True).order_by("sequence")
+#         total_events = Event.objects.filter(status=True).count()
+
+#         blog = Blog.objects.filter(status=True).order_by("-id")
+#         # context["data"] = SEO.objects.filter(page="News Room").first()
+#         context["blog"] = blog
+#         context["gallery"] = gallery
+#         context["total_events"] = total_events
+#         return context
+
+
+# class NewsDetailsView(TemplateView):
+#     template_name = "website/news/news-view.html"
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         id = self.kwargs["id"]
+#         data = News.objects.get(pk=id)
+#         news = News.objects.filter(status=True).exclude(id=id).order_by("-id")
+#         # blog = BlogDetails.objects.filter(status=True).order_by('-id')
+#         # context['blog'] = blog
+#         context["data"] = data
+#         context["news"] = news
+#         return context
+
+
+class NewsListsView(TemplateView):
+    template_name = "website/news/news.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        brand = (
-            Brand.objects.filter(status=True)
-            .exclude(name="Deep Sea")
-            .order_by("sequence")
-        )
-        category = Category.objects.filter(status=True).order_by("-id")
-        product = Product.objects.filter(
-            brand__name="Deep Sea", status=True, homepage=True
-        ).order_by("sequence")[:9]
-        blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        testimonial = CompanyTestimonial.objects.filter(status=True).order_by("-id")
-        type = ""
-        certification = Certification.objects.filter(status=True).order_by("-id")
-        # Log product information
-        # logger.info(f"Product information: {product}")
-        # context["data"] = SEO.objects.filter(page="Home").first()
-        context["certification"] = certification
-        context["testimonial"] = testimonial
-        context["type"] = type
-        context["blog"] = blog
-        context["product"] = product
-        context["category"] = category
-        context["brands"] = brand
+        news = News.objects.filter(status=True).order_by("-id")
+        context["news"] = news
         return context
 
 
@@ -98,51 +339,6 @@ class IndexProductView(View):
             return JsonResponse({"error": "Invalid request"}, status=400)
 
 
-class AboutView(TemplateView):
-    template_name = "website/about/about.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        teams = ManagementTeam.objects.filter(status=True).order_by("sequence")
-        history = HistoryDetails.objects.filter(status=True).order_by("id")
-        blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        # about1 = AboutUs.objects.filter(status=True).order_by("-id")[:1]
-        # about2 = AboutUs.objects.filter(status=True).order_by("-id")[1:2]
-        # about3 = AboutUs.objects.filter(status=True).order_by("-id")[2:3]
-        # about4 = AboutUs.objects.filter(status=True).order_by("-id")[3:4]
-        # context["data"] = SEO.objects.filter(page="About").first()
-        # context["about1"] = about1
-        # context["about2"] = about2
-        # context["about3"] = about3
-        # context["about4"] = about4
-        context["blog"] = blog
-        context["history"] = history
-        context["teams"] = teams
-        return context
-
-
-class ProductView(TemplateView):
-    template_name = "website/products/products.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        type = self.request.GET.get("type")
-        if type:
-            product = Product.objects.filter(
-                brand__name="Deep Sea", type=type, status=True
-            ).order_by("sequence")
-        else:
-            product = Product.objects.filter(
-                brand__name="Deep Sea", status=True
-            ).order_by("sequence")
-        blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        # context["data"] = SEO.objects.filter(page="Product").first()
-        context["blog"] = blog
-        context["type"] = type
-        context["product"] = product
-        return context
-
-
 class ProductListingView(View):
     template_name = "website/products/product_lists.html"
 
@@ -171,53 +367,6 @@ class ProductListingView(View):
                 return JsonResponse({"error": "Product not found"}, status=404)
         else:
             return JsonResponse({"error": "Invalid request"}, status=400)
-
-
-class ProductDetailsView(TemplateView):
-    template_name = "website/products/product-view.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        slug_product = self.kwargs["slug_product"]
-        product = Product.objects.get(slug_product=slug_product)
-        cat = (
-            product.product_details.filter(status=True)
-            .order_by("category__sequence")
-            .values_list("category__id", flat=True)
-            .distinct()
-            .first()
-        )
-        cat_name = (
-            product.product_details.filter(status=True)
-            .order_by("category__sequence")
-            .values_list("category__name", flat=True)
-            .distinct()
-            .first()
-        )
-        # cat = Category.objects.filter(status=True,brand__name='Deep Sea').order_by('-id').first()
-        # data = ProductDetails.objects.filter(product=product,category=cat)
-        # print(data.price)
-        try:
-            data = ProductDetails.objects.filter(product=product, category=cat).first()
-        except ProductDetails.DoesNotExist:
-            data = None
-        list = (
-            Product.objects.filter(status=True, brand__name="Deep Sea")
-            .exclude(slug_product=slug_product)
-            .order_by("sequence")[:6]
-        )
-        category = Category.objects.filter(
-            status=True, brand__name="Deep Sea"
-        ).order_by("sequence")
-        blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        context["blog"] = blog
-        context["category"] = category
-        context["cat_name"] = cat_name
-        context["cat"] = cat
-        context["list"] = list
-        context["data"] = data
-        context["product"] = product
-        return context
 
 
 class GeneralProductDetailsView(View):
@@ -321,7 +470,7 @@ class BrandView(TemplateView):
             .order_by("-id")
             .count()
         )
-        blog = BlogDetails.objects.filter(status=True).order_by("-id")
+        blog = Blog.objects.filter(status=True).order_by("-id")
         # context["data"] = SEO.objects.filter(page="Oceano").first()
         context["blog"] = blog
         # print(total_product,'***')
@@ -495,31 +644,6 @@ class BrandsListView(TemplateView):
     template_name = "website/brands/brands_list.html"
 
 
-class DistributionView(TemplateView):
-    template_name = "website/distribution/distribution.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # context["data"] = SEO.objects.filter(page="Distribution Channel").first()
-        return context
-
-
-class NewsRoomView(TemplateView):
-    template_name = "website/news/news-room.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        gallery = EventGallery.objects.filter(status=True).order_by("sequence")
-        total_events = EventGallery.objects.filter(status=True).count()
-
-        blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        # context["data"] = SEO.objects.filter(page="News Room").first()
-        context["blog"] = blog
-        context["gallery"] = gallery
-        context["total_events"] = total_events
-        return context
-
-
 class LoadEvents(View):
     template_name = "website/news/event_gallery.html"
 
@@ -527,10 +651,8 @@ class LoadEvents(View):
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
 
             try:
-                gallery = EventGallery.objects.filter(status=True).order_by("sequence")[
-                    :3
-                ]
-                total_events = EventGallery.objects.filter(status=True).count()
+                gallery = Event.objects.filter(status=True).order_by("sequence")[:3]
+                total_events = Event.objects.filter(status=True).count()
                 context = {
                     "gallery": gallery,
                     "total_events": total_events,
@@ -552,10 +674,10 @@ class LoadNews(View):
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
 
             try:
-                news = NewsDetails.objects.filter(
-                    status=True, type="Company News"
-                ).order_by("sequence")[:3]
-                total_news = NewsDetails.objects.filter(
+                news = News.objects.filter(status=True, type="Company News").order_by(
+                    "sequence"
+                )[:3]
+                total_news = News.objects.filter(
                     status=True, type="Company News"
                 ).count()
                 context = {
@@ -582,10 +704,10 @@ class LoadGlobalNews(View):
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
 
             try:
-                news = NewsDetails.objects.filter(
-                    status=True, type="Global News"
-                ).order_by("sequence")[:3]
-                total_news = NewsDetails.objects.filter(
+                news = News.objects.filter(status=True, type="Global News").order_by(
+                    "sequence"
+                )[:3]
+                total_news = News.objects.filter(
                     status=True, type="Global News"
                 ).count()
                 context = {
@@ -612,7 +734,7 @@ class LoadPromotions(View):
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
 
             try:
-                promotion = PromotionDetails.objects.filter(status=True).order_by("-id")
+                promotion = Promotion.objects.filter(status=True).order_by("-id")
 
                 context = {"promotion": promotion}
                 template = loader.get_template(self.template_name)
@@ -629,10 +751,10 @@ def load_more_news(request):
     offset = int(request.GET["offset"])
     limit = int(request.GET["limit"])
     type = request.GET["type"]
-    data = NewsDetails.objects.filter(status=True, type=type).order_by("sequence")[
+    data = News.objects.filter(status=True, type=type).order_by("sequence")[
         offset : offset + limit
     ]
-    total_news = NewsDetails.objects.filter(status=True, type=type).count()
+    total_news = News.objects.filter(status=True, type=type).count()
     t = render_to_string(
         "website/news/loadmore_news.html",
         {"data": data, "type": type, "total_news": total_news},
@@ -644,42 +766,15 @@ def load_more_events(request):
     offset = int(request.GET["offset"])
     limit = int(request.GET["limit"])
     # type = request.GET['type']
-    data = EventGallery.objects.filter(status=True).order_by("sequence")[
+    data = Event.objects.filter(status=True).order_by("sequence")[
         offset : offset + limit
     ]
-    total_events = EventGallery.objects.filter(status=True).count()
+    total_events = Event.objects.filter(status=True).count()
     t = render_to_string(
         "website/news/loadmore_events.html",
         {"data": data, "total_events": total_events},
     )
     return JsonResponse({"data": t})
-
-
-class NewsDetailsView(TemplateView):
-    template_name = "website/news/news-view.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        id = self.kwargs["id"]
-        data = NewsDetails.objects.get(pk=id)
-        news = NewsDetails.objects.filter(status=True).exclude(id=id).order_by("-id")
-        # blog = BlogDetails.objects.filter(status=True).order_by('-id')
-        # context['blog'] = blog
-        context["data"] = data
-        context["news"] = news
-        return context
-
-
-class NewsListsView(TemplateView):
-    template_name = "website/news/news.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        news = NewsDetails.objects.filter(status=True).order_by("-id")
-        blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        context["blog"] = blog
-        context["news"] = news
-        return context
 
 
 class PromotionView(TemplateView):
@@ -688,69 +783,10 @@ class PromotionView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         id = self.kwargs["id"]
-        promotion = PromotionDetails.objects.get(pk=id)
-        data = (
-            PromotionDetails.objects.filter(status=True).exclude(id=id).order_by("-id")
-        )
+        promotion = Promotion.objects.get(pk=id)
+        data = Promotion.objects.filter(status=True).exclude(id=id).order_by("-id")
         context["data"] = data
         context["promotion"] = promotion
-        return context
-
-
-class CareerView(TemplateView):
-    template_name = "website/career/career.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        careers = VaccancyDetails.objects.filter(status=True).order_by("-id")
-        types_list = [career.type.split(", ") for career in careers]
-        print(types_list)
-        blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        # context["data"] = SEO.objects.filter(page="Career").first()
-        context["blog"] = blog
-        context["types_list"] = types_list
-        context["careers"] = careers
-        return context
-
-
-class BlogView(TemplateView):
-    template_name = "website/blog/blog.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        # context["data"] = SEO.objects.filter(page="Blogs").first()
-        context["blog"] = blog
-        return context
-
-
-class BlogDetailsView(TemplateView):
-    template_name = "website/blog/blog-view.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        slug = self.kwargs["slug"]
-        data = BlogDetails.objects.get(slug=slug)
-        blog = (
-            BlogDetails.objects.filter(status=True).exclude(slug=slug).order_by("-id")
-        )
-        # list = BlogDetails.objects.filter(status=True).order_by('-id')
-        # context['blog'] = list
-        context["data"] = data
-        context["blogs"] = blog
-        return context
-
-
-class ContactView(TemplateView):
-    template_name = "website/contact/contact.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        branch = self.request.GET.get("branch")
-        blog = BlogDetails.objects.filter(status=True).order_by("-id")
-        # context["data"] = SEO.objects.filter(page="Contact Us").first()
-        context["blog"] = blog
-        context["branch"] = branch
         return context
 
 
@@ -776,7 +812,7 @@ class SendEmailView(View):
         else:
             # Honey field is empty, proceed with sending the email
             if name and location and phone and email:
-                contact = ContactUsDetails(
+                contact = ContactUs(
                     name=name,
                     email=email,
                     location=location,
@@ -820,7 +856,7 @@ class ProductEnquiryView(View):
         else:
             # Honey field is empty, proceed with sending the email
             if name and location and phone and email:
-                enquiry = EnquiryDetails(
+                enquiry = Enquiry(
                     product=product,
                     name=name,
                     email=email,

@@ -257,6 +257,9 @@ class History(StatusTimestampBase):
     title = models.CharField(max_length=500)
     description = models.TextField(null=True)
 
+    def __str__(self):
+        return str(self.year)
+
 
 class HistoryImage(StatusTimestampBase, ImageBase):  # active
 

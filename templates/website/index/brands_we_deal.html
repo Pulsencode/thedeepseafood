@@ -9,8 +9,8 @@
         </div>
         <div class="row row-item pt-20">
             <div class="slick-slidera">
-                {% for b in brands %}
-                    {% if b.logo %}
+                {% for b in all_brands %}
+                    {% if b.image %}
                         <div class="item card-hover-up">
                             {% if b.name == 'Oceano' %}
                                 <a class="primary-url" href="{% url 'brands' %}">

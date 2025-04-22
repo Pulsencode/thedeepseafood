@@ -16,7 +16,7 @@
               <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
                 <h3 class="font-lnterbold">BLOG</h3>
                 <h5 class="font-lnterbold">
-                  <a href="{% url 'index' %}">Home</a>
+                  <a href="{% url 'home' %}">Home</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
                   <a href="#">Blog</a>
                 </h5>
@@ -28,7 +28,7 @@
       <div class="padd_t_b_70">
         <div class="wrapper">
           <div class="row ">
-            {% for i in blog %}
+            {% for i in all_blogs %}
               <div class="col-lg-4 ">
                 <div class="view-section text-blue"
                      data-aos="fade-up"

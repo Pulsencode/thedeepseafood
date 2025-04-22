@@ -1,16 +1,16 @@
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from company.models import (
-    BlogDetails,
+    Blog,
     Brand,
     CompanyTestimonial,
-    ContactUsDetails,
-    EnquiryDetails,
-    EventGallery,
-    HistoryDetails,
+    ContactUs,
+    Enquiry,
+    Event,
+    History,
     ManagementTeam,
-    NewsDetails,
-    PromotionDetails,
+    News,
+    Promotion,
 )
 from django.contrib import messages
 
@@ -28,17 +28,17 @@ class IndexView(TemplateView):
         category = Category.objects.filter(status=True).order_by("-id").count()
         job = JobCategory.objects.filter(status=True).order_by("-id").count()
         recipe = RecipeDetails.objects.filter(status=True).order_by("-id").count()
-        gallery = EventGallery.objects.filter(status=True).order_by("-id").count()
-        news = NewsDetails.objects.filter(status=True).order_by("-id").count()
-        promo = PromotionDetails.objects.filter(status=True).order_by("-id").count()
-        blog = BlogDetails.objects.filter(status=True).order_by("-id").count()
+        gallery = Event.objects.filter(status=True).order_by("-id").count()
+        news = News.objects.filter(status=True).order_by("-id").count()
+        promo = Promotion.objects.filter(status=True).order_by("-id").count()
+        blog = Blog.objects.filter(status=True).order_by("-id").count()
         team = ManagementTeam.objects.filter(status=True).order_by("-id").count()
         testi = CompanyTestimonial.objects.filter(status=True).order_by("-id").count()
         career = VaccancyDetails.objects.filter(status=True).order_by("-id").count()
         appli = ApplicationDetails.objects.filter(status=True).order_by("-id").count()
-        history = HistoryDetails.objects.filter(status=True).order_by("-id").count()
-        contact = ContactUsDetails.objects.filter().order_by("-id").count()
-        enquiry = EnquiryDetails.objects.filter().order_by("-id").count()
+        history = History.objects.filter(status=True).order_by("-id").count()
+        contact = ContactUs.objects.filter().order_by("-id").count()
+        enquiry = Enquiry.objects.filter().order_by("-id").count()
         product = Product.objects.filter().order_by("-id").count()
         context["product"] = product
         context["enquiry"] = enquiry
