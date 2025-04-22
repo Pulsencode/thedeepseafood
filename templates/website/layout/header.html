@@ -3,7 +3,7 @@
   <header>
     <div class="row">
       <div class="col-md-8 col-4">
-        <a class="a-logo" href="{% url 'index' %}">
+        <a class="a-logo" href="{% url 'home' %}">
           <img width=""
                height=""
                alt=""
@@ -71,7 +71,7 @@
         <div class="row align-items-center">
           <div class="col-sm-5">
             <li>
-              <a href="{% url 'index' %}">Home Page</a>
+              <a href="{% url 'home' %}">Home Page</a>
             </li>
             <li>
               <a href="{% url 'about' %}">About us</a>
@@ -105,7 +105,7 @@
               <a href="{% url 'newsroom' %}">News Room</a>
             </li>
             <li>
-              <a href="{% url 'careers' %}">Career</a>
+              <a href="{% url 'career' %}">Career</a>
             </li>
             {% if blog %}
               <li>

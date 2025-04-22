@@ -1,5 +1,5 @@
 {% load static %}
-{% for p in product %}
+{% for p in all_products %}
     <div class="col-lg-3 col-md-4 col-6 pt-20">
         <div class="item card-hover-up">
             <img width=""
@@ -16,7 +16,7 @@
                      src="{% static 'website/assets/public/images/icons/right-arrow-blue.png' %}"
                      class="arrow_sm">
             </div>
-            <a class="primary-btn" href="{% url 'product_details' p.slug_product %}"></a>
+            <a class="primary-btn" href="{% url 'product_details' p.slug %}"></a>
         </div>
     </div>
 {% endfor %}

@@ -14,21 +14,21 @@ import base64
 
 from company.models import (
     # AboutUs,
-    BlogDetails,
+    Blog,
     BlogImage,
     Brand,
     Certification,
     CompanyTestimonial,
-    ContactUsDetails,
-    EnquiryDetails,
-    EventGallery,
-    EventGalleryImage,
-    HistoryDetails,
+    ContactUs,
+    Enquiry,
+    Event,
+    EventImage,
+    History,
     HistoryImage,
     ManagementTeam,
-    NewsDetails,
-    NewsGalleryImage,
-    PromotionDetails,
+    News,
+    NewsImage,
+    Promotion,
     PromotionImage,
     SEO,
     Supermarkets,
@@ -169,7 +169,7 @@ class GalleryListView(UserPassesTestMixin, TemplateView):
         status = request.GET.get("status")
         sts = request.GET.get("sts")
 
-        cd = EventGallery.objects.all().order_by("-id")
+        cd = Event.objects.all().order_by("-id")
 
         if is_ajax(request):
             if search:
@@ -182,12 +182,12 @@ class GalleryListView(UserPassesTestMixin, TemplateView):
                 else:
                     status = False
                 item_id = request.GET.get("item_id")
-                EventGallery.objects.filter(id=item_id).update(status=status)
+                Event.objects.filter(id=item_id).update(status=status)
             if delete:
                 item_id = request.GET.get("item_id")
                 try:
-                    datas = EventGallery.objects.get(id=item_id)
-                except EventGallery.DoesNotExist:
+                    datas = Event.objects.get(id=item_id)
+                except Event.DoesNotExist:
                     datas = None
                 if datas:
                     datas.delete()
@@ -237,7 +237,7 @@ class GalleryCreateView(UserPassesTestMixin, TemplateView):
         else:
             date = None
 
-        gallery = EventGallery(
+        gallery = Event(
             title=title,
             location=location,
             description=desc,
@@ -249,7 +249,7 @@ class GalleryCreateView(UserPassesTestMixin, TemplateView):
 
         slider_images = request.FILES.getlist("files")
         for image in slider_images:
-            slider = EventGalleryImage(event=gallery, image=image)
+            slider = Event(event=gallery, image=image)
             slider.save()
         messages.success(request, "Gallery Added Successfully...!!")
         return redirect("gallery_view")
@@ -262,12 +262,12 @@ class GalleryUpdateView(UserPassesTestMixin, TemplateView):
         return self.request.user.username == "DeepSeaAdmin"
 
     def get(self, request, id):
-        data = EventGallery.objects.get(pk=id)
+        data = Event.objects.get(pk=id)
         sliders = data.gallery_image.all()
         return render(request, self.template_name, {"list": data, "sliders": sliders})
 
     def post(self, request, id):
-        data = EventGallery.objects.get(pk=id)
+        data = Event.objects.get(pk=id)
         # sliders = data.gallery_image.all()
         title = request.POST.get("title")
         # name = request.POST.get('name')
@@ -293,7 +293,7 @@ class GalleryUpdateView(UserPassesTestMixin, TemplateView):
         # Update Slider images for the Country
         slider_images = request.FILES.getlist("files")
         for image in slider_images:
-            slider = EventGalleryImage(event=data, image=image)
+            slider = Event(event=data, image=image)
             slider.save()
         messages.success(request, "Gallery Updated Successfully...!!")
         return redirect("gallery_view")
@@ -302,11 +302,11 @@ class GalleryUpdateView(UserPassesTestMixin, TemplateView):
 def delete_slider(request, image_id):
     try:
         # Get the image by its ID and delete it
-        image = EventGalleryImage.objects.get(pk=image_id)
+        image = Event.objects.get(pk=image_id)
         image.image.delete()  # Delete the image file
         image.delete()  # Delete the database record
         return JsonResponse({"success": True})
-    except EventGalleryImage.DoesNotExist:
+    except EventImage.DoesNotExist:
         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
@@ -328,7 +328,7 @@ class NewsListView(UserPassesTestMixin, TemplateView):
         status = request.GET.get("status")
         sts = request.GET.get("sts")
 
-        cd = NewsDetails.objects.all().order_by("-id")
+        cd = News.objects.all().order_by("-id")
 
         if is_ajax(request):
             if search:
@@ -341,12 +341,12 @@ class NewsListView(UserPassesTestMixin, TemplateView):
                 else:
                     status = False
                 item_id = request.GET.get("item_id")
-                NewsDetails.objects.filter(id=item_id).update(status=status)
+                News.objects.filter(id=item_id).update(status=status)
             if delete:
                 item_id = request.GET.get("item_id")
                 try:
-                    datas = NewsDetails.objects.get(id=item_id)
-                except NewsDetails.DoesNotExist:
+                    datas = News.objects.get(id=item_id)
+                except News.DoesNotExist:
                     datas = None
                 if datas:
                     datas.delete()
@@ -401,7 +401,7 @@ class NewsCreateView(UserPassesTestMixin, TemplateView):
         else:
             date = None
 
-        news = NewsDetails(
+        news = News(
             sequence=sequence,
             title=title,
             name=name,
@@ -419,7 +419,7 @@ class NewsCreateView(UserPassesTestMixin, TemplateView):
 
         slider_images = request.FILES.getlist("files")
         for image in slider_images:
-            slider = NewsGalleryImage(news=news, image=image)
+            slider = News(news=news, image=image)
             slider.save()
         messages.success(request, "News Added Successfully...!!")
         return redirect("news_view")
@@ -432,12 +432,12 @@ class NewsUpdateView(UserPassesTestMixin, TemplateView):
         return self.request.user.username == "DeepSeaAdmin"
 
     def get(self, request, id):
-        data = NewsDetails.objects.get(pk=id)
+        data = News.objects.get(pk=id)
         sliders = data.news_image.all()
         return render(request, self.template_name, {"list": data, "sliders": sliders})
 
     def post(self, request, id):
-        data = NewsDetails.objects.get(pk=id)
+        data = News.objects.get(pk=id)
         # sliders = data.news_image.all()
         title = request.POST.get("title")
         name = request.POST.get("name")
@@ -473,7 +473,7 @@ class NewsUpdateView(UserPassesTestMixin, TemplateView):
         # Update Slider images for the Country
         slider_images = request.FILES.getlist("files")
         for image in slider_images:
-            slider = NewsGalleryImage(news=data, image=image)
+            slider = News(news=data, image=image)
             slider.save()
         messages.success(request, "News Updated Successfully...!!")
         return redirect("news_view")
@@ -482,11 +482,11 @@ class NewsUpdateView(UserPassesTestMixin, TemplateView):
 def delete_newsslider(request, image_id):
     try:
         # Get the image by its ID and delete it
-        image = NewsGalleryImage.objects.get(pk=image_id)
+        image = NewsImage.objects.get(pk=image_id)
         image.image.delete()  # Delete the image file
         image.delete()  # Delete the database record
         return JsonResponse({"success": True})
-    except EventGalleryImage.DoesNotExist:
+    except EventImage.DoesNotExist:
         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
@@ -508,7 +508,7 @@ class PromotionListView(UserPassesTestMixin, TemplateView):
         status = request.GET.get("status")
         sts = request.GET.get("sts")
 
-        cd = PromotionDetails.objects.all().order_by("-id")
+        cd = Promotion.objects.all().order_by("-id")
 
         if is_ajax(request):
             if search:
@@ -521,12 +521,12 @@ class PromotionListView(UserPassesTestMixin, TemplateView):
                 else:
                     status = False
                 item_id = request.GET.get("item_id")
-                PromotionDetails.objects.filter(id=item_id).update(status=status)
+                Promotion.objects.filter(id=item_id).update(status=status)
             if delete:
                 item_id = request.GET.get("item_id")
                 try:
-                    datas = PromotionDetails.objects.get(id=item_id)
-                except PromotionDetails.DoesNotExist:
+                    datas = Promotion.objects.get(id=item_id)
+                except Promotion.DoesNotExist:
                     datas = None
                 if datas:
                     datas.delete()
@@ -574,7 +574,7 @@ class PromotionCreateView(UserPassesTestMixin, TemplateView):
         else:
             date = None
 
-        promotion = PromotionDetails(
+        promotion = Promotion(
             title=title, name=name, location=location, description=desc, date=date
         )
         promotion.save()
@@ -594,12 +594,12 @@ class PromotionUpdateView(UserPassesTestMixin, TemplateView):
         return self.request.user.username == "DeepSeaAdmin"
 
     def get(self, request, id):
-        data = PromotionDetails.objects.get(pk=id)
+        data = Promotion.objects.get(pk=id)
         sliders = data.promo_image.all()
         return render(request, self.template_name, {"list": data, "sliders": sliders})
 
     def post(self, request, id):
-        data = PromotionDetails.objects.get(pk=id)
+        data = Promotion.objects.get(pk=id)
         # sliders = data.promo_image.all()
         title = request.POST.get("title")
         name = request.POST.get("name")
@@ -634,7 +634,7 @@ def delete_promotionslider(request, image_id):
         image.image.delete()  # Delete the image file
         image.delete()  # Delete the database record
         return JsonResponse({"success": True})
-    except EventGalleryImage.DoesNotExist:
+    except EventImage.DoesNotExist:
         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
@@ -656,7 +656,7 @@ class BlogListView(UserPassesTestMixin, TemplateView):
         status = request.GET.get("status")
         sts = request.GET.get("sts")
 
-        cd = BlogDetails.objects.all().order_by("-id")
+        cd = Blog.objects.all().order_by("-id")
 
         if is_ajax(request):
             if search:
@@ -669,12 +669,12 @@ class BlogListView(UserPassesTestMixin, TemplateView):
                 else:
                     status = False
                 item_id = request.GET.get("item_id")
-                BlogDetails.objects.filter(id=item_id).update(status=status)
+                Blog.objects.filter(id=item_id).update(status=status)
             if delete:
                 item_id = request.GET.get("item_id")
                 try:
-                    datas = BlogDetails.objects.get(id=item_id)
-                except BlogDetails.DoesNotExist:
+                    datas = Blog.objects.get(id=item_id)
+                except Blog.DoesNotExist:
                     datas = None
                 if datas:
                     datas.delete()
@@ -727,7 +727,7 @@ class BlogCreateView(UserPassesTestMixin, TemplateView):
         else:
             date = None
 
-        blog = BlogDetails(
+        blog = Blog(
             title=title,
             name=name,
             location=location,
@@ -756,12 +756,12 @@ class BlogUpdateView(UserPassesTestMixin, TemplateView):
         return self.request.user.username == "DeepSeaAdmin"
 
     def get(self, request, id):
-        data = BlogDetails.objects.get(pk=id)
+        data = Blog.objects.get(pk=id)
         sliders = data.blog_image.all()
         return render(request, self.template_name, {"list": data, "sliders": sliders})
 
     def post(self, request, id):
-        data = BlogDetails.objects.get(pk=id)
+        data = Blog.objects.get(pk=id)
         # sliders = data.blog_image.all()
         title = request.POST.get("title")
         name = request.POST.get("name")
@@ -806,7 +806,7 @@ def delete_blogslider(request, image_id):
         image.image.delete()  # Delete the image file
         image.delete()  # Delete the database record
         return JsonResponse({"success": True})
-    except EventGalleryImage.DoesNotExist:
+    except EventImage.DoesNotExist:
         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
@@ -1071,7 +1071,7 @@ class HistoryListView(UserPassesTestMixin, TemplateView):
         status = request.GET.get("status")
         sts = request.GET.get("sts")
 
-        cd = HistoryDetails.objects.all().order_by("-id")
+        cd = History.objects.all().order_by("-id")
 
         if is_ajax(request):
             if search:
@@ -1084,12 +1084,12 @@ class HistoryListView(UserPassesTestMixin, TemplateView):
                 else:
                     status = False
                 item_id = request.GET.get("item_id")
-                HistoryDetails.objects.filter(id=item_id).update(status=status)
+                History.objects.filter(id=item_id).update(status=status)
             if delete:
                 item_id = request.GET.get("item_id")
                 try:
-                    datas = HistoryDetails.objects.get(id=item_id)
-                except HistoryDetails.DoesNotExist:
+                    datas = History.objects.get(id=item_id)
+                except History.DoesNotExist:
                     datas = None
                 if datas:
                     datas.delete()
@@ -1132,7 +1132,7 @@ class HistoryCreateView(UserPassesTestMixin, TemplateView):
         desc = request.POST.get("desc")
         image_alt = request.POST.get("image_alt")
 
-        history = HistoryDetails(
+        history = History(
             title=title, year=year, description=desc, image_alt=image_alt
         )
         history.save()
@@ -1152,12 +1152,12 @@ class HistoryUpdateView(UserPassesTestMixin, TemplateView):
         return self.request.user.username == "DeepSeaAdmin"
 
     def get(self, request, id):
-        data = HistoryDetails.objects.get(pk=id)
+        data = History.objects.get(pk=id)
         sliders = data.history_image.all()
         return render(request, self.template_name, {"list": data, "sliders": sliders})
 
     def post(self, request, id):
-        data = HistoryDetails.objects.get(pk=id)
+        data = History.objects.get(pk=id)
         # sliders = data.history_image.all()
         title = request.POST.get("title")
         year = request.POST.get("year")
@@ -1185,7 +1185,7 @@ def delete_historyslider(request, image_id):
         image.image.delete()  # Delete the image file
         image.delete()  # Delete the database record
         return JsonResponse({"success": True})
-    except EventGalleryImage.DoesNotExist:
+    except EventImage.DoesNotExist:
         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
@@ -1207,7 +1207,7 @@ class ContactListView(UserPassesTestMixin, TemplateView):
         # status = request.GET.get("status")
         # sts = request.GET.get("sts")
 
-        cd = ContactUsDetails.objects.all().order_by("-id")
+        cd = ContactUs.objects.all().order_by("-id")
 
         if is_ajax(request):
             if search:
@@ -1215,8 +1215,8 @@ class ContactListView(UserPassesTestMixin, TemplateView):
             if delete:
                 item_id = request.GET.get("item_id")
                 try:
-                    datas = ContactUsDetails.objects.get(id=item_id)
-                except ContactUsDetails.DoesNotExist:
+                    datas = ContactUs.objects.get(id=item_id)
+                except ContactUs.DoesNotExist:
                     datas = None
                 if datas:
                     datas.delete()
@@ -1272,7 +1272,7 @@ class EnquiryListView(UserPassesTestMixin, TemplateView):
             start_date = datetime.strptime(start, "%m/%d/%Y").date()
             end_date = datetime.strptime(end, "%m/%d/%Y").date()
 
-        cd = EnquiryDetails.objects.all().order_by("-id")
+        cd = Enquiry.objects.all().order_by("-id")
 
         if is_ajax(request):
             if search:
@@ -1282,8 +1282,8 @@ class EnquiryListView(UserPassesTestMixin, TemplateView):
             if delete:
                 item_id = request.GET.get("item_id")
                 try:
-                    datas = EnquiryDetails.objects.get(id=item_id)
-                except EnquiryDetails.DoesNotExist:
+                    datas = Enquiry.objects.get(id=item_id)
+                except Enquiry.DoesNotExist:
                     datas = None
                 if datas:
                     datas.delete()
@@ -1327,7 +1327,7 @@ class ExportExcel(View):
             end = request.GET.get("end")
 
             try:
-                enquiries = EnquiryDetails.objects.filter(
+                enquiries = Enquiry.objects.filter(
                     created__gte=start, created__lte=end
                 )
                 enquiries_data = [

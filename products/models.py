@@ -27,7 +27,6 @@ class RecipeDetails(StatusTimestampBase, ImageBase):
     )
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=350, blank=True, null=True)
-    image_alt = models.CharField(max_length=100, blank=True)
 
     def __str__(self) -> str:
         return self.title
@@ -47,6 +46,11 @@ class RecipeIngredients(TimestampBase):
 
 
 class Product(StatusTimestampBase):
+    TYPE_CHOICES = (
+        ("local catch", "Local Catch"),
+        ("imported", "Imported"),
+        ("value added", "Value Added"),
+    )
     brand = models.ForeignKey(
         Brand,
         null=True,
@@ -55,9 +59,9 @@ class Product(StatusTimestampBase):
         on_delete=models.CASCADE,
     )
     sequence = models.PositiveIntegerField(default=0)
-    type = models.CharField(max_length=150, blank=True)
+    type = models.CharField(max_length=200, choices=TYPE_CHOICES)
     slug = AutoSlugField(
-        populate_from="title",
+        populate_from="name",
         editable=True,
         always_update=True,
         null=True,
@@ -99,6 +103,15 @@ class ProductDetails(models.Model):
     grade = models.CharField(max_length=2000, blank=True)
     origin = models.CharField(max_length=100, blank=True)
     packing = models.CharField(max_length=2000, blank=True)
+    slug = AutoSlugField(
+        populate_from="name",
+        editable=True,
+        always_update=True,
+        null=True,
+        blank=True,
+        unique=True,
+        max_length=100,
+    )
 
     def __str__(self) -> str:
         return self.product.name

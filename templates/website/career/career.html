@@ -18,7 +18,7 @@
               <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
                 <h3 class="font-lnterbold">CAREER</h3>
                 <h5 class="font-lnterbold">
-                  <a href="{% url 'index' %}">Home</a>
+                  <a href="{% url 'home' %}">Home</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
                   <a>Career</a>
                 </h5>
@@ -40,7 +40,7 @@
                         <label>Job Title</label>
                         <select class="select2 wt-search-bar-select" id="jobTitleSelect">
                           <option value="">Select an option</option>
-                          {% for i in careers %}<option value="{{ i.title }}">{{ i.title }}</option>{% endfor %}
+                          {% for i in all_jobs %}<option value="{{ i.title }}">{{ i.title }}</option>{% endfor %}
                         </select>
                       </div>
                       <!--All Category-->
@@ -59,7 +59,7 @@
                         <label>Location</label>
                         <select name="location" class="select2 wt-search-bar-select">
                           <option value="">Select Location</option>
-                          {% for i in careers %}<option value="{{ i.location }}">{{ i.location }}</option>{% endfor %}
+                          {% for i in all_jobs %}<option value="{{ i.location }}">{{ i.location }}</option>{% endfor %}
                         </select>
                       </div>
                       <!--Find job btn-->
@@ -75,7 +75,7 @@
               </div>
             </div>
             <div class="box-bb mb-4" id="searchResults">
-              {% for career in careers %}
+              {% for career in all_jobs %}
                 <div class="row software-eng">
                   <div class="col-lg-8">
                     <h3 class="ctitle">{{ career.title }}</h3>
@@ -94,7 +94,7 @@
                       </div>
                       <div class="fes career-job-types ms-2 location-box"
                            data-types="{{ types_list|join:',' }}">
-                        {% for type in types_list|get_for_index:forloop.counter0 %}<p class="ctype">{{ type }}</p>{% endfor %}
+                        {% comment %} {% for type in types_list|get_for_index:forloop.counter0 %}<p class="ctype">{{ type }}</p>{% endfor %} {% endcomment %}
                       </div>
                     </div>
                   </div>
