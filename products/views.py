@@ -8,14 +8,16 @@ from django.core.files.base import ContentFile
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.template import loader
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView, UpdateView
+
 
 from deepapp.helper import is_ajax, renderhelper
-from company.models import Brand, EventGalleryImage
+from company.models import Brand
+from products.forms import CategoryForm, RecipeForm, RecipeIngredientFormSet
 from products.models import (
     Category,
     Product,
@@ -92,57 +94,41 @@ class CategoryListView(UserPassesTestMixin, TemplateView):
         return renderhelper(request, "category", "Category_view", context)
 
 
-class CategoryCreateView(UserPassesTestMixin, TemplateView):
+class CategoryCreateView(UserPassesTestMixin, CreateView):
     template_name = "superadmin/category/Category_create.html"
+    form_class = CategoryForm
 
     def test_func(self):
         return self.request.user.username == "DeepSeaAdmin"
 
-    def post(self, request, *args, **kwargs):
-        # image = request.FILES.get('image')
-        name = request.POST.get("name")
-        sequence = request.POST.get("sequence")
-        brand_instance = request.POST.get("brand")
-        brand = Brand.objects.get(id=brand_instance)
-
-        category = Category(name=name, brand=brand, sequence=sequence)
-        category.save()
-        messages.success(request, "Category Added Successfully...!!")
+    def form_valid(self, form):
+        form.save()
+        messages.success(self.request, "Category Added Successfully...!!")
         return redirect("category_view")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["brands"] = Brand.objects.filter(status=True).order_by("-id")
-        return context
+    def form_invalid(self, form):
+        messages.error(self.request, "Please correct the errors below.")
+        return self.render_to_response(self.get_context_data(form=form))
 
 
-class CategoryUpdateView(UserPassesTestMixin, TemplateView):
+class CategoryUpdateView(UserPassesTestMixin, UpdateView):
+    model = Category
+    form_class = CategoryForm
     template_name = "superadmin/category/Category_create.html"
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('category_view')
 
     def test_func(self):
         return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, id):
-        data = Category.objects.get(pk=id)
-        brand = Brand.objects.all()
-        return render(request, self.template_name, {"list": data, "brands": brand})
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Category Updated Successfully...!!")
+        return response
 
-    def post(self, request, id):
-        data = Category.objects.get(pk=id)
-        # image = request.FILES.get('image')
-        name = request.POST.get("name")
-        sequence = request.POST.get("sequence")
-        brand_instance = request.POST.get("brand")
-        brand = Brand.objects.get(id=brand_instance)
-
-        # if image:
-        # data.image = image
-        data.name = name
-        data.brand = brand
-        data.sequence = sequence
-        data.save()
-        messages.success(request, "Category Updated Successfully...!!")
-        return redirect("category_view")
+    def form_invalid(self, form):
+        messages.error(self.request, "Please correct the errors below.")
+        return super().form_invalid(form)
 
 
 class RecipeListView(UserPassesTestMixin, TemplateView):
@@ -210,119 +196,87 @@ class RecipeListView(UserPassesTestMixin, TemplateView):
         return renderhelper(request, "recipe", "recipe_view", context)
 
 
-class RecipeCreateView(UserPassesTestMixin, TemplateView):
+class RecipeCreateView(UserPassesTestMixin, CreateView):
+    model = RecipeDetails
+    form_class = RecipeForm
     template_name = "superadmin/recipe/recipe_create.html"
+    success_url = reverse_lazy('recipe_view')
 
     def test_func(self):
         return self.request.user.username == "DeepSeaAdmin"
-
-    def post(self, request, *args, **kwargs):
-        desc = request.POST.get("desc")
-        name = request.POST.get("title")
-        image_alt = request.POST.get("image_alt")
-        brand_instance = request.POST.get("brand")
-        brand = Brand.objects.get(id=brand_instance)
-        ingredient = request.POST.getlist("title[]")
-        # amount = request.POST.getlist('amount[]')
-
-        recipe = RecipeDetails(
-            brand=brand, title=name, description=desc, image_alt=image_alt
-        )
-        recipe.save()
-
-        for title in ingredient:
-            if title:
-                why = RecipeIngredients(recipe=recipe, title=title)
-                why.save()
-
-        slider_images = request.FILES.getlist("files")
-        for image in slider_images:
-            slider = RecipeImage(recipe=recipe, image=image)
-            slider.save()
-
-        messages.success(request, "Recipe Added Successfully...!!")
-        return redirect("recipe_view")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["brands"] = (
-            Brand.objects.filter(status=True).exclude(name="Deep Sea").order_by("-id")
-        )
+        if self.request.POST:
+            context['ingredient_formset'] = RecipeIngredientFormSet(self.request.POST)
+        else:
+            context['ingredient_formset'] = RecipeIngredientFormSet()
         return context
 
+    def form_valid(self, form):
+        context = self.get_context_data()
+        ingredient_formset = context['ingredient_formset']
+        if ingredient_formset.is_valid():
+            self.object = form.save()
+            ingredient_formset.instance = self.object
+            ingredient_formset.save()
 
-class RecipeUpdateView(UserPassesTestMixin, TemplateView):
+            for image in self.request.FILES.getlist('files'):
+                RecipeImage.objects.create(recipe=self.object, image=image)
+
+            messages.success(self.request, "Recipe Added Successfully...!!")
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+
+class RecipeUpdateView(UserPassesTestMixin, UpdateView):
+    model = RecipeDetails
+    form_class = RecipeForm
     template_name = "superadmin/recipe/recipe_create.html"
+    success_url = reverse_lazy('recipe_view')
+    pk_url_kwarg = 'id'
 
     def test_func(self):
         return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, id):
-        data = RecipeDetails.objects.get(pk=id)
-        brand = Brand.objects.exclude(name="Deep Sea")
-        sliders = data.rec_image.all()
-        why = data.rec_ind.all()
-        return render(
-            request,
-            self.template_name,
-            {"list": data, "brands": brand, "sliders": sliders, "whyc": why},
-        )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context['ingredient_formset'] = RecipeIngredientFormSet(
+                self.request.POST, instance=self.object
+            )
+        else:
+            context['ingredient_formset'] = RecipeIngredientFormSet(instance=self.object)
+        context['sliders'] = self.object.rec_image.all()
+        return context
 
-    def post(self, request, id):
-        data = get_object_or_404(RecipeDetails, pk=id)
-        desc = request.POST.get("desc")
-        name = request.POST.get("title")
-        image_alt = request.POST.get("image_alt")
-        brand_instance = request.POST.get("brand")
-        brand = Brand.objects.get(id=brand_instance)
-        ingredient_titles = request.POST.getlist("title[]")
-        # ingredient_amounts = request.POST.getlist("amount[]")
+    def form_valid(self, form):
+        context = self.get_context_data()
+        ingredient_formset = context['ingredient_formset']
+        if ingredient_formset.is_valid():
+            self.object = form.save()
+            ingredient_formset.instance = self.object
+            ingredient_formset.save()
 
-        # Update recipe details
-        data.title = name
-        data.brand = brand
-        data.image_alt = image_alt
-        data.description = desc
-        data.save()
+            for image in self.request.FILES.getlist('files'):
+                RecipeImage.objects.create(recipe=self.object, image=image)
 
-        # Handle existing and new ingredients
-        existing_ingredients = RecipeIngredients.objects.filter(recipe=data)
-
-        for title in ingredient_titles:
-            if title:
-                # Check if the pair already exists
-                existing_record = existing_ingredients.filter(title=title).first()
-                if existing_record:
-                    # Update existing ingredient if found
-                    existing_record.title = title
-                    existing_record.save()
-                else:
-                    # Create a new ingredient if not found
-                    new_ingredient = RecipeIngredients(recipe=data, title=title)
-                    new_ingredient.save()
-
-        # Delete existing ingredients that were removed in the update
-        existing_ingredients.exclude(title__in=ingredient_titles).delete()
-
-        slider_images = request.FILES.getlist("files")
-        for image in slider_images:
-            slider = RecipeImage(recipe=data, image=image)
-            slider.save()
-
-        messages.success(request, "Recipe Updated Successfully...!!")
-        return redirect("recipe_view")
+            messages.success(self.request, "Recipe Updated Successfully...!!")
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 def delete_spec(request):
     if request.method == "GET":
-        title = request.GET.get("why_heading")
-        # amount = request.GET.get('why_description')
-
+        ingredient_id = request.GET.get("id")
         try:
-            # Delete from the WhyChooseHajj model
-            RecipeIngredients.objects.filter(title=title).delete()
-
+            ingredient = RecipeIngredients.objects.get(id=ingredient_id)
+            ingredient.delete()
             return JsonResponse({"success": True})
+        except RecipeIngredients.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Ingredient not found"})
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
 
@@ -336,7 +290,7 @@ def delete_recipeslider(request, image_id):
         image.image.delete()  # Delete the image file
         image.delete()  # Delete the database record
         return JsonResponse({"success": True})
-    except EventGalleryImage.DoesNotExist:
+    except RecipeImage.DoesNotExist:
         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
