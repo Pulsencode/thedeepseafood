@@ -17,7 +17,7 @@ from django.views.generic import TemplateView, CreateView, UpdateView
 
 from deepapp.helper import is_ajax, renderhelper
 from company.models import Brand
-from products.forms import CategoryForm, RecipeForm, RecipeIngredientFormSet
+from products.forms import CategoryForm, RecipeForm, RecipeIngredientFormSet, ProductForm
 from products.models import (
     Category,
     Product,
@@ -371,91 +371,45 @@ class ProductListView(UserPassesTestMixin, TemplateView):
         return renderhelper(request, "deepsea-product", "product_view", context)
 
 
-class ProductCreateView(UserPassesTestMixin, TemplateView):
+class ProductCreateView(UserPassesTestMixin, CreateView):
+    model = Product
+    form_class = ProductForm
     template_name = "superadmin/deepsea-product/product_create.html"
+    success_url = reverse_lazy("product_view")
 
     def test_func(self):
         return self.request.user.username == "DeepSeaAdmin"
 
-    def post(self, request, *args, **kwargs):
-        image = request.POST.get("brand-image")
-        name = request.POST.get("name")
-        brand = Brand.objects.get(name="Deep Sea")
-        type = request.POST.get("type")
-        sequence = request.POST.get("sequence")
-        title_tag = request.POST.get("title_tag")
-        metatag = request.POST.get("metatag")
-        keyword = request.POST.get("keyword")
-        canonical = request.POST.get("canonical")
-        image_alt = request.POST.get("image_alt")
-
-        format, imgstr = image.split(";base64,")
-        ext = format.split("/")[-1]
-        image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
-
-        product = Product(
-            name=name,
-            brand=brand,
-            type=type,
-            title_tag=title_tag,
-            metatag=metatag,
-            keyword=keyword,
-            canonical=canonical,
-            sequence=sequence,
-            image_alt=image_alt,
-        )
-        product.image.save(name + "." + ext, image_data, save=True)
-
-        messages.success(request, "Product Added Successfully...!!")
-        return redirect("product_view")
-
-
-class ProductUpdateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/deepsea-product/product_create.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, id):
-        data = Product.objects.get(pk=id)
-        return render(request, self.template_name, {"list": data})
-
-    def post(self, request, id):
-        data = Product.objects.get(pk=id)
-        current_page = request.GET.get("page", None)
-        image = request.POST.get("brand-image")
-        brand = Brand.objects.get(name="Deep Sea")
-        name = request.POST.get("name")
-        type = request.POST.get("type")
-        sequence = request.POST.get("sequence")
-        title_tag = request.POST.get("title_tag")
-        metatag = request.POST.get("metatag")
-        keyword = request.POST.get("keyword")
-        canonical = request.POST.get("canonical")
-        image_alt = request.POST.get("image_alt")
-
-        if image:
-            format, imgstr = image.split(";base64,")
+    def form_valid(self, form):
+        image_data = self.request.POST.get("brand-image")
+        if image_data:
+            format, imgstr = image_data.split(";base64,")
             ext = format.split("/")[-1]
-            image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
-            data.image.save(name + "." + ext, image_data, save=True)
-        data.name = name
-        data.sequence = sequence
-        data.brand = brand
-        data.type = type
-        data.title_tag = title_tag
-        data.metatag = metatag
-        data.keyword = keyword
-        data.canonical = canonical
-        data.image_alt = image_alt
-        data.save()
+            img_file = ContentFile(base64.b64decode(imgstr), name=f"temp.{ext}")
+            form.instance.image.save(f"{form.cleaned_data['name']}.{ext}", img_file, save=False)
+        messages.success(self.request, "Product Added Successfully...!!")
+        return super().form_valid(form)
 
-        redirect_url = reverse("product_view")
-        if current_page:
-            redirect_url += f"?page={current_page}"
 
-        messages.success(request, "Product Updated Successfully...!!")
-        return redirect(redirect_url)
+class ProductUpdateView(UserPassesTestMixin, UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = "superadmin/deepsea-product/product_create.html"
+    success_url = reverse_lazy("product_view")
+    pk_url_kwarg = "id"
+
+    def test_func(self):
+        return self.request.user.username == "DeepSeaAdmin"
+
+    def form_valid(self, form):
+        image_data = self.request.POST.get("brand-image")
+        if image_data:
+            format, imgstr = image_data.split(";base64,")
+            ext = format.split("/")[-1]
+            img_file = ContentFile(base64.b64decode(imgstr), name=f"temp.{ext}")
+            form.instance.image.save(f"{form.cleaned_data['name']}.{ext}", img_file, save=False)
+        messages.success(self.request, "Product Updated Successfully...!!")
+        return super().form_valid(form)
 
 
 # deepsea product details
