@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.views.generic import TemplateView, View
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, View, CreateView, UpdateView
 from deepapp.helper import is_ajax, renderhelper
 from datetime import datetime
 
@@ -9,9 +10,19 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.template import loader
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.core.files.base import ContentFile
-import base64
 
+# from django.core.files.base import ContentFile
+# import base64
+from company.forms import (
+    SEOForm,
+    ManagementForm,
+    TestimonialForm,
+    CertificationForm,
+    SupermarketForm,
+    BrandForm,
+    BlogForm,
+    BlogImageFormSet,
+)
 from company.models import (
     # AboutUs,
     Blog,
@@ -35,7 +46,521 @@ from company.models import (
 )
 
 
-# Create your views here.
+class SeoListView(UserPassesTestMixin, TemplateView):
+    template_name = "superadmin/seo/seo-list.html"
+
+    def test_func(self):
+        return self.request.user.username == "DeepSeaAdmin"
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        path = "seo"
+        page = request.GET.get("page", 1)
+
+        search = request.GET.get("search")
+        delete = request.GET.get("delete")
+        status = request.GET.get("status")
+        sts = request.GET.get("sts")
+
+        cd = SEO.objects.all().order_by("-id")
+
+        if is_ajax(request):
+            if search:
+                cd = cd.filter(page__icontains=search)
+            if sts:
+                cd = cd.filter(status=sts)
+            if status:
+                if status == "1":
+                    status = True
+                else:
+                    status = False
+                item_id = request.GET.get("item_id")
+                SEO.objects.filter(id=item_id).update(status=status)
+            if delete:
+                item_id = request.GET.get("item_id")
+                try:
+                    datas = SEO.objects.get(id=item_id)
+                except SEO.DoesNotExist:
+                    datas = None
+                if datas:
+                    datas.delete()
+
+            paginator = Paginator(cd, 10)
+            try:
+                datas = paginator.get_page(page)
+            except PageNotAnInteger:
+                datas = paginator.get_page(1)
+            except EmptyPage:
+                datas = paginator.get_page(paginator.num_pages)
+            context["datas"] = datas
+            context["page"] = page
+            template = loader.get_template(self.template_name)
+            html_content = template.render(context, request)
+            return JsonResponse({"status": True, "template": html_content})
+
+        paginator = Paginator(cd, 10)
+        try:
+            datas = paginator.get_page(page)
+        except PageNotAnInteger:
+            datas = paginator.get_page(1)
+        except EmptyPage:
+            datas = paginator.get_page(paginator.num_pages)
+        context["datas"] = datas
+        context["page"] = page
+        context["path"] = path
+        return renderhelper(request, "seo", "seo-view", context)
+
+
+class SeoCreateView(CreateView):
+    model = SEO
+    form_class = SEOForm
+    template_name = "superadmin/seo/seo-create.html"
+    extra_context = {"page_title": "Create SEO"}
+    success_url = reverse_lazy("list_seo")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Seo Added Successfully...!!")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+        return super().form_invalid(form)
+
+
+class SeoUpdateView(UpdateView):
+    model = SEO
+    form_class = SEOForm
+    template_name = "superadmin/seo/seo-create.html"
+    extra_context = {"page_title": "Update SEO"}
+    success_url = reverse_lazy("list_seo")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Seo Updated Successfully...!!")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+        return super().form_invalid(form)
+
+
+class TeamListView(UserPassesTestMixin, TemplateView):
+    template_name = "superadmin/team/management_team_list.html"
+
+    def test_func(self):
+        return self.request.user.username == "DeepSeaAdmin"
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        path = "Team"
+        page = request.GET.get("page", 1)
+
+        search = request.GET.get("search")
+        delete = request.GET.get("delete")
+        status = request.GET.get("status")
+        sts = request.GET.get("sts")
+
+        cd = ManagementTeam.objects.all().order_by("-id")
+
+        if is_ajax(request):
+            if search:
+                cd = cd.filter(name__icontains=search)
+            if sts:
+                cd = cd.filter(status=sts)
+            if status:
+                if status == "1":
+                    status = True
+                else:
+                    status = False
+                item_id = request.GET.get("item_id")
+                ManagementTeam.objects.filter(id=item_id).update(status=status)
+            if delete:
+                item_id = request.GET.get("item_id")
+                try:
+                    datas = ManagementTeam.objects.get(id=item_id)
+                except ManagementTeam.DoesNotExist:
+                    datas = None
+                if datas:
+                    datas.delete()
+            paginator = Paginator(cd, 10)
+            try:
+                datas = paginator.get_page(page)
+            except PageNotAnInteger:
+                datas = paginator.get_page(1)
+            except EmptyPage:
+                datas = paginator.get_page(paginator.num_pages)
+            context["datas"] = datas
+            context["page"] = page
+            template = loader.get_template(self.template_name)
+            html_content = template.render(context, request)
+            return JsonResponse({"status": True, "template": html_content})
+
+        paginator = Paginator(cd, 10)
+        try:
+            datas = paginator.get_page(page)
+        except PageNotAnInteger:
+            datas = paginator.get_page(1)
+        except EmptyPage:
+            datas = paginator.get_page(paginator.num_pages)
+        context["datas"] = datas
+        context["page"] = page
+        context["path"] = path
+
+        return renderhelper(request, "team", "management_team_view", context)
+
+
+class TeamCreateView(CreateView):
+    model = ManagementTeam
+    form_class = ManagementForm
+    success_url = reverse_lazy("list_team")
+    template_name = "superadmin/team/management_team_create.html"
+    extra_context = {"page_title": "Create Team"}
+
+    def form_valid(self, form):
+        messages.success(self.request, "Team Added Successfully...!!")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+        return super().form_invalid(form)
+
+
+class TeamUpdateView(UpdateView):
+    model = ManagementTeam
+    form_class = ManagementForm
+    success_url = reverse_lazy("list_team")
+    template_name = "superadmin/team/management_team_create.html"
+    extra_context = {"page_title": "Update Team"}
+
+    def form_valid(self, form):
+        messages.success(self.request, "Team Updated  Successfully...!!")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+        return super().form_invalid(form)
+
+
+class TestimonialListView(UserPassesTestMixin, TemplateView):
+    template_name = "superadmin/testimonial/testimonial_list.html"
+
+    def test_func(self):
+        return self.request.user.username == "DeepSeaAdmin"
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        path = "Testimonial"
+        page = request.GET.get("page", 1)
+
+        search = request.GET.get("search")
+        delete = request.GET.get("delete")
+        status = request.GET.get("status")
+        sts = request.GET.get("sts")
+
+        cd = CompanyTestimonial.objects.all().order_by("-id")
+
+        if is_ajax(request):
+            if search:
+                cd = cd.filter(name__icontains=search)
+            if sts:
+                cd = cd.filter(status=sts)
+            if status:
+                if status == "1":
+                    status = True
+                else:
+                    status = False
+                item_id = request.GET.get("item_id")
+                CompanyTestimonial.objects.filter(id=item_id).update(status=status)
+            if delete:
+                item_id = request.GET.get("item_id")
+                try:
+                    datas = CompanyTestimonial.objects.get(id=item_id)
+                except CompanyTestimonial.DoesNotExist:
+                    datas = None
+                if datas:
+                    datas.delete()
+            paginator = Paginator(cd, 10)
+            try:
+                datas = paginator.get_page(page)
+            except PageNotAnInteger:
+                datas = paginator.get_page(1)
+            except EmptyPage:
+                datas = paginator.get_page(paginator.num_pages)
+            context["datas"] = datas
+            context["page"] = page
+            template = loader.get_template(self.template_name)
+            html_content = template.render(context, request)
+            return JsonResponse({"status": True, "template": html_content})
+
+        paginator = Paginator(cd, 10)
+        try:
+            datas = paginator.get_page(page)
+        except PageNotAnInteger:
+            datas = paginator.get_page(1)
+        except EmptyPage:
+            datas = paginator.get_page(paginator.num_pages)
+        context["datas"] = datas
+        context["page"] = page
+        context["path"] = path
+
+        return renderhelper(request, "testimonial", "testimonial_view", context)
+
+
+class TestimonialCreateView(CreateView):
+    model = CompanyTestimonial
+    form_class = TestimonialForm
+    success_url = reverse_lazy("list_testimonial")
+    template_name = "superadmin/testimonial/testimonial_create.html"
+    extra_context = {"page_title": "Create Testimonial"}
+
+    def form_valid(self, form):
+        messages.success(self.request, "Testimonial Added Successfully...!!")
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+        return super().form_invalid(form)
+
+
+class TestimonialUpdateView(UpdateView):
+    model = CompanyTestimonial
+    form_class = TestimonialForm
+    success_url = reverse_lazy("list_testimonial")
+    template_name = "superadmin/testimonial/testimonial_create.html"
+    extra_context = {"page_title": "Update Testimonial"}
+
+    def form_valid(self, form):
+        messages.success(self.request, "Testimonial Updated Successfully...!!")
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+        return super().form_invalid(form)
+
+
+class CertificationListView(UserPassesTestMixin, TemplateView):
+    template_name = "superadmin/certification/certification_list.html"
+
+    def test_func(self):
+        return self.request.user.username == "DeepSeaAdmin"
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        path = "certification"
+        page = request.GET.get("page", 1)
+
+        # search = request.GET.get("search")
+        delete = request.GET.get("delete")
+        status = request.GET.get("status")
+        sts = request.GET.get("sts")
+
+        cd = Certification.objects.all().order_by("-id")
+
+        if is_ajax(request):
+            # if search:
+            #     cd = cd.filter(name__icontains=search)
+            if sts:
+                cd = cd.filter(status=sts)
+            if status:
+                if status == "1":
+                    status = True
+                else:
+                    status = False
+                item_id = request.GET.get("item_id")
+                Certification.objects.filter(id=item_id).update(status=status)
+            if delete:
+                item_id = request.GET.get("item_id")
+                try:
+                    datas = Certification.objects.get(id=item_id)
+                except Certification.DoesNotExist:
+                    datas = None
+                if datas:
+                    datas.delete()
+
+            paginator = Paginator(cd, 10)
+            try:
+                datas = paginator.get_page(page)
+            except PageNotAnInteger:
+                datas = paginator.get_page(1)
+            except EmptyPage:
+                datas = paginator.get_page(paginator.num_pages)
+            context["datas"] = datas
+            context["page"] = page
+            template = loader.get_template(self.template_name)
+            html_content = template.render(context, request)
+            return JsonResponse({"status": True, "template": html_content})
+
+        paginator = Paginator(cd, 10)
+        try:
+            datas = paginator.get_page(page)
+        except PageNotAnInteger:
+            datas = paginator.get_page(1)
+        except EmptyPage:
+            datas = paginator.get_page(paginator.num_pages)
+        context["datas"] = datas
+        context["page"] = page
+        context["path"] = path
+        return renderhelper(request, "certification", "certification_view", context)
+
+
+class CertificationCreateView(CreateView):
+    model = Certification
+    form_class = CertificationForm
+    success_url = reverse_lazy("list_certification")
+    template_name = "superadmin/certification/certification_create.html"
+    extra_context = {"page_title": "Create Certification"}
+
+    def form_valid(self, form):
+        messages.success(self.request, "Certification Added Successfully...!!")
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+
+        return super().form_invalid(form)
+
+
+class CertificationUpdateView(UpdateView):
+    model = Certification
+    form_class = CertificationForm
+    success_url = reverse_lazy("list_certification")
+    template_name = "superadmin/certification/certification_create.html"
+    extra_context = {"page_title": "Update Certification"}
+
+    def form_valid(self, form):
+        messages.success(self.request, "Certification Updated Successfully...!!")
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+
+        return super().form_invalid(form)
+
+
+class SupermarketListView(UserPassesTestMixin, TemplateView):
+    template_name = "superadmin/supermarket/supermarket_list.html"
+
+    def test_func(self):
+        return self.request.user.username == "DeepSeaAdmin"
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        path = "supermarket"
+        page = request.GET.get("page", 1)
+
+        # search = request.GET.get("search")
+        delete = request.GET.get("delete")
+        status = request.GET.get("status")
+        sts = request.GET.get("sts")
+
+        cd = Supermarkets.objects.all().order_by("-id")
+
+        if is_ajax(request):
+            # if search:
+            #     cd = cd.filter(name__icontains=search)
+            if sts:
+                cd = cd.filter(status=sts)
+            if status:
+                if status == "1":
+                    status = True
+                else:
+                    status = False
+                item_id = request.GET.get("item_id")
+                Supermarkets.objects.filter(id=item_id).update(status=status)
+            if delete:
+                item_id = request.GET.get("item_id")
+                try:
+                    datas = Supermarkets.objects.get(id=item_id)
+                except Supermarkets.DoesNotExist:
+                    datas = None
+                if datas:
+                    datas.delete()
+
+            paginator = Paginator(cd, 10)
+            try:
+                datas = paginator.get_page(page)
+            except PageNotAnInteger:
+                datas = paginator.get_page(1)
+            except EmptyPage:
+                datas = paginator.get_page(paginator.num_pages)
+            context["datas"] = datas
+            context["page"] = page
+            template = loader.get_template(self.template_name)
+            html_content = template.render(context, request)
+            return JsonResponse({"status": True, "template": html_content})
+
+        paginator = Paginator(cd, 10)
+        try:
+            datas = paginator.get_page(page)
+        except PageNotAnInteger:
+            datas = paginator.get_page(1)
+        except EmptyPage:
+            datas = paginator.get_page(paginator.num_pages)
+        context["datas"] = datas
+        context["page"] = page
+        context["path"] = path
+        return renderhelper(request, "supermarket", "supermarket_view", context)
+
+
+class SupermarketCreateView(CreateView):
+    template_name = "superadmin/supermarket/supermarket_create.html"
+    model = Supermarkets
+    form_class = SupermarketForm
+    success_url = reverse_lazy("list_supermarket")
+    extra_context = {"page_title": "Create Supermarket"}
+
+    def form_valid(self, form):
+        messages.success(self.request, "Supermarket Added Successfully...!!")
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+
+        return super().form_invalid(form)
+
+
+class SupermarketUpdateView(UpdateView):
+    template_name = "superadmin/supermarket/supermarket_create.html"
+    model = Supermarkets
+    form_class = SupermarketForm
+    success_url = reverse_lazy("list_supermarket")
+    extra_context = {"page_title": "Create Supermarket"}
+
+    def form_valid(self, form):
+        messages.success(self.request, "Supermarket Updated Successfully...!!")
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+
+        return super().form_invalid(form)
+
+
 class BrandListView(UserPassesTestMixin, TemplateView):
     template_name = "superadmin/brand/brand_list.html"
 
@@ -101,56 +626,48 @@ class BrandListView(UserPassesTestMixin, TemplateView):
         return renderhelper(request, "brand", "brand_view", context)
 
 
-class BrandCreateView(UserPassesTestMixin, TemplateView):
+class BrandCreateView(CreateView):
+    model = Brand
+    form_class = BrandForm
+    success_url = reverse_lazy("brand_view")
+    success_url = reverse_lazy("list_brand")
     template_name = "superadmin/brand/brand_create.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    def form_valid(self, form):
+        messages.success(self.request, "Brand Created Successfully...!!")
 
-    def post(self, request, *args, **kwargs):
-        image = request.POST.get("brand-image")
-        name = request.POST.get("name")
-        image_alt = request.POST.get("image_alt")
-        sequence = request.POST.get("sequence")
+        return super().form_valid(form)
 
-        format, imgstr = image.split(";base64,")
-        ext = format.split("/")[-1]
-        image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
 
-        brand = Brand(name=name, image_alt=image_alt, sequence=sequence)
-        brand.logo.save(name + "." + ext, image_data, save=True)
-        messages.success(request, "Brand Added Successfully...!!")
-        return redirect("brand_view")
+        return super().form_invalid(form)
 
 
-class BrandUpdateView(UserPassesTestMixin, TemplateView):
+class BrandUpdateView(UpdateView):
+
+    model = Brand
+    form_class = BrandForm
+    success_url = reverse_lazy("brand_view")
+    # success_url=reverse_lazy("list_brand")
     template_name = "superadmin/brand/brand_create.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    def form_valid(self, form):
+        messages.success(self.request, "Brand Updated Successfully...!!")
 
-    def get(self, request, id):
-        data = Brand.objects.get(pk=id)
-        return render(request, self.template_name, {"list": data})
+        return super().form_valid(form)
 
-    def post(self, request, id):
-        data = Brand.objects.get(pk=id)
-        image = request.POST.get("brand-image")
-        name = request.POST.get("name")
-        image_alt = request.POST.get("image_alt")
-        sequence = request.POST.get("sequence")
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
 
-        if image:
-            format, imgstr = image.split(";base64,")
-            ext = format.split("/")[-1]
-            image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
-            data.logo.save(name + "." + ext, image_data, save=True)
-        data.name = name
-        data.image_alt = image_alt
-        data.sequence = sequence
-        data.save()
-        messages.success(request, "Brand Updated Successfully...!!")
-        return redirect("brand_view")
+        return super().form_invalid(form)
+
+
+######################################
 
 
 class GalleryListView(UserPassesTestMixin, TemplateView):
@@ -391,9 +908,7 @@ class NewsCreateView(UserPassesTestMixin, TemplateView):
         location = request.POST.get("location")
         desc = request.POST.get("desc")
         title_tag = request.POST.get("title_tag")
-        metatag = request.POST.get("metatag")
-        keyword = request.POST.get("keyword")
-        canonical = request.POST.get("canonical")
+
         image_alt = request.POST.get("image_alt")
         date_str = request.POST.get("date")
         if date_str:
@@ -411,9 +926,9 @@ class NewsCreateView(UserPassesTestMixin, TemplateView):
             type=type,
             image_alt=image_alt,
             title_tag=title_tag,
-            metatag=metatag,
-            keyword=keyword,
-            canonical=canonical,
+            # metatag=metatag,
+            # keyword=keyword,
+            # canonical=canonical,
         )
         news.save()
 
@@ -705,48 +1220,36 @@ class BlogListView(UserPassesTestMixin, TemplateView):
         return renderhelper(request, "blog", "Blog_view", context)
 
 
-class BlogCreateView(UserPassesTestMixin, TemplateView):
+class BlogCreateView(CreateView):
+    model = Blog
+    form_class = BlogForm
     template_name = "superadmin/blog/Blog_create.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def post(self, request, *args, **kwargs):
-        title = request.POST.get("title")
-        name = request.POST.get("name")
-        location = request.POST.get("location")
-        desc = request.POST.get("desc")
-        title_tag = request.POST.get("title_tag")
-        metatag = request.POST.get("metatag")
-        keyword = request.POST.get("keyword")
-        canonical = request.POST.get("canonical")
-        image_alt = request.POST.get("image_alt")
-        date_str = request.POST.get("date")
-        if date_str:
-            date = datetime.strptime(date_str, "%Y-%m-%d").date()
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data["image_formset"] = BlogImageFormSet(
+                self.request.POST, self.request.FILES
+            )
         else:
-            date = None
+            data["image_formset"] = BlogImageFormSet()
+        return data
 
-        blog = Blog(
-            title=title,
-            name=name,
-            location=location,
-            description=desc,
-            date=date,
-            title_tag=title_tag,
-            metatag=metatag,
-            keyword=keyword,
-            canonical=canonical,
-            image_alt=image_alt,
-        )
-        blog.save()
+    def form_valid(self, form):
+        context = self.get_context_data()
+        image_formset = context["image_formset"]
 
-        slider_images = request.FILES.getlist("files")
-        for image in slider_images:
-            slider = BlogImage(blog=blog, image=image)
-            slider.save()
-        messages.success(request, "Blog Added Successfully...!!")
-        return redirect("blog_view")
+        # Save Blog first
+        self.object = form.save(commit=False)
+        self.object.save()
+
+        # Set instance BEFORE validating formset
+        image_formset.instance = self.object
+        if image_formset.is_valid():
+            image_formset.save()
+            return redirect("blog_view")
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
 
 
 class BlogUpdateView(UserPassesTestMixin, TemplateView):
@@ -810,249 +1313,6 @@ def delete_blogslider(request, image_id):
         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)}, status=500)
-
-
-class TeamListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/team/management_team_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Team"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = ManagementTeam.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(name__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                ManagementTeam.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = ManagementTeam.objects.get(id=item_id)
-                except ManagementTeam.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return renderhelper(request, "team", "management_team_view", context)
-
-
-class TeamCreateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/team/management_team_create.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def post(self, request, *args, **kwargs):
-        designation = request.POST.get("desig")
-        name = request.POST.get("name")
-        sequence = request.POST.get("sequence")
-        image_alt = request.POST.get("image_alt")
-        image = request.POST.get("team-image")
-        format, imgstr = image.split(";base64,")
-        ext = format.split("/")[-1]
-        image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
-
-        team = ManagementTeam(
-            name=name, sequence=sequence, designation=designation, image_alt=image_alt
-        )
-        team.image.save(name + "." + ext, image_data, save=True)
-        team.save()
-
-        messages.success(request, "Team Added Successfully...!!")
-        return redirect("team_view")
-
-
-class TeamUpdateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/team/management_team_create.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, id):
-        data = ManagementTeam.objects.get(pk=id)
-        return render(request, self.template_name, {"list": data})
-
-    def post(self, request, id):
-        data = ManagementTeam.objects.get(pk=id)
-        designation = request.POST.get("desig")
-        sequence = request.POST.get("sequence")
-        image_alt = request.POST.get("image_alt")
-        name = request.POST.get("name")
-        image = request.POST.get("team-image")
-
-        if image:
-            format, imgstr = image.split(";base64,")
-            ext = format.split("/")[-1]
-            image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
-            data.image = image_data
-        data.name = name
-        data.sequence = sequence
-        data.designation = designation
-        data.image_alt = image_alt
-        data.save()
-
-        messages.success(request, "Team Updated Successfully...!!")
-        return redirect("team_view")
-
-
-class TestimonialListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/testimonial/testimonial_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Testimonial"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = CompanyTestimonial.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(name__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                CompanyTestimonial.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = CompanyTestimonial.objects.get(id=item_id)
-                except CompanyTestimonial.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return renderhelper(request, "testimonial", "testimonial_view", context)
-
-
-class TestimonialCreateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/testimonial/testimonial_create.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def post(self, request, *args, **kwargs):
-        desc = request.POST.get("desc")
-        name = request.POST.get("name")
-        image_alt = request.POST.get("image_alt")
-        image = request.POST.get("testi-image")
-        format, imgstr = image.split(";base64,")
-        ext = format.split("/")[-1]
-        image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
-
-        testi = CompanyTestimonial(name=name, message=desc, image_alt=image_alt)
-        testi.image.save(name + "." + ext, image_data, save=True)
-        testi.save()
-
-        messages.success(request, "Testimonial Added Successfully...!!")
-        return redirect("testimonial_view")
-
-
-class TestimonialUpdateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/testimonial/testimonial_create.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, id):
-        data = CompanyTestimonial.objects.get(pk=id)
-        return render(request, self.template_name, {"list": data})
-
-    def post(self, request, id):
-        data = CompanyTestimonial.objects.get(pk=id)
-        desc = request.POST.get("desc")
-        name = request.POST.get("name")
-        image_alt = request.POST.get("image_alt")
-        image = request.POST.get("testi-image")
-
-        if image:
-            format, imgstr = image.split(";base64,")
-            ext = format.split("/")[-1]
-            image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
-            data.image = image_data
-        data.name = name
-        data.message = desc
-        data.image_alt = image_alt
-        data.save()
-
-        messages.success(request, "Testimonial Updated Successfully...!!")
-        return redirect("testimonial_view")
 
 
 class HistoryListView(UserPassesTestMixin, TemplateView):
@@ -1132,9 +1392,7 @@ class HistoryCreateView(UserPassesTestMixin, TemplateView):
         desc = request.POST.get("desc")
         image_alt = request.POST.get("image_alt")
 
-        history = History(
-            title=title, year=year, description=desc, image_alt=image_alt
-        )
+        history = History(title=title, year=year, description=desc, image_alt=image_alt)
         history.save()
 
         slider_images = request.FILES.getlist("files")
@@ -1327,9 +1585,7 @@ class ExportExcel(View):
             end = request.GET.get("end")
 
             try:
-                enquiries = Enquiry.objects.filter(
-                    created__gte=start, created__lte=end
-                )
+                enquiries = Enquiry.objects.filter(created__gte=start, created__lte=end)
                 enquiries_data = [
                     {
                         "product": enquiry.product,
@@ -1347,229 +1603,6 @@ class ExportExcel(View):
                 return JsonResponse({"error": str(e)}, status=500)
 
         return JsonResponse({"error": "Invalid request"}, status=400)
-
-
-class SupermarketListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/supermarket/supermarket_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "supermarket"
-        page = request.GET.get("page", 1)
-
-        # search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = Supermarkets.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            # if search:
-            #     cd = cd.filter(name__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                Supermarkets.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Supermarkets.objects.get(id=item_id)
-                except Supermarkets.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-        return renderhelper(request, "supermarket", "supermarket_view", context)
-
-
-class SupermarketCreateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/supermarket/supermarket_create.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def post(self, request, *args, **kwargs):
-        # image = request.POST.get("supermarket-image")
-        # image_alt = request.POST.get("image_alt")
-        # format, imgstr = image.split(";base64,")
-        # ext = format.split("/")[-1]
-        # image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
-
-        # supermarket = Supermarkets.objects.create(image=image_data, image_alt=image_alt)
-        messages.success(request, "Supermarket Added Successfully...!!")
-        return redirect("supermarket_view")
-
-
-class SupermarketUpdateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/supermarket/supermarket_create.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, id):
-        data = Supermarkets.objects.get(pk=id)
-        return render(request, self.template_name, {"list": data})
-
-    def post(self, request, id):
-        data = Supermarkets.objects.get(pk=id)
-        image = request.POST.get("supermarket-image")
-        image_alt = request.POST.get("image_alt")
-        if image:
-            format, imgstr = image.split(";base64,")
-            ext = format.split("/")[-1]
-            image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
-            data.image = image_data
-        data.image_alt = image_alt
-        data.save()
-
-        messages.success(request, "Supermarket Updated Successfully...!!")
-        return redirect("supermarket_view")
-
-
-class CertificationListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/certification/certification_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "certification"
-        page = request.GET.get("page", 1)
-
-        # search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = Certification.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            # if search:
-            #     cd = cd.filter(name__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                Certification.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Certification.objects.get(id=item_id)
-                except Certification.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-        return renderhelper(request, "certification", "certification_view", context)
-
-
-class CertificationCreateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/certification/certification_create.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def post(self, request, *args, **kwargs):
-        # image = request.POST.get('certification-image')
-
-        # format, imgstr = image.split(';base64,')
-        # ext = format.split('/')[-1]
-        # image_data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-        # certification = Certification.objects.create(image=image_data)
-        image = request.FILES.get("image")
-        image_alt = request.POST.get("image_alt")
-        certi = Certification(image=image, image_alt=image_alt)
-        certi.save()
-        messages.success(request, "Certification Added Successfully...!!")
-        return redirect("certification_view")
-
-
-class CertificationUpdateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/certification/certification_create.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, id):
-        data = Certification.objects.get(pk=id)
-        return render(request, self.template_name, {"list": data})
-
-    def post(self, request, id):
-        data = Certification.objects.get(pk=id)
-        # image = request.POST.get('certification-image')
-        image = request.FILES.get("image")
-        image_alt = request.POST.get("image_alt")
-
-        if image:
-            # format, imgstr = image.split(';base64,')
-            # ext = format.split('/')[-1]
-            # image_data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-            data.image = image
-        data.image_alt = image_alt
-        data.save()
-
-        messages.success(request, "Certification Updated Successfully...!!")
-        return redirect("certification_view")
 
 
 # class AboutusListView(UserPassesTestMixin, TemplateView):
@@ -1675,122 +1708,3 @@ class CertificationUpdateView(UserPassesTestMixin, TemplateView):
 
 #         messages.success(request, "About Us Updated Successfully...!!")
 #         return redirect("about_view")
-
-
-class SeoListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/seo/seo-list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "seo"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = SEO.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(page__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                SEO.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = SEO.objects.get(id=item_id)
-                except SEO.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-        return renderhelper(request, "seo", "seo-view", context)
-
-
-class SeoCreateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/seo/seo-create.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def post(self, request, *args, **kwargs):
-        page = request.POST.get("page")
-        title_tag = request.POST.get("title_tag")
-        metatag = request.POST.get("metatag")
-        keyword = request.POST.get("keyword")
-        canonical = request.POST.get("canonical")
-
-        seo = SEO(
-            page=page,
-            title_tag=title_tag,
-            metatag=metatag,
-            keyword=keyword,
-            canonical=canonical,
-        )
-        seo.save()
-        messages.success(request, "Seo Added Successfully...!!")
-        return redirect("seo_view")
-
-
-class SeoUpdateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/seo/seo-create.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, id):
-        data = SEO.objects.get(pk=id)
-        return render(request, self.template_name, {"list": data})
-
-    def post(self, request, id):
-        data = SEO.objects.get(pk=id)
-        page = request.POST.get("page")
-        title_tag = request.POST.get("title_tag")
-        metatag = request.POST.get("metatag")
-        keyword = request.POST.get("keyword")
-        canonical = request.POST.get("canonical")
-
-        data.page = page
-        data.title_tag = title_tag
-        data.metatag = metatag
-        data.keyword = keyword
-        data.canonical = canonical
-        data.save()
-
-        messages.success(request, "Seo Updated Successfully...!!")
-        return redirect("seo_view")

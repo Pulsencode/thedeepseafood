@@ -103,4 +103,11 @@
     </div>
     <!--app-content close-->
 
+    <form method="post" enctype="multipart/form-data" id="myform">
+        {% csrf_token %}
+          {{form.as_p}}
+          <button type="submit">ok</button>
+
+    </form>
+
     {% include 'superadmin/layout/footer.html' %}
