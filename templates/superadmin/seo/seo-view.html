@@ -1,13 +1,10 @@
 {% include 'superadmin/layout/header.html' %}
 {% load static %}
-
 <!--app-content open-->
 <div class="main-content app-content mt-0">
     <div class="side-app">
-
         <!-- CONTAINER -->
         <div class="main-container container-fluid">
-
             <!-- PAGE-HEADER -->
             <div class="page-header">
                 <h1 class="page-title">SEO</h1>
@@ -17,18 +14,23 @@
             </div>
             <!-- PAGE-HEADER END -->
             {% for message in messages %}
-            <div class="alert alert-primary alert-dismissible fade show m-0 text-center" id="success" role="alert"
-                style="border-radius: 0;">
-                {{message}}
-                <button type="button" class="btn-close text-dark " data-bs-dismiss="alert" aria-label="Close">x</button>
-            </div>
+                <div class="alert alert-primary alert-dismissible fade show m-0 text-center"
+                     id="success"
+                     role="alert"
+                     style="border-radius: 0">
+                    {{ message }}
+                    <button type="button"
+                            class="btn-close text-dark "
+                            data-bs-dismiss="alert"
+                            aria-label="Close">x</button>
+                </div>
             {% endfor %}
             <!-- ROW OPEN -->
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">List Of All Seo </h3>
+                            <h3 class="card-title">List Of All Seo</h3>
                         </div>
                         <div class="card-body">
                             <form>
@@ -36,67 +38,59 @@
                                     <div class="form-group col-lg-2 col-12">
                                         <input type="text" class="form-control" placeholder="page" id="search">
                                     </div>
-
                                     <div class="form-group col-lg-2 col-12">
-                                        <select name="country" id="status" class="form-control form-select select2" data-bs-placeholder="Select Country">
+                                        <select name="country"
+                                                id="status"
+                                                class="form-control form-select select2"
+                                                data-bs-placeholder="Select Country">
                                             <option value="">Status</option>
-                                            <option value="True" >Active</option>
+                                            <option value="True">Active</option>
                                             <option value="False">Inactive</option>
-
                                         </select>
                                     </div>
-
                                     <div class="form-group col-lg-3 col-12">
                                         <a class="btn btn-primary mr-1" id="seo_search">Search</a>
-                                        <a class="btn btn-default" href="{% url 'seo_view' %}">Reset</a>
+                                        <a class="btn btn-default" href="{% url 'list_seo' %}">Reset</a>
                                     </div>
                                     <div class="form-group col-lg-5 col-7">
                                         <span id ="message001" style="color:green;display:none"><b>Status Updated Successfully</b></span>
                                     </div>
-                                    
-
                                 </div>
-
                             </form>
                             <div class="table-responsive" id="seo-table">
-
                                 {% include 'superadmin/seo/seo-list.html' with data=data page=page %}
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- ROW CLOSED -->
-
-
-
         </div>
         <!-- CONTAINER END -->
     </div>
 </div>
-
 <!--app-content close-->
 <div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-md modal-dialog-centered text-center" role="document">
+    <div class="modal-dialog modal-md modal-dialog-centered text-center"
+         role="document">
         <div class="modal-content ">
-
             <div class="modal-body">
-                <button aria-label="Close" class="btn-close position-absolute" data-bs-dismiss="modal"><span
-                        aria-hidden="true">&times;</span></button>
+                <button aria-label="Close"
+                        class="btn-close position-absolute"
+                        data-bs-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                <input type="hidden" id="hid" >
+                <input type="hidden" id="hid">
                 <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
                 <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
                 <button class="btn btn-success" onclick="confirm_delete_seo()">Yes</button>
-                <button aria-label="Close" class="btn btn-danger pd-x-25" data-bs-dismiss="modal">Cancel</button>
+                <button aria-label="Close"
+                        class="btn btn-danger pd-x-25"
+                        data-bs-dismiss="modal">Cancel</button>
             </div>
-            <div class="modal-footer">
-
-
-            </div>
+            <div class="modal-footer"></div>
         </div>
     </div>
 </div>
-
 {% include 'superadmin/layout/footer.html' %}

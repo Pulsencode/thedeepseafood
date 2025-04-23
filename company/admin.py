@@ -12,6 +12,7 @@ from company.models import (
     HistoryImage,
     CompanyTestimonial,
     Brand,
+    SEO
 )
 
 admin.site.register(Certification)
@@ -26,3 +27,4 @@ admin.site.register(ManagementTeam)
 admin.site.register(History)
 admin.site.register(HistoryImage)
 admin.site.register(Brand)
+admin.site.register(SEO)

@@ -9,11 +9,11 @@
             <div class="page-header">
                 <h1 class="page-title">Supermarkets</h1>
                 <div>
-                    <a class="btn btn-primary" href="{% url 'supermarket_view' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
+                    <a class="btn btn-primary" href="{% url 'list_supermarket' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
                 </div>
             </div>
             <!-- PAGE-HEADER END -->
-
+           
             <!-- ROW OPEN -->
             <form method="post" enctype="multipart/form-data" id="myform">
                 {% csrf_token %}
@@ -69,7 +69,7 @@
 										</div>
                                     <div class="form-group col-lg-12 col-12">
                                         <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
-                                        <a href="{% url 'supermarket_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                                        <a href="{% url 'list_supermarket' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
                                     </div>
                                     
                                 
@@ -86,5 +86,6 @@
         </div>
     </div>
     <!--app-content close-->
+    
 
     {% include 'superadmin/layout/footer.html' %}

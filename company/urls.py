@@ -3,11 +3,68 @@ from . import views
 
 
 urlpatterns = [
+    path("seo-view", views.SeoListView.as_view(), name="list_seo"),
+    path("seo-update/<int:pk>/", views.SeoUpdateView.as_view(), name="seo_update"),
+    path("seo-add", views.SeoCreateView.as_view(), name="seo_add"),
+    # team
+    path("team-view", views.TeamListView.as_view(), name="list_team"),
+    path("team-add", views.TeamCreateView.as_view(), name="team_add"),
+    path("team-update/<int:pk>/", views.TeamUpdateView.as_view(), name="team_update"),
+    # testimonial
+    path(
+        "testimonial-view", views.TestimonialListView.as_view(), name="list_testimonial"
+    ),
+    path(
+        "testimonial-add", views.TestimonialCreateView.as_view(), name="testimonial_add"
+    ),
+    path(
+        "testimonial-update/<int:pk>/",
+        views.TestimonialUpdateView.as_view(),
+        name="testimonial_update",
+    ),
+    # supermarket
+    path(
+        "supermarket-view", views.SupermarketListView.as_view(), name="list_supermarket"
+    ),
+    path(
+        "supermarket-update/<int:pk>/",
+        views.SupermarketUpdateView.as_view(),
+        name="supermarket_update",
+    ),
+    path(
+        "supermarket-add", views.SupermarketCreateView.as_view(), name="supermarket_add"
+    ),
+    # certification
+    path(
+        "certification-view",
+        views.CertificationListView.as_view(),
+        name="list_certification",
+    ),
+    path(
+        "certification-update/<int:pk>/",
+        views.CertificationUpdateView.as_view(),
+        name="certification_update",
+    ),
+    path(
+        "certification-add",
+        views.CertificationCreateView.as_view(),
+        name="certification_add",
+    ),
+    # brand
     path("brand-view", views.BrandListView.as_view(), name="brand_view"),
     path("brand-add", views.BrandCreateView.as_view(), name="brand_add"),
     path(
-        "brand-update/<int:id>/", views.BrandUpdateView.as_view(), name="brand_update"
+        "brand-update/<int:pk>/", views.BrandUpdateView.as_view(), name="brand_update"
     ),
+    path("blog-view", views.BlogListView.as_view(), name="blog_view"),
+    path("blog-add", views.BlogCreateView.as_view(), name="blog_add"),
+    path("blog-update/<int:id>/", views.BlogUpdateView.as_view(), name="blog_update"),
+    path(
+        "delete-blogslider/<int:image_id>/",
+        views.delete_blogslider,
+        name="delete_blogslider",
+    ),
+    #
     path("gallery-view", views.GalleryListView.as_view(), name="gallery_view"),
     path("gallery-add", views.GalleryCreateView.as_view(), name="gallery_add"),
     path(
@@ -36,28 +93,6 @@ urlpatterns = [
         views.delete_promotionslider,
         name="delete_promotionslider",
     ),
-    path("blog-view", views.BlogListView.as_view(), name="blog_view"),
-    path("blog-add", views.BlogCreateView.as_view(), name="blog_add"),
-    path("blog-update/<int:id>/", views.BlogUpdateView.as_view(), name="blog_update"),
-    path(
-        "delete-blogslider/<int:image_id>/",
-        views.delete_blogslider,
-        name="delete_blogslider",
-    ),
-    path("team-view", views.TeamListView.as_view(), name="team_view"),
-    path("team-add", views.TeamCreateView.as_view(), name="team_add"),
-    path("team-update/<int:id>/", views.TeamUpdateView.as_view(), name="team_update"),
-    path(
-        "testimonial-view", views.TestimonialListView.as_view(), name="testimonial_view"
-    ),
-    path(
-        "testimonial-add", views.TestimonialCreateView.as_view(), name="testimonial_add"
-    ),
-    path(
-        "testimonial-update/<int:id>/",
-        views.TestimonialUpdateView.as_view(),
-        name="testimonial_update",
-    ),
     path("history-view", views.HistoryListView.as_view(), name="history_view"),
     path("history-add", views.HistoryCreateView.as_view(), name="history_add"),
     path(
@@ -73,38 +108,9 @@ urlpatterns = [
     path("contact-view", views.ContactListView.as_view(), name="contact_view"),
     path("enquiry-view", views.EnquiryListView.as_view(), name="enquiry_view"),
     path("export_excel/", views.ExportExcel.as_view(), name="export_excel"),
-    path(
-        "supermarket-view", views.SupermarketListView.as_view(), name="supermarket_view"
-    ),
-    path(
-        "supermarket-update/<int:id>/",
-        views.SupermarketUpdateView.as_view(),
-        name="supermarket_update",
-    ),
-    path(
-        "supermarket-add", views.SupermarketCreateView.as_view(), name="supermarket_add"
-    ),
-    path(
-        "certification-view",
-        views.CertificationListView.as_view(),
-        name="certification_view",
-    ),
-    path(
-        "certification-update/<int:id>/",
-        views.CertificationUpdateView.as_view(),
-        name="certification_update",
-    ),
-    path(
-        "certification-add",
-        views.CertificationCreateView.as_view(),
-        name="certification_add",
-    ),
     # path("about-view", views.AboutusListView.as_view(), name="about_view"),
     # path(
     #     "about-update/<int:id>/", views.AboutusUpdateView.as_view(), name="about_update"
     # ),
     # path("about-add", views.AboutusCreateView.as_view(), name="about_add"),
-    path("seo-view", views.SeoListView.as_view(), name="seo_view"),
-    path("seo-update/<int:id>/", views.SeoUpdateView.as_view(), name="seo_update"),
-    path("seo-add", views.SeoCreateView.as_view(), name="seo_add"),
 ]
