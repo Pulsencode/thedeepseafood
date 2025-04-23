@@ -10,14 +10,22 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.template import loader
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, CreateView, UpdateView
 
 
 from deepapp.helper import is_ajax, renderhelper
 from company.models import Brand
-from products.forms import CategoryForm, RecipeForm, RecipeIngredientFormSet, ProductForm
+from products.forms import (
+    CategoryForm,
+    RecipeForm,
+    RecipeIngredientFormSet,
+    ProductForm,
+    ProductDetailsForm,
+    BrandProductForm,
+    BrandProductDetailsForm,
+)
 from products.models import (
     Category,
     Product,
@@ -29,11 +37,13 @@ from products.models import (
 )
 
 
-class CategoryListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/category/Category_list.html"
-
+class AdminPermissionMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.username == "DeepSeaAdmin"
+
+
+class CategoryListView(AdminPermissionMixin, TemplateView):
+    template_name = "superadmin/category/Category_list.html"
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -94,12 +104,9 @@ class CategoryListView(UserPassesTestMixin, TemplateView):
         return renderhelper(request, "category", "Category_view", context)
 
 
-class CategoryCreateView(UserPassesTestMixin, CreateView):
+class CategoryCreateView(AdminPermissionMixin, CreateView):
     template_name = "superadmin/category/Category_create.html"
     form_class = CategoryForm
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
 
     def form_valid(self, form):
         form.save()
@@ -111,15 +118,12 @@ class CategoryCreateView(UserPassesTestMixin, CreateView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
-class CategoryUpdateView(UserPassesTestMixin, UpdateView):
+class CategoryUpdateView(AdminPermissionMixin, UpdateView):
     model = Category
     form_class = CategoryForm
     template_name = "superadmin/category/Category_create.html"
-    pk_url_kwarg = 'id'
-    success_url = reverse_lazy('category_view')
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    pk_url_kwarg = "id"
+    success_url = reverse_lazy("category_view")
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -131,11 +135,8 @@ class CategoryUpdateView(UserPassesTestMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class RecipeListView(UserPassesTestMixin, TemplateView):
+class RecipeListView(AdminPermissionMixin, TemplateView):
     template_name = "superadmin/recipe/recipe_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -196,32 +197,29 @@ class RecipeListView(UserPassesTestMixin, TemplateView):
         return renderhelper(request, "recipe", "recipe_view", context)
 
 
-class RecipeCreateView(UserPassesTestMixin, CreateView):
+class RecipeCreateView(AdminPermissionMixin, CreateView):
     model = RecipeDetails
     form_class = RecipeForm
     template_name = "superadmin/recipe/recipe_create.html"
-    success_url = reverse_lazy('recipe_view')
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    success_url = reverse_lazy("recipe_view")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.POST:
-            context['ingredient_formset'] = RecipeIngredientFormSet(self.request.POST)
+            context["ingredient_formset"] = RecipeIngredientFormSet(self.request.POST)
         else:
-            context['ingredient_formset'] = RecipeIngredientFormSet()
+            context["ingredient_formset"] = RecipeIngredientFormSet()
         return context
 
     def form_valid(self, form):
         context = self.get_context_data()
-        ingredient_formset = context['ingredient_formset']
+        ingredient_formset = context["ingredient_formset"]
         if ingredient_formset.is_valid():
             self.object = form.save()
             ingredient_formset.instance = self.object
             ingredient_formset.save()
 
-            for image in self.request.FILES.getlist('files'):
+            for image in self.request.FILES.getlist("files"):
                 RecipeImage.objects.create(recipe=self.object, image=image)
 
             messages.success(self.request, "Recipe Added Successfully...!!")
@@ -230,36 +228,35 @@ class RecipeCreateView(UserPassesTestMixin, CreateView):
             return self.form_invalid(form)
 
 
-class RecipeUpdateView(UserPassesTestMixin, UpdateView):
+class RecipeUpdateView(AdminPermissionMixin, UpdateView):
     model = RecipeDetails
     form_class = RecipeForm
     template_name = "superadmin/recipe/recipe_create.html"
-    success_url = reverse_lazy('recipe_view')
-    pk_url_kwarg = 'id'
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    success_url = reverse_lazy("recipe_view")
+    pk_url_kwarg = "id"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.POST:
-            context['ingredient_formset'] = RecipeIngredientFormSet(
+            context["ingredient_formset"] = RecipeIngredientFormSet(
                 self.request.POST, instance=self.object
             )
         else:
-            context['ingredient_formset'] = RecipeIngredientFormSet(instance=self.object)
-        context['sliders'] = self.object.rec_image.all()
+            context["ingredient_formset"] = RecipeIngredientFormSet(
+                instance=self.object
+            )
+        context["sliders"] = self.object.rec_image.all()
         return context
 
     def form_valid(self, form):
         context = self.get_context_data()
-        ingredient_formset = context['ingredient_formset']
+        ingredient_formset = context["ingredient_formset"]
         if ingredient_formset.is_valid():
             self.object = form.save()
             ingredient_formset.instance = self.object
             ingredient_formset.save()
 
-            for image in self.request.FILES.getlist('files'):
+            for image in self.request.FILES.getlist("files"):
                 RecipeImage.objects.create(recipe=self.object, image=image)
 
             messages.success(self.request, "Recipe Updated Successfully...!!")
@@ -297,11 +294,8 @@ def delete_recipeslider(request, image_id):
 
 
 # deepsea product
-class ProductListView(UserPassesTestMixin, TemplateView):
+class ProductListView(AdminPermissionMixin, TemplateView):
     template_name = "superadmin/deepsea-product/product_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -371,14 +365,11 @@ class ProductListView(UserPassesTestMixin, TemplateView):
         return renderhelper(request, "deepsea-product", "product_view", context)
 
 
-class ProductCreateView(UserPassesTestMixin, CreateView):
+class ProductCreateView(AdminPermissionMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = "superadmin/deepsea-product/product_create.html"
     success_url = reverse_lazy("product_view")
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
 
     def form_valid(self, form):
         image_data = self.request.POST.get("brand-image")
@@ -386,38 +377,36 @@ class ProductCreateView(UserPassesTestMixin, CreateView):
             format, imgstr = image_data.split(";base64,")
             ext = format.split("/")[-1]
             img_file = ContentFile(base64.b64decode(imgstr), name=f"temp.{ext}")
-            form.instance.image.save(f"{form.cleaned_data['name']}.{ext}", img_file, save=False)
+            form.instance.image.save(
+                f"{form.cleaned_data['name']}.{ext}", img_file, save=False
+            )
         messages.success(self.request, "Product Added Successfully...!!")
         return super().form_valid(form)
 
 
-class ProductUpdateView(UserPassesTestMixin, UpdateView):
+class ProductUpdateView(AdminPermissionMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = "superadmin/deepsea-product/product_create.html"
     success_url = reverse_lazy("product_view")
     pk_url_kwarg = "id"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
     def form_valid(self, form):
         image_data = self.request.POST.get("brand-image")
         if image_data:
             format, imgstr = image_data.split(";base64,")
             ext = format.split("/")[-1]
             img_file = ContentFile(base64.b64decode(imgstr), name=f"temp.{ext}")
-            form.instance.image.save(f"{form.cleaned_data['name']}.{ext}", img_file, save=False)
+            form.instance.image.save(
+                f"{form.cleaned_data['name']}.{ext}", img_file, save=False
+            )
         messages.success(self.request, "Product Updated Successfully...!!")
         return super().form_valid(form)
 
 
 # deepsea product details
-class ProductDetailsListView(UserPassesTestMixin, TemplateView):
+class ProductDetailsListView(AdminPermissionMixin, TemplateView):
     template_name = "superadmin/deepsea-product-details/product_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -489,129 +478,36 @@ class ProductDetailsListView(UserPassesTestMixin, TemplateView):
         return renderhelper(request, "deepsea-product-details", "product_view", context)
 
 
-class ProductDetailsCreateView(UserPassesTestMixin, TemplateView):
+class ProductDetailsCreateView(AdminPermissionMixin, CreateView):
+    model = ProductDetails
+    form_class = ProductDetailsForm
     template_name = "superadmin/deepsea-product-details/product_create.html"
+    success_url = reverse_lazy("product_details_view")
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def post(self, request, *args, **kwargs):
-        product_id = request.POST.get("prod")
-        product = Product.objects.get(id=product_id)
-        category_id = request.POST.get("cat")
-        category = Category.objects.get(id=category_id)
-        sub = request.POST.get("sub")
-        code = request.POST.get("code")
-        weight = request.POST.get("weight")
-        price = request.POST.get("price")
-        origin = request.POST.get("origin")
-        grade = request.POST.get("grade")
-        packing = request.POST.get("packing")
-        desc = request.POST.get("desc")
-        ingredient = request.POST.get("ingredient")
-        instruction = request.POST.get("instruction")
-        storage = request.POST.get("storage")
-        causion = request.POST.get("causion")
-
-        product_details = ProductDetails(
-            product=product,
-            category=category,
-            sub_categories=sub,
-            price=price,
-            product_code=code,
-            net_weight=weight,
-            origin=origin,
-            grade=grade,
-            packing=packing,
-            description=desc,
-            ingredients=ingredient,
-            instructions=instruction,
-            storage_instructions=storage,
-            causion=causion,
-        )
-        product_details.save()
-
-        messages.success(request, "Product Details Added Successfully...!!")
-        return redirect("product_details_view")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["products"] = Product.objects.filter(
-            status=True, brand__name="Deep Sea"
-        ).order_by("-id")
-        context["category"] = Category.objects.filter(
-            status=True, brand__name="Deep Sea"
-        ).order_by("-id")
-        return context
+    def form_valid(self, form):
+        messages.success(self.request, "Product Details Added Successfully…!!")
+        return super().form_valid(form)
 
 
-class ProductDetailsUpdateView(UserPassesTestMixin, TemplateView):
+class ProductDetailsUpdateView(AdminPermissionMixin, UpdateView):
+    model = ProductDetails
+    form_class = ProductDetailsForm
     template_name = "superadmin/deepsea-product-details/product_create.html"
+    success_url = reverse_lazy("product_details_view")
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    def form_valid(self, form):
+        messages.success(self.request, "Product Details Updated Successfully…!!")
+        return super().form_valid(form)
 
-    def get(self, request, id):
-        data = ProductDetails.objects.get(pk=id)
-        category = Category.objects.filter(brand__name="Deep Sea").order_by("-id")
-        products = Product.objects.filter(brand__name="Deep Sea").order_by("-id")
-
-        return render(
-            request,
-            self.template_name,
-            {"list": data, "products": products, "category": category},
-        )
-
-    def post(self, request, id):
-        data = ProductDetails.objects.get(pk=id)
-        current_page = request.GET.get("page", None)
-        product_id = request.POST.get("prod")
-        product = Product.objects.get(id=product_id)
-        category_id = request.POST.get("cat")
-        category = Category.objects.get(id=category_id)
-        sub = request.POST.get("sub")
-        code = request.POST.get("code")
-        weight = request.POST.get("weight")
-        price = request.POST.get("price")
-        origin = request.POST.get("origin")
-        grade = request.POST.get("grade")
-        packing = request.POST.get("packing")
-        desc = request.POST.get("desc")
-        ingredient = request.POST.get("ingredient")
-        instruction = request.POST.get("instruction")
-        storage = request.POST.get("storage")
-        causion = request.POST.get("causion")
-
-        data.product = product
-        data.category = category
-        data.sub_categories = sub
-        data.product_code = code
-        data.grade = grade
-        data.packing = packing
-        data.desc = desc
-        data.ingredients = ingredient
-        data.instructions = instruction
-        data.net_weight = weight
-        data.causion = causion
-        data.origin = origin
-        data.price = price
-        data.storage_instructions = storage
-        data.save()
-
-        redirect_url = reverse("product_details_view")
-        if current_page:
-            redirect_url += f"?page={current_page}"
-
-        messages.success(request, " Product Details Updated Successfully...!!")
-        return redirect(redirect_url)
+    def get_success_url(self):
+        url = super().get_success_url()
+        page = self.request.GET.get("page")
+        return f"{url}?page={page}" if page else url
 
 
 # brand product
-class BrandProductListView(UserPassesTestMixin, TemplateView):
+class BrandProductListView(AdminPermissionMixin, TemplateView):
     template_name = "superadmin/brand-product/product_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -684,103 +580,62 @@ class BrandProductListView(UserPassesTestMixin, TemplateView):
         return renderhelper(request, "brand-product", "product_view", context)
 
 
-class BrandProductCreateView(UserPassesTestMixin, TemplateView):
+class BrandProductCreateView(AdminPermissionMixin, CreateView):
+    model = Product
+    form_class = BrandProductForm
     template_name = "superadmin/brand-product/product_create.html"
+    success_url = reverse_lazy("brand_product_view")
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    def form_valid(self, form):
+        image_data = self.request.POST.get("brand-image")
+        if image_data:
+            format, imgstr = image_data.split(";base64,")
+            ext = format.split("/")[-1]
+            decoded_image = base64.b64decode(imgstr)
+            form.instance.image.save(
+                form.cleaned_data["name"] + "." + ext,
+                ContentFile(decoded_image),
+                save=False,
+            )
 
-    def post(self, request, *args, **kwargs):
-        image = request.POST.get("brand-image")
-        name = request.POST.get("name")
-        sequence = request.POST.get("sequence")
-        title_tag = request.POST.get("title_tag")
-        metatag = request.POST.get("metatag")
-        keyword = request.POST.get("keyword")
-        canonical = request.POST.get("canonical")
-        brand_instance = request.POST.get("brand")
-        image_alt = request.POST.get("image_alt")
-        brand = Brand.objects.get(id=brand_instance)
-        format, imgstr = image.split(";base64,")
-        ext = format.split("/")[-1]
-        image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
-
-        product = Product(
-            name=name,
-            brand=brand,
-            title_tag=title_tag,
-            metatag=metatag,
-            keyword=keyword,
-            canonical=canonical,
-            sequence=sequence,
-            image_alt=image_alt,
-        )
-        product.image.save(name + "." + ext, image_data, save=True)
-
-        messages.success(request, "Product Added Successfully...!!")
-        return redirect("brand_product_view")
+        messages.success(self.request, "Product Added Successfully...!!")
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["brands"] = Brand.objects.filter(status=True).order_by("-id")
-        # context['sub'] = Subcategory.objects.filter(status=True).order_by('-id')
         return context
 
 
-class BrandProductUpdateView(UserPassesTestMixin, TemplateView):
+class BrandProductUpdateView(AdminPermissionMixin, UpdateView):
+    model = Product
+    form_class = BrandProductForm
     template_name = "superadmin/brand-product/product_create.html"
+    success_url = reverse_lazy("brand_product_view")
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["brands"] = Brand.objects.filter(status=True).order_by("-id")
+        return context
 
-    def get(self, request, id):
-        data = Product.objects.get(pk=id)
-        brand = Brand.objects.filter(status=True)
-
-        return render(request, self.template_name, {"list": data, "brands": brand})
-
-    def post(self, request, id):
-        data = Product.objects.get(pk=id)
-        current_page = request.GET.get("page", None)
-        image = request.POST.get("brand-image")
-        name = request.POST.get("name")
-        sequence = request.POST.get("sequence")
-        title_tag = request.POST.get("title_tag")
-        metatag = request.POST.get("metatag")
-        keyword = request.POST.get("keyword")
-        canonical = request.POST.get("canonical")
-        brand_instance = request.POST.get("brand")
-        image_alt = request.POST.get("image_alt")
-        brand = Brand.objects.get(id=brand_instance)
-
-        if image:
-            format, imgstr = image.split(";base64,")
+    def form_valid(self, form):
+        image_data = self.request.POST.get("brand-image")
+        if image_data:
+            format, imgstr = image_data.split(";base64,")
             ext = format.split("/")[-1]
-            image_data = ContentFile(base64.b64decode(imgstr), name="temp." + ext)
-            data.image.save(name + "." + ext, image_data, save=True)
-        data.name = name
-        data.brand = brand
-        data.sequence = sequence
-        data.title_tag = title_tag
-        data.metatag = metatag
-        data.keyword = keyword
-        data.canonical = canonical
-        data.image_alt = image_alt
-        data.save()
+            decoded_image = base64.b64decode(imgstr)
+            form.instance.image.save(
+                form.cleaned_data["name"] + "." + ext,
+                ContentFile(decoded_image),
+                save=False,
+            )
 
-        redirect_url = reverse("brand_product_view")
-        if current_page:
-            redirect_url += f"?page={current_page}"
-
-        messages.success(request, "Product Updated Successfully...!!")
-        return redirect(redirect_url)
+        messages.success(self.request, "Product Updated Successfully...!!")
+        return super().form_valid(form)
 
 
-class BrandProductDetailsListView(UserPassesTestMixin, TemplateView):
+class BrandProductDetailsListView(AdminPermissionMixin, TemplateView):
     template_name = "superadmin/brand-product-details/product_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -852,56 +707,44 @@ class BrandProductDetailsListView(UserPassesTestMixin, TemplateView):
         return renderhelper(request, "brand-product-details", "product_view", context)
 
 
-class BrandProductDetailsCreateView(UserPassesTestMixin, TemplateView):
+class BrandProductDetailsCreateView(AdminPermissionMixin, CreateView):
+    model = ProductDetails
+    form_class = BrandProductDetailsForm
     template_name = "superadmin/brand-product-details/product_create.html"
+    success_url = reverse_lazy("brand_product_details_view")
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def post(self, request, *args, **kwargs):
-        product_id = request.POST.get("product")
-        product = Product.objects.get(id=product_id)
-        category_id = request.POST.get("cat")
-        category = Category.objects.get(id=category_id)
-        weight = request.POST.get("weight")
-        origin = request.POST.get("origin")
-        storage = request.POST.get("storage")
-        shelf = request.POST.get("shelf")
-        cook = request.POST.get("cook")
-        # Adding this with out the correct name so that the production code does not break
-        ingredients = request.POST.get("ingredients")
-        causion = request.POST.get(
-            "causion"
-        )  # This is now used for allergen information
-        description = request.POST.get(
-            "description"
-        )  # This is now used for nutritional facts
-
-        product_details = ProductDetails(
-            product=product,
-            category=category,
-            net_weight=weight,
-            origin=origin,
-            storage_instructions=storage,
-            shelf_life=shelf,
-            how_to_cook=cook,
-            ingredients=ingredients,
-            causion=causion,
-            description=description,
-        )
-        product_details.save()
-
-        messages.success(request, "Brand Product Details Added Successfully...!!")
-        return redirect("brand_product_details_view")
+    def form_valid(self, form):
+        messages.success(self.request, "Brand Product Details Added Successfully...!!")
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["products"] = (
-            Product.objects.filter(status=True)
-            .exclude(brand__name="Deep Sea")
-            .order_by("-id")
-        )
+        context["products"] = (Product.objects.filter(status=True).exclude(brand__name="Deep Sea").order_by("-id"))
         return context
+
+
+class BrandProductDetailsUpdateView(AdminPermissionMixin, UpdateView):
+    model = ProductDetails
+    form_class = BrandProductDetailsForm
+    template_name = "superadmin/brand-product-details/product_create.html"
+    success_url = reverse_lazy("brand_product_details_view")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        data = self.get_object()
+        context["products"] = Product.objects.exclude(brand__name="Deep Sea").order_by(
+            "-id"
+        )
+        context["category"] = Category.objects.filter(
+            brand=data.product.brand
+        ).order_by("-id")
+        return context
+
+    def form_valid(self, form):
+        messages.success(
+            self.request, "Brand Product Details Updated Successfully...!!"
+        )
+        return super().form_valid(form)
 
 
 class BrandLoadCategory(View):
@@ -910,7 +753,6 @@ class BrandLoadCategory(View):
     def get(self, request):
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
             id = request.GET.get("id")
-            # print('***brand id',id)
 
             try:
                 product = Product.objects.get(id=id)
@@ -919,7 +761,6 @@ class BrandLoadCategory(View):
                     Category.objects.filter(brand=brand).values("id", "name")
                 )
 
-                # print('***',category)
                 context = {"category": category}
                 template = loader.get_template(self.template_name)
                 html_content = template.render(context, request)
@@ -929,65 +770,6 @@ class BrandLoadCategory(View):
                 return JsonResponse({"error": str(e)}, status=500)
 
         return JsonResponse({"error": "Invalid request"}, status=400)
-
-
-class BrandProductDetailsUpdateView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/brand-product-details/product_create.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, id):
-        data = ProductDetails.objects.get(pk=id)
-        brand = data.product.brand
-        print(brand, "***brnd")
-        category = Category.objects.filter(brand=brand).order_by("-id")
-        products = Product.objects.exclude(brand__name="Deep Sea").order_by("-id")
-
-        return render(
-            request,
-            self.template_name,
-            {"list": data, "products": products, "category": category},
-        )
-
-    def post(self, request, id):
-        data = ProductDetails.objects.get(pk=id)
-        current_page = request.GET.get("page", None)
-        product_id = request.POST.get("product")
-        product = Product.objects.get(id=product_id)
-        category_id = request.POST.get("cat")
-        category = Category.objects.get(id=category_id)
-        weight = request.POST.get("weight")
-        origin = request.POST.get("origin")
-        storage = request.POST.get("storage")
-        shelf = request.POST.get("shelf")
-        cook = request.POST.get("cook")
-        ingredients = request.POST.get("ingredients")
-        causion = request.POST.get(
-            "causion"
-        )  # This is now used for allergen information
-        description = request.POST.get(
-            "description"
-        )  # This is now used for nutritional facts
-
-        data.product = product
-        data.category = category
-        data.net_weight = weight
-        data.shelf_life = shelf
-        data.origin = origin
-        data.storage_instructions = storage
-        data.how_to_cook = cook
-        data.ingredients = ingredients
-        data.causion = causion
-        data.description = description
-        data.save()
-
-        redirect_url = reverse("brand_product_details_view")
-        if current_page:
-            redirect_url += f"?page={current_page}"
-
-        messages.success(request, " Brand Product Details Updated Successfully...!!")
-        return redirect(redirect_url)
 
 
 class SubcategoryListView(TemplateView):

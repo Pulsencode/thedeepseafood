@@ -1,5 +1,12 @@
 from django import forms
-from .models import Product, Category, Brand, RecipeDetails, RecipeIngredients
+from .models import (
+    Product,
+    Category,
+    Brand,
+    RecipeDetails,
+    RecipeIngredients,
+    ProductDetails,
+)
 
 
 class CategoryForm(forms.ModelForm):
@@ -19,7 +26,7 @@ class CategoryForm(forms.ModelForm):
         self.fields["name"].widget.attrs.update(
             {
                 "class": "form-control",
-                "placeholder": "Category Name",
+                "placeholder": "Name",
                 "required": "true",
             }
         )
@@ -37,7 +44,12 @@ class CategoryForm(forms.ModelForm):
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = RecipeDetails
-        fields = ["title", "brand", "description", "image_alt"]
+        fields = [
+            "title",
+            "brand",
+            "description",
+            "image_alt",
+        ]  # the description --need to check on that-- instructions
         widgets = {
             "description": forms.Textarea(attrs={"class": "form-control"}),
             "image_alt": forms.TextInput(attrs={"class": "form-control"}),
@@ -84,12 +96,130 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ["brand", "sequence", "type", "slug", "name", "image_alt", "homepage"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            if isinstance(self.fields[field].widget, forms.CheckboxInput):
+                self.fields[field].widget.attrs.update({"class": "form-check-input"})
+            else:
+                self.fields[field].widget.attrs.update({"class": "form-control"})
+
+
+class ProductDetailsForm(forms.ModelForm):
+    class Meta:
+        model = ProductDetails
+        fields = [
+            "product",
+            "category",
+            "sub_categories",
+            "product_code",
+            "net_weight",
+            "price",
+            "origin",
+            "grade",
+            "packing",
+            "description",
+            "ingredients",
+            "instructions",
+            "storage_instructions",
+            "causion",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        deepsea_active_filters = {"status": True, "brand__name": "Deep Sea"}
+        self.fields["product"].queryset = Product.objects.filter(
+            **deepsea_active_filters
+        ).order_by("-id")
+        self.fields["category"].queryset = Category.objects.filter(
+            **deepsea_active_filters
+        ).order_by("-id")
+
+        for name, field in self.fields.items():
+            widget = field.widget
+
+            if isinstance(widget, forms.Select):
+                widget.attrs.update(
+                    {
+                        "class": "select-drop",
+                        "required": True,
+                    }
+                )
+
+            elif isinstance(widget, forms.Textarea):
+                widget.attrs.update(
+                    {
+                        "class": "form-control",
+                        "placeholder": field.label or name.replace("_", " ").title(),
+                    }
+                )
+
+            else:
+                widget.attrs.update(
+                    {
+                        "class": "form-control",
+                        "placeholder": field.label or name.replace("_", " ").title(),
+                    }
+                )
+
+        self.fields["product"].label = "Product*"
+        self.fields["category"].label = "Category*"
+
+
+class BrandProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ["name", "brand", "sequence", "image_alt"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            widget = self.fields[field].widget
+            if isinstance(widget, forms.CheckboxInput):
+                widget.attrs.update({"class": "form-check-input"})
+            elif isinstance(widget, forms.Select):
+                widget.attrs.update({"class": "select-drop"})
+            else:
+                widget.attrs.update({"class": "form-control"})
+
+
+class BrandProductDetailsForm(forms.ModelForm):
+    class Meta:
+        model = ProductDetails
+        fields = [
+            "product",
+            "category",
+            "net_weight",
+            "origin",
+            "instructions",
+            "shelf_life",
+            "how_to_cook",
+            "ingredients",
+            "allergic",
+            "nutrition",
+        ]
         widgets = {
-            "brand": forms.Select(attrs={"class": "form-control"}),
-            "sequence": forms.NumberInput(attrs={"class": "form-control"}),
-            "type": forms.TextInput(attrs={"class": "form-control"}),
-            "slug": forms.TextInput(attrs={"class": "form-control"}),
-            "name": forms.TextInput(attrs={"class": "form-control"}),
-            "image_alt": forms.TextInput(attrs={"class": "form-control"}),
-            "homepage": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+            "net_weight": forms.TextInput(attrs={"placeholder": "Net weight"}),
+            "origin": forms.TextInput(attrs={"placeholder": "Country of origin"}),
+            "instructions": forms.Textarea(attrs={"placeholder": "Storage instructions"}),
+            "shelf_life": forms.TextInput(attrs={"placeholder": "Shelf life"}),
+            "how_to_cook": forms.Textarea(
+                attrs={"placeholder": "Cooking instructions"}
+            ),
+            "ingredients": forms.Textarea(attrs={"placeholder": "List of ingredients"}),
+            "allergic": forms.Textarea(attrs={"placeholder": "Allergen information"}),
+            "nutrition": forms.Textarea(attrs={"placeholder": "Nutrition facts"}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            widget = field.widget
+            if isinstance(widget, forms.CheckboxInput):
+                widget.attrs.update({"class": "form-check-input"})
+            elif isinstance(widget, forms.Select):
+                widget.attrs.update({"class": "select-drop"})
+            else:
+                widget.attrs.update({"class": "form-control"})

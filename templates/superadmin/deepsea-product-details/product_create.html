@@ -1,20 +1,20 @@
-{% include 'superadmin/layout/header.html' %}
+{% include "superadmin/layout/header.html" %}
 {% load static %}
 <style>
     .select-drop{
         width: 100%;
         display: block;
-    width: 100%;
-    padding: 0.475rem 0.75rem;
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #4d5875;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #e9edf4;
-    border-radius: 7px;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        width: 100%;
+        padding: 0.475rem 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #4d5875;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #e9edf4;
+        border-radius: 7px;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
     .select-drop:focus-visible{
         outline: none !important;
@@ -27,130 +27,106 @@
         cursor: pointer;
     }
 </style>
-<!--app-content open-->
 <div class="main-content app-content mt-0">
     <div class="side-app">
-        <!-- CONTAINER -->
         <div class="main-container container-fluid">
-            <!-- PAGE-HEADER -->
             <div class="page-header">
-                <h1 class="page-title"> Deep Sea Product Details</h1>
+                <h1 class="page-title">Deep Sea Product Details</h1>
                 <div>
-                    <a class="btn btn-primary" href="{% url 'product_details_view' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
+                    <a class="btn btn-primary" href="{% url 'product_details_view' %}">
+                        <i class="side-menu__icon fe fe-eye mx-1"></i>View All
+                    </a>
                 </div>
             </div>
-            <!-- PAGE-HEADER END -->
-
-            <!-- ROW OPEN -->
-            <form method="post" enctype="multipart/form-data" id="myform">
+            <form method="post" id="myform">
                 {% csrf_token %}
                 <div class="row">
-                    
-
                     <div class="col-md-8 col-xl-8 col-12">
                         <div class="card">
                             <div class="card-body">
-                            
-                                    <div class="row col-lg-12">
-                                        
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label class="form-label">Product*</label>
-                                            <select name="prod" class="select-drop " required>
-                                                <option value="">Select product</option>
-                                                    {% for s in products %}
-                                                    <option {% if list.product.id == s.id %} selected{% endif %} value="{{s.id}}" data-name="{{s.name}}" data-id="{{s.id}}" >{{s.name}}</option>
-                                                    {% endfor %}
-                                            </select>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-12 col-12">
-                                                <div class="form-group">
-                                                    <label class="form-label">Category*</label>
-                                                    <select name="cat" class="select-drop cat"  required>
-                                                        <option value="">Select Category</option>
-                                                        {% for s in category %}
-                                                        <option {% if list.category.id == s.id %} selected{% endif %}  value="{{s.id}}" >{{s.name}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <!-- <div class="col-lg-12 col-12">
-                                                <div class="form-group sublistss">
-                                                    
-                                                </div>
-                                            </div> -->
-
-                                            <!-- <input type="text" id="selectedValues" class="selectedValues" name="selectedValues[]" readonly> -->
-                                            
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label"> SubCategories*</label>
-                                                <input type="text" class="form-control" id="" placeholder=" SubCategories" name="sub" value="{{list.sub_categories}}" required>
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label"> Product Code</label>
-                                                <input type="text" class="form-control" id="" placeholder=" Product Code" name="code" value="{{list.product_code}}">
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label"> Net Weight</label>
-                                                <input type="text" class="form-control" id="" placeholder=" Net Weight" name="weight" value="{{list.net_weight}}" >
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label">Price</label>
-                                                <input type="text" class="form-control" id="" placeholder="Price" name="price" value="{{list.price}}" >
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label">Origin</label>
-                                                <input type="text" class="form-control" id="" placeholder="Origin" name="origin" value="{{list.origin}}">
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label">Grade</label>
-                                                <input type="text" class="form-control" id="" placeholder="Grade" name="grade" value="{{list.grade}}">
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label">Packing</label>
-                                                <input type="text" class="form-control" id="" placeholder="Packing" name="packing" value="{{list.packing}}">
-                                            </div>
-                                            <div class="col-lg-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1" class="form-label">Description</label>
-                                                    <textarea id="" class="form-control" name="desc" >{{list.description}}</textarea>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label">Ingredients</label>
-                                                <input type="text" class="form-control" id="" placeholder="Ingredients" name="ingredient" value="{{list.ingredients}}">
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label">Instruction</label>
-                                                <input type="text" class="form-control" id="" placeholder="instruction" name="instruction" value="{{list.instructions}}">
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label">Storage Instruction</label>
-                                                <input type="text" class="form-control" id="" placeholder="Storage Instruction" name="storage" value="{{list.storage_instructions}}">
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label">Causion</label>
-                                                <input type="text" class="form-control" id="" placeholder="Causion" name="causion" value="{{list.causion}}" >
-                                            </div>
-
-                                        </div>
-                                        
-                                
-                                        <div class="form-group col-lg-12 col-12">
-                                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
-                                            <a href="{% url 'product_details_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
-                                        </div>
+                                <div class="row col-lg-12">
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.product.label_tag }}
+                                        {{ form.product }}
+                                        {{ form.product.errors }}
                                     </div>
-                                
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.category.label_tag }}
+                                        {{ form.category }}
+                                        {{ form.category.errors }}
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.sub_categories.label_tag }}
+                                        {{ form.sub_categories }}
+                                        {{ form.sub_categories.errors }}
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.product_code.label_tag }}
+                                        {{ form.product_code }}
+                                        {{ form.product_code.errors }}
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.net_weight.label_tag }}
+                                        {{ form.net_weight }}
+                                        {{ form.net_weight.errors }}
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.price.label_tag }}
+                                        {{ form.price }}
+                                        {{ form.price.errors }}
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.origin.label_tag }}
+                                        {{ form.origin }}
+                                        {{ form.origin.errors }}
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.grade.label_tag }}
+                                        {{ form.grade }}
+                                        {{ form.grade.errors }}
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.packing.label_tag }}
+                                        {{ form.packing }}
+                                        {{ form.packing.errors }}
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.description.label_tag }}
+                                        {{ form.description }}
+                                        {{ form.description.errors }}
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.ingredients.label_tag }}
+                                        {{ form.ingredients }}
+                                        {{ form.ingredients.errors }}
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.instructions.label_tag }}
+                                        {{ form.instructions }}
+                                        {{ form.instructions.errors }}
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.storage_instructions.label_tag }}
+                                        {{ form.storage_instructions }}
+                                        {{ form.storage_instructions.errors }}
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        {{ form.causion.label_tag }}
+                                        {{ form.causion }}
+                                        {{ form.causion.errors }}
+                                    </div>
+                                    <div class="form-group col-lg-12 col-12">
+                                        <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                                        <a href="{% url 'product_details_view' %}"
+                                           class="btn btn-danger mt-4 mb-0">Cancel</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- ROW CLOSED -->
                     </div>
-                    <!-- CONTAINER END -->
                 </div>
             </form>
         </div>
     </div>
-    <!--app-content close-->
-
-    {% include 'superadmin/layout/footer.html' %}
+</div>
+{% include "superadmin/layout/footer.html" %}
