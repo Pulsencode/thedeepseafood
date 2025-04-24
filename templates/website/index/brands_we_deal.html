@@ -9,25 +9,25 @@
         </div>
         <div class="row row-item pt-20">
             <div class="slick-slidera">
-                {% for b in all_brands %}
-                    {% if b.image %}
+                {% for brand in all_brands %}
+                    {% if brand.image %}
                         <div class="item card-hover-up">
-                            {% if b.name == 'Oceano' %}
+                            {% if brand.name == 'Oceano' %}
                                 <a class="primary-url" href="{% url 'brands' %}">
                                     <img width=""
                                          height=""
                                          alt=""
                                          class="img-fluid m-h-120-px pe-10-md-all"
-                                         src="{{ b.logo.url }}"
-                                         alt="{{ b.image_alt }}">
+                                         src="{{ brand.logo.url }}"
+                                         alt="{{ brand.image_alt }}">
                                 </a>
                             {% else %}
                                 <img width=""
                                      height=""
                                      alt=""
                                      class="img-fluid m-h-120-px pe-10-md-all"
-                                     src="{{ b.logo.url }}"
-                                     alt="{{ b.image_alt }}">
+                                     src="{{ brand.logo.url }}"
+                                     alt="{{ brand.image_alt }}">
                             {% endif %}
                         </div>
                     {% endif %}

@@ -10,19 +10,19 @@
         <div class="row text-center">
             <div class="col-12 pt-20">
                 <div class="slick_slider_team arrows-vector ps-50 pe-50">
-                    {% for t in management_team %}
+                    {% for team in management_team %}
                         <div class="item  wow fadeInUp wow_item pb-70">
                             <div class="card-hover-up">
                                 <div class="card-img">
                                     <img width=""
                                          height=""
                                          alt=""
-                                         src="{{ t.image.url }}"
-                                         alt="{{ t.image_alt }}">
+                                         src="{{ team.image.url }}"
+                                         alt="{{ team.image_alt }}">
                                 </div>
                                 <div class="info bg-blue">
-                                    <div class="name font-lnterbold">{{ t.name }}</div>
-                                    <div class="dec text-m-light-blue">{{ t.designation }}</div>
+                                    <div class="name font-lnterbold">{{ team.name }}</div>
+                                    <div class="dec text-m-light-blue">{{ team.designation }}</div>
                                 </div>
                             </div>
                         </div>

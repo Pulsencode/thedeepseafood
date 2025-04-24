@@ -10,15 +10,15 @@
         </div>
         <div class="row pt-35">
             <div class="slick_slider_6">
-                {% for c in all_certifications %}
+                {% for certificate in all_certifications %}
                     <div class="item">
                         <div class="wow fadeInUp wow_item">
                             <img width=""
                                  height=""
                                  alt=""
                                  class="img-primary"
-                                 src="{{ c.image.url }}"
-                                 alt="{{ c.image_alt }}">
+                                 src="{{ certificate.image.url }}"
+                                 alt="{{ certificate.image_alt }}">
                         </div>
                     </div>
                 {% endfor %}

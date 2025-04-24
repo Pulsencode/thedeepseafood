@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "public_interface",
     "career",
     "phonenumber_field",
+    "website",
 
 ]
 

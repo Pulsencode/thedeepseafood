@@ -36,14 +36,14 @@
             </div>
           </div>
           <div class="row news-dtl-mn">
-            {% for i in news %}
+            {% for event in news %}
               <div class="col-lg-4 col-sm-6 pt-30">
                 <div class="item bg-x-light-blue wow fadeInUp wow_item">
-                  <div class="title font-lnterbold">{{ i.title }}</div>
-                  <div class="dec font-lntermedium">{{ i.description|slice:":100"|default_if_none:'' }}</div>
-                  <div class="date font-lntermedium">{{ i.date|date:"M d, Y" }}</div>
+                  <div class="title font-lnterbold">{{ event.title }}</div>
+                  <div class="dec font-lntermedium">{{ event.description|slice:":100"|default_if_none:'' }}</div>
+                  <div class="date font-lntermedium">{{ event.date|date:"M d, Y" }}</div>
                   <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover mt-3"
-                     href="{% url 'news_details' i.id %}">
+                     href="{% url 'news_details' event.id %}">
                     <span>Read More</span>
                     <img width=""
                          height=""
