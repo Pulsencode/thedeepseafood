@@ -45,20 +45,20 @@
               </div>
               <div class="right-item">
                 <h4 class="font-lnterbold text-blue">RECENT NEWS</h4>
-                {% for s in news %}
-                  <a href="{% url 'news_details' s.id %}" class="text-decoration-none">
+                {% for event in news %}
+                  <a href="{% url 'news_details' event.id %}" class="text-decoration-none">
                     <div class="item border-b wow fadeInUp wow_item news-item">
                       <div class="row align-items-center">
-                        <p class="d-none">{{ s.title }}</p>
+                        <p class="d-none">{{ event.title }}</p>
                         <div class="col-3">
                           <img class="img-fluid"
                                width=""
                                height=""
-                               src="{% if s.news_image %}{{ s.news_image.first.image.url }}{% endif %}"
-                               alt="{{ s.image_alt }}">
+                               src="{% if event.news_image %}{{ event.news_image.first.image.url }}{% endif %}"
+                               alt="{{ event.image_alt }}">
                         </div>
                         <div class="col-9 ps-0">
-                          <div class="tilte">{{ s.description|truncatechars:50 }}</div>
+                          <div class="tilte">{{ event.description|truncatechars:50 }}</div>
                         </div>
                       </div>
                     </div>

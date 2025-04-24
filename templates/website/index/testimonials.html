@@ -12,20 +12,20 @@
             <div class="row text-center pt-50">
                 <div class="col-12">
                     <div class="slick_slider_3 arrows-vector">
-                        {% for t in all_testimonials %}
+                        {% for testimonial in all_testimonials %}
                             <div class="item wow fadeInUp wow_item">
                                 <div class="words">
                                     <img width=""
                                          height=""
                                          alt="Blue color comma"
                                          src="{% static 'website/assets/public/images/icons/comma-blue.png' %} ">
-                                    <div class="dec text-blue scrollbar">{{ t.message|safe }}</div>
+                                    <div class="dec text-blue scrollbar">{{ testimonial.message|safe }}</div>
                                     <div class="shape">
                                         <div class="empty"></div>
                                     </div>
                                 </div>
-                                <img width="" height="" alt="" class="user" src="{{ t.image.url }}">
-                                <div class="name font-lnterbold">{{ t.name }}</div>
+                                <img width="" height="" alt="" class="user" src="{{ testimonial.image.url }}">
+                                <div class="name font-lnterbold">{{ testimonial.name }}</div>
                             </div>
                         {% endfor %}
                     </div>
