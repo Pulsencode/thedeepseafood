@@ -1439,7 +1439,8 @@ $(document).ready(function() {
 $(document).ready(function() {
     $(".delete-image-btn").on("click", function() {
         var imageId = $(this).data("image-id");
-        var deleteUrl = "/superadmin/delete-recipeslider/" + imageId + "/";  // Update this URL to your Django view for deleting the image
+        var deleteUrl = "{% url 'delete_recipeslider' image_id=0 %}".replace('0', imageId);
+
         
         // Store references to the image and delete button with unique IDs
         var imageElement = $("#slider" + imageId);

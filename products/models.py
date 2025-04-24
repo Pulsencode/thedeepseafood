@@ -130,7 +130,11 @@ class RecipeImage(ImageBase, TimestampBase):
 
 
 class Subcategory(StatusTimestampBase):
-    name = models.CharField(max_length=200)
+    name = models.ForeignKey(
+        Category,
+        null=False,
+        on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return self.name

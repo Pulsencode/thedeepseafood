@@ -6,7 +6,7 @@ urlpatterns = [
     path("category-view", views.CategoryListView.as_view(), name="category_view"),
     path("category-add", views.CategoryCreateView.as_view(), name="category_add"),
     path(
-        "category-update/<int:id>/",
+        "category-update/<int:pk>/",
         views.CategoryUpdateView.as_view(),
         name="category_update",
     ),
@@ -39,7 +39,7 @@ urlpatterns = [
     path("product-view", views.ProductListView.as_view(), name="product_view"),
     path("product-add", views.ProductCreateView.as_view(), name="product_add"),
     path(
-        "product-update/<int:id>/",
+        "product-update/<int:pk>/",
         views.ProductUpdateView.as_view(),
         name="product_update",
     ),
