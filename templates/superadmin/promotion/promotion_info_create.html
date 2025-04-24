@@ -9,12 +9,10 @@
             <div class="page-header">
                 <h1 class="page-title">Promotion information</h1>
                 <div>
-                    <a class="btn btn-primary" href="{% url 'promotion_view' %}"><i
-                            class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
+                    <a class="btn btn-primary" href="{% url 'promotion_view' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
                 </div>
             </div>
             <!-- PAGE-HEADER END -->
-
             <!-- ROW OPEN -->
             <form method="post" enctype="multipart/form-data" id="myform">
                 {% csrf_token %}
@@ -25,65 +23,94 @@
                                 <h4 class="card-title">Add New Promotion Gallery</h4>
                             </div>
                             <div class="card-body">
-                            
-                                    <div class="row">
-                                        <div class="col-lg-12 col-sm-12 mb-4 mb-lg-0">
-                                            <input type="file" class="dropify" data-bs-height="180" multiple name="files" {% if not sliders %}required{% endif %}>
-                                        </div>
-
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 mb-4 mb-lg-0">
+                                        <input type="file"
+                                               class="dropify"
+                                               data-bs-height="180"
+                                               multiple
+                                               name="files"
+                                               {% if not sliders %}required{% endif %}>
                                     </div>
-                                    {% if sliders %}
-                                                        <!-- Show existing slider images -->
-                                                        <div class="existing-slider-images">
-                                                            {% for slider in sliders %}
-                                                                <img src="{{ slider.image.url }}" alt="Slider Image" class="existing-slider-img" id="slider{{ slider.id }}" />
-                                                                <button type="button" id="btn-del{{ slider.id }}" class="delete-image-btn" style="margin-top: 10px;  background: #0aa3ce; color: #fff; padding: 4px 26px; border: 0px; border-radius: 2px; " data-image-id="{{ slider.id }}" >Delete</button>
-                                                            
-
-                                                            {% endfor %}
-                                                        </div>
-                                            {% endif %}
-                                
+                                </div>
+                                {% if sliders %}
+                                    <!-- Show existing slider images -->
+                                    <div class="existing-slider-images">
+                                        {% for slider in sliders %}
+                                            <img src="{{ slider.image.url }}"
+                                                 alt="Slider Image"
+                                                 class="existing-slider-img"
+                                                 id="slider{{ slider.id }}" />
+                                            <button type="button"
+                                                    id="btn-del{{ slider.id }}"
+                                                    class="delete-image-btn"
+                                                    style="margin-top: 10px;
+                                                           background: #0aa3ce;
+                                                           color: #fff;
+                                                           padding: 4px 26px;
+                                                           border: 0px;
+                                                           border-radius: 2px"
+                                                    data-image-id="{{ slider.id }}">Delete</button>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
-                            
                         </div>
-
-
                     </div>
-
                     <div class="col-md-8 col-xl-8 col-12">
                         <div class="card">
                             <div class="card-body">
-                                
-                                    <div class="row col-lg-12">
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label"> Title</label>
-                                            <input type="text" class="form-control" id="" placeholder="Name" name="title" value="{{list.title}}" required>
-                                        </div>
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label"> Name</label>
-                                            <input type="text" class="form-control" id="" placeholder="Name" name="name" value="{{list.name}}" required>
-                                        </div>
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label"> Date</label>
-                                            <input type="date" class="form-control" id="" placeholder="Name" name="date" value="{{list.date|date:'Y-m-d'}}">
-                                        </div>
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label"> Location</label>
-                                            <input type="text" class="form-control" id="" placeholder="Name" name="location" value="{{list.location}}" required>
-                                        </div>
-                                        <div class="col-lg-12 col-12">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1" class="form-label">Description</label>
-                                                <textarea class="form-control" id="" name="desc">{{list.description|safe}}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-lg-12 col-12">
-                                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
-                                            <a href="{% url 'promotion_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                                <div class="row col-lg-12">
+                                    <div class="form-group col-lg-6 col-12">
+                                        <label for="" class="form-label">Title</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id=""
+                                               placeholder="Name"
+                                               name="title"
+                                               value="{{ list.title }}"
+                                               required>
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        <label for="" class="form-label">Name</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id=""
+                                               placeholder="Name"
+                                               name="name"
+                                               value="{{ list.name }}"
+                                               required>
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        <label for="" class="form-label">Date</label>
+                                        <input type="date"
+                                               class="form-control"
+                                               id=""
+                                               placeholder="Name"
+                                               name="date"
+                                               value="{{ list.date|date:'Y-m-d' }}">
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        <label for="" class="form-label">Location</label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id=""
+                                               placeholder="Name"
+                                               name="location"
+                                               value="{{ list.location }}"
+                                               required>
+                                    </div>
+                                    <div class="col-lg-12 col-12">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="form-label">Description</label>
+                                            <textarea class="form-control" id="" name="desc">{{list.description|safe}}</textarea>
                                         </div>
                                     </div>
-                                
+                                    <div class="form-group col-lg-12 col-12">
+                                        <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                                        <a href="{% url 'promotion_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- ROW CLOSED -->
@@ -94,5 +121,4 @@
         </div>
     </div>
     <!--app-content close-->
-
-{% include 'superadmin/layout/footer.html' %}
+    {% include 'superadmin/layout/footer.html' %}
