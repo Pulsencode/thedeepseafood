@@ -119,11 +119,11 @@ class ProductDetailsForm(forms.ModelForm):
             "origin",
             "grade",
             "packing",
-            "description",
+            "nutrition",
             "ingredients",
             "instructions",
             "storage_instructions",
-            "causion",
+            "allergic",
         ]
 
     def __init__(self, *args, **kwargs):

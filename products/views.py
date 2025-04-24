@@ -114,7 +114,9 @@ class CategoryCreateView(AdminPermissionMixin, CreateView):
         return redirect("category_view")
 
     def form_invalid(self, form):
-        messages.error(self.request, "Please correct the errors below.")
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
         return self.render_to_response(self.get_context_data(form=form))
 
 
@@ -122,7 +124,6 @@ class CategoryUpdateView(AdminPermissionMixin, UpdateView):
     model = Category
     form_class = CategoryForm
     template_name = "superadmin/category/Category_create.html"
-    pk_url_kwarg = "id"
     success_url = reverse_lazy("category_view")
 
     def form_valid(self, form):
@@ -131,7 +132,9 @@ class CategoryUpdateView(AdminPermissionMixin, UpdateView):
         return response
 
     def form_invalid(self, form):
-        messages.error(self.request, "Please correct the errors below.")
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
         return super().form_invalid(form)
 
 
@@ -389,7 +392,6 @@ class ProductUpdateView(AdminPermissionMixin, UpdateView):
     form_class = ProductForm
     template_name = "superadmin/deepsea-product/product_create.html"
     success_url = reverse_lazy("product_view")
-    pk_url_kwarg = "id"
 
     def form_valid(self, form):
         image_data = self.request.POST.get("brand-image")
