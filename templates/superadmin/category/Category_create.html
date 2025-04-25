@@ -1,83 +1,65 @@
-{% include 'superadmin/layout/header.html' %}
+{% include "superadmin/layout/header.html" %}
 {% load static %}
-
 <!--app-content open-->
 <div class="main-content app-content mt-0">
     <div class="side-app">
         <!-- CONTAINER -->
         <div class="main-container container-fluid">
-
             <!-- PAGE-HEADER -->
             <div class="page-header">
-                <h1 class="page-title">Category</h1>
+                <h1 class="page-title">{% if form.instance.pk %}Update{% else %}Create{% endif %} Category</h1>
                 <div>
                     <a class="btn btn-primary" href="{% url 'category_view' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
                 </div>
             </div>
             <!-- PAGE-HEADER END -->
-
             <!-- ROW OPEN -->
             <form method="post" enctype="multipart/form-data" id="myform">
                 {% csrf_token %}
                 <div class="row">
-
-                    <!-- <div class="col-md-4 col-xl-4 col-12"> -->
-                        <!-- <div class="card"> -->
-                            <!-- <div class="card-header"> -->
-                                <!-- <h4 class="card-title">Add New Category Image*</h4> -->
-                            <!-- </div> -->
-                            <!-- <div class="card-body"> -->
-                            
-                                    <!-- <div class="row"> -->
-                                        <!-- <div class="col-lg-12 col-sm-12 mb-4 mb-lg-0"> -->
-                                            <!-- <input type="file" class="dropify" data-bs-height="180" name="image" id="image-upload" {% if list.image %} data-default-file="{{list.image.url}}" {% endif %} {% if not list.image %}required {% endif %}/> -->
-                                        <!-- </div> -->
-                                    <!-- </div> -->
-                            
-                            <!-- </div> -->
-                        <!-- </div> -->
-                    <!-- </div> -->
-
                     <div class="col-md-8 col-xl-8 col-12">
                         <div class="card">
                             <div class="card-body">
-                                
-                                    <div class="row col-lg-12">
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label">Brand*</label>
-                                            <select name="brand" id="" class="form-control form-select select2" required>
-                                                <option value="">Select Page</option>
-                                                {% for s in brands %}
-                                                <option {% if list.brand.id == s.id %} selected{% endif %} value="{{s.id}}">{{s.name}}</option>
-                                                {% endfor %}
-    
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-lg-6">
-                                            <label for="" class="form-label"> Category*</label>
-                                            <input type="text" class="form-control" id="" placeholder="Name" name="name" value="{{list.name}}" required>
-                                        </div>
-										<div class="form-group col-lg-6">
-                                            <label for="" class="form-label"> Sequence*</label>
-                                            <input type="text" class="form-control" id="" onkeypress="return event.charCode >= 48 && event.charCode <= 57" placeholder="sequence" name="sequence" value="{{list.sequence}}" required>
-                                        </div>
-                                        <div class="form-group col-lg-12 col-12">
-                                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
-                                            <a href="{% url 'category_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
-                                        </div>
+                                <div class="row col-lg-12">
+                                    <!-- Brand Field -->
+                                    <div class="form-group col-lg-6 col-12">
+                                        <label for="{{ form.brand.id_for_label }}" class="form-label">Brand*</label>
+                                        {{ form.brand }}
+                                        {% if form.brand.errors %}<div class="text-danger">{{ form.brand.errors }}</div>{% endif %}
                                     </div>
-                            
+                                    <!-- Name Field -->
+                                    <div class="form-group col-lg-6">
+                                        <label for="{{ form.name.id_for_label }}" class="form-label">Category*</label>
+                                        {{ form.name }}
+                                        {% if form.name.errors %}<div class="text-danger">{{ form.name.errors }}</div>{% endif %}
+                                    </div>
+                                    <!-- Sequence Field -->
+                                    <div class="form-group col-lg-6">
+                                        <label for="{{ form.sequence.id_for_label }}" class="form-label">Sequence*</label>
+                                        {{ form.sequence }}
+                                        {% if form.sequence.errors %}<div class="text-danger">{{ form.sequence.errors }}</div>{% endif %}
+                                    </div>
+                                    <div class="form-group col-lg-12 col-12">
+                                        <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">
+                                            {% if form.instance.pk %}
+                                                Update
+                                            {% else %}
+                                                Create
+                                            {% endif %}
+                                            Category
+                                        </button>
+                                        <a href="{% url 'category_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
-                        <!-- ROW CLOSED -->
-
                     </div>
-                    <!-- CONTAINER END -->
                 </div>
+                <!-- ROW CLOSED -->
             </form>
         </div>
+        <!-- CONTAINER END -->
     </div>
-    <!--app-content close-->
-
-    {% include 'superadmin/layout/footer.html' %}
+</div>
+<!--app-content close-->
+{% include "superadmin/layout/footer.html" %}
