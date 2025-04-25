@@ -24,7 +24,7 @@ urlpatterns = [
     path("recipe-view", views.RecipeListView.as_view(), name="recipe_view"),
     path("recipe-add", views.RecipeCreateView.as_view(), name="recipe_add"),
     path(
-        "recipe-update/<int:id>/",
+        "recipe-update/<int:pk>/",
         views.RecipeUpdateView.as_view(),
         name="recipe_update",
     ),
@@ -54,7 +54,7 @@ urlpatterns = [
         name="product_details_add",
     ),
     path(
-        "product-details-update/<int:id>/",
+        "product-details-update/<int:pk>/",
         views.ProductDetailsUpdateView.as_view(),
         name="product_details_update",
     ),

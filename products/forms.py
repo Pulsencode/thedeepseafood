@@ -223,3 +223,4 @@ class BrandProductDetailsForm(forms.ModelForm):
                 widget.attrs.update({"class": "select-drop"})
             else:
                 widget.attrs.update({"class": "form-control"})
+

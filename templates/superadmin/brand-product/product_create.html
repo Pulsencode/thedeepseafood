@@ -57,6 +57,7 @@
                                             </figcaption>
                                         </figure>
                                         <input type="file" class="item-img2 file center-block" name="file_photo" />
+                                        {% if field.errors %}<div class="text-danger">{{ field.errors|striptags }}</div>{% endif %}
                                     </label>
                                     <input type="hidden" id="cropped-img" name="brand-image">
                                 </div>
@@ -67,7 +68,7 @@
                         <div class="card">
                             <div class="card-body">
                                 {% for field in form %}
-                                    <div class="form-group col-lg-{{ 6 if field.name != 'name' else 12 }} col-12">
+                                    <div class="form-group col-lg-6 col-12">
                                         <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
                                         {{ field }}
                                         {% if field.errors %}<div class="text-danger">{{ field.errors|striptags }}</div>{% endif %}

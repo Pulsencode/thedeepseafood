@@ -194,7 +194,7 @@
 
             if (confirm("Are you sure you want to delete this ingredient?")) {
                 $.ajax({
-                    url: "{% url 'delete_spec' %}",
+                    url: "{% url 'delete_ingredient' %}",
                     method: "GET",
                     data: { id: id },
                     success: function(response) {

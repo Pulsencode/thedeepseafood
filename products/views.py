@@ -228,6 +228,9 @@ class RecipeCreateView(AdminPermissionMixin, CreateView):
             messages.success(self.request, "Recipe Added Successfully...!!")
             return super().form_valid(form)
         else:
+            for error_list in form.errors.values():
+                for errors in error_list:
+                    messages.error(self.request, errors)
             return self.form_invalid(form)
 
 
@@ -236,7 +239,6 @@ class RecipeUpdateView(AdminPermissionMixin, UpdateView):
     form_class = RecipeForm
     template_name = "superadmin/recipe/recipe_create.html"
     success_url = reverse_lazy("recipe_view")
-    pk_url_kwarg = "id"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -248,7 +250,7 @@ class RecipeUpdateView(AdminPermissionMixin, UpdateView):
             context["ingredient_formset"] = RecipeIngredientFormSet(
                 instance=self.object
             )
-        context["sliders"] = self.object.rec_image.all()
+        context["sliders"] = self.object.ingredients.all()
         return context
 
     def form_valid(self, form):
@@ -490,6 +492,12 @@ class ProductDetailsCreateView(AdminPermissionMixin, CreateView):
         messages.success(self.request, "Product Details Added Successfully…!!")
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+        return super().form_invalid(form)
+
 
 class ProductDetailsUpdateView(AdminPermissionMixin, UpdateView):
     model = ProductDetails
@@ -583,30 +591,40 @@ class BrandProductListView(AdminPermissionMixin, TemplateView):
 
 
 class BrandProductCreateView(AdminPermissionMixin, CreateView):
-    model = Product
+    model = Brand
     form_class = BrandProductForm
     template_name = "superadmin/brand-product/product_create.html"
     success_url = reverse_lazy("brand_product_view")
 
     def form_valid(self, form):
         image_data = self.request.POST.get("brand-image")
-        if image_data:
+        if not image_data:
+            form.add_error(None, "Image is required.")
+            return self.form_invalid(form)
+
+        try:
             format, imgstr = image_data.split(";base64,")
             ext = format.split("/")[-1]
             decoded_image = base64.b64decode(imgstr)
+            file_name = f"{form.cleaned_data['name']}.{ext}"
+
             form.instance.image.save(
-                form.cleaned_data["name"] + "." + ext,
+                file_name,
                 ContentFile(decoded_image),
-                save=False,
+                save=False
             )
+        except Exception as e:
+            form.add_error(None, f"Invalid image data: {str(e)}")
+            return self.form_invalid(form)
 
         messages.success(self.request, "Product Added Successfully...!!")
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["brands"] = Brand.objects.filter(status=True).order_by("-id")
-        return context
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+        return super().form_invalid(form)
 
 
 class BrandProductUpdateView(AdminPermissionMixin, UpdateView):
