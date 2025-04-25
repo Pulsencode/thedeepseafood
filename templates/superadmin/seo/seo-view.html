@@ -1,4 +1,4 @@
-{% include 'superadmin/layout/header.html' %}
+{% include "superadmin/layout/header.html" %}
 {% load static %}
 <!--app-content open-->
 <div class="main-content app-content mt-0">
@@ -13,18 +13,8 @@
                 </div>
             </div>
             <!-- PAGE-HEADER END -->
-            {% for message in messages %}
-                <div class="alert alert-primary alert-dismissible fade show m-0 text-center"
-                     id="success"
-                     role="alert"
-                     style="border-radius: 0">
-                    {{ message }}
-                    <button type="button"
-                            class="btn-close text-dark "
-                            data-bs-dismiss="alert"
-                            aria-label="Close">x</button>
-                </div>
-            {% endfor %}
+            <!--messages-->
+            {% include "messages.html" %}
             <!-- ROW OPEN -->
             <div class="row">
                 <div class="col-xl-12">
@@ -33,42 +23,70 @@
                             <h3 class="card-title">List Of All Seo</h3>
                         </div>
                         <div class="card-body">
-                            <form>
-                                <div class="row">
-                                    <div class="form-group col-lg-2 col-12">
-                                        <input type="text" class="form-control" placeholder="page" id="search">
-                                    </div>
-                                    <div class="form-group col-lg-2 col-12">
-                                        <select name="country"
-                                                id="status"
-                                                class="form-control form-select select2"
-                                                data-bs-placeholder="Select Country">
-                                            <option value="">Status</option>
-                                            <option value="True">Active</option>
-                                            <option value="False">Inactive</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-lg-3 col-12">
-                                        <a class="btn btn-primary mr-1" id="seo_search">Search</a>
-                                        <a class="btn btn-default" href="{% url 'list_seo' %}">Reset</a>
-                                    </div>
-                                    <div class="form-group col-lg-5 col-7">
-                                        <span id ="message001" style="color:green;display:none"><b>Status Updated Successfully</b></span>
-                                    </div>
+                            <div class="row">
+                                <!---search filter-->
+                                {% include "search_filter.html" %}
+                                <div class="form-group col-lg-5 col-7">
+                                    <span id="message001" style="color:green;display:none"><b>Status Updated Successfully</b></span>
                                 </div>
-                            </form>
-                            <div class="table-responsive" id="seo-table">
-                                {% include 'superadmin/seo/seo-list.html' with data=data page=page %}
                             </div>
+                        </form>
+                        <div class="table-responsive" id="seo-table">
+                            <input type="hidden" id="page" name="page" value="{{ page }}">
+                            <table class="table border-top table-bordered mb-0 table-hover">
+                                <thead class="text-center">
+                                    <tr class="text-center">
+                                        <th>Sl No</th>
+                                        <th>Page</th>
+                                        <th>Meta Title</th>
+                                        <th>Meta description</th>
+                                        <th>Meta Author</th>
+                                        <th>canonical</th>
+                                        <!-- <th>Status</th> -->
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    {% if all_seo %}
+                                        {% for seo in all_seo %}
+                                            <tr class="text-center">
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ seo.page_name }}</td>
+                                                <td>{{ seo.meta_title }}</td>
+                                                <td>{{ seo.meta_description }}</td>
+                                                <td>{{ seo.meta_keywords }}</td>
+                                                <td>{{ seo.meta_author }}</td>
+                                                <td>
+                                                    <a class="btn btn-info btn-sm mb-1" href="{% url 'seo_update' seo.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                                                    <button class="btn btn-danger btn-sm mb-1">
+                                                        <i class="side-menu__icon fe fe-trash"
+                                                           onclick="show_modal({{ seo.id }})"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan='10'>
+                                                <center>No record found</center>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            <br>
+                            {% include "pagination.html" %}
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ROW CLOSED -->
         </div>
-        <!-- CONTAINER END -->
     </div>
+    <!-- ROW CLOSED -->
 </div>
+<!-- CONTAINER END -->
+</div>
+{% comment %} </div> {% endcomment %}
 <!--app-content close-->
 <div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-md modal-dialog-centered text-center"
@@ -93,4 +111,4 @@
         </div>
     </div>
 </div>
-{% include 'superadmin/layout/footer.html' %}
+{% include "superadmin/layout/footer.html" %}
