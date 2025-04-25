@@ -1,13 +1,10 @@
-{% include 'superadmin/layout/header.html' %}
+{% include "superadmin/layout/header.html" %}
 {% load static %}
-
 <!--app-content open-->
 <div class="main-content app-content mt-0">
     <div class="side-app">
-
         <!-- CONTAINER -->
         <div class="main-container container-fluid">
-
             <!-- PAGE-HEADER -->
             <div class="page-header">
                 <h1 class="page-title">Management Team</h1>
@@ -16,86 +13,112 @@
                 </div>
             </div>
             <!-- PAGE-HEADER END -->
-            {% for message in messages %}
-            <div class="alert alert-primary alert-dismissible fade show m-0 text-center" id="success" role="alert"
-                style="border-radius: 0;">
-                {{message}}
-                <button type="button" class="btn-close text-dark " data-bs-dismiss="alert" aria-label="Close">x</button>
-            </div>
-            {% endfor %}
             <!-- ROW OPEN -->
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">List Of All Management Team </h3>
+                            <h3 class="card-title">List Of All Management Team</h3>
                         </div>
                         <div class="card-body">
-                            <form>
-                                <div class="row">
-
-                                    <div class="form-group col-lg-2 col-12">
-                                        <input type="text" class="form-control" placeholder="Keyword Search" id="search">
-                                    </div>
-
-                                    <div class="form-group col-lg-2 col-12">
-                                        <select name="country" id="status" class="form-control form-select select2" data-bs-placeholder="Select Country">
-                                            <option value="">Status</option>
-                                            <option value="True" >Active</option>
-                                            <option value="False">Inactive</option>
-
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-lg-3 col-12">
-                                        <a class="btn btn-primary mr-1" id="team_search">Search</a>
-                                        <a class="btn btn-default" href="{% url 'list_team' %}">Reset</a>
-                                    </div>
-                                    <div class="form-group col-lg-5 col-7">
-                                        <span id ="message001" style="color:green;display:none"><b>Status Updated Successfully</b></span>
-                                    </div>
-                                    
-                                </div>
-                            </form>
-                            <div class="table-responsive" id="team-table">
-                                {% include 'superadmin/team/management_team_list.html' with page=page data=data %}
-
+                            {% include "search_filter.html" %}
+                            <div class="form-group col-lg-5 col-7">
+                                <span id ="message001" style="color:green;display:none"><b>Status Updated Successfully</b></span>
                             </div>
                         </div>
+                    </form>
+                    <div class="table-responsive" id="team-table">
+                        {% comment %} {% include 'superadmin/team/management_team_list.html' with page=page data=data %} {% endcomment %}
+                        <input type="hidden" id="page" name="page" value="{{ page }}">
+                        <table class="table border-top table-bordered mb-0 table-hover">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Sl No</th>
+                                    <th>Sequence</th>
+                                    <th>Name</th>
+                                    <th>Designation</th>
+                                    <th>Image</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if all_teams %}
+                                    {% for team in all_teams %}
+                                        <tr class="text-center">
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ team.sequence }}</td>
+                                            <td>{{ team.name }}</td>
+                                            <td>{{ team.role }}</td>
+                                            <td>
+                                                {% if team.image %}
+                                                    <a href="{{ team.image.url }}"
+                                                       data-lightbox="team-{{ forloop.counter }}">
+                                                        <img src="{{ team.image.url }}" style="width:90px;">
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <div class="material-switch">
+                                                    <input id="someSwitchOptionSuccess{{ d.id }}"
+                                                           name="someSwitchOption001"
+                                                           type="checkbox"
+                                                           {% if team.status == True %} onclick="changeteamstatus({{ team.id }},0)" checked {% else %}onclick="changeteamstatus({{ team.id }},1)" {% endif %} />
+                                                    <label for="someSwitchOptionSuccess{{ d.id }}" class="label-success"></label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-info btn-sm mb-1"
+                                                   href="{% url 'team_update' team.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                                                <button type="button" class="btn btn-danger btn-sm mb-1">
+                                                    <i class="side-menu__icon fe fe-trash"  onclick="show_modal({{ d.id }})"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan='10'>
+                                            <center>No record found</center>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                        <br>
+                        {% include "pagination.html" %}
                     </div>
                 </div>
             </div>
-            <!-- ROW CLOSED -->
-
-
-
         </div>
-        <!-- CONTAINER END -->
     </div>
+    <!-- ROW CLOSED -->
 </div>
-
+<!-- CONTAINER END -->
+</div>
+</div>
 <!--app-content close-->
-
-
 <div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-md modal-dialog-centered text-center" role="document">
+    <div class="modal-dialog modal-md modal-dialog-centered text-center"
+         role="document">
         <div class="modal-content ">
-
             <div class="modal-body">
-                <button aria-label="Close" class="btn-close position-absolute" data-bs-dismiss="modal">
-                    <span aria-hidden="true">&times;</span></button>
+                <button aria-label="Close"
+                        class="btn-close position-absolute"
+                        data-bs-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                <input type="hidden" id="hid" >
+                <input type="hidden" id="hid">
                 <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
                 <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
                 <button class="btn btn-success" onclick="confirm_delete_team()">Yes</button>
-                <button aria-label="Close" class="btn btn-danger pd-x-25" data-bs-dismiss="modal">Cancel</button>
+                <button aria-label="Close"
+                        class="btn btn-danger pd-x-25"
+                        data-bs-dismiss="modal">Cancel</button>
             </div>
-            <div class="modal-footer">
-
-
-            </div>
+            <div class="modal-footer"></div>
         </div>
     </div>
 </div>
-
-{% include 'superadmin/layout/footer.html' %}
+{% include "superadmin/layout/footer.html" %}

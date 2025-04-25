@@ -16,10 +16,7 @@ def image_upload_path(instance, filename):
 
 
 class TimestampBase(models.Model):
-    """
-        Common base model for items with  timestamps.
-    .
-    """
+    """Common base model for items with  timestamps"""
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -29,10 +26,7 @@ class TimestampBase(models.Model):
 
 
 class ImageBase(models.Model):
-    """
-        Common base model for items with image
-    .
-    """
+    """Common base model for items with image"""
 
     image = models.ImageField(upload_to=image_upload_path, null=True)
     image_alt = models.CharField(
@@ -46,12 +40,20 @@ class ImageBase(models.Model):
 
 
 class StatusTimestampBase(TimestampBase):
-    """
-        Common base model for items with status
-    .
-    """
+    """Common base model for items with status"""
 
     status = models.BooleanField(default=True)
+
+    class Meta:
+        abstract = True
+
+
+class BaseInfoModel(models.Model):
+    """Common base model for items with title,location,date"""
+
+    title = models.CharField(max_length=350)
+    location = models.CharField(max_length=255)
+    date = models.DateField(null=True)
 
     class Meta:
         abstract = True
@@ -98,13 +100,10 @@ class Brand(StatusTimestampBase, ImageBase):
         return self.name
 
 
-class Event(StatusTimestampBase):
-    title = models.CharField(max_length=350)
+class Event(StatusTimestampBase, BaseInfoModel):
     sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
     name = models.CharField(max_length=150)
     description = models.TextField(null=True)
-    location = models.CharField(max_length=255)
-    date = models.DateField(null=True)
 
     def __str__(self):
         return self.title
@@ -122,9 +121,8 @@ class EventImage(StatusTimestampBase, ImageBase):
         return f"{self.event.title} - Slider {self.pk}"
 
 
-class News(StatusTimestampBase):
+class News(StatusTimestampBase, BaseInfoModel):
     TYPE_CHOICES = (("company news", "Company News"), ("global news", "Global News"))
-    title = models.CharField(max_length=350)
     sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
     name = models.CharField(
         max_length=200
@@ -133,8 +131,6 @@ class News(StatusTimestampBase):
     content = models.TextField(
         null=True
     )  # TODO Need to change to the one in the blog model
-    location = models.CharField(max_length=255)
-    date = models.DateField(null=True)
 
     def __str__(self):
         return self.title
@@ -155,14 +151,11 @@ class NewsImage(TimestampBase, ImageBase):
         return f"{self.news.title} - Slider {self.pk}"
 
 
-class Promotion(StatusTimestampBase):
+class Promotion(StatusTimestampBase, BaseInfoModel):
     """TODO Need to check if this field is used in the app"""
 
-    title = models.CharField(max_length=255)
     name = models.CharField(max_length=150)
     description = models.TextField(null=True)
-    location = models.CharField(max_length=255)
-    date = models.DateField(null=True)
 
     class Meta:
         verbose_name_plural = "Promotion Details"
@@ -177,12 +170,10 @@ class PromotionImage(TimestampBase, ImageBase):
     )
 
 
-class Blog(StatusTimestampBase):
-    title = models.CharField(max_length=350)
+class Blog(StatusTimestampBase, BaseInfoModel):
     name = models.CharField(max_length=255)
     content = models.TextField(null=True)
-    location = models.CharField(max_length=255)
-    date = models.DateField(null=True)
+
     slug = AutoSlugField(
         populate_from="title",
         editable=True,
