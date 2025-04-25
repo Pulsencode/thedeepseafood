@@ -1,16 +1,8 @@
 {% load static %}
 </div>
-
-
-
-
-
 <!-- FOOTER -->
-
 <footer class="footer">
-
     <div class="container">
-
         <div class="row align-items-center flex-row-reverse">
             <div class="col-md-12 col-sm-12 text-center">
                 Copyright © <span id="year"></span> <a href="">The Deep Seafood Admin</a> All rights reserved.
@@ -18,171 +10,85 @@
         </div>
     </div>
 </footer>
-
+<!-- Display form errors and messages -->
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-primary alert-dismissible fade show m-0 text-center border-0"
+             id="success"
+             role="alert">
+            {{ message }}
+            <button type="button"
+                    class="btn-close text-dark "
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+{% if form.non_field_errors %}
+    <div class="alert alert-danger">
+        {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+    </div>
+{% endif %}
 <!-- FOOTER END -->
-
-
-
 </div>
-
-
-
 <!-- BACK-TO-TOP -->
-
 <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
-
-
-
 <!-- JQUERY JS -->
-
 <script src="{% static 'superadmin/assets/js/jquery.min.js' %}"></script>
-
-
-
 <!-- BOOTSTRAP JS -->
-
 <script src="{% static 'superadmin/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
-
-
-
 <!-- SPARKLINE JS-->
-
 <script src="{% static 'superadmin/assets/js/jquery.sparkline.min.js' %}"></script>
-
-
-
 <!-- Sticky js -->
-
 <script src="{% static 'superadmin/assets/js/sticky.js' %}"></script>
-
-
-
 <!-- CHART-CIRCLE JS-->
-
-
-
-
-
-
-
-
-
 <!-- SIDEBAR JS -->
-
 <script src="{% static 'superadmin/assets/plugins/sidebar/sidebar.js' %}"></script>
-
-
-
-
-
-
-
 <!-- INTERNAL Flot JS -->
-
 <script src="{% static 'superadmin/assets/plugins/flot/jquery.flot.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/flot/jquery.flot.fillbetween.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/p-scroll/perfect-scrollbar.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/p-scroll/pscroll.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/p-scroll/pscroll-1.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/flot/dashboard.sampledata.js' %}"></script>
-
-
-
-
-
-
-
 <!-- SIDE-MENU JS-->
-
 <script src="{% static 'superadmin/assets/plugins/sidemenu/sidemenu.js' %}"></script>
-
-
-
 <script src="{% static 'superadmin/assets/plugins/date-picker/date-picker.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/date-picker/jquery-ui.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/input-mask/jquery.maskedinput.js' %}"></script>
-
-
-
 <script src="{% static 'superadmin/assets/plugins/fileuploads/js/fileupload.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/fileuploads/js/file-upload.js' %}"></script>
-
-
-
 <script src="{% static 'superadmin/assets/plugins/select2/select2.full.min.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/js/select2.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/multipleselect/multiple-select.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/multipleselect/multi-select.js' %}"></script>
-
 <!-- Color Theme js -->
-
 <script src="{% static 'superadmin/assets/js/themeColors.js' %}"></script>
-
-
-
 <!-- CUSTOM JS -->
-
 <script src="{% static 'superadmin/assets/js/custom.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/summernote/summernote1.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/js/summernote.js' %}"></script>
-
-
-
 <script src="{% static 'superadmin/assets/plugins/gallery/picturefill.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/gallery/lightgallery.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/gallery/lightgallery-1.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/gallery/lg-pager.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/gallery/lg-autoplay.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/gallery/lg-fullscreen.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/gallery/lg-zoom.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/gallery/lg-hash.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/gallery/lg-share.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/js/formelementadvnced.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/js/form-elements.js' %}"></script>
-
-
-
 <script src="{% static 'superadmin/assets/js/custom-js-new.js' %}"></script>
-
-
-
 <script src="{% static 'superadmin/assets/plugins/time-picker/jquery.timepicker.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/plugins/time-picker/toggles.min.js' %}"></script>
-
 <script src="{% static 'superadmin/assets/js/show-password.min.js' %}"></script>
 <script src="{% static 'superadmin/assets/plugins/bootstrap-daterangepicker/moment.min.js' %}"></script>
 <script src="{% static 'superadmin/assets/plugins/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
-<script src="{% static 'superadmin/assets/js/formelementadvnced.js' %}"></script>
 <script src="{% static 'superadmin/assets/js/form-elements.js' %}"></script>
-    <script src="https://foliotek.github.io/Croppie/croppie.js"></script>
-	
-	
+<script src="{% static 'superadmin/assets/js/formelementadvnced.js' %}"></script>
+<script src="https://foliotek.github.io/Croppie/croppie.js"></script>
 <script src="{% static 'superadmin/assets/plugins/notify/js/rainbow.js' %}"></script>
 <script src="{% static 'superadmin/assets/plugins/notify/js/sample.js' %}"></script>
 <script src="{% static 'superadmin/assets/plugins/notify/js/notifIt.js' %}"></script>
@@ -251,9 +157,9 @@
             });
         });
         // End upload preview image
-    </script>
-	 <!-- 2 -->
-     <script>
+</script>
+<!-- 2 -->
+<script>
         // New function for direct image upload without cropping
         function readFileWithoutCrop(input) {
             if (input.files && input.files[0]) {
@@ -274,8 +180,8 @@
             // Call the new function for direct image upload
             readFileWithoutCrop(this);
         });
-    </script>
-    <script>
+</script>
+<script>
         // Start upload preview image
         $(".gambar2").attr("src", "https://deepsea.noviindus.in/static/superadmin/assets/images_ex/up.png");
         var $uploadCrop2,
@@ -335,10 +241,8 @@
             });
         });
         // End upload preview image
-    </script>
-	
+</script>
 <!-- 3 -->
-
 <script>
         // Start upload preview image
         $(".gambar3").attr("src", "https://deepsea.noviindus.in/static/superadmin/assets/images_ex/up.png");
@@ -399,9 +303,9 @@
             });
         });
         // End upload preview image
-    </script>
- <!-- 4 -->
-    <script>
+</script>
+<!-- 4 -->
+<script>
         // Start upload preview image
         $(".gambar4").attr("src", "https://deepsea.noviindus.in/static/superadmin/assets/images_ex/up.png");
         var $uploadCrop4,
@@ -461,10 +365,9 @@
             });
         });
         // End upload preview image
-    </script>
-
-  <!-- 5 -->
-    <script>
+</script>
+<!-- 5 -->
+<script>
         // Start upload preview image
         $(".gambar5").attr("src", "https://deepsea.noviindus.in/static/superadmin/assets/images_ex/up.png");
         var $uploadCrop5,
@@ -524,9 +427,9 @@
             });
         });
         // End upload preview image
-    </script>
-	  <!-- 6 -->
-    <script>
+</script>
+<!-- 6 -->
+<script>
         // Start upload preview image
         $(".gambar6").attr("src", "https://deepsea.noviindus.in/static/superadmin/assets/images_ex/up.png");
         var $uploadCrop6,
@@ -586,8 +489,7 @@
             });
         });
         // End upload preview image
-  </script> 
-
+</script>
 <script>
 
     function not1() {
@@ -682,9 +584,5 @@
         });
     });
 </script>
-
 </body>
-
-
-
 </html>

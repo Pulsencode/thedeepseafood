@@ -40,7 +40,7 @@
                         <label>Job Title</label>
                         <select class="select2 wt-search-bar-select" id="jobTitleSelect">
                           <option value="">Select an option</option>
-                          {% for i in all_jobs %}<option value="{{ i.title }}">{{ i.title }}</option>{% endfor %}
+                          {% for job in all_jobs %}<option value="{{ i.title }}">{{ i.title }}</option>{% endfor %}
                         </select>
                       </div>
                       <!--All Category-->
@@ -59,7 +59,7 @@
                         <label>Location</label>
                         <select name="location" class="select2 wt-search-bar-select">
                           <option value="">Select Location</option>
-                          {% for i in all_jobs %}<option value="{{ i.location }}">{{ i.location }}</option>{% endfor %}
+                          {% for job in all_jobs %}<option value="{{ job.location }}">{{ job.location }}</option>{% endfor %}
                         </select>
                       </div>
                       <!--Find job btn-->
@@ -75,13 +75,13 @@
               </div>
             </div>
             <div class="box-bb mb-4" id="searchResults">
-              {% for career in all_jobs %}
+              {% for job in all_jobs %}
                 <div class="row software-eng">
                   <div class="col-lg-8">
-                    <h3 class="ctitle">{{ career.title }}</h3>
+                    <h3 class="ctitle">{{ job.title }}</h3>
                     <div>
-                      <div class="description line_2" id="desc{{ forloop.counter }}">{{ career.description|safe }}</div>
-                      {% with description_length=career.description|length %}
+                      <div class="description line_2" id="desc{{ forloop.counter }}">{{ job.description|safe }}</div>
+                      {% with description_length=job.description|length %}
                         <a href="#"
                            class="read-more-cnt"
                            id="readmore-btn{{ forloop.counter }}"
@@ -90,22 +90,20 @@
                     </div>
                     <div class="d-flex align-items-end">
                       <div class="location-box text-center">
-                        <p class="loc">{{ career.location }}</p>
+                        <p class="loc">{{ job.location }}</p>
                       </div>
                       <div class="fes career-job-types ms-2 location-box"
-                           data-types="{{ types_list|join:',' }}">
-                        {% comment %} {% for type in types_list|get_for_index:forloop.counter0 %}<p class="ctype">{{ type }}</p>{% endfor %} {% endcomment %}
-                      </div>
+                           data-types="{{ types_list|join:',' }}"></div>
                     </div>
                   </div>
                   <div class="col-lg-4 amount-k">
-                    {% if career.salary %}
+                    {% if job.salary %}
                       <h3>
-                        {{ career.salary }} <span>/Year</span>
+                        {{ job.salary }} <span>/Year</span>
                       </h3>
                     {% endif %}
                     <button class="btn bg-blue text-white rounded-25 btn-zoom-hover font-lntermedium"
-                            onclick="show_modal('{{ career.title }}')">Apply Now</button>
+                            onclick="show_modal('{{ job.title }}')">Apply Now</button>
                   </div>
                 </div>
               {% endfor %}

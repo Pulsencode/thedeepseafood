@@ -103,17 +103,17 @@
             </div>
           </div>
           <div class="row text-center" data-aos="fade-up" data-aos-duration="1500">
-            {% for i in list %}
+            {% for item in list %}
               <div class="col-lg-2 col-md-3 colsm-4 col-6 mt-25">
                 <div class="item card-hover-up">
                   <img class="img-primary"
                        width=""
                        height=""
-                       src="{{ i.image.url }}"
-                       alt="{{ i.image_alt }}">
-                  <div class="title font-lntermedium text-blue">{{ i.name }}</div>
+                       src="{{ item.image.url }}"
+                       alt="{{ item.image_alt }}">
+                  <div class="title font-lntermedium text-blue">{{ item.name }}</div>
                   <a class="url-primary"
-                     href="{% url 'product_details' i.slug_product %}#drt"></a>
+                     href="{% url 'product_details' item.slug_product %}#drt"></a>
                 </div>
               </div>
             {% endfor %}
@@ -123,14 +123,5 @@
     </section>
     <!-- /product-view -->
   </div>
-  <button class="btn toggle-enquiry toggle_enquiry enqry-btn">ENQUIRY NOW</button>
-  <div class="enquiry bg-x-light-blue">
-    <button class="btn close-btn text-blue toggle_enquiry btn-zoom-hover">
-      <i class="fa fa-times-circle" aria-hidden="true"></i>
-    </button>
-    <div class="head text-center">
-      <div class="title text-blue font-lnterbold">SEND US YOUR ENQUIRY</div>
-    </div>
-    {% include "website/enquiry/enquiry-form.html" %}
-  </div>
+  {% include "website/enquiry/enquiry-form.html" %}
 {% endblock content %}

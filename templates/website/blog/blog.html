@@ -28,36 +28,36 @@
       <div class="padd_t_b_70">
         <div class="wrapper">
           <div class="row ">
-            {% for i in all_blogs %}
+            {% for blog in all_blogs %}
               <div class="col-lg-4 ">
                 <div class="view-section text-blue"
                      data-aos="fade-up"
                      data-aos-duration="2000">
-                  <div class="title font-lnterbold dfg">{{ i.title }}</div>
+                  <div class="title font-lnterbold dfg">{{ blog.title }}</div>
                   <div class="div-col">
                     <i class="fa fa-clock-o" aria-hidden="true"></i>
-                    <span>{{ i.date|date:"M d, Y" }}</span>
+                    <span>{{ blog.date|date:"M d, Y" }}</span>
                   </div>
                   <div class="div-col">
                     <i class="fa fa-user-o" aria-hidden="true"></i>
-                    <span>{{ i.name|default_if_none:"" }}</span>
+                    <span>{{ blog.name|default_if_none:"" }}</span>
                   </div>
                   <div class="text-center mt-30">
                     <div class="slick_slider_1 slick-dots-blue mb-0">
-                      {% for s in i.blog_image.all %}
+                      {% for img in blog.blog_image.all %}
                         <div class="item">
                           <img class="img-fluid news-img11"
                                width=""
                                height=""
-                               src="{{ s.image.url }}"
-                               alt="{{ i.image_alt }}-{{ forloop.counter }}">
+                               src="{{ img.image.url }}"
+                               alt="{{ blog.image_alt }}-{{ forloop.counter }}">
                         </div>
                       {% endfor %}
                     </div>
                   </div>
-                  <div class="dfg mt-1">{{ i.description|safe }}</div>
+                  <div class="dfg mt-1">{{ blog.description|safe }}</div>
                   <a class="btn bg-blue text-white rounded-25 btn-sm mt-15 btn-icon"
-                     href="{% url 'blog_details' i.slug %}">
+                     href="{% url 'blog_details' blog.slug %}">
                     <span>Read More</span>
                     <img width=""
                          height=""
