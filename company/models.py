@@ -85,6 +85,10 @@ class SEO(StatusTimestampBase):
         unique=True,
     )
 
+    class Meta:
+        verbose_name = "SEO"
+        verbose_name_plural = "SEOs"
+
     def __str__(self):
         return self.page_name
 
@@ -188,6 +192,7 @@ class Blog(StatusTimestampBase, BaseInfoModel):
         return self.title
 
     class Meta:
+        verbose_name = "Blog Detail"
         verbose_name_plural = "Blog Details"
 
 
@@ -198,6 +203,10 @@ class BlogImage(TimestampBase, ImageBase):
         related_name="blog_image",
         on_delete=models.CASCADE,
     )
+
+    class Meta:
+        verbose_name = "Blog Image"
+        verbose_name_plural = "Blog Images"
 
 
 class ManagementTeam(StatusTimestampBase, ImageBase):
