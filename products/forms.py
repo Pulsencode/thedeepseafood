@@ -6,8 +6,8 @@ from .models import (
     Product,
     Category,
     Brand,
-    RecipeDetails,
-    RecipeIngredients,
+    # RecipeDetails,
+    # RecipeIngredients,
     ProductDetails,
 )
 
@@ -44,55 +44,55 @@ class CategoryForm(forms.ModelForm):
         )
 
 
-class RecipeForm(forms.ModelForm):
-    class Meta:
-        model = RecipeDetails
-        fields = [
-            "title",
-            "brand",
-            "description",
-            "image_alt",
-        ]  # the description --need to check on that-- instructions
-        widgets = {
-            "description": forms.Textarea(attrs={"class": "form-control"}),
-            "image_alt": forms.TextInput(attrs={"class": "form-control"}),
-        }
+# class RecipeForm(forms.ModelForm):
+#     class Meta:
+#         model = RecipeDetails
+#         fields = [
+#             "title",
+#             "brand",
+#             "description",
+#             "image_alt",
+#         ]  # the description --need to check on that-- instructions
+#         widgets = {
+#             "description": forms.Textarea(attrs={"class": "form-control"}),
+#             "image_alt": forms.TextInput(attrs={"class": "form-control"}),
+#         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["brand"].queryset = Brand.objects.filter(status=True).exclude(
-            name="Deep Sea"
-        )
-        self.fields["brand"].widget.attrs.update(
-            {"class": "form-control form-select select2"}
-        )
-        self.fields["title"].widget.attrs.update(
-            {"class": "form-control", "placeholder": "Title"}
-        )
-
-
-class RecipeIngredientForm(forms.ModelForm):
-    class Meta:
-        model = RecipeIngredients
-        fields = ["title"]
-        widgets = {
-            "title": forms.Textarea(
-                attrs={
-                    "class": "form-control form-control-lg",
-                    "placeholder": "Ingredient",
-                    "rows": 2,
-                }
-            ),
-        }
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields["brand"].queryset = Brand.objects.filter(status=True).exclude(
+#             name="Deep Sea"
+#         )
+#         self.fields["brand"].widget.attrs.update(
+#             {"class": "form-control form-select select2"}
+#         )
+#         self.fields["title"].widget.attrs.update(
+#             {"class": "form-control", "placeholder": "Title"}
+#         )
 
 
-RecipeIngredientFormSet = forms.inlineformset_factory(
-    RecipeDetails,
-    RecipeIngredients,
-    form=RecipeIngredientForm,
-    extra=1,
-    can_delete=True,
-)
+# class RecipeIngredientForm(forms.ModelForm):
+#     class Meta:
+#         model = RecipeIngredients
+#         fields = ["title"]
+#         widgets = {
+#             "title": forms.Textarea(
+#                 attrs={
+#                     "class": "form-control form-control-lg",
+#                     "placeholder": "Ingredient",
+#                     "rows": 2,
+#                 }
+#             ),
+#         }
+
+
+# RecipeIngredientFormSet = forms.inlineformset_factory(
+#     RecipeDetails,
+#     RecipeIngredients,
+#     form=RecipeIngredientForm,
+#     extra=1,
+#     can_delete=True,
+# )
 
 
 class ProductForm(forms.ModelForm):

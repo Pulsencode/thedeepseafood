@@ -1,66 +1,32 @@
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 
 
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+class User(AbstractUser):
+    """This model should be used as the base for both the applicant and the customer also
+    can use this for the employee by switching the is_staff status to be true"""
 
+    USER_TYPE_CHOICES = (
+        ("admin", "Admin"),
+        ("hr", "Human Resource"),
+    )
 
-class UserManager(BaseUserManager):
-    def create_user(self, username, password=None, password2=None):
-        """
-        Creates and saves a User with the given username and password.
-        """
-        if not username:
-            raise ValueError("Users must have a username")
+    user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
+    phone_number = PhoneNumberField(null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
 
-        user = self.model(
-            username=username,
-        )
+    class Meta:
+        verbose_name = "User"
+        verbose_name_plural = "Users"
 
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+    def __str__(self):
+        return f"{self.username}  "
 
-    def create_superuser(self, username, password=None):
-        """
-        Creates and saves a superuser with the given username and password.
-        """
-        user = self.create_user(
-            password=password,
-            username=username,
-        )
-        user.is_admin = True
-        user.save(using=self._db)
-        return user
-
-
-# custom user model
-
-
-class User(AbstractBaseUser):
-    username = models.CharField(max_length=100, unique=True)
-    is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
-
-    objects = UserManager()
-
-    USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = []
-
-    def str(self):
-        return self.username
-
-    def has_perm(self, perm, obj=None):
-        "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
-        return self.is_admin
-
-    def has_module_perms(self, app_label):
-        "Does the user have permissions to view the app app_label?"
-        # Simplest possible answer: Yes, always
-        return True
-
-    @property
-    def is_staff(self):
-        "Is the user a member of staff?"
-        # Simplest possible answer: All admins are staff
-        return self.is_admin
+    def save(self, *args, **kwargs):
+        if self.password and not self.password.startswith(
+            ("pbkdf2_sha256$", "bcrypt$", "argon2")
+        ):
+            self.password = make_password(self.password)
+        super().save(*args, **kwargs)

@@ -1,5 +1,5 @@
 from django.db import models
-from company.models import Brand, StatusTimestampBase, ImageBase, TimestampBase
+from company.models import Brand, StatusTimestampBase, ImageBase
 from autoslug import AutoSlugField
 
 
@@ -17,32 +17,36 @@ class Category(StatusTimestampBase, ImageBase):
     def __str__(self):
         return self.name
 
-
-class RecipeDetails(StatusTimestampBase, ImageBase):
-    brand = models.ForeignKey(
-        Brand,
-        null=True,
-        blank=True,
-        on_delete=models.CASCADE,
-    )
-    title = models.CharField(max_length=200)
-    description = models.CharField(max_length=350, blank=True, null=True)
-
-    def __str__(self) -> str:
-        return self.title
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
 
 
-class RecipeIngredients(TimestampBase):
-    recipe = models.ForeignKey(
-        RecipeDetails,
-        on_delete=models.CASCADE,
-        related_name="ingredients",
-    )
-    title = models.CharField(max_length=150, blank=True)
-    amount = models.IntegerField(default=0)
+# class RecipeDetails(StatusTimestampBase, ImageBase):
+#     brand = models.ForeignKey(
+#         Brand,
+#         null=True,
+#         blank=True,
+#         on_delete=models.CASCADE,
+#     )
+#     title = models.CharField(max_length=200)
+#     description = models.CharField(max_length=350, blank=True, null=True)
 
-    def __str__(self):
-        return f"{self.recipe.title} - {self.title}"
+#     def __str__(self) -> str:
+#         return self.title
+
+
+# class RecipeIngredients(TimestampBase):
+#     recipe = models.ForeignKey(
+#         RecipeDetails,
+#         on_delete=models.CASCADE,
+#         related_name="ingredients",
+#     )
+#     title = models.CharField(max_length=150, blank=True)
+#     amount = models.IntegerField(default=0)
+
+#     def __str__(self):
+#         return f"{self.recipe.title} - {self.title}"
 
 
 class Product(StatusTimestampBase, ImageBase):
@@ -105,6 +109,7 @@ class ProductDetails(models.Model):
 
     def name(self):
         return self.product.name if self.product else ""
+
     slug = AutoSlugField(
         populate_from="name",
         editable=True,
@@ -119,16 +124,16 @@ class ProductDetails(models.Model):
         return self.product.name
 
 
-class RecipeImage(ImageBase, TimestampBase):
-    recipe = models.ForeignKey(
-        RecipeDetails,
-        null=False,
-        on_delete=models.CASCADE,
-        related_name="recipe_image",
-    )
+# class RecipeImage(ImageBase, TimestampBase):
+#     recipe = models.ForeignKey(
+#         RecipeDetails,
+#         null=False,
+#         on_delete=models.CASCADE,
+#         related_name="recipe_image",
+#     )
 
-    def __str__(self):
-        return self.recipe.title
+#     def __str__(self):
+#         return self.recipe.title
 
 
 class Subcategory(StatusTimestampBase):

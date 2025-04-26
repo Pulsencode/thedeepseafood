@@ -15,7 +15,7 @@ from company.models import (
 from django.contrib import messages
 
 from career.models import ApplicationDetails, JobCategory, VaccancyDetails
-from products.models import RecipeDetails, Product, Category
+from products.models import Product, Category
 from django.contrib.auth import authenticate, login
 
 
@@ -27,7 +27,7 @@ class IndexView(TemplateView):
         brand = Brand.objects.filter(status=True).order_by("-id").count()
         category = Category.objects.filter(status=True).order_by("-id").count()
         job = JobCategory.objects.filter(status=True).order_by("-id").count()
-        recipe = RecipeDetails.objects.filter(status=True).order_by("-id").count()
+        # recipe = RecipeDetails.objects.filter(status=True).order_by("-id").count()
         gallery = Event.objects.filter(status=True).order_by("-id").count()
         news = News.objects.filter(status=True).order_by("-id").count()
         promo = Promotion.objects.filter(status=True).order_by("-id").count()
@@ -52,7 +52,7 @@ class IndexView(TemplateView):
         context["promo"] = promo
         context["news"] = news
         context["gallery"] = gallery
-        context["recipe"] = recipe
+        # context["recipe"] = recipe
         context["job"] = job
         context["category"] = category
         context["brand"] = brand

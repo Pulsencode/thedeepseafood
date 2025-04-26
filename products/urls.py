@@ -21,20 +21,20 @@ urlpatterns = [
         views.SubcategoryUpdateView.as_view(),
         name="subcategory_update",
     ),
-    path("recipe-view", views.RecipeListView.as_view(), name="recipe_view"),
-    path("recipe-add", views.RecipeCreateView.as_view(), name="recipe_add"),
-    path(
-        "recipe-update/<int:pk>/",
-        views.RecipeUpdateView.as_view(),
-        name="recipe_update",
-    ),
-    #
-    path("delete-ingredient/", views.delete_spec, name="delete_ingredient"),
-    path(
-        "delete-recipeslider/<int:image_id>/",
-        views.delete_recipeslider,
-        name="delete_recipeslider",
-    ),
+    # path("recipe-view", views.RecipeListView.as_view(), name="recipe_view"),
+    # path("recipe-add", views.RecipeCreateView.as_view(), name="recipe_add"),
+    # path(
+    #     "recipe-update/<int:pk>/",
+    #     views.RecipeUpdateView.as_view(),
+    #     name="recipe_update",
+    # ),
+    # #
+    # path("delete-ingredient/", views.delete_spec, name="delete_ingredient"),
+    # path(
+    #     "delete-recipeslider/<int:image_id>/",
+    #     views.delete_recipeslider,
+    #     name="delete_recipeslider",
+    # ),
     #
     path("product-view", views.ProductListView.as_view(), name="product_view"),
     path("product-add", views.ProductCreateView.as_view(), name="product_add"),

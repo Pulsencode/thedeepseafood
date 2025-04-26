@@ -27,7 +27,7 @@ from company.models import (
     Promotion,
 )
 from career.models import VaccancyDetails, ApplicationDetails
-from products.models import Category, Product, ProductDetails, RecipeDetails
+from products.models import Category, Product, ProductDetails
 
 
 def home(request):
@@ -453,7 +453,7 @@ class BrandView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         supermarkets = Supermarkets.objects.filter(status=True).order_by("-id")
-        recipes = RecipeDetails.objects.filter(status=True).order_by("-id")
+        # recipes = RecipeDetails.objects.filter(status=True).order_by("-id")
         category = Category.objects.filter(brand__name="Oceano", status=True).order_by(
             "sequence"
         )
@@ -477,7 +477,7 @@ class BrandView(TemplateView):
         context["category"] = category
         context["total_product"] = total_product
         context["products"] = products
-        context["recipes"] = recipes
+        # context["recipes"] = recipes
         context["supermarkets"] = supermarkets
         return context
 
