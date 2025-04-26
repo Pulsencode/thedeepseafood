@@ -1,4 +1,4 @@
-<h1 align="center">Django Template</h1>
+# The Deep Seafood
 
 [![Django CI](https://github.com/Abhimanue-rajesh/Template-Django/actions/workflows/django.yml/badge.svg)](https://github.com/Abhimanue-rajesh/Template-Django/actions/workflows/django.yml)
 
@@ -10,9 +10,18 @@
 ![Debian](https://img.shields.io/badge/Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white)
 ![Warp](https://img.shields.io/badge/warp-01A4FF?style=for-the-badge&logo=warp&logoColor=white)
 
+## Overview
+The Deep Seafood is a comprehensive web application for managing a seafood business. The platform includes features for product management, public interface, career opportunities, and administrative functions.
 
-## Overview:
-This is a Template
+### Project Structure
+- `accounts/` - User authentication and management
+- `administration/` - Administrative functions and controls
+- `career/` - Career and job-related features
+- `company/` - Company information and details
+- `core/` - Core project settings and configurations
+- `products/` - Product catalog and management
+- `public_interface/` - Public-facing website features
+- `website/` - Main website functionality
 
 ## Setting up environment
 
