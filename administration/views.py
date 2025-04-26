@@ -19,43 +19,37 @@ from products.models import Product, Category
 from django.contrib.auth import authenticate, login
 
 
-class IndexView(TemplateView):
-    template_name = "superadmin/index/index.html"
+class AdminDashboardView(TemplateView):
+    template_name = "administration/pages/admin_dashboard.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        brand = Brand.objects.filter(status=True).order_by("-id").count()
-        category = Category.objects.filter(status=True).order_by("-id").count()
-        job = JobCategory.objects.filter(status=True).order_by("-id").count()
-        # recipe = RecipeDetails.objects.filter(status=True).order_by("-id").count()
-        gallery = Event.objects.filter(status=True).order_by("-id").count()
-        news = News.objects.filter(status=True).order_by("-id").count()
-        promo = Promotion.objects.filter(status=True).order_by("-id").count()
-        blog = Blog.objects.filter(status=True).order_by("-id").count()
-        team = ManagementTeam.objects.filter(status=True).order_by("-id").count()
-        testi = CompanyTestimonial.objects.filter(status=True).order_by("-id").count()
-        career = VaccancyDetails.objects.filter(status=True).order_by("-id").count()
-        appli = ApplicationDetails.objects.filter(status=True).order_by("-id").count()
-        history = History.objects.filter(status=True).order_by("-id").count()
-        contact = ContactUs.objects.filter().order_by("-id").count()
-        enquiry = Enquiry.objects.filter().order_by("-id").count()
-        product = Product.objects.filter().order_by("-id").count()
-        context["product"] = product
-        context["enquiry"] = enquiry
-        context["contact"] = contact
-        context["history"] = history
-        context["appli"] = appli
-        context["career"] = career
-        context["testi"] = testi
-        context["team"] = team
-        context["blog"] = blog
-        context["promo"] = promo
-        context["news"] = news
-        context["gallery"] = gallery
-        # context["recipe"] = recipe
-        context["job"] = job
-        context["category"] = category
-        context["brand"] = brand
+
+        models_to_count = {
+            "brand": Brand,
+            "category": Category,
+            "job": JobCategory,
+            "gallery": Event,
+            "news": News,
+            "promo": Promotion,
+            "blog": Blog,
+            "team": ManagementTeam,
+            "testimonials": CompanyTestimonial,
+            "career": VaccancyDetails,
+            "application": ApplicationDetails,
+            "history": History,
+            "contact": ContactUs,
+            "enquiry": Enquiry,
+            "product": Product,
+        }
+
+        for context_key, model_class in models_to_count.items():
+            if hasattr(model_class, "status"):
+                count = model_class.objects.filter(status=True).count()
+            else:
+                count = model_class.objects.all().count()
+            context[context_key] = count
+
         return context
 
 
@@ -70,7 +64,7 @@ class LoginView(TemplateView):
         if user is not None:
             if user.is_staff:
                 login(request, user)
-                return redirect("index_view")
+                return redirect("admin_dashboard")
             else:
                 messages.error(request, "You are not a verified user")
         else:

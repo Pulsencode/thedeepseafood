@@ -12,29 +12,18 @@ from django.shortcuts import redirect, render
 from django.template import loader
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import TemplateView, CreateView, UpdateView
+from django.views.generic import CreateView, TemplateView, UpdateView
 
-
-from public_interface.utils import is_ajax, render_helper
 from company.models import Brand
 from products.forms import (
-    CategoryForm,
-    # RecipeForm,
-    # RecipeIngredientFormSet,
-    ProductForm,
-    ProductDetailsForm,
-    BrandProductForm,
     BrandProductDetailsForm,
+    BrandProductForm,
+    CategoryForm,
+    ProductDetailsForm,
+    ProductForm,
 )
-from products.models import (
-    Category,
-    Product,
-    ProductDetails,
-    # RecipeDetails,
-    # RecipeImage,
-    # RecipeIngredients,
-    Subcategory,
-)
+from products.models import Category, Product, ProductDetails, Subcategory
+from public_interface.utils import is_ajax, render_helper
 
 
 class AdminPermissionMixin(UserPassesTestMixin):
@@ -479,7 +468,9 @@ class ProductDetailsListView(AdminPermissionMixin, TemplateView):
         context["page"] = page
         context["path"] = path
 
-        return render_helper(request, "deepsea-product-details", "product_view", context)
+        return render_helper(
+            request, "deepsea-product-details", "product_view", context
+        )
 
 
 class ProductDetailsCreateView(AdminPermissionMixin, CreateView):
@@ -608,11 +599,7 @@ class BrandProductCreateView(AdminPermissionMixin, CreateView):
             decoded_image = base64.b64decode(imgstr)
             file_name = f"{form.cleaned_data['name']}.{ext}"
 
-            form.instance.image.save(
-                file_name,
-                ContentFile(decoded_image),
-                save=False
-            )
+            form.instance.image.save(file_name, ContentFile(decoded_image), save=False)
         except Exception as e:
             form.add_error(None, f"Invalid image data: {str(e)}")
             return self.form_invalid(form)
@@ -739,7 +726,11 @@ class BrandProductDetailsCreateView(AdminPermissionMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["products"] = (Product.objects.filter(status=True).exclude(brand__name="Deep Sea").order_by("-id"))
+        context["products"] = (
+            Product.objects.filter(status=True)
+            .exclude(brand__name="Deep Sea")
+            .order_by("-id")
+        )
         return context
 
 
