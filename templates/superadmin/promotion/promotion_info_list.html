@@ -2,7 +2,7 @@
 <input type="hidden" id="page" name="page" value="{{ page }}">
 <table class="table border-top table-bordered mb-0 table-hover">
     <thead>
-        <tr>
+        <tr class="text-center">
             <th>Sl No</th>
             <th>Title</th>
             <th>Name</th>
@@ -15,58 +15,58 @@
         </tr>
     </thead>
     <tbody>
-        {% if datas %}
-            {% for d in datas %}
+        {% if "all_promotions"%}
+            {% for "promotions" in "all_promotions" %}
                 <tr>
-                    <td>{{ datas.start_index|add:forloop.counter0 }}</td>
-                    <td>{{ d.title }}</td>
-                    <td>{{ d.name }}</td>
-                    <td>{{ d.date|date:"d/m/Y" }}</td>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ "promotions".title }}</td>
+                    <td>{{ "promotions".name }}</td>
+                    <td>{{ "promotions.date" }}</td>
                     <td>
                         <a href="javascript:void(0)"
                            class="btn btn-success"
                            data-bs-toggle="modal"
-                           data-bs-target="#desc{{ d.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                           data-bs-target="#desc{{ "promotions.id" }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
                     </td>
-                    <td>{{ d.location }}</td>
+                    <td>{{ promotions.location }}</td>
                     <td>
                         <a href="javascript:void(0)"
                            class="btn btn-success"
                            data-bs-toggle="modal"
-                           data-bs-target="#slider{{ d.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                           data-bs-target="#slider{{ promotions.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
                     </td>
                     <td>
                         <div class="material-switch">
-                            <input id="someSwitchOptionSuccess{{ d.id }}"
+                            <input id="someSwitchOptionSuccess{{ promotions.id }}"
                                    name="someSwitchOption001"
                                    type="checkbox"
-                                   {% if d.status == True %} onclick="changepromotionstatus({{ d.id }},0)" checked {% else %}onclick="changepromotionstatus({{ d.id }},1)" {% endif %} />
-                            <label for="someSwitchOptionSuccess{{ d.id }}" class="label-success"></label>
+                                   {% if promotions.status == True %} onclick="changepromotionstatus({{ promotions.id }},0)" checked {% else %}onclick="changepromotionstatus({{ promotions.id }},1)" {% endif %} />
+                            <label for="someSwitchOptionSuccess{{ promotions.id }}" class="label-success"></label>
                         </div>
                     </td>
                     <td>
                         <a class="btn btn-info btn-sm mb-1"
-                           href="{% url 'promotion_update' d.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                           href="{% url 'promotion_update' promotions.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
                         <button class="btn btn-danger btn-sm mb-1">
-                            <i class="side-menu__icon fe fe-trash"  onclick="show_modal({{ d.id }})"></i>
+                            <i class="side-menu__icon fe fe-trash"  onclick="show_modal({{ promotions.id }})"></i>
                         </button>
                     </td>
                 </tr>
                 <!-- modal for description-->
-                <div class="modal  fade" id="desc{{ d.id }}" tabindex="-1" role="dialog">
+                <div class="modal  fade" id="desc{{ promotions.id }}" tabindex="-1" role="dialog">
                     <div class="modal-dialog modal-md modal-dialog-centered text-center"
                          role="document">
                         <div class="modal-content ">
                             <div class="modal-body">
                                 <div>
-                                    <p>{{ d.description|safe }}</p>
+                                    <p>{{ promotions.description|safe }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- modal for slider-->
-                <div class="modal  fade" id="slider{{ d.id }}" tabindex="-1" role="dialog">
+                <div class="modal  fade" id="slider{{ promotions.id }}" tabindex="-1" role="dialog">
                     <div class="modal-dialog modal-md modal-dialog-centered text-center"
                          role="document">
                         <div class="modal-content ">
@@ -78,8 +78,8 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                {% if d.promo_image.exists %}
-                                    {% for slider in d.promo_image.all %}
+                                {% if promotions.promo_image.exists %}
+                                    {% for slider in promotions.promo_image.all %}
                                         <a href="{{ slider.image.url }}" data-lightbox="images" data-title="">
                                             <img src="{{ slider.image.url }}" height="100" width="100">
                                         </a>

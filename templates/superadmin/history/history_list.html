@@ -3,7 +3,7 @@
 
 <table class="table border-top table-bordered mb-0 table-hover">
     <thead>
-        <tr>
+        <tr class="text-center">
             <th>Sl No</th>
             <th>title</th>
             <th>year</th>
@@ -14,28 +14,28 @@
         </tr>
     </thead>
     <tbody>
-        {% if datas %}
-        {% for d in datas %}
-        <tr>
-            <td>{{datas.start_index|add:forloop.counter0}}</td>
-            <td>{{d.title}}</td>
-            <td>{{d.year}}</td>
+        {% if all_history %}
+        {% for history in all_history %}
+        <tr class="text-center">
+            <td>{{forloop.counter}}</td>
+            <td>{{history.title}}</td>
+            <td>{{history.year}}</td>
             <td>
-                <a href="javascript:void(0)" class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#desc{{d.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                <a href="javascript:void(0)" class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#desc{{history.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
             </td>
 
             <td>
-                <a href="javascript:void(0)" class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#slider{{d.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                <a href="javascript:void(0)" class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#slider{{history.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
             </td>
             <td>
                 <div class="material-switch">
-                    <input id="someSwitchOptionSuccess{{d.id}}" name="someSwitchOption001" type="checkbox" {% if d.status == True %} onclick="changehistorystatus({{d.id}},0)" checked {% else %}onclick="changehistorystatus({{d.id}},1)" {% endif %} />
-                    <label for="someSwitchOptionSuccess{{d.id}}" class="label-success"></label>
+                    <input id="someSwitchOptionSuccess{{history.id}}" name="someSwitchOption001" type="checkbox" {% if history.status == True %} onclick="changehistorystatus({{history.id}},0)" checked {% else %}onclick="changehistorystatus({{history.id}},1)" {% endif %} />
+                    <label for="someSwitchOptionSuccess{{history.id}}" class="label-success"></label>
                 </div>
             </td>
             <td>
 
-                <a class="btn btn-info btn-sm mb-1" href="{% url 'history_update' d.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                <a class="btn btn-info btn-sm mb-1" href="{% url 'history_update' history.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
 
                 <button class="btn btn-danger btn-sm mb-1"  ><i class="side-menu__icon fe fe-trash"  onclick="show_modal({{d.id}})"></i></button>
 
@@ -44,14 +44,14 @@
         </tr>
          <!-- modal for description-->
 
-         <div class="modal  fade" id="desc{{d.id}}" tabindex="-1" role="dialog">
+         <div class="modal  fade" id="desc{{history.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-md modal-dialog-centered text-center" role="document">
                 <div class="modal-content ">
 
                     <div class="modal-body">
                         <div>
                             <p>
-                            {{d.description|safe}}
+                            {{history.description|safe}}
                             </p>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
 
         <!-- modal for slider-->
 
-        <div class="modal  fade" id="slider{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="slider{{history.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-md modal-dialog-centered text-center" role="document">
                 <div class="modal-content ">
                     <div class="modal-header">
@@ -70,8 +70,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        {% if d.history_image.exists %}
-                            {% for slider in d.history_image.all %}
+                        {% if history.history_image.exists %}
+                            {% for slider in history.history_image.all %}
                             <a href="{{slider.image.url}}" data-lightbox="images" data-title="">
                                 <img src="{{slider.image.url}}" height="100" width="100"></a>
                             {% endfor %}

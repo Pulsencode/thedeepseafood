@@ -11,30 +11,30 @@
         </tr>
     </thead>
     <tbody>
-        {% if datas %}
-            {% for d in datas %}
+        {% if all_brands %}
+            {% for brands in all_brands%}
                 <tr class="text-center">
-                    <td>{{ datas.start_index|add:forloop.counter0 }}</td>
-                    <td>{{ d.sequence }}</td>
+                    <td>{{forloop.counter }}</td>
+                    <td>{{ brands.sequence }}</td>
                     <td>
-                        {% if d.logo %}
-                            <a href="{{ d.logo.url }}" data-lightbox="logo-{{ forloop.counter }}">
-                                <img src="{{ d.logo.url }}" style="width:90px;"><!--remove inline css-->
+                        {% if brands.image %}
+                            <a href="{{ brands.image.url }}" data-lightbox="logo-{{ forloop.counter }}">
+                                <img src="{{ brands.image.url }}" style="width:90px;"><!--remove inline css-->
                             </a>
                         {% endif %}
                     </td>
-                    <td>{{ d.name }}</td>
+                    <td>{{ brands.name }}</td>
                     <td>
                         <div class="material-switch">
-                            <input id="someSwitchOptionSuccess{{ d.id }}"
+                            <input id="someSwitchOptionSuccess{{ brands.id }}"
                                    name="someSwitchOption001"
                                    type="checkbox"
-                                   {% if d.status == True %} onclick="changebrandstatus({{ d.id }},0)" checked {% else %}onclick="changebrandstatus({{ d.id }},1)" {% endif %} />
-                            <label for="someSwitchOptionSuccess{{ d.id }}" class="label-success"></label>
+                                   {% if brands.status == True %} onclick="changebrandstatus({{ brands.id }},0)" checked {% else %}onclick="changebrandstatus({{ brands.id }},1)" {% endif %} />
+                            <label for="someSwitchOptionSuccess{{ brands.id }}" class="label-success"></label>
                         </div>
                     </td>
                     <td>
-                        <a class="btn btn-info btn-sm mb-1" href="{% url 'brand_update' d.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                        <a class="btn btn-info btn-sm mb-1" href="{% url 'brand_update' brands.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
                         <button class="btn btn-danger btn-sm mb-1">
                             <i class="side-menu__icon fe fe-trash"  onclick="show_modal({{ d.id }})"></i>
                         </button>

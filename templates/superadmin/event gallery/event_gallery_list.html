@@ -2,11 +2,11 @@
 <input type="hidden" id="page" name="page" value="{{page}}">
 <table class="table border-top table-bordered mb-0 table-hover">
     <thead>
-        <tr>
+        <tr class="text-center">
             <th>Sl No</th>
             <th>Sequence No</th>
             <th>Title</th>
-            <!-- <th>Name</th> -->
+            <th>Name</th>
             <th>Date</th>
             <th>Description</th>
             <th>Location</th>
@@ -16,32 +16,32 @@
         </tr>
     </thead>
     <tbody>
-        {% if datas %}
-        {% for d in datas %}
-        <tr>
-            <td>{{datas.start_index|add:forloop.counter0}}</td>
-            <td>{{d.sequence}}</td>
-            <td>{{d.title}}</td>
-            <!-- <td>{{d.name}}</td> -->
-            <td>{{d.date|date:"d/m/Y"}}</td>
+        {% if all_events %}
+        {% for event in all_events %}
+        <tr class="text-center">
+            <td>{{forloop.counter}}</td>
+            <td>{{event.sequence}}</td>
+            <td>{{event.title}}</td>
+            <td>{{event.name}}</td>
+            <td>{{event.date}}</td>
             <td>
                 <a href="javascript:void(0)" class="btn btn-success" data-bs-toggle="modal"
-                    data-bs-target="#desc{{d.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                    data-bs-target="#desc{{event.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
             </td>
 
-            <td>{{d.location}}</td>
+            <td>{{event.location}}</td>
             <td>
                 <a href="javascript:void(0)" class="btn btn-success" data-bs-toggle="modal"
                     data-bs-target="#slider{{d.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
             </td>
             <td>
                 <div class="material-switch">
-                    <input id="someSwitchOptionSuccess{{d.id}}" name="someSwitchOption001" type="checkbox" {% if d.status == True %} onclick="changegallerystatus({{d.id}},0)" checked {% else %}onclick="changegallerystatus({{d.id}},1)" {% endif %} />
+                    <input id="someSwitchOptionSuccess{{d.id}}" name="someSwitchOption001" type="checkbox" {% if d.status == True %} onclick="changegallerystatus({{event.id}},0)" checked {% else %}onclick="changegallerystatus({{event.id}},1)" {% endif %} />
                     <label for="someSwitchOptionSuccess{{d.id}}" class="label-success"></label>
                 </div>
             </td>
             <td>
-                <a class="btn btn-info btn-sm mb-1" href="{% url 'gallery_update' d.id%}"><i class="side-menu__icon fe fe-edit"></i></a>
+                <a class="btn btn-info btn-sm mb-1" href="{% url 'gallery_update' event.id%}"><i class="side-menu__icon fe fe-edit"></i></a>
 
                 <button class="btn btn-danger btn-sm mb-1"  ><i class="side-menu__icon fe fe-trash"  onclick="show_modal({{d.id}})"></i></button>
 
@@ -56,7 +56,7 @@
                     <div class="modal-body">
                         <div>
                             <p>
-                                {{d.description|safe}}
+                                {{event.description|safe}}
                             </p>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
 
         <!-- modal for slider-->
 
-        <div class="modal  fade" id="slider{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="slider{{event.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-md modal-dialog-centered text-center" role="document">
                 <div class="modal-content ">
                     <div class="modal-header">
@@ -75,8 +75,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        {% if d.gallery_image.exists %}
-                            {% for slider in d.gallery_image.all %}
+                        {% if event.gallery_image.exists %}
+                            {% for slider in event.gallery_image.all %}
                             <a href="{{slider.image.url}}" data-lightbox="images" data-title="">
                                 <img src="{{slider.image.url}}" height="100" width="100"></a>
                             {% endfor %}

@@ -1,23 +1,24 @@
-from django.contrib.auth.mixins import UserPassesTestMixin
+# from django.contrib.auth.mixins import UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import (
-    TemplateView,
+    # TemplateView,
     View,
     CreateView,
     UpdateView,
     ListView,
     DeleteView,
 )
-from deepapp.helper import is_ajax, renderhelper
-from datetime import datetime
 
-from django.db.models import Q
+# from deepapp.helper import is_ajax, renderhelper
+# from datetime import datetime
+
+# from django.db.models import Q
 from django.contrib import messages
 from django.http import JsonResponse
 
 # from django.shortcuts import redirect, render
-from django.template import loader
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+# from django.template import loader
+# from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from django.core.files.base import ContentFile
 import base64
@@ -286,69 +287,76 @@ class TeamUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class TestimonialListView(UserPassesTestMixin, TemplateView):
+class TestimonialListView(ListView):
+    model = CompanyTestimonial
+    paginated_by = 10
+    context_object_name = "all_testimonials"
     template_name = "superadmin/testimonial/testimonial_list.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Testimonial"
-        page = request.GET.get("page", 1)
+# class TestimonialListView(UserPassesTestMixin, TemplateView):
+#     template_name = "superadmin/testimonial/testimonial_list.html"
 
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
+#     def test_func(self):
+#         return self.request.user.username == "DeepSeaAdmin"
 
-        cd = CompanyTestimonial.objects.all().order_by("-id")
+#     def get(self, request, *args, **kwargs):
+#         context = {}
+#         path = "Testimonial"
+#         page = request.GET.get("page", 1)
 
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(name__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                CompanyTestimonial.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = CompanyTestimonial.objects.get(id=item_id)
-                except CompanyTestimonial.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
+#         search = request.GET.get("search")
+#         delete = request.GET.get("delete")
+#         status = request.GET.get("status")
+#         sts = request.GET.get("sts")
 
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
+#         cd = CompanyTestimonial.objects.all().order_by("-id")
 
-        return renderhelper(request, "testimonial", "testimonial_view", context)
+#         if is_ajax(request):
+#             if search:
+#                 cd = cd.filter(name__icontains=search)
+#             if sts:
+#                 cd = cd.filter(status=sts)
+#             if status:
+#                 if status == "1":
+#                     status = True
+#                 else:
+#                     status = False
+#                 item_id = request.GET.get("item_id")
+#                 CompanyTestimonial.objects.filter(id=item_id).update(status=status)
+#             if delete:
+#                 item_id = request.GET.get("item_id")
+#                 try:
+#                     datas = CompanyTestimonial.objects.get(id=item_id)
+#                 except CompanyTestimonial.DoesNotExist:
+#                     datas = None
+#                 if datas:
+#                     datas.delete()
+#             paginator = Paginator(cd, 10)
+#             try:
+#                 datas = paginator.get_page(page)
+#             except PageNotAnInteger:
+#                 datas = paginator.get_page(1)
+#             except EmptyPage:
+#                 datas = paginator.get_page(paginator.num_pages)
+#             context["datas"] = datas
+#             context["page"] = page
+#             template = loader.get_template(self.template_name)
+#             html_content = template.render(context, request)
+#             return JsonResponse({"status": True, "template": html_content})
+
+#         paginator = Paginator(cd, 10)
+#         try:
+#             datas = paginator.get_page(page)
+#         except PageNotAnInteger:
+#             datas = paginator.get_page(1)
+#         except EmptyPage:
+#             datas = paginator.get_page(paginator.num_pages)
+#         context["datas"] = datas
+#         context["page"] = page
+#         context["path"] = path
+
+#         return renderhelper(request, "testimonial", "testimonial_view", context)
 
 
 class TestimonialCreateView(CreateView):
@@ -359,12 +367,12 @@ class TestimonialCreateView(CreateView):
 
     def form_valid(self, form):
         # Handle cropped image
-        cropped_image = self.request.POST.get('testi-image')
+        cropped_image = self.request.POST.get("testi-image")
         if cropped_image:
             # Convert base64 to Django file
-            format, imgstr = cropped_image.split(';base64,') 
-            ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgstr), name=f'cropped.{ext}')
+            format, imgstr = cropped_image.split(";base64,")
+            ext = format.split("/")[-1]
+            data = ContentFile(base64.b64decode(imgstr), name=f"cropped.{ext}")
             form.instance.image = data
 
         messages.success(self.request, "Testimonial Added Successfully...!!")
@@ -390,69 +398,72 @@ class TestimonialUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class CertificationListView(UserPassesTestMixin, TemplateView):
+class CertificationListView(ListView):
+    model = Certification
+    context_object_name = "all_certification"
+    paginate_by = 10
     template_name = "superadmin/certification/certification_list.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    # def test_func(self):
+    #     return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "certification"
-        page = request.GET.get("page", 1)
+    # def get(self, request, *args, **kwargs):
+    #     context = {}
+    #     path = "certification"
+    #     page = request.GET.get("page", 1)
 
-        # search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
+    #     # search = request.GET.get("search")
+    #     delete = request.GET.get("delete")
+    #     status = request.GET.get("status")
+    #     sts = request.GET.get("sts")
 
-        cd = Certification.objects.all().order_by("-id")
+    #     cd = Certification.objects.all().order_by("-id")
 
-        if is_ajax(request):
-            # if search:
-            #     cd = cd.filter(name__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                Certification.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Certification.objects.get(id=item_id)
-                except Certification.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
+    #     if is_ajax(request):
+    #         # if search:
+    #         #     cd = cd.filter(name__icontains=search)
+    #         if sts:
+    #             cd = cd.filter(status=sts)
+    #         if status:
+    #             if status == "1":
+    #                 status = True
+    #             else:
+    #                 status = False
+    #             item_id = request.GET.get("item_id")
+    #             Certification.objects.filter(id=item_id).update(status=status)
+    #         if delete:
+    #             item_id = request.GET.get("item_id")
+    #             try:
+    #                 datas = Certification.objects.get(id=item_id)
+    #             except Certification.DoesNotExist:
+    #                 datas = None
+    #             if datas:
+    #                 datas.delete()
 
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
+    #         paginator = Paginator(cd, 10)
+    #         try:
+    #             datas = paginator.get_page(page)
+    #         except PageNotAnInteger:
+    #             datas = paginator.get_page(1)
+    #         except EmptyPage:
+    #             datas = paginator.get_page(paginator.num_pages)
+    #         context["datas"] = datas
+    #         context["page"] = page
+    #         template = loader.get_template(self.template_name)
+    #         html_content = template.render(context, request)
+    #         return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-        return renderhelper(request, "certification", "certification_view", context)
+    #     paginator = Paginator(cd, 10)
+    #     try:
+    #         datas = paginator.get_page(page)
+    #     except PageNotAnInteger:
+    #         datas = paginator.get_page(1)
+    #     except EmptyPage:
+    #         datas = paginator.get_page(paginator.num_pages)
+    #     context["datas"] = datas
+    #     context["page"] = page
+    #     context["path"] = path
+    #     return renderhelper(request, "certification", "certification_view", context)
 
 
 class CertificationCreateView(CreateView):
@@ -499,7 +510,7 @@ class SupermarketListView(ListView):
     model = Supermarkets
     context_object_name = "all_supermarkets"
     paginate_by = 10
-    template_name = "superadmin/supermarket/supermarket_list.html"
+    template_name = "superadmin/supermarket/supermarket_view.html"
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -621,69 +632,72 @@ class SupermarketUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class BrandListView(UserPassesTestMixin, TemplateView):
+class BrandListView(ListView):
+    model = Brand
+    context_object_name = "all_brands"
+    paginate_by = 10
     template_name = "superadmin/brand/brand_list.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    # def test_func(self):
+    #     return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Brand"
-        page = request.GET.get("page", 1)
+    # def get(self, request, *args, **kwargs):
+    #     context = {}
+    #     path = "Brand"
+    #     page = request.GET.get("page", 1)
 
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
+    #     search = request.GET.get("search")
+    #     delete = request.GET.get("delete")
+    #     status = request.GET.get("status")
+    #     sts = request.GET.get("sts")
 
-        cd = Brand.objects.exclude(name="Deep Sea").order_by("-id")
+    #     cd = Brand.objects.exclude(name="Deep Sea").order_by("-id")
 
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(name__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                Brand.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Brand.objects.get(id=item_id)
-                except Brand.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
+    #     if is_ajax(request):
+    #         if search:
+    #             cd = cd.filter(name__icontains=search)
+    #         if sts:
+    #             cd = cd.filter(status=sts)
+    #         if status:
+    #             if status == "1":
+    #                 status = True
+    #             else:
+    #                 status = False
+    #             item_id = request.GET.get("item_id")
+    #             Brand.objects.filter(id=item_id).update(status=status)
+    #         if delete:
+    #             item_id = request.GET.get("item_id")
+    #             try:
+    #                 datas = Brand.objects.get(id=item_id)
+    #             except Brand.DoesNotExist:
+    #                 datas = None
+    #             if datas:
+    #                 datas.delete()
+    #         paginator = Paginator(cd, 10)
+    #         try:
+    #             datas = paginator.get_page(page)
+    #         except PageNotAnInteger:
+    #             datas = paginator.get_page(1)
+    #         except EmptyPage:
+    #             datas = paginator.get_page(paginator.num_pages)
+    #         context["datas"] = datas
+    #         context["page"] = page
+    #         template = loader.get_template(self.template_name)
+    #         html_content = template.render(context, request)
+    #         return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-        # print(cd)
-        return renderhelper(request, "brand", "brand_view", context)
+    #     paginator = Paginator(cd, 10)
+    #     try:
+    #         datas = paginator.get_page(page)
+    #     except PageNotAnInteger:
+    #         datas = paginator.get_page(1)
+    #     except EmptyPage:
+    #         datas = paginator.get_page(paginator.num_pages)
+    #     context["datas"] = datas
+    #     context["page"] = page
+    #     context["path"] = path
+    #     # print(cd)
+    #     return renderhelper(request, "brand", "brand_view", context)
 
 
 class BrandCreateView(CreateView):
@@ -727,69 +741,76 @@ class BrandUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class BlogListView(UserPassesTestMixin, ListView):
+class BlogListView(ListView):
+    model = Blog
+    context_object_name = "all_blogs"
+    paginated_by = 10
     template_name = "superadmin/blog/Blog_view.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Blog"
-        page = request.GET.get("page", 1)
+# class BlogListView(UserPassesTestMixin, ListView):
+#     template_name = "superadmin/blog/Blog_view.html"
 
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
+#     def test_func(self):
+#         return self.request.user.username == "DeepSeaAdmin"
 
-        cd = Blog.objects.all().order_by("-id")
+#     def get(self, request, *args, **kwargs):
+#         context = {}
+#         path = "Blog"
+#         page = request.GET.get("page", 1)
 
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(Q(name__icontains=search) | Q(title__icontains=search))
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                Blog.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Blog.objects.get(id=item_id)
-                except Blog.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
+#         search = request.GET.get("search")
+#         delete = request.GET.get("delete")
+#         status = request.GET.get("status")
+#         sts = request.GET.get("sts")
 
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
+#         cd = Blog.objects.all().order_by("-id")
 
-        return renderhelper(request, "blog", "Blog_view", context)
+#         if is_ajax(request):
+#             if search:
+#                 cd = cd.filter(Q(name__icontains=search) | Q(title__icontains=search))
+#             if sts:
+#                 cd = cd.filter(status=sts)
+#             if status:
+#                 if status == "1":
+#                     status = True
+#                 else:
+#                     status = False
+#                 item_id = request.GET.get("item_id")
+#                 Blog.objects.filter(id=item_id).update(status=status)
+#             if delete:
+#                 item_id = request.GET.get("item_id")
+#                 try:
+#                     datas = Blog.objects.get(id=item_id)
+#                 except Blog.DoesNotExist:
+#                     datas = None
+#                 if datas:
+#                     datas.delete()
+#             paginator = Paginator(cd, 10)
+#             try:
+#                 datas = paginator.get_page(page)
+#             except PageNotAnInteger:
+#                 datas = paginator.get_page(1)
+#             except EmptyPage:
+#                 datas = paginator.get_page(paginator.num_pages)
+#             context["datas"] = datas
+#             context["page"] = page
+#             template = loader.get_template(self.template_name)
+#             html_content = template.render(context, request)
+#             return JsonResponse({"status": True, "template": html_content})
+
+#         paginator = Paginator(cd, 10)
+#         try:
+#             datas = paginator.get_page(page)
+#         except PageNotAnInteger:
+#             datas = paginator.get_page(1)
+#         except EmptyPage:
+#             datas = paginator.get_page(paginator.num_pages)
+#         context["datas"] = datas
+#         context["page"] = page
+#         context["path"] = path
+
+#         return renderhelper(request, "blog", "Blog_view", context)
 
 
 class BlogCreateView(CreateView):
@@ -844,72 +865,76 @@ class BlogUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-######################################
-
-
-class EventListView(UserPassesTestMixin, TemplateView):
+class EventListView(ListView):
+    model = Event
+    context_object_name = "all_events"
+    paginate_by = 10
     template_name = "superadmin/event gallery/event_gallery_list.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Event Gallery"
-        page = request.GET.get("page", 1)
+# class EventListView(UserPassesTestMixin, TemplateView):
+#     template_name = "superadmin/event gallery/event_gallery_list.html"
 
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
+#     def test_func(self):
+#         return self.request.user.username == "DeepSeaAdmin"
 
-        cd = Event.objects.all().order_by("-id")
+#     def get(self, request, *args, **kwargs):
+#         context = {}
+#         path = "Event Gallery"
+#         page = request.GET.get("page", 1)
 
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(title__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                Event.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Event.objects.get(id=item_id)
-                except Event.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
+#         search = request.GET.get("search")
+#         delete = request.GET.get("delete")
+#         status = request.GET.get("status")
+#         sts = request.GET.get("sts")
 
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
+#         cd = Event.objects.all().order_by("-id")
 
-        return renderhelper(request, "event gallery", "event_gallery_view", context)
+#         if is_ajax(request):
+#             if search:
+#                 cd = cd.filter(title__icontains=search)
+#             if sts:
+#                 cd = cd.filter(status=sts)
+#             if status:
+#                 if status == "1":
+#                     status = True
+#                 else:
+#                     status = False
+#                 item_id = request.GET.get("item_id")
+#                 Event.objects.filter(id=item_id).update(status=status)
+#             if delete:
+#                 item_id = request.GET.get("item_id")
+#                 try:
+#                     datas = Event.objects.get(id=item_id)
+#                 except Event.DoesNotExist:
+#                     datas = None
+#                 if datas:
+#                     datas.delete()
+#             paginator = Paginator(cd, 10)
+#             try:
+#                 datas = paginator.get_page(page)
+#             except PageNotAnInteger:
+#                 datas = paginator.get_page(1)
+#             except EmptyPage:
+#                 datas = paginator.get_page(paginator.num_pages)
+#             context["datas"] = datas
+#             context["page"] = page
+#             template = loader.get_template(self.template_name)
+#             html_content = template.render(context, request)
+#             return JsonResponse({"status": True, "template": html_content})
+
+#         paginator = Paginator(cd, 10)
+#         try:
+#             datas = paginator.get_page(page)
+#         except PageNotAnInteger:
+#             datas = paginator.get_page(1)
+#         except EmptyPage:
+#             datas = paginator.get_page(paginator.num_pages)
+#         context["datas"] = datas
+#         context["page"] = page
+#         context["path"] = path
+
+#         return renderhelper(request, "event gallery", "event_gallery_view", context)
 
 
 class EventCreateView(CreateView):
@@ -986,69 +1011,76 @@ class EventImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class NewsListView(UserPassesTestMixin, TemplateView):
+class NewsListView(ListView):
+    model = News
+    context_object_name = "all_news"
+    paginate_by = 10
     template_name = "superadmin/news/news_list.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "News"
-        page = request.GET.get("page", 1)
+# class NewsListView(UserPassesTestMixin, TemplateView):
+#     template_name = "superadmin/news/news_list.html"
 
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
+#     def test_func(self):
+#         return self.request.user.username == "DeepSeaAdmin"
 
-        cd = News.objects.all().order_by("-id")
+#     def get(self, request, *args, **kwargs):
+#         context = {}
+#         path = "News"
+#         page = request.GET.get("page", 1)
 
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(Q(name__icontains=search) | Q(title__icontains=search))
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                News.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = News.objects.get(id=item_id)
-                except News.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
+#         search = request.GET.get("search")
+#         delete = request.GET.get("delete")
+#         status = request.GET.get("status")
+#         sts = request.GET.get("sts")
 
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
+#         cd = News.objects.all().order_by("-id")
 
-        return renderhelper(request, "news", "news_view", context)
+#         if is_ajax(request):
+#             if search:
+#                 cd = cd.filter(Q(name__icontains=search) | Q(title__icontains=search))
+#             if sts:
+#                 cd = cd.filter(status=sts)
+#             if status:
+#                 if status == "1":
+#                     status = True
+#                 else:
+#                     status = False
+#                 item_id = request.GET.get("item_id")
+#                 News.objects.filter(id=item_id).update(status=status)
+#             if delete:
+#                 item_id = request.GET.get("item_id")
+#                 try:
+#                     datas = News.objects.get(id=item_id)
+#                 except News.DoesNotExist:
+#                     datas = None
+#                 if datas:
+#                     datas.delete()
+#             paginator = Paginator(cd, 10)
+#             try:
+#                 datas = paginator.get_page(page)
+#             except PageNotAnInteger:
+#                 datas = paginator.get_page(1)
+#             except EmptyPage:
+#                 datas = paginator.get_page(paginator.num_pages)
+#             context["datas"] = datas
+#             context["page"] = page
+#             template = loader.get_template(self.template_name)
+#             html_content = template.render(context, request)
+#             return JsonResponse({"status": True, "template": html_content})
+
+#         paginator = Paginator(cd, 10)
+#         try:
+#             datas = paginator.get_page(page)
+#         except PageNotAnInteger:
+#             datas = paginator.get_page(1)
+#         except EmptyPage:
+#             datas = paginator.get_page(paginator.num_pages)
+#         context["datas"] = datas
+#         context["page"] = page
+#         context["path"] = path
+
+#         return renderhelper(request, "news", "news_view", context)
 
 
 class NewsCreateView(CreateView):
@@ -1123,69 +1155,74 @@ class NewsImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class PromotionListView(UserPassesTestMixin, TemplateView):
+class PromotionListView(ListView):
+    model = Promotion
+    context_object_name = "all_promotions"
+    paginate_by = 10
     template_name = "superadmin/promotion/promotion_info_list.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Promotion"
-        page = request.GET.get("page", 1)
+# promotion listview
+# def test_func(self):
+#     return self.request.user.username == "DeepSeaAdmin"
 
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
+# def get(self, request, *args, **kwargs):
+#     context = {}
+#     path = "Promotion"
+#     page = request.GET.get("page", 1)
 
-        cd = Promotion.objects.all().order_by("-id")
+#     search = request.GET.get("search")
+#     delete = request.GET.get("delete")
+#     status = request.GET.get("status")
+#     sts = request.GET.get("sts")
 
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(Q(name__icontains=search) | Q(title__icontains=search))
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                Promotion.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Promotion.objects.get(id=item_id)
-                except Promotion.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
+#     cd = Promotion.objects.all().order_by("-id")
 
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
+#     if is_ajax(request):
+#         if search:
+#             cd = cd.filter(Q(name__icontains=search) | Q(title__icontains=search))
+#         if sts:
+#             cd = cd.filter(status=sts)
+#         if status:
+#             if status == "1":
+#                 status = True
+#             else:
+#                 status = False
+#             item_id = request.GET.get("item_id")
+#             Promotion.objects.filter(id=item_id).update(status=status)
+#         if delete:
+#             item_id = request.GET.get("item_id")
+#             try:
+#                 datas = Promotion.objects.get(id=item_id)
+#             except Promotion.DoesNotExist:
+#                 datas = None
+#             if datas:
+#                 datas.delete()
+#         paginator = Paginator(cd, 10)
+#         try:
+#             datas = paginator.get_page(page)
+#         except PageNotAnInteger:
+#             datas = paginator.get_page(1)
+#         except EmptyPage:
+#             datas = paginator.get_page(paginator.num_pages)
+#         context["datas"] = datas
+#         context["page"] = page
+#         template = loader.get_template(self.template_name)
+#         html_content = template.render(context, request)
+#         return JsonResponse({"status": True, "template": html_content})
 
-        return renderhelper(request, "promotion", "promotion_info_view", context)
+#     paginator = Paginator(cd, 10)
+#     try:
+#         datas = paginator.get_page(page)
+#     except PageNotAnInteger:
+#         datas = paginator.get_page(1)
+#     except EmptyPage:
+#         datas = paginator.get_page(paginator.num_pages)
+#     context["datas"] = datas
+#     context["page"] = page
+#     context["path"] = path
+
+#     return renderhelper(request, "promotion", "promotion_info_view", context)
 
 
 class PromotionCreateView(CreateView):
@@ -1272,69 +1309,73 @@ class BlogImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class HistoryListView(UserPassesTestMixin, TemplateView):
+class HistoryListView(ListView):
+    model = History
+    context_object_name = "all_history"
+    paginate_by = 10
     template_name = "superadmin/history/history_list.html"
+    # history View
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    # def test_func(self):
+    #     return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "History"
-        page = request.GET.get("page", 1)
+    # def get(self, request, *args, **kwargs):
+    #     context = {}
+    #     path = "History"
+    #     page = request.GET.get("page", 1)
 
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
+    #     search = request.GET.get("search")
+    #     delete = request.GET.get("delete")
+    #     status = request.GET.get("status")
+    #     sts = request.GET.get("sts")
 
-        cd = History.objects.all().order_by("-id")
+    #     cd = History.objects.all().order_by("-id")
 
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(title__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                History.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = History.objects.get(id=item_id)
-                except History.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
+    #     if is_ajax(request):
+    #         if search:
+    #             cd = cd.filter(title__icontains=search)
+    #         if sts:
+    #             cd = cd.filter(status=sts)
+    #         if status:
+    #             if status == "1":
+    #                 status = True
+    #             else:
+    #                 status = False
+    #             item_id = request.GET.get("item_id")
+    #             History.objects.filter(id=item_id).update(status=status)
+    #         if delete:
+    #             item_id = request.GET.get("item_id")
+    #             try:
+    #                 datas = History.objects.get(id=item_id)
+    #             except History.DoesNotExist:
+    #                 datas = None
+    #             if datas:
+    #                 datas.delete()
+    #         paginator = Paginator(cd, 10)
+    #         try:
+    #             datas = paginator.get_page(page)
+    #         except PageNotAnInteger:
+    #             datas = paginator.get_page(1)
+    #         except EmptyPage:
+    #             datas = paginator.get_page(paginator.num_pages)
+    #         context["datas"] = datas
+    #         context["page"] = page
+    #         template = loader.get_template(self.template_name)
+    #         html_content = template.render(context, request)
+    #         return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
+    #     paginator = Paginator(cd, 10)
+    #     try:
+    #         datas = paginator.get_page(page)
+    #     except PageNotAnInteger:
+    #         datas = paginator.get_page(1)
+    #     except EmptyPage:
+    #         datas = paginator.get_page(paginator.num_pages)
+    #     context["datas"] = datas
+    #     context["page"] = page
+    #     context["path"] = path
 
-        return renderhelper(request, "history", "history_view", context)
+    #     return renderhelper(request, "history", "history_view", context)
 
 
 class HistoryCreateView(CreateView):
@@ -1412,133 +1453,139 @@ class HistoryImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class ContactListView(UserPassesTestMixin, TemplateView):
+class ContactListView(ListView):
+    model = ContactUs
+    context_object_name = "all_contacts"
+    paginate_by = 10
     template_name = "superadmin/contact/contact_list.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    # def test_func(self):
+    #     return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Contat"
-        page = request.GET.get("page", 1)
+    # def get(self, request, *args, **kwargs):
+    #     context = {}
+    #     path = "Contat"
+    #     page = request.GET.get("page", 1)
 
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        # status = request.GET.get("status")
-        # sts = request.GET.get("sts")
+    #     search = request.GET.get("search")
+    #     delete = request.GET.get("delete")
+    # status = request.GET.get("status")
+    # sts = request.GET.get("sts")
 
-        cd = ContactUs.objects.all().order_by("-id")
+    # cd = ContactUs.objects.all().order_by("-id")
 
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(name__icontains=search)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = ContactUs.objects.get(id=item_id)
-                except ContactUs.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
+    # if is_ajax(request):
+    #     if search:
+    #         cd = cd.filter(name__icontains=search)
+    #     if delete:
+    #         item_id = request.GET.get("item_id")
+    #         try:
+    #             datas = ContactUs.objects.get(id=item_id)
+    #         except ContactUs.DoesNotExist:
+    #             datas = None
+    #         if datas:
+    #             datas.delete()
 
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
+    #     paginator = Paginator(cd, 10)
+    #     try:
+    #         datas = paginator.get_page(page)
+    #     except PageNotAnInteger:
+    #         datas = paginator.get_page(1)
+    #     except EmptyPage:
+    #         datas = paginator.get_page(paginator.num_pages)
+    #     context["datas"] = datas
+    #     context["page"] = page
+    #     template = loader.get_template(self.template_name)
+    #     html_content = template.render(context, request)
+    #     return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
+    # paginator = Paginator(cd, 10)
+    # try:
+    #     datas = paginator.get_page(page)
+    # except PageNotAnInteger:
+    #     datas = paginator.get_page(1)
+    # except EmptyPage:
+    #     datas = paginator.get_page(paginator.num_pages)
+    # context["datas"] = datas
+    # context["page"] = page
+    # context["path"] = path
 
-        return renderhelper(request, "contact", "contact_view", context)
+    # return renderhelper(request, "contact", "contact_view", context)
 
 
-class EnquiryListView(UserPassesTestMixin, TemplateView):
+class EnquiryListView(ListView):
+    model = Enquiry
+    context_object_name = "all_enquiry"
+    paginate_by = 10
     template_name = "superadmin/enquiry/enquiry_list.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    # def test_func(self):
+    #     return self.request.user.username == "DeepSeaAdmin"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Enquiry"
-        page = request.GET.get("page", 1)
+    # def get(self, request, *args, **kwargs):
+    #     context = {}
+    #     path = "Enquiry"
+    #     page = request.GET.get("page", 1)
 
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        # status = request.GET.get("status")
-        # sts = request.GET.get("sts")
-        start = request.GET.get("start")
-        end = request.GET.get("end")
-        start_date = None
-        end_date = None
+    #     search = request.GET.get("search")
+    #     delete = request.GET.get("delete")
+    #     # status = request.GET.get("status")
+    #     # sts = request.GET.get("sts")
+    #     start = request.GET.get("start")
+    #     end = request.GET.get("end")
+    #     start_date = None
+    #     end_date = None
 
-        if start and end:
-            start_date = datetime.strptime(start, "%m/%d/%Y").date()
-            end_date = datetime.strptime(end, "%m/%d/%Y").date()
+    #     if start and end:
+    #         start_date = datetime.strptime(start, "%m/%d/%Y").date()
+    #         end_date = datetime.strptime(end, "%m/%d/%Y").date()
 
-        cd = Enquiry.objects.all().order_by("-id")
+    #     cd = Enquiry.objects.all().order_by("-id")
 
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(
-                    Q(name__icontains=search) | Q(created__range=(start, end))
-                )
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Enquiry.objects.get(id=item_id)
-                except Enquiry.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
+    #     if is_ajax(request):
+    #         if search:
+    #             cd = cd.filter(
+    #                 Q(name__icontains=search) | Q(created__range=(start, end))
+    #             )
+    #         if delete:
+    #             item_id = request.GET.get("item_id")
+    #             try:
+    #                 datas = Enquiry.objects.get(id=item_id)
+    #             except Enquiry.DoesNotExist:
+    #                 datas = None
+    #             if datas:
+    #                 datas.delete()
 
-            if start_date and end_date:
-                cd = cd.filter(
-                    created__date__gte=start_date, created__date__lte=end_date
-                )
+    #         if start_date and end_date:
+    #             cd = cd.filter(
+    #                 created__date__gte=start_date, created__date__lte=end_date
+    #             )
 
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
+    #         paginator = Paginator(cd, 10)
+    #         try:
+    #             datas = paginator.get_page(page)
+    #         except PageNotAnInteger:
+    #             datas = paginator.get_page(1)
+    #         except EmptyPage:
+    #             datas = paginator.get_page(paginator.num_pages)
+    #         context["datas"] = datas
+    #         context["page"] = page
+    #         template = loader.get_template(self.template_name)
+    #         html_content = template.render(context, request)
+    #         return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
+    #     paginator = Paginator(cd, 10)
+    #     try:
+    #         datas = paginator.get_page(page)
+    #     except PageNotAnInteger:
+    #         datas = paginator.get_page(1)
+    #     except EmptyPage:
+    #         datas = paginator.get_page(paginator.num_pages)
+    #     context["datas"] = datas
+    #     context["page"] = page
+    #     context["path"] = path
 
-        return renderhelper(request, "enquiry", "enquiry", context)
+    #     return renderhelper(request, "enquiry", "enquiry", context)
 
 
 class ExportExcel(View):
