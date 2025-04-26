@@ -1,11 +1,11 @@
 <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
         {% if page_obj.has_previous %}
-            {% comment %} <li class="page-item">
+           <li class="page-item">
                 <a class="page-link" href="?page=1" aria-label="First">
                     <span class="sr-only">First</span>
                 </a>
-            </li> {% endcomment %}
+            </li> 
             <li class="page-item">
                 <a class="page-link"
                    href="?page={{ page_obj.previous_page_number }}"
@@ -43,11 +43,11 @@
                     <span class="sr-only">Next</span>
                 </a>
             </li>
-            {% comment %} <li class="page-item">
+           <li class="page-item">
                 <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
                     <span class="sr-only">Last</span>
                 </a>
-            </li> {% endcomment %}
+            </li> 
         {% else %}
             <li class="page-item disabled">
                 <span class="page-link" aria-hidden="true"><i class="bi bi-chevron-double-right"></i></span>

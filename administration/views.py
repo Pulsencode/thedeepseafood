@@ -60,7 +60,7 @@ class IndexView(TemplateView):
 
 
 class LoginView(TemplateView):
-    template_name = "superadmin/login/login.html"
+    template_name = "registration/login.html"
 
     def post(self, request, *args, **kwargs):
         uname = self.request.POST.get("uname")
