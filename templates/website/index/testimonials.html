@@ -1,0 +1,36 @@
+{% load static %}
+{% if all_testimonials %}
+    <section id="testimonials" class="pb-30 pt-0">
+        <div class="wrapper">
+            <div class="row pt-30 text-center">
+                <div class="col-12">
+                    <div class="section-head">
+                        <h1 class="text-blue font-lnterbold">TESTIMONIALS</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center pt-50">
+                <div class="col-12">
+                    <div class="slick_slider_3 arrows-vector">
+                        {% for testimonial in all_testimonials %}
+                            <div class="item wow fadeInUp wow_item">
+                                <div class="words">
+                                    <img width=""
+                                         height=""
+                                         alt="Blue color comma"
+                                         src="{% static 'website/assets/public/images/icons/comma-blue.png' %} ">
+                                    <div class="dec text-blue scrollbar">{{ testimonial.quote|safe }}</div>
+                                    <div class="shape">
+                                        <div class="empty"></div>
+                                    </div>
+                                </div>
+                                <img width="" height="" alt="" class="user" src="{{ testimonial.image.url }}">
+                                <div class="name font-lnterbold">{{ testimonial.name }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}

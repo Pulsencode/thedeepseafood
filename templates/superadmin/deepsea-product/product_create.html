@@ -1,166 +1,147 @@
-{% include 'superadmin/layout/header.html' %}
+{% include "superadmin/layout/header.html" %}
 {% load static %}
-<style>
-    .select-drop{
-        width: 100%;
-        display: block;
-    width: 100%;
-    padding: 0.475rem 0.75rem;
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #4d5875;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #e9edf4;
-    border-radius: 7px;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    }
-    .select-drop:focus-visible{
-        outline: none !important;
-    }
-    .check-flex{
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .sub-l{
-        cursor: pointer;
-    }
-</style>
-<!--app-content open-->
 <div class="main-content app-content mt-0">
     <div class="side-app">
-        <!-- CONTAINER -->
         <div class="main-container container-fluid">
-            <!-- PAGE-HEADER -->
             <div class="page-header">
                 <h1 class="page-title">Product</h1>
                 <div>
-                    <a class="btn btn-primary" href="{% url 'product_view' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
+                    <a class="btn btn-primary" href="{% url 'product_view' %}">
+                        <i class="side-menu__icon fe fe-eye mx-1"></i>View All
+                    </a>
                 </div>
             </div>
-            <!-- PAGE-HEADER END -->
-
-            <!-- ROW OPEN -->
             <form method="post" enctype="multipart/form-data" id="myform">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-md-4 col-xl-4 col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Add New Image*</h4>
+                                <h4 class="card-title">Upload Image</h4>
                             </div>
                             <div class="card-body">
-                                    
-                                    <div class="row">
-                                        <!-- <div class="col-lg-12 col-sm-12 mb-4 mb-lg-0"> -->
-                                            <!-- <input type="file" class="dropify" data-bs-height="180" name="image" id="image-upload" {% if list.image %} -->
-                                            <!-- data-default-file="{{list.image.url}}" {% endif %}{% if not list.image  %}required {% endif %} /> -->
-                                        <!-- </div> -->
-									  <div class="col-lg-12">
-									  <img {% if list.image %}src="{{list.image.url}}"{% else %}src="" {% endif %} class=""/>
-                    <label class="cabinet center-block">
-                        <figure>
-                            <img src="" class="gambar2 img-responsive img-thumbnail2" id="item-img-output2" />
-                            <figcaption><i class="fa fa-camera"></i></figcaption>
-                        </figure>
-                        <input type="file" class="item-img2 file center-block" name="file_photo" />
-                    </label>
+                                <div class="col-lg-12">
+                                    <img {% if form.instance.image %}src="{{ form.instance.image.url }}"{% else %}src=""{% endif %}
+                                         class=""
+                                         width=""
+                                         height=""
+                                         alt="Upload image"
+                                         id="item-img-output2" />
+                                    <label class="cabinet center-block">
+                                        <figure>
+                                            <img src=""
+                                                 width=""
+                                                 height=""
+                                                 alt="Upload image"
+                                                 class="gambar2 img-responsive img-thumbnail2"
+                                                 id="item-img-preview" />
+                                            <figcaption>
+                                                <i class="fa fa-camera"></i>
+                                            </figcaption>
+                                        </figure>
+                                        <input type="file" class="item-img2 file center-block" name="file_photo" />
+                                    </label>
+                                    <input type="hidden" id="cropped-img" name="brand-image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-xl-8 col-12">
+                        <div class="card">
+                            <div class="card-body row">
+                                {% for field in form %}
+                                    {% if field.name != 'image' %}
+                                        <div class="form-group col-lg-6 col-12">
+                                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                            {{ field }}
+                                            {% if field.errors %}<div class="text-danger">{{ field.errors|striptags }}</div>{% endif %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                <div class="form-group col-lg-12 col-12">
+                                    <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                                    <a href="{% url 'product_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-				<input type="hidden" id="cropped-img" name="brand-image">
-									<!-- 1 -->
-									 <div class="modal modal2 fade" id="cropImagePop2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel2">
-                           Edit Photo</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div id="upload-demo2" class="center-block"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                        <button type="button" id="cropImageBtn2" class="btn btn-primary">Crop</button>
+            </form>
+            <!-- Cropping Modal -->
+            <div class="modal fade"
+                 id="cropImagePop2"
+                 tabindex="-1"
+                 role="dialog"
+                 aria-labelledby="cropImageModalLabel2"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Crop Image</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="upload-demo2" id="upload-demo2"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="cropImageBtn2">Crop</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-                                    </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8 col-xl-8 col-12">
-                        <div class="card">
-                            <div class="card-body">
-                            
-                                    <div class="row col-lg-12">
-                                        <div class="form-group col-lg-12 col-12">
-                                            <label for="" class="form-label"> Name*</label>
-                                            <input type="text" class="form-control" id="" placeholder="Name" name="name" value="{{list.name}}" required>
-                                        </div>
-                                       
-                                        
-                                        <div class="form-group col-lg-6 col-12" >
-                                            <label class="form-label">Type*</label>
-                                            <select name="type" class="select-drop " required>
-                                                <option value="">Select type</option>
-                                                <option {% if list.type == 'Local Catch' %}selected{% endif %} value="Local Catch">Local Catch</option>
-                                                <option {% if list.type == 'Imported' %}selected{% endif %} value="Imported">Imported</option>
-                                                <option {% if list.type == 'Value Added' %}selected{% endif %} value="Value Added">Value Added</option>  
-                                                
-                                            </select>
-                                        </div>
-										<div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label"> Sequence*</label>
-                                            <input type="text" class="form-control" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="" placeholder="sequence" name="sequence" value="{{list.sequence}}" required>
-                                        </div>
-                                        
-                                        
-                                        
-                                        <div class="row">
-                                            <h6>SEO section :</h6><br>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label"> Title tag</label>
-                                                <input type="text" class="form-control" id="" placeholder="Title tag" name="title_tag" value="{{list.title_tag}}" >
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label"> Meta description</label>
-                                                <input type="text" class="form-control" id="" placeholder="Meta description" name="metatag" value="{{list.metatag}}" >
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label"> Keyword tag</label>
-                                                <input type="text" class="form-control" id="" placeholder="Keyword tag" name="keyword" value="{{list.keyword}}" >
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label"> Canonical url</label>
-                                                <input type="text" class="form-control" id="" placeholder="Canonical url" name="canonical" value="{{list.canonical}}" >
-                                            </div>
-											<div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label"> Image Alt</label>
-                                                <input type="text" class="form-control" id="" placeholder="" name="image_alt" value="{{list.image_alt}}" >
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-lg-12 col-12">
-                                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
-                                            <a href="{% url 'product_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
-                                        </div>
-                                    </div>
-                                
-                            </div>
-                        </div>
-                        <!-- ROW CLOSED -->
-                    </div>
-                    <!-- CONTAINER END -->
-                </div>
-            </form>
-        </div>
     </div>
-    <!--app-content close-->
+</div>
+{% include "superadmin/layout/footer.html" %}
+<script>
+$(".gambar2").attr("src", "https://deepsea.noviindus.in/static/superadmin/assets/images_ex/up.png");
+var $uploadCrop2,
+    rawImg2;
 
-    {% include 'superadmin/layout/footer.html' %}
+function readFile2(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('.upload-demo2').addClass('ready');
+            $('#cropImagePop2').modal('show');
+            rawImg2 = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        alert("Sorry - your browser doesn't support the FileReader API");
+    }
+}
+
+$uploadCrop2 = $('#upload-demo2').croppie({
+    viewport: { width: 334, height: 300 },
+    enforceBoundary: false,
+    enableExif: true
+});
+
+$('#cropImagePop2').on('shown.bs.modal', function () {
+    $uploadCrop2.croppie('bind', {
+        url: rawImg2
+    }).then(function () {
+        console.log('Croppie bind complete');
+    });
+});
+
+$('.item-img2').on('change', function () {
+    readFile2(this);
+});
+
+$('#cropImageBtn2').on('click', function () {
+    $uploadCrop2.croppie('result', {
+        type: 'base64',
+        format: 'png',
+        size: { width: 3340, height: 3000 }
+    }).then(function (resp) {
+        $('#item-img-output2').attr('src', resp);
+        $('#cropped-img').val(resp);
+        $('#cropImagePop2').modal('hide');
+    });
+});
+</script>

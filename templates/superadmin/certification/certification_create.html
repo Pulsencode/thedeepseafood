@@ -9,7 +9,7 @@
             <div class="page-header">
                 <h1 class="page-title">Certification</h1>
                 <div>
-                    <a class="btn btn-primary" href="{% url 'certification_view' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View
+                    <a class="btn btn-primary" href="{% url 'list_certification' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View
                         All</a>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                                 <div class="form-group col-lg-12 col-12">
                                     <button type="submit" class="btn btn-primary mt-4 mb-0"
                                         id="submitButton">Submit</button>
-                                    <a href="{% url 'certification_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                                    <a href="{% url 'list_certification' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
                                 </div>
                             
                         </div>
@@ -79,5 +79,5 @@
         </div>
     </div>
     <!--app-content close-->
-
+   
     {% include 'superadmin/layout/footer.html' %}

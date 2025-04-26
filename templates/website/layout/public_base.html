@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+      <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <!-- Google tag (gtag.js) -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZ20QPH6D6"></script>
+            <script>
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+
+                  gtag('config', 'G-RZ20QPH6D6');
+            </script>
+            <link rel
+                  canonical
+                  href
+                  {% if data.canonical %}{{ data.canonical }}{% endif %} />
+            <link rel="shortcut icon"
+                  type="image/ico"
+                  href="{% static 'website/assets/general/images/logo.png' %}" />
+            <meta property="og:image"
+                  content="{% static 'website/assets/general/images/logo.png' %}" />
+            <meta property="og:description"
+                  content="We supply our products domestically and internationally depending on market needs. We offer extensive seafood baskets that are live, chilled, fresh, and frozen." />
+            <meta name="description"
+                  content="{% if data.metatag %}{{ data.metatag }}{% endif %}" />
+            <meta name="keywords"
+                  content="{% if data.keyword %}{{ data.keyword }}{% endif %}" />
+            {% include "website/layout/links.html" %}
+            <!-- jquery -->
+            <script src="{% static 'website/assets/general/modules/jquery/jquery-3.3.1.min.js' %}"
+                    type="text/javascript"></script>
+            <title>
+                  {% block page_title %}
+                  {% endblock page_title %}
+            </title>
+      </head>
+      <body>
+            <!-- Header -->
+            {% include "website/layout/header.html" %}
+            <!-- Content -->
+            {% block content %}
+            {% endblock content %}
+            <!-- Footer -->
+            {% include "website/layout/footer.html" %}
+            <!-- Scripts -->
+            {% include "website/layout/scripts.html" %}
+            <!-- message -->
+            {% for message in messages %}
+                  <div class="alert alert-primary alert-dismissible fade show m-0 text-center border-0"
+                       id="success"
+                       role="alert">
+                        {{ message }}
+                        <button type="button"
+                                class="btn-close text-dark "
+                                data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                  </div>
+            {% endfor %}
+      </body>
+</html>

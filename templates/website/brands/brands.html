@@ -1,352 +1,173 @@
-<!doctype html>
+{% extends "website/layout/public_base.html" %}
 {% load static %}
-
-<html lang="en">
-
-<head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RZ20QPH6D6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-RZ20QPH6D6');
-</script>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="shortcut icon" type="image/ico" href="{% static 'website/assets/general/images/favicon.ico' %}">
-  <meta property="og:image" content="{% static 'website/assets/general/images/logo.png' %}">
-  <meta property="og:description"
-    content="We supply our products domestically and internationally depending on market needs. We offer extensive seafood baskets that are live, chilled, fresh, and frozen.">
-  <meta property="og:url" content="">
-  <meta property="og:title" content="37 Years of excellence in quality & service.">
-  <!-- seo section -->
-	
-  <title>{{data.title_tag}}</title>
-  <link rel=“canonical” href=”{{data.canonical}}” />
-  <meta name="description" content="{{data.metatag}}"/>
-  <meta name="keywords" content="{{data.keyword}}">
-	<!-- seo end -->
-  <link href="{% static 'website/assets/general/fonts/webfonts/airbnbcereal/font-airbnbcereal.css' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'website/assets/general/fonts/fontawesome/v4.7/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'website/assets/general/modules/bootstrap5/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'website/assets/public/modules/aos/aos.css' %}" rel="stylesheet" type="text/css" />
-  <link href="{% static 'website/assets/public/modules/animate/animate.min.css' %}" rel="stylesheet" type="text/css" />
-  <link href="{% static 'website/assets/general/modules/chosen-select/chosen.css' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'website/assets/general/modules/datepicker/jquery-ui.css' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'website/assets/general/modules/slick-slider/slick.min.css' %}" rel="stylesheet" type="text/css" />
-  <link href="{% static 'website/assets/general/modules/slick-slider/slick-theme.min.css' %}" rel="stylesheet" type="text/css" />
-  <link href="{% static 'website/assets/general/modules/slick-slider/custom.css' %}" rel="stylesheet" type="text/css" />
-  <link href="{% static 'website/assets/public/fonts/webfonts/lnter/font-lnter.css' %}" rel="stylesheet" type="text/css">
-  <link href="{% static 'website/assets/general/css/custom.css' %}" rel="stylesheet" type="text/css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css" rel="stylesheet" type="text/css">
-  <link href="https://cdnjs.cloudflaAre.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" rel="stylesheet" type="text/css">
-  <link href="{% static 'website/assets/public/css/custom.css' %}" rel="stylesheet" type="text/css">
-
-  <!-- jquery -->
-  <script src="{% static 'website/assets/general/modules/jquery/jquery-3.3.1.min.js' %}" type="text/javascript"></script>
-  <link href="{% static 'website/assets/public/fonts/webfonts/Aref-ruqaa/font-aref-ruqaa.css' %}" rel="stylesheet" type="text/css">
+{% block content %}
+  <script src="{% static 'website/assets/general/modules/slick-slider/slick.min.js' %}"
+          type="text/javascript"></script>
   <style>
-  
-
-  .slider, .slide {
-    height: 100vh;
-
-
-.slide {
-  position: relative;
-}
-.slide .slide__img {
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-}
-
-.slide .slide__img img {
-  width: 100%;
-  height: 100vh;
-  opacity: 1 !important;
-      object-fit: cover;
-}
-
-
-.slick-dotted .slick-slider {
-  margin-bottom: 30px;
-}
-
-
-
-.slick-nav {
-  --active: #fff;
-  --border: rgba(255, 255, 255, .12);
-  width: 44px;
-  height: 44px;
-  position: absolute;
-  cursor: pointer;
-  top: calc(50% - 44px);
-}
-.slick-nav.prev-arrow {
-  left: 3%;
-  transform: scaleX(-1);
-  z-index: 999;
-}
-.slick-nav.next-arrow {
-  left: auto;
-  right: 3%;
-}
-.slick-nav i {
-  display: block;
-  position: absolute;
-  margin: -10px 0 0 -10px;
-  width: 20px;
-  height: 20px;
-  left: 50%;
-  top: 50%;
-}
-.slick-nav i:before, .slick-nav i:after {
-  content: "";
-  width: 10px;
-  height: 2px;
-  border-radius: 1px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  background: var(--active);
-  margin: -1px 0 0 -5px;
-  display: block;
-  transform-origin: 9px 50%;
-}
-.slick-nav i:before {
-  transform: rotate(-40deg);
-}
-.slick-nav i:after {
-  transform: rotate(40deg);
-}
-.slick-nav:before, .slick-nav:after {
-  content: "";
-  display: block;
-  position: absolute;
-  left: 1px;
-  right: 1px;
-  top: 1px;
-  bottom: 1px;
-  border-radius: 50%;
-  border: 2px solid var(--border);
-}
-
-.slick-nav.animate svg {
-  -webkit-animation: stroke 1s ease forwards 0.3s;
-          animation: stroke 1s ease forwards 0.3s;
-}
-.slick-nav.animate i {
-  -webkit-animation: arrow 1.6s ease forwards;
-          animation: arrow 1.6s ease forwards;
-}
-.slick-nav.animate i:before {
-  -webkit-animation: arrowUp 1.6s ease forwards;
-          animation: arrowUp 1.6s ease forwards;
-}
-.slick-nav.animate i:after {
-  -webkit-animation: arrowDown 1.6s ease forwards;
-          animation: arrowDown 1.6s ease forwards;
-}
-
-  </style>
-  <style>
-    .whatsapp-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      color: green;
+    .slider, .slide {
+      height: 100vh;
+    }
+    .slide {
+      position: relative;
+    }
+    .slide .slide__img {
+      width: 100%;
+      height: auto;
+      overflow: hidden;
+    }
+    .slide .slide__img img {
+      width: 100%;
+      height: 100vh;
+      opacity: 1 !important;
+          object-fit: cover;
+    }
+    .slick-dotted .slick-slider {
+      margin-bottom: 30px;
+    }
+    .slick-nav {
+      --active: #fff;
+      --border: rgba(255, 255, 255, .12);
+      width: 44px;
+      height: 44px;
+      position: absolute;
+      cursor: pointer;
+      top: calc(50% - 44px);
+    }
+    .slick-nav.prev-arrow {
+      left: 3%;
+      transform: scaleX(-1);
+      z-index: 999;
+    }
+    .slick-nav.next-arrow {
+      left: auto;
+      right: 3%;
+    }
+    .slick-nav i {
+      display: block;
+      position: absolute;
+      margin: -10px 0 0 -10px;
+      width: 20px;
+      height: 20px;
+      left: 50%;
+      top: 50%;
+    }
+    .slick-nav i:before, .slick-nav i:after {
+      content: "";
+      width: 10px;
+      height: 2px;
+      border-radius: 1px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      background: var(--active);
+      margin: -1px 0 0 -5px;
+      display: block;
+      transform-origin: 9px 50%;
+    }
+    .slick-nav i:before {
+      transform: rotate(-40deg);
+    }
+    .slick-nav i:after {
+      transform: rotate(40deg);
+    }
+    .slick-nav:before, .slick-nav:after {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 1px;
+      right: 1px;
+      top: 1px;
+      bottom: 1px;
       border-radius: 50%;
-      padding: 15px;
-      font-size: 24px;
-      z-index: 1000;
+      border: 2px solid var(--border);
     }
 
-    .whatsapp-button:hover {
-      color: rgb(255, 255, 255);
+    .slick-nav.animate svg {
+      -webkit-animation: stroke 1s ease forwards 0.3s;
+              animation: stroke 1s ease forwards 0.3s;
+    }
+    .slick-nav.animate i {
+      -webkit-animation: arrow 1.6s ease forwards;
+              animation: arrow 1.6s ease forwards;
+    }
+    .slick-nav.animate i:before {
+      -webkit-animation: arrowUp 1.6s ease forwards;
+              animation: arrowUp 1.6s ease forwards;
+    }
+    .slick-nav.animate i:after {
+      -webkit-animation: arrowDown 1.6s ease forwards;
+              animation: arrowDown 1.6s ease forwards;
     }
   </style>
-</head>
-
-<body>
-  <!-- <div class="pre_loader pre-loader"></div> -->
-
-
-
-
   <div class="main-div pt-0 header-bg-transparent header-bg-black show-logo-oceano footer-bg-black">
-
-    <header>
-      <div class="row">
-        <div class="col-md-8 col-4">
-          <a class="a-logo" href="/">
-            <img class="logo" src="{% static 'website/assets/general/images/logo.png' %}" alt="logo">
-            <img class="logo" src="{% static 'website/assets/general/images/logo-white.png' %}" alt="logo">
-            <img class="logo logo-oceano" src="{% static 'website/assets/public/images/general/logo-oceano-white.png' %}" alt="logo">
-          </a>
-        </div>
-        <div class="col-md-4 col-8 text-end">
-          <div class="d-grid gap-2 d-flex justify-content-end align-items-center">
-            <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover me-2 px-3 py-1 fs-12"
-              href="/contact">Contact Us</a>
-            <button class="toggle-sidebar toggle_sidebar" type="button">
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
+    <div class="banner__slider">
+      <div class="content_slid">
+        <div class="wrapper">
+          <div class="row text-white">
+            <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
+              <h3 class="text-pre-line">
+                PREMIUM  <span class="font-aref-ruqaabold">DIVE  TO</span>  DELICACY
+              </h3>
+            </div>
           </div>
         </div>
       </div>
-    </header>
-    <!-- sidebar -->
-    <div class="sidebar-area toggle_sidebar"></div>
-    <div class="sidebar">
-      <div class="text-end">
-        <button class="toggle-sidebar toggle_sidebar btn-zoom-hover">
-          <i class="fa fa-times-circle" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="inner">
-
-        <ul class="nav-list font-lntermedium">
-          <div class="row align-items-center">
-            <div class="col-sm-5">
-              <li>
-                <a href="{% url 'index' %}">Home Page</a>
-              </li>
-              <li>
-                <a href="{% url 'about' %}">About us</a>
-              </li>
-              <li>
-                <a href="{% url 'product' %}">Products</a>
-              </li>
-              <!-- <li> -->
-                <!-- <a href="{% url 'brands' %}">Brands</a> -->
-              <!-- </li> -->
-			  
-			  
-				<li class="nav-item dropdown nav-br-drop">
-				 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-					Brands
-				  </a>
-				  <ul class="dropdown-menu dropdown-menu-end oceano-navbar" aria-labelledby="navbarDropdown">
-					<li class="sub-mm"><a class="dropdown-item" href="{% url 'brands' %}">Oceano</a></li>
-				  </ul>
-				</li>
-					  
-			  
-			  
-              <li>
-                <a href="{% url 'distribution' %}">Distribution Channel</a>
-              </li>
-            </div>
-            <div class="col-sm-7">
-
-              <li>
-                <a href="{% url 'newsroom' %}">News Room</a>
-              </li>
-
-              <li>
-                <a href="{% url 'careers' %}">Career</a>
-              </li>
-			  {% if blog %}
-			  <li>
-                <a href="{% url 'blog' %}">Blog</a>
-              </li>
-			  {% endif %}
-              <li>
-                <a href="{% url 'contact' %}">Contact us</a>
-              </li>
-
-            </div>
+      <div class="slider stick-dots">
+        <div class="slide">
+          <div class="slide__img">
+            <img width=""
+                 height=""
+                 src="{% static 'website/assets/public/images/brands/banner-cover/banner-top.jpg' %}"
+                 alt="banner_img"
+                 data-lazy="{% static 'website/assets/public/images/brands/banner-cover/banner-top.jpg' %}"
+                 class="full-image animated"
+                 data-animation-in="zoomInImage" />
           </div>
-        </ul>
-      </div>
-    </div>
-    <!-- /sidebar -->
-<div class="banner__slider">
-  <div class="content_slid">
-            <div class="wrapper">
-              <div class="row text-white">
-                <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
-                  <h3 class="text-pre-line">PREMIUM  <span class="font-aref-ruqaabold"> DIVE  TO </span>  DELICACY</h3>
-                </div>
-              </div>
-            </div>
+        </div>
+        <div class="slide">
+          <div class="slide__img">
+            <img width=""
+                 height=""
+                 src="{% static 'website/assets/public/images/brands/banner-cover/banner2.jpeg' %}"
+                 alt="banner_img"
+                 data-lazy="{% static 'website/assets/public/images/brands/banner-cover/banner2.jpeg' %}"
+                 class="full-image animated"
+                 data-animation-in="zoomOutImage" />
           </div>
-  <div class="slider stick-dots">
-    <div class="slide">
-      <div class="slide__img">
-        <img src="{% static 'website/assets/public/images/brands/banner-cover/banner-top.jpg' %}" alt="banner_img" data-lazy="{% static 'website/assets/public/images/brands/banner-cover/banner-top.jpg' %}" class="full-image animated" data-animation-in="zoomInImage"/>
+        </div>
+        <div class="slide">
+          <div class="slide__img">
+            <img width=""
+                 height=""
+                 src="{% static 'website/assets/public/images/brands/banner-cover/w2.jpg' %}"
+                 alt="banner_img"
+                 data-lazy="{% static 'website/assets/public/images/brands/banner-cover/w2.jpg' %}"
+                 class="full-image animated"
+                 data-animation-in="zoomInImage" />
+          </div>
+        </div>
       </div>
-    
     </div>
-    <div class="slide">
-      <div class="slide__img">
-        <img src="{% static 'website/assets/public/images/brands/banner-cover/banner2.jpeg' %}" alt="banner_img" data-lazy="{% static 'website/assets/public/images/brands/banner-cover/banner2.jpeg' %}" class="full-image animated" data-animation-in="zoomOutImage"/>
-      </div>
-  
-    </div>
-		<div class="slide">
-      <div class="slide__img">
-        <img src="{% static 'website/assets/public/images/brands/banner-cover/w2.jpg' %}" alt="banner_img" data-lazy="{% static 'website/assets/public/images/brands/banner-cover/w2.jpg' %}" class="full-image animated" data-animation-in="zoomInImage"/>
-      </div>
-   
-    </div>
-  </div>
-
-</div>
     <div class="main-div pt-0 header-bg-transparent header-bg-black show-logo-oceano footer-bg-black">
-	
       <!-- brands -->
       <section id="brands" class="pt-0 pb-0 font-aref-ruqaa">
-        <!-- <div class="banner-cover"> -->
-          <!-- <div class="row"> -->
-            <!-- <div class="slick_slider_1" id="brand-main-slider"> -->
-              <!-- <div class="item"> -->
-                <!-- <div class="wow fadeInUp wow_item"> -->
-                  <!-- <img class="img-primary h-100-vh" src="{% static 'website/assets/public/images/brands/banner-cover/banner-top.jpg' %}"> -->
-                <!-- </div> -->
-              <!-- </div> -->
-              <!-- <div class="item"> -->
-                <!-- <div class="wow fadeInUp wow_item"> -->
-                  <!-- <img class="img-primary h-100-vh" src="{% static 'website/assets/public/images/brands/banner-cover/w1.jpg' %}"> -->
-                <!-- </div> -->
-              <!-- </div> -->
-              <!-- <div class="item"> -->
-                <!-- <div class="wow fadeInUp wow_item"> -->
-                  <!-- <img class="img-primary h-100-vh" src="{% static 'website/assets/public/images/brands/banner-cover/w2.jpg' %}"> -->
-                <!-- </div> -->
-              <!-- </div> -->
-            <!-- </div> -->
-          <!-- </div> -->
-          <!-- <div class="caption w-100 text-center"> -->
-            <!-- <div class="wrapper"> -->
-              <!-- <div class="row text-white"> -->
-                <!-- <div class="col-12" data-aos="fade-down" data-aos-duration="2000"> -->
-                  <!-- <h3 class="text-pre-line">PREMIUM <span class="font-aref-ruqaabold">DIVE TO</span> DELICACY</h3> -->
-                <!-- </div> -->
-              <!-- </div> -->
-            <!-- </div> -->
-          <!-- </div> -->
-        <!-- </div> -->
-		
-		
         <div class="premium padd_t_b_50">
           <div class="wrapper">
             <div class="row justify-content-center text-center">
               <div class="col-xl-8 col-lg-10">
                 <div class="section-head" data-aos="fade-up" data-aos-duration="1000">
-                  <img class="img-fluid h-50-px h-40-px-md mb-20"
-                    src="{% static 'website/assets/public/images/general/logo-oceano-black.png' %}">
-                  <h5 class="font-aref-ruqaabold" data-aos="fade-up" data-aos-duration="1100">Oceano, our retail brand,
+                  <img width=""
+                       height=""
+                       alt="Oceano Logo"
+                       class="img-fluid h-50-px h-40-px-md mb-20"
+                       src="{% static 'website/assets/public/images/general/logo-oceano-black.png' %}">
+                  <h5 class="font-aref-ruqaabold"
+                      data-aos="fade-up"
+                      data-aos-duration="1100">
+                    Oceano, our retail brand,
                     provides packaged seafood products. We provide one-stop access to high-quality, freshly packed
-                    seafood from across the world.</h5>
+                    seafood from across the world.
+                  </h5>
                 </div>
               </div>
             </div>
@@ -364,30 +185,32 @@
                 <div id="prod">
                   <ul class="nav nav-tabs border-0 justify-content-center pt-20">
                     {% for c in category %}
-				
-                    <li class="nav-item">
-                      <a href="javascript:void(0);" class="nav-link text-white btn {% if forloop.first %}active{% endif %}" data-name="{{c.name}}" onclick="loadProductContent(this)">{{c.name}}</a>
-                    </li>
-					
+                      <li class="nav-item">
+                        <a href=""
+                           class="nav-link text-white btn {% if forloop.first %}active{% endif %}"
+                           data-name="{{ c.name }}"
+                           onclick="loadProductContent(this)">{{ c.name }}</a>
+                      </li>
                     {% endfor %}
                   </ul>
                 </div>
                 <div class="tab-content pt-20">
                   <div class="tab-pane fade show active">
                     <div class="row justify-content-center">
-                      <div class="col-lg-12 MOREBTN" data-aos="fade-right" data-aos-duration="1000">
-                        <div class="row pt-50" id="MixItUp">
-                          {% include 'website/brands/products_list.html' %}
-                          
-
-                        </div>
+                      <div class="col-lg-12 MOREBTN"
+                           data-aos="fade-right"
+                           data-aos-duration="1000">
+                        <div class="row pt-50" id="MixItUp">{% include "website/brands/products_list.html" %}</div>
                       </div>
                     </div>
-                    
                   </div>
                   <div class="row text-center pt-50">
                     <div class="col-12">
-                      <button class="btn btn-more VIEWMORE" id="loadMoreButton" data-total="{{total_product}}" data-limit="4" onclick="loadmoreproduct(this)">View More</button>
+                      <button class="btn btn-more VIEWMORE"
+                              id="loadMoreButton"
+                              data-total="{{ total_product }}"
+                              data-limit="4"
+                              onclick="loadmoreproduct(this)">View More</button>
                     </div>
                   </div>
                 </div>
@@ -395,69 +218,91 @@
             </div>
           </div>
         </div>
-    </div>
-    <div class="highlights padd_t_b_50">
-      <div class="wrapper">
-        <div class="row justify-content-center text-center">
-          <div class="col-xl-8 col-lg-10">
-            <div class="section-head">
-              <h1 class="font-aref-ruqaabold" data-aos="fade-up" data-aos-duration="600">BRAND HIGHLIGHTS</h1>
-              <hr data-aos="fade-up" data-aos-duration="700">
-              <h5 class="font-aref-ruqaabold" data-aos="fade-up" data-aos-duration="700">we are committed to excellence
-                in quality and services standards both for local and export market in seafood industry since 1986.</h5>
+      </div>
+      <div class="highlights padd_t_b_50">
+        <div class="wrapper">
+          <div class="row justify-content-center text-center">
+            <div class="col-xl-8 col-lg-10">
+              <div class="section-head">
+                <h1 class="font-aref-ruqaabold"
+                    data-aos="fade-up"
+                    data-aos-duration="600">BRAND HIGHLIGHTS</h1>
+                <hr data-aos="fade-up" data-aos-duration="700">
+                <h5 class="font-aref-ruqaabold"
+                    data-aos="fade-up"
+                    data-aos-duration="700">
+                  we are committed to excellence
+                  in quality and services standards both for local and export market in seafood industry since 1986.
+                </h5>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row justify-content-center mt-10">
-          <div class="col-lg-11">
-            <div class="row row-item">
-              <div class="col-md-4 col-sm-6 col-item">
-                <div class="item" data-aos="fade-up" data-aos-duration="1000">
-                  <div class="img-card">
-                    <img src="{% static 'website/assets/public/images/brands/highlights/Fresh.png' %}">
-                  </div>
-                  <div class="text-card">
-                    <div class="title font-aref-ruqaabold">FRESH</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-6 col-item">
-                <div class="item" data-aos="fade-up" data-aos-duration="1000">
-                  <div class="img-card">
-                    <img src="{% static 'website/assets/public/images/brands/highlights/Quality.png' %}">
-                  </div>
-                  <div class="text-card">
-                    <div class="title font-aref-ruqaabold">QUALITY</div>
+          <div class="row justify-content-center mt-10">
+            <div class="col-lg-11">
+              <div class="row row-item">
+                <div class="col-md-4 col-sm-6 col-item">
+                  <div class="item" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="img-card">
+                      <img width=""
+                           height=""
+                           alt=""
+                           src="{% static 'website/assets/public/images/brands/highlights/Fresh.png' %}">
+                    </div>
+                    <div class="text-card">
+                      <div class="title font-aref-ruqaabold">FRESH</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-4 col-sm-6 col-item">
-                <div class="item" data-aos="fade-up" data-aos-duration="1000">
-                  <div class="img-card">
-                    <img src="{% static 'website/assets/public/images/brands/highlights/Delivery.png' %}">
-                  </div>
-                  <div class="text-card">
-                    <div class="title font-aref-ruqaabold">DELIVERY</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 col-sm-6 col-item">
-                <div class="item" data-aos="fade-up" data-aos-duration="1000">
-                  <div class="img-card">
-                    <img src="{% static 'website/assets/public/images/brands/highlights/Price.png' %}">
-                  </div>
-                  <div class="text-card">
-                    <div class="title font-aref-ruqaabold">PRICE</div>
+                <div class="col-md-4 col-sm-6 col-item">
+                  <div class="item" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="img-card">
+                      <img width=""
+                           height=""
+                           alt=""
+                           src="{% static 'website/assets/public/images/brands/highlights/Quality.png' %}">
+                    </div>
+                    <div class="text-card">
+                      <div class="title font-aref-ruqaabold">QUALITY</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-4 col-sm-6 col-item">
-                <div class="item" data-aos="fade-up" data-aos-duration="1000">
-                  <div class="img-card">
-                    <img src="{% static 'website/assets/public/images/brands/highlights/Packing.png' %}">
+                <div class="col-md-4 col-sm-6 col-item">
+                  <div class="item" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="img-card">
+                      <img width=""
+                           height=""
+                           alt=""
+                           src="{% static 'website/assets/public/images/brands/highlights/Delivery.png' %}">
+                    </div>
+                    <div class="text-card">
+                      <div class="title font-aref-ruqaabold">DELIVERY</div>
+                    </div>
                   </div>
-                  <div class="text-card">
-                    <div class="title font-aref-ruqaabold">PACKING</div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-item">
+                  <div class="item" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="img-card">
+                      <img width=""
+                           height=""
+                           alt=""
+                           src="{% static 'website/assets/public/images/brands/highlights/Price.png' %}">
+                    </div>
+                    <div class="text-card">
+                      <div class="title font-aref-ruqaabold">PRICE</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-item">
+                  <div class="item" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="img-card">
+                      <img width=""
+                           height=""
+                           alt=""
+                           src="{% static 'website/assets/public/images/brands/highlights/Packing.png' %}">
+                    </div>
+                    <div class="text-card">
+                      <div class="title font-aref-ruqaabold">PACKING</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -465,626 +310,239 @@
           </div>
         </div>
       </div>
-    </div>
-
-
-    <div class="watch-us">
-      <div class="wrapper">
-        <div class="row">
-          <div class="col-12">
-            <div class="row">
-              <div class="col">
-                <div class="card-thumbnail watch_thumbnail">
-                  <img class="img-primary" src="{% static 'website/assets/public/images/brands/watch-us/thumb.png' %}">
-                  <button class="btn-play watch_file_btn" type="button" data-file-src="https://www.youtube.com/embed/GvM8PTbD7Ok?autoplay=1&mute=1">
-                    <i class="fa fa-play" aria-hidden="true"></i>
-                  </button>
-                  <div class="caption bg-transparent">
-                    <div class="title font-lntermedium">Watch us.. Know us..</div>
-                    <div class="dec font-lnter">A video showcasing our products and services</div>
+      <div class="watch-us">
+        <div class="wrapper">
+          <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <div class="col">
+                  <div class="card-thumbnail watch_thumbnail">
+                    <img width=""
+                         height=""
+                         alt=""
+                         class="img-primary"
+                         src="{% static 'website/assets/public/images/brands/watch-us/thumb.png' %}">
+                    <button class="btn-play watch_file_btn"
+                            type="button"
+                            data-file-src="https://www.youtube.com/embed/GvM8PTbD7Ok?autoplay=1&mute=1">
+                      <i class="fa fa-play" aria-hidden="true"></i>
+                    </button>
+                    <div class="caption bg-transparent">
+                      <div class="title font-lntermedium">Watch us.. Know us..</div>
+                      <div class="dec font-lnter">A video showcasing our products and services</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card-thumbnail watch_thumbnail">
+                    <img width=""
+                         height=""
+                         alt=""
+                         class="img-primary"
+                         src="{% static 'website/assets/public/images/brands/watch-us/thumb.png' %}">
+                    <button class="btn-play watch_file_btn"
+                            type="button"
+                            data-file-src="https://www.youtube.com/embed/GvM8PTbD7Ok?autoplay=1&mute=1">
+                      <i class="fa fa-play" aria-hidden="true"></i>
+                    </button>
+                    <div class="caption bg-transparent">
+                      <div class="title font-lntermedium">Explore our services</div>
+                      <div class="dec font-lnter">Another video showcasing our services</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card-thumbnail watch_thumbnail">
+                    <img width=""
+                         height=""
+                         alt=""
+                         class="img-primary"
+                         src="{% static 'website/assets/public/images/brands/watch-us/thumb.png' %}">
+                    <button class="btn-play watch_file_btn"
+                            type="button"
+                            data-file-src="https://www.youtube.com/embed/GvM8PTbD7Ok?autoplay=1&mute=1">
+                      <i class="fa fa-play" aria-hidden="true"></i>
+                    </button>
+                    <div class="caption bg-transparent">
+                      <div class="title font-lntermedium">Innovations</div>
+                      <div class="dec font-lnter">A glimpse of our innovations</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card-thumbnail watch_thumbnail">
+                    <img width=""
+                         height=""
+                         alt=""
+                         class="img-primary"
+                         src="{% static 'website/assets/public/images/brands/watch-us/thumb.png' %}">
+                    <button class="btn-play watch_file_btn"
+                            type="button"
+                            data-file-src="https://www.youtube.com/embed/GvM8PTbD7Ok?autoplay=1&mute=1">
+                      <i class="fa fa-play" aria-hidden="true"></i>
+                    </button>
+                    <div class="caption bg-transparent">
+                      <div class="title font-lntermedium">Our journey</div>
+                      <div class="dec font-lnter">Watch our company's journey</div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="col">
-                <div class="card-thumbnail watch_thumbnail">
-                  <img class="img-primary" src="{% static 'website/assets/public/images/brands/watch-us/thumb.png' %}">
-                  <button class="btn-play watch_file_btn" type="button" data-file-src="https://www.youtube.com/embed/GvM8PTbD7Ok?autoplay=1&mute=1">
-                    <i class="fa fa-play" aria-hidden="true"></i>
-                  </button>
-                  <div class="caption bg-transparent">
-                    <div class="title font-lntermedium">Explore our services</div>
-                    <div class="dec font-lnter">Another video showcasing our services</div>
+              <!-- Video player -->
+              <iframe class="video-player d-none" id="watch_src" width="560" height="315"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="available padd_t_b_50">
+        <div class="wrapper">
+          <div class="row justify-content-center text-center">
+            <div class="col-xl-8 col-lg-10">
+              <div class="section-head">
+                <h1 class="font-aref-ruqaabold text-uppercase fs-25 l-h-34"
+                    data-aos="fade-up"
+                    data-aos-duration="600">
+                  Available Across All Leading Supermarkets
+                  <br>
+                  & Hypermarkets in UAE
+                </h1>
+                <hr data-aos="fade-up" data-aos-duration="700">
+                <h5 class="font-aref-ruqaabold"
+                    data-aos="fade-up"
+                    data-aos-duration="700">
+                  we are committed to excellence
+                  in quality and services standards both for local and export market in seafood industry since 1986.
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="row pt-40 text-center">
+            <div class="col-12">
+              <div class="slick_slider_5 ps-50 pe-50">
+                {% for s in supermarkets %}
+                  <div class="item wow fadeInUp wow_item">
+                    <img width=""
+                         height=""
+                         class="img-fluid"
+                         src="{{ s.image.url }}"
+                         alt="{{ s.image_alt }}">
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cook-oceano padd_t_50 text-white">
+        <div class="wrapper">
+          <div class="row justify-content-center text-center">
+            <div class="col-xl-8 col-lg-10">
+              <div class="section-head">
+                <h1 class="font-aref-ruqaabold"
+                    data-aos="fade-up"
+                    data-aos-duration="600">COOK WITH OCEANO</h1>
+                <hr class="bg-white" data-aos="fade-up" data-aos-duration="700">
+                <h5 class="font-aref-ruqaabold"
+                    data-aos="fade-up"
+                    data-aos-duration="700">why you should swich to oceano</h5>
+              </div>
+            </div>
+          </div>
+          <div class="row row-item pt-40">
+            {% comment %} {% for r in recipes %} {% endcomment %}
+            <div class="col-lg-4 col-sm-6 col-item pb-50">
+              <div class="item box-occ-box" data-aos="fade-up" data-aos-duration="500">
+                <img width=""
+                     height=""
+                     class="img-fluid img-primary"
+                     src="{% if r.rec_image %}{{ r.rec_image.first.image.url }}{% endif %}"
+                     alt="{{ r.image_alt }}">
+                <div class="title font-aref-ruqaabold">{{ r.title }}</div>
+                <div class="dec r-dec-p">{{ r.description|safe }}</div>
+                <button type="button"
+                        class="btn btn-primary r-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal{{ r.id }}">Read more</button>
+              </div>
+            </div>
+            <!-- recipe Modal -->
+            <div class="modal fade"
+                 id="exampleModal{{ r.id }}"
+                 tabindex="-1"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ r.title }}</h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="r-main">
+                      <img width=""
+                           height=""
+                           class="img-fluid img-primary"
+                           src="{% if r.rec_image %}{{ r.rec_image.first.image.url }}{% endif %}"
+                           alt="{{ r.image_alt }}">
+                      {% if r.rec_ind.count >= 1 %}
+                        <div class="row crab">
+                          <b class="ps-0">
+                            <h5 class="mb-3">Ingredients</h5>
+                          </b>
+                          {% for i in r.rec_ind.all %}
+                            <div class="row">
+                              <div class="col-lg-6 col-md-6 col-sm-6 col-6 mb-2 ps-0">{{ i.title }}</div>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      {% endif %}
+                      {% if r.description %}
+                        <h6 class="text-dark fs-5 py-2 px-0">Instruction</h6>
+                        <div class="r-p-popup">{{ r.description|safe }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                   </div>
                 </div>
-              </div>  
-              <div class="col">
-                <div class="card-thumbnail watch_thumbnail">
-                  <img class="img-primary" src="{% static 'website/assets/public/images/brands/watch-us/thumb.png' %}">
-                  <button class="btn-play watch_file_btn" type="button" data-file-src="https://www.youtube.com/embed/GvM8PTbD7Ok?autoplay=1&mute=1">
-                    <i class="fa fa-play" aria-hidden="true"></i>
-                  </button>
-                  <div class="caption bg-transparent">
-                    <div class="title font-lntermedium">Innovations</div>
-                    <div class="dec font-lnter">A glimpse of our innovations</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="card-thumbnail watch_thumbnail">
-                  <img class="img-primary" src="{% static 'website/assets/public/images/brands/watch-us/thumb.png' %}">
-                  <button class="btn-play watch_file_btn" type="button" data-file-src="https://www.youtube.com/embed/GvM8PTbD7Ok?autoplay=1&mute=1">
-                    <i class="fa fa-play" aria-hidden="true"></i>
-                  </button>
-                  <div class="caption bg-transparent">
-                    <div class="title font-lntermedium">Our journey</div>
-                    <div class="dec font-lnter">Watch our company's journey</div>
-                  </div>
-                </div>
               </div>
             </div>
-            <!-- Video player -->
-            <iframe class="video-player d-none" id="watch_src" width="560" height="315"></iframe>
+            {% comment %} {% endfor %} {% endcomment %}
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- <div class="watch-us">
-      <div class="wrapper">
-        <div class="row">
-          <div class="col-12">
-            <div class="card-thumbnail watch_thumbnail">
-              <img class="img-primary" src="{% static 'website/assets/public/images/brands/watch-us/thumb.png' %}">
-              <button class="btn-play watch_file_btn" type="button"
-                data-file-src="https://www.youtube.com/embed/GvM8PTbD7Ok?autoplay=1&mute=1">
-                <i class="fa fa-play" aria-hidden="true"></i>
-              </button>
-              <div class="caption bg-transparent">
-                <div class="title font-lntermedium">Watch us.. Know us..</div>
-                <div class="dec font-lnter">A video showcasing our products and services</div>
+      <!-- view_modal -->
+      <div class="modal fade terms-modal"
+           id="view_modal"
+           tabindex="-1"
+           aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-body text-blue">
+              <div class="card border-0 rounded-0 p-tb-50-lr-30">
+                <div class="row align-items-center" id="pdetails"></div>
               </div>
             </div>
-            <iframe class="video-player d-none" id="watch_src"></iframe>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-
-    <div class="available padd_t_b_50">
-      <div class="wrapper">
-        <div class="row justify-content-center text-center">
-          <div class="col-xl-8 col-lg-10">
-            <div class="section-head">
-
-              <h1 class="font-aref-ruqaabold text-uppercase fs-25 l-h-34" data-aos="fade-up" data-aos-duration="600">
-                Available Across All Leading Supermarkets <br> & Hypermarkets in UAE
-              </h1>
-              <hr data-aos="fade-up" data-aos-duration="700">
-              <h5 class="font-aref-ruqaabold" data-aos="fade-up" data-aos-duration="700">we are committed to excellence
-                in quality and services standards both for local and export market in seafood industry since 1986.</h5>
-            </div>
-          </div>
-        </div>
-        <div class="row pt-40 text-center">
-          <div class="col-12">
-            <div class="slick_slider_5 ps-50 pe-50">
-              {% for s in supermarkets %}
-              <div class="item wow fadeInUp wow_item">
-                <img class="img-fluid" src="{{s.image.url}}" alt="{{s.image_alt}}">
-              </div>
-              {% endfor %}
+            <div class="modal-footer border-0">
+              <button type="button"
+                      class="btn primary-btn btn-l-blue font-lnter"
+                      data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="cook-oceano padd_t_50 text-white">
-      <div class="wrapper">
-        <div class="row justify-content-center text-center">
-          <div class="col-xl-8 col-lg-10">
-            <div class="section-head">
-              <h1 class="font-aref-ruqaabold" data-aos="fade-up" data-aos-duration="600">COOK WITH OCEANO</h1>
-              <hr class="bg-white" data-aos="fade-up" data-aos-duration="700">
-              <h5 class="font-aref-ruqaabold" data-aos="fade-up" data-aos-duration="700">why you should swich to oceano
-              </h5>
-            </div>
-          </div>
-        </div>
-        <div class="row row-item pt-40">
-          {% for r in recipes %}
-          <div class="col-lg-4 col-sm-6 col-item pb-50">
-            <div class="item box-occ-box" data-aos="fade-up" data-aos-duration="500">
-              <img class="img-fluid img-primary" src="{%if r.rec_image%}{{r.rec_image.first.image.url}}{%endif%}" alt="{{r.image_alt}}">
-              <div class="title font-aref-ruqaabold">{{r.title}}</div>
-              <div class="dec r-dec-p">{{r.description|safe}}</div>
-              <button type="button" class="btn btn-primary r-btn" data-bs-toggle="modal" data-bs-target="#exampleModal{{r.id}}">
-             Read more
-              </button>
-            </div>
-          </div>
-
-
-          <!-- recipe Modal -->
-          <div class="modal fade" id="exampleModal{{r.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">{{r.title}}</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                <div class="r-main">
-                  <img class="img-fluid img-primary" src="{%if r.rec_image%}{{r.rec_image.first.image.url}}{%endif%}" alt="{{r.image_alt}}">
-					{% if r.rec_ind.count >= 1 %}
-					  <div class="row crab">
-						<b class="ps-0" ><h5 class="mb-3">Ingredients</h5></b>
-						{% for i in r.rec_ind.all %}
-						   <div class="row">
-								<div class="col-lg-6 col-md-6 col-sm-6 col-6 mb-2 ps-0">{{i.title}}</div>
-								<!-- <div class="col-lg-6 col-md-6 col-sm-6 col-6 mb-2 ps-0">:{{i.amount}}</div> -->
-						   </div>
-						{% endfor %}
-					  </div>
-					  {% endif %}
-
-					{% if r.description %}
-					<h6 style="color:#000; font-size:20px; padding:10px 0px;" >Instruction</h6>
-                  <div class="r-p-popup">{{r.description|safe}}</div>
-				  {% endif %}
-                </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            
-                </div>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-   
-        </div>
-      </div>
-    </div>
-
-    <!-- view_modal -->
-    <div class="modal fade terms-modal" id="view_modal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-body text-blue">
-            <div class="card border-0 rounded-0 p-tb-50-lr-30">
-              <div class="row align-items-center" id="pdetails">
-                
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer border-0">
-            <button type="button" class="btn primary-btn btn-l-blue font-lnter" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /view_modal -->
     </section>
-    <!-- /brands -->
-
-
   </div>
-  <a href="https://wa.me/971501205320" class="whatsapp-button" target="_blank">
-    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
-      <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
-    </svg>
-  </a>
-
-  <link href="{% static 'website/assets/public/fonts/webfonts/Aref-ruqaa/font-aref-ruqaa.css' %}" rel="stylesheet" type="text/css">
-
-  
-
-<!-- footer -->
-<!-- <footer class="footer-1 brand-ftr"> -->
-  <!-- <div class="container-fluid common-padding"> -->
-    <!-- <div class="row"> -->
-      <!-- <div class="col-lg-4"> -->
-        <!-- <div> -->
-          <!-- <a class="a-logo" href=""> -->
-            <!-- <img class="logo" src=" {% static 'website/assets/general/images/logo-white.png' %}"> -->
-          <!-- </a> -->
-          <!-- <div class="caption">37 Years of excellence in quality & service.</div> -->
-
-        <!-- </div> -->
-        <!-- <div class="footer-country"> -->
-          <!-- <div class="country_nav_url"> -->
-            <!-- <a class="a-item" -->
-              <!-- href="">UAE</a> -->
-            <!-- <a class="a-item" -->
-              <!-- href="">KSA</a> -->
-            <!-- <a class="a-item"  -->
-              <!-- href="">QATAR</a> -->
-            <!-- <a class="a-item"  -->
-              <!-- href="">OMAN</a> -->
-            <!-- <a class="a-item" -->
-              <!-- href="">INDIA</a> -->
-          <!-- </div> -->
-          <!-- <div class="country_nav_btn d-none"> -->
-
-          <!-- </div> -->
-        <!-- </div> -->
-
-        <!-- <div class="social"> -->
-          <!-- <a class="btn-zoom-hover" href="https://www.facebook.com/thedeepseafood" target="_blank"> -->
-            <!-- <i class="fa fa-facebook" aria-hidden="true"></i> -->
-          <!-- </a> -->
-          <!-- <a class="btn-zoom-hover" href="https://www.instagram.com/thedeepseafood/" target="_blank"> -->
-            <!-- <i class="fa fa-instagram" aria-hidden="true"></i> -->
-          <!-- </a> -->
-          <!-- <a class="btn-zoom-hover" href="https://www.linkedin.com/company/thedeepseafood" target="_blank"> -->
-            <!-- <i class="fa fa-linkedin" aria-hidden="true"></i> -->
-          <!-- </a> -->
-          <!-- <a class="btn-zoom-hover" href="https://twitter.com/thedeepseafood" target="_blank"> -->
-            <!-- <i class="fa fa-twitter" aria-hidden="true"></i> -->
-          <!-- </a> -->
-          <!-- <a class="btn-zoom-hover" href="https://www.youtube.com/channel/UCc3zTaCKRyM9AnYwftEe1hw/featured" -->
-            <!-- target="_blank"> -->
-            <!-- <i class="fa fa-youtube-play" aria-hidden="true"></i> -->
-          <!-- </a> -->
-        <!-- </div> -->
-      <!-- </div> -->
-      <!-- <div class="col-lg-4"> -->
-        <!-- <h4>Quick links</h4> -->
-
-        <!-- <ul class="nav-list font-lntermedium"> -->
-          <!-- <div class="row align-items-center"> -->
-            <!-- <div class="col-sm-5"> -->
-              <!-- <li> -->
-                <!-- <a href="{% url 'index' %}">Home Page</a> -->
-              <!-- </li> -->
-              <!-- <li> -->
-                <!-- <a href="{% url 'about' %}">About us</a> -->
-              <!-- </li> -->
-              <!-- <li> -->
-                <!-- <a href="{% url 'product' %}">Products</a> -->
-              <!-- </li> -->
-              <!-- <li> -->
-                <!-- <a href="{% url 'brands' %}">Brands</a> -->
-              <!-- </li> -->
-              <!-- <li> -->
-                <!-- <a href="{% url 'distribution' %}">Distribution Channel</a> -->
-              <!-- </li> -->
-            <!-- </div> -->
-            <!-- <div class="col-sm-7"> -->
-
-              <!-- <li> -->
-                <!-- <a href="{% url 'newsroom' %}">News Room</a> -->
-              <!-- </li> -->
-
-              <!-- <li> -->
-                <!-- <a href="{% url 'career_view' %}">Career</a> -->
-              <!-- </li> -->
-              <!-- <li> -->
-                <!-- <a href="{% url 'contact' %}">Contact us</a> -->
-              <!-- </li> -->
-
-            <!-- </div> -->
-          <!-- </div> -->
-        <!-- </ul> -->
-      <!-- </div> -->
-      <!-- <div class="col-lg-4 contact-info"> -->
-        <!-- <h4>CONTACT INFO</h4> -->
-        <!-- <div class="address"> -->
-          <!-- <div class="title">THE DEEP SEAFOOD COMPANY</div> -->
-          <!-- <div class="address"> -->
-            <!-- <i class="fa fa-home ml-3" aria-hidden="true"></i> -->
-            <!-- United Arab Emirates</div> -->
-          <!-- <div class="info"> -->
-            <!-- <a class="btn-zoom-hover mb-0" href="tel:+971 2 6733445"> -->
-              <!-- <i class="fa fa-mobile" aria-hidden="true"></i> -->
-              <!-- <span>+971 2 6733445</span>&nbsp;|<br> -->
-            <!-- </a> -->
-            <!-- <a class="btn-zoom-hover mb-0" href="tel:+971 4 2844227"> -->
-              <!-- <span>+971 4 2844227</span> -->
-            <!-- </a> -->
-          <!-- </div> -->
-          <!-- <div class="info"> -->
-            <!-- <a class="btn-zoom-hover" href="mailto:Info@thedeepseafood.com"> -->
-              <!-- <i class="fa fa-envelope-o" aria-hidden="true"></i> -->
-              <!-- <span>Info@thedeepseafood.com</span> -->
-            <!-- </a> -->
-          <!-- </div> -->
-        <!-- </div> -->
-      <!-- </div> -->
- 
-    <!-- </div> -->
-    <!-- <div class="col-lg-12 text-center"> -->
-        <!-- <div class="links"> -->
-          <!-- <button class="btn btn-zoom-hover" type="button" data-bs-toggle="modal" data-bs-target="#terms_modal">Terms -->
-            <!-- and Conditions</button> -->
-          <!-- <a class="btn btn-zoom-hover">Privacy Policy</a> -->
-        <!-- </div> -->
-
-        <!-- <div class="copyright"> -->
-        <!-- <span>Copyright @2024 The Deep Seafood Company. </span> -->
-        <!-- <span>All rights are reserved.</span> -->
-        <!-- <span>Developed by <a href="http://codesap.com/" target="_blank"> CODESAP</a></span> -->
-       <!-- </div> -->
-      <!-- </div> -->
-  <!-- </div> -->
- <!-- <div class="video-container"> -->
-    <!-- <img class="cover" src="{% static 'website/assets/public/images/footer/bg.png' %}"> -->
-<!-- </div> -->
-<!-- </footer> -->
-<footer class="footer-1">
- <div class="wrapper aos-init aos-animate" data-aos="fade-down" data-aos-duration="1000">
-  <div class="row justify-content-center">
-	 <div class="col-lg-8 text-center">
-     <a class="a-logo" href="/">
-    <img class="logo" src=" {% static 'website/assets/general/images/logo-white.png' %}">
-     </a>
-     <div class="caption">38 Years of excellence in quality &amp; service.</div>
-     <div>
-      <div class="title">THE DEEP SEAFOOD COMPANY</div>
-      <div class="address">United Arab Emirates</div>
-      <div class="info">
-        <a class="btn-zoom-hover mb-0" href="tel:+971 2 6733445">
-          <i class="fa fa-mobile" aria-hidden="true"></i>
-          <span>+971 2 6733445</span>
-        </a>
-        <a class="btn-zoom-hover mb-0">          
-          <span>|</span>
-        </a>
-        <a class="btn-zoom-hover mb-0" href="tel:+971 4 2844227">
-          <i class="fa fa-mobile" aria-hidden="true"></i>
-          <span>+971 4 2844227</span>
-        </a>
-      </div>
-      <div class="info">
-        <a class="btn-zoom-hover" href="mailto:Info@thedeepseafood.com">
-          <i class="fa fa-envelope-o" aria-hidden="true"></i>
-          <span>Info@thedeepseafood.com</span>
-        </a>
-      </div>
-      <div class="footer-country">
-       <div class="country_nav_url">
-         <a class="a-item aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" href="{% url 'contact' %}?branch=UAE">UAE</a> 
-        <a class="a-item aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" href="{% url 'contact' %}?branch=KSA">KSA</a>
-        <a class="a-item aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" href="{% url 'contact' %}?branch=QATAR">QATAR</a>
-        <a class="a-item aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" href="{% url 'contact' %}?branch=OMAN"">OMAN</a>
-        <a class="a-item aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" href="{% url 'contact' %}?branch=INDIA">INDIA</a>
-		     <a class="a-item aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" href="{% url 'contact' %}?branch=UK">UK</a>
-            <a class="a-item aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" href="{% url 'contact' %}?branch=MALDIVES">MALDIVES</a>
-       </div>
-       <div class="country_nav_btn d-none">
-        
-
-  <ul class="nav nav-tabs tab-country border-0 justify-content-center country_tab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active info-item text-blue aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" data-bs-toggle="tab" data-bs-target="#tab_uae" type="button" role="tab" aria-selected="true">
-        <div class="title a-item font-lnterbold">UAE</div>
-      </button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link info-item text-blue aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" data-bs-toggle="tab" data-bs-target="#tab_ksa" type="button" role="tab" aria-selected="true">
-        <div class="title a-item font-lnterbold">KSA</div>
-      </button>
-    </li>
-     <li class="nav-item" role="presentation">
-      <button class="nav-link info-item text-blue aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" data-bs-toggle="tab" data-bs-target="#tab_qatar" type="button" role="tab" aria-selected="true">
-        <div class="title a-item font-lnterbold">QATAR</div>
-      </button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link info-item text-blue aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" data-bs-toggle="tab" data-bs-target="#tab_oman" type="button" role="tab" aria-selected="true">
-        <div class="title a-item font-lnterbold">OMAN</div>
-      </button>
-    </li> 
-     <li class="nav-item" role="presentation">
-      <button class="nav-link info-item text-blue aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" data-bs-toggle="tab" data-bs-target="#tab_india" type="button" role="tab" aria-selected="true">
-        <div class="title a-item font-lnterbold">INDIA</div>
-      </button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link info-item text-blue aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" data-bs-toggle="tab" data-bs-target="#tab_uk" type="button" role="tab" aria-selected="true">
-        <div class="title a-item font-lnterbold">UNITED KINGDOM</div>
-      </button>
-    </li>
-	    <li class="nav-item" role="presentation">
-      <button class="nav-link info-item text-blue aos-init aos-animate" data-aos="fade-up" data-aos-duration="1000" data-bs-toggle="tab" data-bs-target="#tab_ml" type="button" role="tab" aria-selected="true">
-        <div class="title a-item font-lnterbold">MALDIVES</div>
-      </button>
-    </li>
-   </ul>
-       </div>
-      </div>
-     </div>
-     <div>
-       <div class="social">
-        <a class="btn-zoom-hover" href="https://www.facebook.com/thedeepseafood" target="_blank">
-          <i class="fa fa-facebook" aria-hidden="true"></i>
-        </a>
-        <a class="btn-zoom-hover" href="https://www.instagram.com/thedeepseafood/" target="_blank">
-          <i class="fa fa-instagram" aria-hidden="true"></i>
-        </a>
-        <a class="btn-zoom-hover" href="https://www.linkedin.com/company/thedeepseafood" target="_blank">
-          <i class="fa fa-linkedin" aria-hidden="true"></i>
-        </a>
-        <a class="btn-zoom-hover" href="https://twitter.com/thedeepseafood" target="_blank">
-          <i class="fa fa-twitter" aria-hidden="true"></i>
-        </a>
-        <a class="btn-zoom-hover" href="https://www.youtube.com/channel/UCc3zTaCKRyM9AnYwftEe1hw/featured" target="_blank">
-          <i class="fa fa-youtube-play" aria-hidden="true"></i>
-        </a>
-       </div>
-     </div>
-     <div>
-      <div class="link-list">
-        
- <ul class="nav-list font-lntermedium">
-  <div class="row align-items-center">
-    <div class="col-sm-5">
-      <li>
-        <a href="/">Home Page</a>
-      </li>
-      <li>
-        <a href="{% url 'about' %}">About us</a>
-      </li>
-      <li>
-        <a href="{% url 'product' %}">Products</a>
-      </li>
-      <li>
-        <a href="{% url 'brands' %}" class="active">Brands</a>
-      </li>
-      <li>
-        <a href="{% url 'distribution' %}">Distribution Channel</a>
-      </li>
-    </div>
-    <div class="col-sm-7"> 
-      
-      <li>
-        <a href="{% url 'newsroom' %}">News Room</a>
-      </li>
-       <li>
-        <a href="{% url 'blog' %}">Blogs</a>
-      </li>
-      <li>
-        <a href="{% url 'careers' %}">Career</a>
-      </li>
-      <li>
-        <a href="{% url 'contact' %}">Contact us</a>
-      </li>
-      
-    </div>
-  </div>
- </ul>
-      </div>
-      <div class="links">
-        <button class="btn btn-zoom-hover" type="button" data-bs-toggle="modal" data-bs-target="#terms_modal">Terms and Conditions</button>
-        <a class="btn btn-zoom-hover">Privacy Policy</a>
-       </div>
-       <div class="copyright">
-        <span>Copyright @2024 The Deep Seafood Company. </span>
-        <span>All rights are reserved.</span>
-        <span>Developed by <a href="http://codesap.com/" target="_blank"> CODESAP</a></span>
-       </div>
-     </div>
-   </div>
-  </div>
- </div>
- <div class="video-container">
-  <img class="cover" src="{% static 'website/assets/public/images/footer/bg.png' %}">
- </div>
-</footer>
-<!-- /footer -->
-
-<button class="btn toggle-enquiry toggle_enquiry enqry-btn">ENQUIRY NOW</button>
-<div class="enquiry bg-x-light-blue">
-  <button class="btn close-btn text-blue toggle_enquiry btn-zoom-hover">
-   <i class="fa fa-times-circle" aria-hidden="true"></i>
-  </button>
-  <div class="head text-center">
-    <div class="title text-blue font-lnterbold">SEND US YOUR ENQUIRY</div>
-  </div>
-  
-
-<form method="post" class="form" id="contactform" action="{% url 'send_email' %}">
-	{% csrf_token %}
-  <div class="body">
-    <div class="row">
-		<div class="col-12">
-		  <input class="form-control text-blue" name="name" type="text" maxlength="50" placeholder="Your Name"
-			required>
-			
-		</div>
-		<div class="col-12">
-		  <input class="form-control text-blue" name="phone" type="text" maxlength="15"
-			placeholder="Phone Number" required onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-		</div>
-		<div class="col-12" id="email">
-		  <input class="form-control text-blue" name="email" type="email" maxlength="100" placeholder="Email"
-			required>
-			<b><span class="text-danger formerror"></span></b>
-		  <input type="hidden" name="honey">
-		</div>
-		<div class="col-12">
-		  <input class="form-control text-blue" name="location" type="text" maxlength="100"
-			placeholder="Location" required>
-		</div>
-		<div class="col-12">
-		  <textarea class="form-control text-blue h-60-px" name="message" maxlength="500" placeholder="Message"
-			required></textarea>
-		</div>
-	  </div>
-  </div>
-  <div class="foot text-center">
-    <button type="submit" id="submitButton" class="BTN_SUBMIT btn btn-primary font-lntermedium">Send Enquiry</button>
-  </div>
-</form>
-<!-- terms_modal -->
-<div class="modal fade terms-modal" id="terms_modal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-blue font-lnterbold">TERMS AND CONDITIONS</h5>
-        <button type="button" class="btn text-blue btn-zoom-hover" data-bs-dismiss="modal" aria-label="Close">
-          <i class="fa fa-times-circle" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="modal-body text-blue">
-        <h6>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam veniam aliquid numquam temporibus! Hic
-          perspiciatis nostrum sapiente quasi non cupiditate, placeat est quod rem veniam sunt doloribus at nam fugit.
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem, a consectetur hic ea pariatur amet maiores
-          velit obcaecati cumque? Enim obcaecati nemo voluptatum fugiat! Soluta excepturi enim inventore doloribus
-          maiores?</h6>
-        <h6>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam veniam aliquid numquam temporibus! Hic
-          perspiciatis nostrum sapiente quasi non cupiditate, placeat est quod rem veniam sunt doloribus at nam fugit.
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem, a consectetur hic ea pariatur amet maiores
-          velit obcaecati cumque? Enim obcaecati nemo voluptatum fugiat! Soluta excepturi enim inventore doloribus
-          maiores?</h6>
-        <h6>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam veniam aliquid numquam temporibus! Hic
-          perspiciatis nostrum sapiente quasi non cupiditate, placeat est quod rem veniam sunt doloribus at nam fugit.
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quidem, a consectetur hic ea pariatur amet maiores
-          velit obcaecati cumque? Enim obcaecati nemo voluptatum fugiat! Soluta excepturi enim inventore doloribus
-          maiores?</h6>
-      </div>
-      <div class="modal-footer border-0">
-        <button type="button" class="btn primary-btn btn-l-blue font-lnterbold btn-lg" data-bs-dismiss="modal">I
-          Agreed</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- /terms_modal -->
-<!-- bootstrap5 -->
-<script src="{% static 'website/assets/general/modules/bootstrap5/js/bootstrap.min.js' %}" type="text/javascript"></script>
-<!-- slick-slider -->
-<script src="{% static 'website/assets/general/modules/slick-slider/slick.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'website/assets/public/modules/slick-slider/custom.js' %}" type="text/javascript"></script>
-<!-- chosen-select -->
-<script src="{% static 'website/assets/general/modules/chosen-select/chosen.jquery.js' %}" type="text/javascript"></script>
-<!-- datepicker -->
-<script src="{% static 'website/assets/general/modules/datepicker/jquery-ui.js' %}" type="text/javascript"></script>
-<!-- showmore -->
-<script src="{% static 'website/assets/public/modules/showmore/jquery.collapser.js' %}" type="text/javascript"></script>
-<!-- aos -->
-<script src="{% static 'website/assets/public/modules/aos/aos.js' %}" type="text/javascript"></script>
-<!-- wow -->
-<script src="{% static 'website/assets/public/modules/animate/wow.min.js' %}" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
-<script src="https://alexandrebuffet.fr/codepen/slider/slick-animation.min.js"></script>
-
-
-<!-- custom -->
-<script src="{% static 'website/assets/general/js/custom.js' %}" type="text/javascript"></script>
-<script src="{% static 'website/assets/public/js/custom.js' %}" type="text/javascript"></script>
-
-
-
-<!-- partial -->
-<script src="{% static 'website/assets/public/modules/gsap/gsap.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'website/assets/public/modules/gsap/ScrollTrigger.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'website/custom/custom.js' %}" type="text/javascript"></script>
-<script>
-
+  <link href="{% static 'website/assets/public/fonts/webfonts/Aref-ruqaa/font-aref-ruqaa.css' %}"
+        rel="stylesheet"
+        type="text/css">
+  <!-- Sticky Enquiry Button -->
+  {% include "website/enquiry/enquiry-form.html" %}
+  <script>
   $(document).ready(function() {
       const productItems = $(".mix");
       const loadMoreButton = $("#loadMoreButton");
@@ -1100,9 +558,6 @@
           loadMoreButton.hide();
       }
   });
-</script>
-
-<script>
 /*
 ** With Slick Slider Plugin : https://github.com/marvinhuebner/slick-animation
 ** And Slick Animation Plugin : https://github.com/marvinhuebner/slick-animation
@@ -1137,9 +592,6 @@ $('.slick-nav').on('click touch', function(e) {
     }
 
 });
-</script>
- 
-<script>
 // modal_watch_file
 $("body").on("click", ".watch_file_btn", function (event) {
   $('#watch_src').attr('src', $(this).data('file-src'));
@@ -1161,8 +613,6 @@ playButtons.forEach(button => {
     videoPlayer.classList.remove('d-none');
   });
 });
-</script>
-<script>
 $(".VIEWMODAL").click(function(){
     $(".PNAME").text($(this).data("name"))
     $(".PPRICE").text($(this).data("price"))
@@ -1201,15 +651,12 @@ $(".VIEWMODAL").click(function(){
 
           $.each( ret, function( key, values ) {
             ids = values["id"]
-            $('.MOREBTN').append('<div class="row align-items-center position-relative row-item pt-50"><div class="col-lg-4 col-sm-5 col-item"><img class="img-fluid img-primary" src='+values["image"]+'></div><div class="col-lg-8 col-sm-7 col-item"><div class="title font-aref-ruqaabold">'+values["name"]+'</div><div class="dec">'+values["description"]+'</div></div><button data-image='+values["image"]+' data-description='+values["description"]+' data-causion='+values["causion"]+' data-storage_instructions='+values["storage_instructions"]+' data-instructions='+values["instructions"]+' data-ingredients='+values["ingredients"]+' data-net_weight='+values["net_weight"]+' data-price='+values["price"]+' data-product_code='+values["product_code"]+' data-name='+values["name"]+' class="primary-btn VIEWMODAL" type="button" ></button></div>');   
+            $('.MOREBTN').append('<div class="row align-items-center position-relative row-item pt-50"><div class="col-lg-4 col-sm-5 col-item"><img class="img-fluid img-primary" src='+values["image"]+'></div><div class="col-lg-8 col-sm-7 col-item"><div class="title font-aref-ruqaabold">'+values["name"]+'</div><div class="dec">'+values["description"]+'</div></div><button data-image='+values["image"]+' data-description='+values["description"]+' data-causion='+values["causion"]+' data-storage_instructions='+values["storage_instructions"]+' data-instructions='+values["instructions"]+' data-ingredients='+values["ingredients"]+' data-net_weight='+values["net_weight"]+' data-price='+values["price"]+' data-product_code='+values["product_code"]+' data-name='+values["name"]+' class="primary-btn VIEWMODAL" type="button"></button></div>');   
           });  
           $('input[name="last_id"]').val(ids)
    
          }  
      });
   })
-</script>
-   
-</body>
-
-</html>
+  </script>
+{% endblock content %}
