@@ -13,7 +13,7 @@
                 <table class="text-blue font-lntermedium load_more_item">
                     <tbody>
                         {% with "North America,ASIA,AFRICA,AUSTRALIA,Europe,MIDDLE EAST" as regions_list %}
-                            {% for region in regions_list|split:"," %}
+                            {% for region in regions_list|split_by_comma %}
                                 <tr>
                                     <td class="{% if forloop.counter == 1 %}pt-2{% endif %}">
                                         <img width=""

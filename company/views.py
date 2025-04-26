@@ -8,7 +8,7 @@ from django.views.generic import (
     ListView,
     DeleteView,
 )
-from deepapp.helper import is_ajax, renderhelper
+# from deepapp.helper import is_ajax, renderhelper
 from datetime import datetime
 
 from django.db.models import Q

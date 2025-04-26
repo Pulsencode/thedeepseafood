@@ -20,8 +20,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # "deepapp",
-    # "website",
     "company",
     "administration",
     "accounts",
@@ -29,8 +27,6 @@ INSTALLED_APPS = [
     "public_interface",
     "career",
     "phonenumber_field",
-    "website",
-
 ]
 
 MIDDLEWARE = [

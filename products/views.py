@@ -15,7 +15,7 @@ from django.views import View
 from django.views.generic import TemplateView, CreateView, UpdateView
 
 
-from deepapp.helper import is_ajax, renderhelper
+# from deepapp.helper import is_ajax, renderhelper
 from company.models import Brand
 from products.forms import (
     CategoryForm,
