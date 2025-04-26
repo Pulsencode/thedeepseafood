@@ -103,7 +103,7 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = [
             "brand", "sequence", "type", "name",
-            "image_alt", "image", "homepage"
+            "image_alt", "image", "homepage", "status"
         ]
 
     def __init__(self, *args, **kwargs):
