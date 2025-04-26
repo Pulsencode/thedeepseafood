@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "public_interface",
     "career",
     "phonenumber_field",
+    "adminsortable2",
 ]
 
 MIDDLEWARE = [

@@ -1,19 +1,22 @@
+from adminsortable2.admin import SortableAdminMixin
 from django.contrib import admin
 from django.utils.html import format_html
+
 from company.models import (
-    Certification,
-    Event,
-    BlogImage,
+    SEO,
     Blog,
-    News,
-    NewsImage,
+    BlogImage,
+    Brand,
+    Certification,
+    CompanyTestimonial,
+    Event,
     EventImage,
     ManagementTeam,
-    CompanyTestimonial,
-    Brand,
-    SEO,
-    PromotionImage,
+    News,
+    NewsImage,
     Promotion,
+    PromotionImage,
+    Supermarkets,
 )
 
 
@@ -177,3 +180,10 @@ class CertificationAdmin(admin.ModelAdmin):
         return "No Image"
 
     display_image.short_description = "Image"
+
+
+@admin.register(Supermarkets)
+class SupermarketsAdmin(SortableAdminMixin, admin.ModelAdmin):
+    list_display = ("sequence", "__str__")
+    ordering = ("sequence",)
+    readonly_fields = ("sequence",)
