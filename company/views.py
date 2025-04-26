@@ -19,8 +19,8 @@ from django.http import JsonResponse
 from django.template import loader
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
-# from django.core.files.base import ContentFile
-# import base64
+from django.core.files.base import ContentFile
+import base64
 from company.forms import (
     HistoryForm,
     NewsForm,
@@ -356,18 +356,19 @@ class TestimonialCreateView(CreateView):
     form_class = TestimonialForm
     success_url = reverse_lazy("list_testimonial")
     template_name = "superadmin/testimonial/testimonial_create.html"
-    extra_context = {"page_title": "Create Testimonial"}
 
     def form_valid(self, form):
+        # Handle cropped image
+        cropped_image = self.request.POST.get('testi-image')
+        if cropped_image:
+            # Convert base64 to Django file
+            format, imgstr = cropped_image.split(';base64,') 
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr), name=f'cropped.{ext}')
+            form.instance.image = data
+
         messages.success(self.request, "Testimonial Added Successfully...!!")
-
         return super().form_valid(form)
-
-    def form_invalid(self, form):
-        for error_list in form.errors.values():
-            for errors in error_list:
-                messages.error(self.request, errors)
-        return super().form_invalid(form)
 
 
 class TestimonialUpdateView(UpdateView):

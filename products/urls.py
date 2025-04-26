@@ -17,7 +17,7 @@ urlpatterns = [
         "subcategory-add", views.SubcategoryCreateView.as_view(), name="subcategory_add"
     ),
     path(
-        "subcategory-update/<int:id>/",
+        "subcategory-update/<int:pk>/",
         views.SubcategoryUpdateView.as_view(),
         name="subcategory_update",
     ),
@@ -70,7 +70,7 @@ urlpatterns = [
         name="brand_product_add",
     ),
     path(
-        "brand-product-update/<int:id>/",
+        "brand-product-update/<int:pk>/",
         views.BrandProductUpdateView.as_view(),
         name="brand_product_update",
     ),
@@ -90,7 +90,7 @@ urlpatterns = [
         name="brand_product_details_add",
     ),
     path(
-        "brand-product-details-update/<int:id>/",
+        "brand-product-details-update/<int:pk>/",
         views.BrandProductDetailsUpdateView.as_view(),
         name="brand_product_details_update",
     ),
