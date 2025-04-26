@@ -1,26 +1,26 @@
 {% load static %}
-{% for g in all_events %}
+{% for event in all_events %}
   {% if not forloop.counter|divisibleby:"2" %}
     <div class="col-12 padd_t_50 row-item news-box">
       <div class="item text-blue">
         <div class="row">
           <div class="col-lg-6 col-item">
             <div class="info">
-              <div class="title font-lnterbold">{{ g.title }}</div>
-              <div class="dec">{{ g.description|safe }}</div>
-              <div class="date">{{ g.date|date:'d/m/Y' }}</div>
-              <div class="location">{{ g.location }}</div>
+              <div class="title font-lnterbold">{{ event.title }}</div>
+              <div class="dec">{{ event.description|safe }}</div>
+              <div class="date">{{ event.date|date:'d/m/Y' }}</div>
+              <div class="location">{{ event.location }}</div>
             </div>
           </div>
           <div class="col-lg-6 col-item">
             <div class="slick_slider_1 slick-dots-blue">
-              {% for i in g.news_image.all %}
+              {% for img in event.news_image.all %}
                 <div class="item">
                   <img class="img-fluid"
                        width=""
                        height=""
-                       src="{{ i.image.url }}"
-                       alt="{{ g.image_alt }}-{{ forloop.counter }}">
+                       src="{{ img.image.url }}"
+                       alt="{{ event.image_alt }}-{{ forloop.counter }}">
                 </div>
               {% endfor %}
             </div>
@@ -34,21 +34,21 @@
         <div class="row">
           <div class="col-lg-5 col-item">
             <div class="info">
-              <div class="title font-lnterbold">{{ g.title }}</div>
-              <div class="dec">{{ g.description|safe }}</div>
-              <div class="date">{{ g.date|date:'d/m/Y' }}</div>
-              <div class="location">{{ g.location }}</div>
+              <div class="title font-lnterbold">{{ event.title }}</div>
+              <div class="dec">{{ event.description|safe }}</div>
+              <div class="date">{{ event.date|date:'d/m/Y' }}</div>
+              <div class="location">{{ event.location }}</div>
             </div>
           </div>
           <div class="col-lg-7 col-item">
             <div class="slick_slider_1 slick-dots-blue">
-              {% for i in g.gallery_image.all %}
+              {% for img in event.gallery_image.all %}
                 <div class="item">
                   <img class="img-fluid"
                        width=""
                        height=""
-                       src="{{ i.image.url }}"
-                       alt="{{ g.image_alt }}-{{ forloop.counter }}">
+                       src="{{ img.image.url }}"
+                       alt="{{ event.image_alt }}-{{ forloop.counter }}">
                 </div>
               {% endfor %}
             </div>

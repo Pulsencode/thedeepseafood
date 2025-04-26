@@ -1,22 +1,22 @@
 {% load static %}
-{% for p in all_products %}
+{% for product in all_products %}
     <div class="col-lg-3 col-md-4 col-6 pt-20">
         <div class="item card-hover-up">
             <img width=""
                  height=""
                  class="img-primary"
                  loading="lazy"
-                 src="{{ p.image.url }}"
-                 alt="{{ p.image_alt }}">
+                 src="{{ product.image.url }}"
+                 alt="{{ product.image_alt }}">
             <div class="info">
-                <div class="title font-lntermedium">{{ p.name }}</div>
+                <div class="title font-lntermedium">{{ product.name }}</div>
                 <img width=""
                      height=""
                      alt="Blue Arrow"
                      src="{% static 'website/assets/public/images/icons/right-arrow-blue.png' %}"
                      class="arrow_sm">
             </div>
-            <a class="primary-btn" href="{% url 'product_details' p.slug %}"></a>
+            <a class="primary-btn" href="{% url 'product_details' product.slug %}"></a>
         </div>
     </div>
 {% endfor %}

@@ -44,21 +44,21 @@
               </div>
               <div class="right-item">
                 <h4 class="font-lnterbold text-blue">UPCOMING PROMOTIONS</h4>
-                {% for d in data %}
-                  <a href="{% url 'promotion_details' d.id %}"
+                {% for upcoming_promotion in data %}
+                  <a href="{% url 'promotion_details' upcoming_promotion.id %}"
                      class="text-decoration-none">
                     <div class="item border-b wow fadeInUp wow_item promotion-item">
                       <div class="row align-items-center">
-                        <p class="d-none">{{ d.title }}</p>
+                        <p class="d-none">{{ upcoming_promotion.title }}</p>
                         <div class="col-3">
                           <img class="img-fluid"
                                width=""
                                height=""
                                alt=""
-                               src="{% if d.promo_image %}{{ d.promo_image.first.image.url }}{% endif %}">
+                               src="{% if upcoming_promotion.promo_image %}{{ upcoming_promotion.promo_image.first.image.url }}{% endif %}">
                         </div>
                         <div class="col-9 ps-0">
-                          <div class="tilte text-blue">{{ d.description|truncatechars:50 }}</div>
+                          <div class="tilte text-blue">{{ upcoming_promotion.description|truncatechars:50 }}</div>
                         </div>
                       </div>
                     </div>

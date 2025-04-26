@@ -103,6 +103,9 @@ class ProductDetails(models.Model):
     grade = models.CharField(max_length=2000, blank=True)
     origin = models.CharField(max_length=100, blank=True)
     packing = models.CharField(max_length=2000, blank=True)
+
+    def name(self):
+        return self.product.name if self.product else ""
     slug = AutoSlugField(
         populate_from="name",
         editable=True,
@@ -130,7 +133,7 @@ class RecipeImage(ImageBase, TimestampBase):
 
 
 class Subcategory(StatusTimestampBase):
-    name = models.CharField(max_length=200)
+    name = models.ForeignKey(Category, null=False, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
