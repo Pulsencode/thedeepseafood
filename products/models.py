@@ -45,7 +45,7 @@ class RecipeIngredients(TimestampBase):
         return f"{self.recipe.title} - {self.title}"
 
 
-class Product(StatusTimestampBase):
+class Product(StatusTimestampBase, ImageBase):
     TYPE_CHOICES = (
         ("local catch", "Local Catch"),
         ("imported", "Imported"),
@@ -71,7 +71,6 @@ class Product(StatusTimestampBase):
     )
 
     name = models.CharField(max_length=150)
-    image_alt = models.CharField(max_length=100, blank=True)
     homepage = models.BooleanField(default=False)
 
     def __str__(self):

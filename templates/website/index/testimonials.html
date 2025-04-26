@@ -1,5 +1,5 @@
 {% load static %}
-{% if testimonial %}
+{% if all_testimonials %}
     <section id="testimonials" class="pb-30 pt-0">
         <div class="wrapper">
             <div class="row pt-30 text-center">
@@ -19,7 +19,7 @@
                                          height=""
                                          alt="Blue color comma"
                                          src="{% static 'website/assets/public/images/icons/comma-blue.png' %} ">
-                                    <div class="dec text-blue scrollbar">{{ testimonial.message|safe }}</div>
+                                    <div class="dec text-blue scrollbar">{{ testimonial.quote|safe }}</div>
                                     <div class="shape">
                                         <div class="empty"></div>
                                     </div>

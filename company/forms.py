@@ -46,11 +46,17 @@ class TestimonialForm(forms.ModelForm):
     class Meta:
         model = CompanyTestimonial
         fields = "__all__"
+        widgets = {
+            'quote': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['image'].required = False
         for field in self.fields:
-            if isinstance(self.fields[field].widget, forms.CheckboxInput):
+            if field == 'image':
+                self.fields[field].widget.attrs.update({'class': 'item-img5 file center-block'})
+            elif isinstance(self.fields[field].widget, forms.CheckboxInput):
                 self.fields[field].widget.attrs.update({"class": "form-check-input"})
             else:
                 self.fields[field].widget.attrs.update({"class": "form-control"})

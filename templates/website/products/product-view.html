@@ -20,7 +20,7 @@
               <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
                 <h3 class="font-lnterbold">PRODUCT</h3>
                 <h5 class="font-lnterbold">
-                  <a href="{% url 'index' %}">Home</a>
+                  <a href="{% url 'home' %}">Home</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
                   <a href="{% url 'product' %}">Product</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -61,8 +61,8 @@
               <img class="img-fluid rounded-25 img-product-99"
                    width=""
                    height=""
-                   src="{{ product.image.url }}"
-                   alt="{{ product.image_alt }}">
+                   src="{{ product.product.image.url }}"
+                   alt="{{ product.product.image_alt }}">
             </div>
             <div class="col-md-8 mt-50-zero-sm"
                  data-aos="fade-up"
@@ -103,7 +103,7 @@
             </div>
           </div>
           <div class="row text-center" data-aos="fade-up" data-aos-duration="1500">
-            {% for item in list %}
+            {% for item in related_products %}
               <div class="col-lg-2 col-md-3 colsm-4 col-6 mt-25">
                 <div class="item card-hover-up">
                   <img class="img-primary"
@@ -113,7 +113,7 @@
                        alt="{{ item.image_alt }}">
                   <div class="title font-lntermedium text-blue">{{ item.name }}</div>
                   <a class="url-primary"
-                     href="{% url 'product_details' item.slug_product %}#drt"></a>
+                     href="{% url 'product_details' item.slug %}#drt"></a>
                 </div>
               </div>
             {% endfor %}
