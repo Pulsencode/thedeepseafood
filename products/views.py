@@ -12,29 +12,18 @@ from django.shortcuts import redirect, render
 from django.template import loader
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import TemplateView, CreateView, UpdateView
+from django.views.generic import CreateView, TemplateView, UpdateView
 
-
-from deepapp.helper import is_ajax, renderhelper
 from company.models import Brand
 from products.forms import (
-    CategoryForm,
-    RecipeForm,
-    RecipeIngredientFormSet,
-    ProductForm,
-    ProductDetailsForm,
-    BrandProductForm,
     BrandProductDetailsForm,
+    BrandProductForm,
+    CategoryForm,
+    ProductDetailsForm,
+    ProductForm,
 )
-from products.models import (
-    Category,
-    Product,
-    ProductDetails,
-    RecipeDetails,
-    RecipeImage,
-    RecipeIngredients,
-    Subcategory,
-)
+from products.models import Category, Product, ProductDetails, Subcategory
+from public_interface.utils import is_ajax, render_helper
 
 
 class AdminPermissionMixin(UserPassesTestMixin):
@@ -101,7 +90,7 @@ class CategoryListView(AdminPermissionMixin, TemplateView):
         context["page"] = page
         context["path"] = path
 
-        return renderhelper(request, "category", "Category_view", context)
+        return render_helper(request, "category", "Category_view", context)
 
 
 class CategoryCreateView(AdminPermissionMixin, CreateView):
@@ -138,164 +127,164 @@ class CategoryUpdateView(AdminPermissionMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class RecipeListView(AdminPermissionMixin, TemplateView):
-    template_name = "superadmin/recipe/recipe_list.html"
+# class RecipeListView(AdminPermissionMixin, TemplateView):
+#     template_name = "superadmin/recipe/recipe_list.html"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Recipe"
-        page = request.GET.get("page", 1)
+#     def get(self, request, *args, **kwargs):
+#         context = {}
+#         path = "Recipe"
+#         page = request.GET.get("page", 1)
 
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
+#         search = request.GET.get("search")
+#         delete = request.GET.get("delete")
+#         status = request.GET.get("status")
+#         sts = request.GET.get("sts")
 
-        cd = RecipeDetails.objects.all().order_by("-id")
+#         # cd = RecipeDetails.objects.all().order_by("-id")
 
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(title__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                RecipeDetails.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = RecipeDetails.objects.get(id=item_id)
-                except RecipeDetails.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
+#         if is_ajax(request):
+#             if search:
+#                 cd = cd.filter(title__icontains=search)
+#             if sts:
+#                 cd = cd.filter(status=sts)
+#             if status:
+#                 if status == "1":
+#                     status = True
+#                 else:
+#                     status = False
+#                 item_id = request.GET.get("item_id")
+#                 # RecipeDetails.objects.filter(id=item_id).update(status=status)
+#             if delete:
+#                 item_id = request.GET.get("item_id")
+#                 # try:
+#                 #     datas = RecipeDetails.objects.get(id=item_id)
+#                 # except RecipeDetails.DoesNotExist:
+#                 #     datas = None
+#                 if datas:
+#                     datas.delete()
+#             paginator = Paginator(cd, 10)
+#             try:
+#                 datas = paginator.get_page(page)
+#             except PageNotAnInteger:
+#                 datas = paginator.get_page(1)
+#             except EmptyPage:
+#                 datas = paginator.get_page(paginator.num_pages)
+#             context["datas"] = datas
+#             context["page"] = page
+#             template = loader.get_template(self.template_name)
+#             html_content = template.render(context, request)
+#             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
+#         paginator = Paginator(cd, 10)
+#         try:
+#             datas = paginator.get_page(page)
+#         except PageNotAnInteger:
+#             datas = paginator.get_page(1)
+#         except EmptyPage:
+#             datas = paginator.get_page(paginator.num_pages)
+#         context["datas"] = datas
+#         context["page"] = page
+#         context["path"] = path
 
-        return renderhelper(request, "recipe", "recipe_view", context)
-
-
-class RecipeCreateView(AdminPermissionMixin, CreateView):
-    model = RecipeDetails
-    form_class = RecipeForm
-    template_name = "superadmin/recipe/recipe_create.html"
-    success_url = reverse_lazy("recipe_view")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if self.request.POST:
-            context["ingredient_formset"] = RecipeIngredientFormSet(self.request.POST)
-        else:
-            context["ingredient_formset"] = RecipeIngredientFormSet()
-        return context
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        ingredient_formset = context["ingredient_formset"]
-        if ingredient_formset.is_valid():
-            self.object = form.save()
-            ingredient_formset.instance = self.object
-            ingredient_formset.save()
-
-            for image in self.request.FILES.getlist("files"):
-                RecipeImage.objects.create(recipe=self.object, image=image)
-
-            messages.success(self.request, "Recipe Added Successfully...!!")
-            return super().form_valid(form)
-        else:
-            for error_list in form.errors.values():
-                for errors in error_list:
-                    messages.error(self.request, errors)
-            return self.form_invalid(form)
+#         return render_helper(request, "recipe", "recipe_view", context)
 
 
-class RecipeUpdateView(AdminPermissionMixin, UpdateView):
-    model = RecipeDetails
-    form_class = RecipeForm
-    template_name = "superadmin/recipe/recipe_create.html"
-    success_url = reverse_lazy("recipe_view")
+# class RecipeCreateView(AdminPermissionMixin, CreateView):
+#     model = RecipeDetails
+#     form_class = RecipeForm
+#     template_name = "superadmin/recipe/recipe_create.html"
+#     success_url = reverse_lazy("recipe_view")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if self.request.POST:
-            context["ingredient_formset"] = RecipeIngredientFormSet(
-                self.request.POST, instance=self.object
-            )
-        else:
-            context["ingredient_formset"] = RecipeIngredientFormSet(
-                instance=self.object
-            )
-        context["sliders"] = self.object.ingredients.all()
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         if self.request.POST:
+#             context["ingredient_formset"] = RecipeIngredientFormSet(self.request.POST)
+#         else:
+#             context["ingredient_formset"] = RecipeIngredientFormSet()
+#         return context
 
-    def form_valid(self, form):
-        context = self.get_context_data()
-        ingredient_formset = context["ingredient_formset"]
-        if ingredient_formset.is_valid():
-            self.object = form.save()
-            ingredient_formset.instance = self.object
-            ingredient_formset.save()
+#     def form_valid(self, form):
+#         context = self.get_context_data()
+#         ingredient_formset = context["ingredient_formset"]
+#         if ingredient_formset.is_valid():
+#             self.object = form.save()
+#             ingredient_formset.instance = self.object
+#             ingredient_formset.save()
 
-            for image in self.request.FILES.getlist("files"):
-                RecipeImage.objects.create(recipe=self.object, image=image)
+#             for image in self.request.FILES.getlist("files"):
+#                 RecipeImage.objects.create(recipe=self.object, image=image)
 
-            messages.success(self.request, "Recipe Updated Successfully...!!")
-            return super().form_valid(form)
-        else:
-            return self.form_invalid(form)
+#             messages.success(self.request, "Recipe Added Successfully...!!")
+#             return super().form_valid(form)
+#         else:
+#             for error_list in form.errors.values():
+#                 for errors in error_list:
+#                     messages.error(self.request, errors)
+#             return self.form_invalid(form)
 
 
-def delete_spec(request):
-    if request.method == "GET":
-        ingredient_id = request.GET.get("id")
-        try:
-            ingredient = RecipeIngredients.objects.get(id=ingredient_id)
-            ingredient.delete()
-            return JsonResponse({"success": True})
-        except RecipeIngredients.DoesNotExist:
-            return JsonResponse({"success": False, "error": "Ingredient not found"})
-        except Exception as e:
-            return JsonResponse({"success": False, "error": str(e)})
+# class RecipeUpdateView(AdminPermissionMixin, UpdateView):
+#     model = RecipeDetails
+#     form_class = RecipeForm
+#     template_name = "superadmin/recipe/recipe_create.html"
+#     success_url = reverse_lazy("recipe_view")
 
-    return JsonResponse({"success": False, "error": "Invalid request method"})
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         if self.request.POST:
+#             context["ingredient_formset"] = RecipeIngredientFormSet(
+#                 self.request.POST, instance=self.object
+#             )
+#         else:
+#             context["ingredient_formset"] = RecipeIngredientFormSet(
+#                 instance=self.object
+#             )
+#         context["sliders"] = self.object.ingredients.all()
+#         return context
+
+#     def form_valid(self, form):
+#         context = self.get_context_data()
+#         ingredient_formset = context["ingredient_formset"]
+#         if ingredient_formset.is_valid():
+#             self.object = form.save()
+#             ingredient_formset.instance = self.object
+#             ingredient_formset.save()
+
+#             for image in self.request.FILES.getlist("files"):
+#                 RecipeImage.objects.create(recipe=self.object, image=image)
+
+#             messages.success(self.request, "Recipe Updated Successfully...!!")
+#             return super().form_valid(form)
+#         else:
+#             return self.form_invalid(form)
 
 
-def delete_recipeslider(request, image_id):
-    try:
-        # Get the image by its ID and delete it
-        image = RecipeImage.objects.get(pk=image_id)
-        image.image.delete()  # Delete the image file
-        image.delete()  # Delete the database record
-        return JsonResponse({"success": True})
-    except RecipeImage.DoesNotExist:
-        return JsonResponse({"success": False, "error": "Image not found"}, status=404)
-    except Exception as e:
-        return JsonResponse({"success": False, "error": str(e)}, status=500)
+# def delete_spec(request):
+#     if request.method == "GET":
+#         ingredient_id = request.GET.get("id")
+#         try:
+#             ingredient = RecipeIngredients.objects.get(id=ingredient_id)
+#             ingredient.delete()
+#             return JsonResponse({"success": True})
+#         except RecipeIngredients.DoesNotExist:
+#             return JsonResponse({"success": False, "error": "Ingredient not found"})
+#         except Exception as e:
+#             return JsonResponse({"success": False, "error": str(e)})
+
+#     return JsonResponse({"success": False, "error": "Invalid request method"})
+
+
+# def delete_recipeslider(request, image_id):
+#     try:
+#         # Get the image by its ID and delete it
+#         image = RecipeImage.objects.get(pk=image_id)
+#         image.image.delete()  # Delete the image file
+#         image.delete()  # Delete the database record
+#         return JsonResponse({"success": True})
+#     except RecipeImage.DoesNotExist:
+#         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
+#     except Exception as e:
+#         return JsonResponse({"success": False, "error": str(e)}, status=500)
 
 
 # deepsea product
@@ -367,7 +356,7 @@ class ProductListView(AdminPermissionMixin, TemplateView):
         context["page"] = page
         context["path"] = path
 
-        return renderhelper(request, "deepsea-product", "product_view", context)
+        return render_helper(request, "deepsea-product", "product_view", context)
 
 
 class ProductCreateView(AdminPermissionMixin, CreateView):
@@ -479,7 +468,9 @@ class ProductDetailsListView(AdminPermissionMixin, TemplateView):
         context["page"] = page
         context["path"] = path
 
-        return renderhelper(request, "deepsea-product-details", "product_view", context)
+        return render_helper(
+            request, "deepsea-product-details", "product_view", context
+        )
 
 
 class ProductDetailsCreateView(AdminPermissionMixin, CreateView):
@@ -587,7 +578,7 @@ class BrandProductListView(AdminPermissionMixin, TemplateView):
         context["page"] = page
         context["path"] = path
 
-        return renderhelper(request, "brand-product", "product_view", context)
+        return render_helper(request, "brand-product", "product_view", context)
 
 
 class BrandProductCreateView(AdminPermissionMixin, CreateView):
@@ -608,11 +599,7 @@ class BrandProductCreateView(AdminPermissionMixin, CreateView):
             decoded_image = base64.b64decode(imgstr)
             file_name = f"{form.cleaned_data['name']}.{ext}"
 
-            form.instance.image.save(
-                file_name,
-                ContentFile(decoded_image),
-                save=False
-            )
+            form.instance.image.save(file_name, ContentFile(decoded_image), save=False)
         except Exception as e:
             form.add_error(None, f"Invalid image data: {str(e)}")
             return self.form_invalid(form)
@@ -724,7 +711,7 @@ class BrandProductDetailsListView(AdminPermissionMixin, TemplateView):
         context["page"] = page
         context["path"] = path
 
-        return renderhelper(request, "brand-product-details", "product_view", context)
+        return render_helper(request, "brand-product-details", "product_view", context)
 
 
 class BrandProductDetailsCreateView(AdminPermissionMixin, CreateView):
@@ -739,7 +726,11 @@ class BrandProductDetailsCreateView(AdminPermissionMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["products"] = (Product.objects.filter(status=True).exclude(brand__name="Deep Sea").order_by("-id"))
+        context["products"] = (
+            Product.objects.filter(status=True)
+            .exclude(brand__name="Deep Sea")
+            .order_by("-id")
+        )
         return context
 
 
@@ -851,7 +842,7 @@ class SubcategoryListView(TemplateView):
         context["datas"] = datas
         context["page"] = page
         context["path"] = path
-        return renderhelper(request, "subcategory", "Subcategory_view", context)
+        return render_helper(request, "subcategory", "Subcategory_view", context)
 
 
 class SubcategoryCreateView(TemplateView):

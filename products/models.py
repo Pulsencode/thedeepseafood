@@ -1,5 +1,5 @@
 from django.db import models
-from company.models import Brand, StatusTimestampBase, ImageBase, TimestampBase
+from company.models import Brand, StatusTimestampBase, ImageBase
 from autoslug import AutoSlugField
 
 
@@ -17,32 +17,9 @@ class Category(StatusTimestampBase, ImageBase):
     def __str__(self):
         return self.name
 
-
-class RecipeDetails(StatusTimestampBase, ImageBase):
-    brand = models.ForeignKey(
-        Brand,
-        null=True,
-        blank=True,
-        on_delete=models.CASCADE,
-    )
-    title = models.CharField(max_length=200)
-    description = models.CharField(max_length=350, blank=True, null=True)
-
-    def __str__(self) -> str:
-        return self.title
-
-
-class RecipeIngredients(TimestampBase):
-    recipe = models.ForeignKey(
-        RecipeDetails,
-        on_delete=models.CASCADE,
-        related_name="ingredients",
-    )
-    title = models.CharField(max_length=150, blank=True)
-    amount = models.IntegerField(default=0)
-
-    def __str__(self):
-        return f"{self.recipe.title} - {self.title}"
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
 
 
 class Product(StatusTimestampBase, ImageBase):
@@ -51,6 +28,8 @@ class Product(StatusTimestampBase, ImageBase):
         ("imported", "Imported"),
         ("value added", "Value Added"),
     )
+    name = models.CharField(max_length=150)
+    homepage = models.BooleanField(default=False)
     brand = models.ForeignKey(
         Brand,
         null=True,
@@ -69,9 +48,6 @@ class Product(StatusTimestampBase, ImageBase):
         unique=True,
         max_length=100,
     )
-
-    name = models.CharField(max_length=150)
-    homepage = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -102,9 +78,6 @@ class ProductDetails(models.Model):
     grade = models.CharField(max_length=2000, blank=True)
     origin = models.CharField(max_length=100, blank=True)
     packing = models.CharField(max_length=2000, blank=True)
-
-    def name(self):
-        return self.product.name if self.product else ""
     slug = AutoSlugField(
         populate_from="name",
         editable=True,
@@ -115,24 +88,23 @@ class ProductDetails(models.Model):
         max_length=100,
     )
 
+    def name(self):
+        return self.product.name if self.product else ""
+
     def __str__(self) -> str:
         return self.product.name
 
-
-class RecipeImage(ImageBase, TimestampBase):
-    recipe = models.ForeignKey(
-        RecipeDetails,
-        null=False,
-        on_delete=models.CASCADE,
-        related_name="recipe_image",
-    )
-
-    def __str__(self):
-        return self.recipe.title
+    class Meta:
+        verbose_name = "Product Detail"
+        verbose_name_plural = "Product Details"
 
 
 class Subcategory(StatusTimestampBase):
     name = models.ForeignKey(Category, null=False, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Subcategory"
+        verbose_name_plural = "Subcategories"
 
     def __str__(self):
         return self.name

@@ -10,6 +10,10 @@ from django.views.generic import (
 )
 
 # from deepapp.helper import is_ajax, renderhelper
+from datetime import datetime
+
+
+# from deepapp.helper import is_ajax, renderhelper
 # from datetime import datetime
 
 # from django.db.models import Q

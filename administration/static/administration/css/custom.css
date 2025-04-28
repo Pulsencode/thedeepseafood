@@ -1,0 +1,426 @@
+.login-img {
+    position: relative;
+    background-image: url(../images_ex/bg-examwinner.png) !important;
+}
+
+.side-header .header-brand1 {
+    text-align: left !important;
+    margin: 0 0px !important;
+}
+
+.login-img::before {
+
+    background: linear-gradient(to right, #ec202800 0%, #ec202800 100%) !important;
+
+}
+
+/* .header-brand-img { */
+/* width: 45px !important; */
+/* } */
+.dark-mode .side-header .header-brand-img.desktop-logo {
+    width: 145px;
+}
+
+img.header-brand-img1 {
+    width: 155px;
+}
+
+.img-td {
+    width: 40px;
+    height: 40px;
+    /* border-radius: 50% !important; */
+    object-fit: cover;
+}
+
+.img-50 {
+    width: 50px;
+}
+
+.profile-center {
+    text-align: center;
+}
+
+.table-responsive .table td {
+    vertical-align: middle;
+}
+
+.table th,
+.text-wrap table th {
+    font-size: 0.8rem !important;
+}
+
+.mt-30 {
+    margin-top: 20px;
+}
+
+.float-right {
+    float: right;
+}
+
+.visitor-list i {
+    font-size: 18px;
+    width: 35px;
+    height: 35px;
+    background-color: #cccccc7d;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.face-clr {
+    color: #2318d3;
+}
+
+.insta-clr {
+    color: #a80d84;
+}
+
+.twit-clr {
+    color: #006fa8;
+}
+
+.link-clr {
+    color: #3500c8;
+}
+
+.y-clr {
+    color: #cc0606;
+}
+
+.side-header .header-brand-img.toggle-logo,
+.side-header .header-brand-img.light-logo {
+    height: 2.5rem !important;
+}
+
+.avatar {
+    background: rgb(9 21 64 / 0%) no-repeat center/cover !important;
+}
+
+@media (max-width: 576px) {
+    .page-header {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .header-brand-img {
+        margin: 3px 60px !important;
+    }
+
+    .header .dropdown-menu {
+        top: 0.5rem !important;
+    }
+}
+
+@media (max-width: 769px) {
+    .dark-mode .app-header.header .header-brand-img.desktop-logo {
+        display: block;
+        width: 125px;
+    }
+}
+
+
+.existing-slider-images img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    margin-top: 10px;
+}
+
+.modal-body img {
+    margin: 10px;
+}
+
+
+label.cabinet {
+    display: block;
+    cursor: pointer;
+}
+
+label.cabinet input.file {
+    position: relative;
+    height: 100%;
+    width: auto;
+    opacity: 0;
+    -moz-opacity: 0;
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    margin-top: -30px;
+}
+
+#upload-demo1,
+
+#upload-demo3,
+#upload-demo4,
+#upload-demo5,
+#upload-demo6 {
+    width: 350px;
+    height: 350px;
+    padding-bottom: 25px;
+}
+
+#upload-demo2 {
+    width: 100%;
+    height: 500px;
+    padding-bottom: 25px;
+}
+
+.croppie-container {
+    width: 100%;
+    height: 100%;
+}
+
+.croppie-container .cr-image {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+    max-height: none;
+    max-width: none;
+}
+
+.croppie-container .cr-boundary {
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.croppie-container .cr-viewport,
+.croppie-container .cr-resizer {
+    position: absolute;
+    border: 2px solid #fff;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    box-shadow: 0 0 2000px 2000px rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
+.croppie-container .cr-resizer {
+    z-index: 2;
+    box-shadow: none;
+    pointer-events: none;
+}
+
+.croppie-container .cr-resizer-vertical,
+.croppie-container .cr-resizer-horisontal {
+    position: absolute;
+    pointer-events: all;
+}
+
+.croppie-container .cr-resizer-vertical::after,
+.croppie-container .cr-resizer-horisontal::after {
+    display: block;
+    position: absolute;
+    box-sizing: border-box;
+    border: 1px solid black;
+    background: #fff;
+    width: 10px;
+    height: 10px;
+    content: '';
+}
+
+.croppie-container .cr-resizer-vertical {
+    bottom: -5px;
+    cursor: row-resize;
+    width: 100%;
+    height: 10px;
+}
+
+.croppie-container .cr-resizer-vertical::after {
+    left: 50%;
+    margin-left: -5px;
+}
+
+.croppie-container .cr-resizer-horisontal {
+    right: -5px;
+    cursor: col-resize;
+    width: 10px;
+    height: 100%;
+}
+
+.croppie-container .cr-resizer-horisontal::after {
+    top: 50%;
+    margin-top: -5px;
+}
+
+.croppie-container .cr-original-image {
+    display: none;
+}
+
+.croppie-container .cr-vp-circle {
+    border-radius: 50%;
+}
+
+.croppie-container .cr-overlay {
+    z-index: 1;
+    position: absolute;
+    cursor: move;
+    touch-action: none;
+}
+
+.croppie-container .cr-slider-wrap {
+    width: 75%;
+    margin: 15px auto;
+    text-align: center;
+}
+
+.croppie-result {
+    position: relative;
+    overflow: hidden;
+}
+
+.croppie-result img {
+    position: absolute;
+}
+
+.croppie-container .cr-image,
+.croppie-container .cr-overlay,
+.croppie-container .cr-viewport {
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+.cr-slider {
+    -webkit-appearance: none;
+    /*removes default webkit styles*/
+    /*border: 1px solid white; */
+    /*fix for FF unable to apply focus style bug */
+    width: 300px;
+    /*required for proper track sizing in FF*/
+    max-width: 100%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: transparent;
+}
+
+.cr-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 3px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 0;
+    border-radius: 3px;
+}
+
+.cr-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #ddd;
+    margin-top: -6px;
+}
+
+.cr-slider:focus {
+    outline: none;
+}
+
+/*
+.cr-slider:focus::-webkit-slider-runnable-track {
+background: #ccc;
+}
+*/
+
+.cr-slider::-moz-range-track {
+    width: 100%;
+    height: 3px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 0;
+    border-radius: 3px;
+}
+
+.cr-slider::-moz-range-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #ddd;
+    margin-top: -6px;
+}
+
+/*hide the outline behind the border*/
+.cr-slider:-moz-focusring {
+    outline: 1px solid white;
+    outline-offset: -1px;
+}
+
+.cr-slider::-ms-track {
+    width: 100%;
+    height: 5px;
+    background: transparent;
+    /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+    border-color: transparent;
+    /*leave room for the larger thumb to overflow with a transparent border */
+    border-width: 6px 0;
+    color: transparent;
+    /*remove default tick marks*/
+}
+
+.cr-slider::-ms-fill-lower {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.cr-slider::-ms-fill-upper {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.cr-slider::-ms-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #ddd;
+    margin-top: 1px;
+}
+
+.cr-slider:focus::-ms-fill-lower {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.cr-slider:focus::-ms-fill-upper {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/*******************************************/
+
+/***********************************/
+/* Rotation Tools */
+/***********************************/
+.cr-rotate-controls {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    z-index: 1;
+}
+
+.cr-rotate-controls button {
+    border: 0;
+    background: none;
+}
+
+.cr-rotate-controls i:before {
+    display: inline-block;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 22px;
+}
+
+.cr-rotate-l i:before {
+    content: '↺';
+}
+
+.cr-rotate-r i:before {
+    content: '↻';
+}

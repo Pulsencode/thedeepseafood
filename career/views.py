@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Q
 
 from django.contrib import messages
-from deepapp.helper import is_ajax, renderhelper
+# from deepapp.helper import is_ajax, renderhelper
 from django.http import JsonResponse
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.template import loader

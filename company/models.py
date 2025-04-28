@@ -85,6 +85,10 @@ class SEO(StatusTimestampBase):
         unique=True,
     )
 
+    class Meta:
+        verbose_name = "SEO"
+        verbose_name_plural = "SEOs"
+
     def __str__(self):
         return self.page_name
 
@@ -117,6 +121,10 @@ class EventImage(StatusTimestampBase, ImageBase):
         on_delete=models.CASCADE,
     )
 
+    class Meta:
+        verbose_name = "Event Image"
+        verbose_name_plural = "Event Images"
+
     def __str__(self):
         return f"{self.event.title} - Slider {self.pk}"
 
@@ -135,9 +143,6 @@ class News(StatusTimestampBase, BaseInfoModel):
     def __str__(self):
         return self.title
 
-    class Meta:
-        verbose_name_plural = "News Details"
-
 
 class NewsImage(TimestampBase, ImageBase):
     news = models.ForeignKey(
@@ -146,6 +151,10 @@ class NewsImage(TimestampBase, ImageBase):
         related_name="news_image",
         on_delete=models.CASCADE,
     )
+
+    class Meta:
+        verbose_name = "News Image"
+        verbose_name_plural = "News Images"
 
     def __str__(self):
         return f"{self.news.title} - Slider {self.pk}"
@@ -169,6 +178,10 @@ class PromotionImage(TimestampBase, ImageBase):
         on_delete=models.CASCADE,
     )
 
+    class Meta:
+        verbose_name = "Promotion Image"
+        verbose_name_plural = "Promotion Images"
+
 
 class Blog(StatusTimestampBase, BaseInfoModel):
     name = models.CharField(max_length=255)
@@ -188,6 +201,7 @@ class Blog(StatusTimestampBase, BaseInfoModel):
         return self.title
 
     class Meta:
+        verbose_name = "Blog Detail"
         verbose_name_plural = "Blog Details"
 
 
@@ -199,16 +213,28 @@ class BlogImage(TimestampBase, ImageBase):
         on_delete=models.CASCADE,
     )
 
+    class Meta:
+        verbose_name = "Blog Image"
+        verbose_name_plural = "Blog Images"
+
 
 class ManagementTeam(StatusTimestampBase, ImageBase):
     name = models.CharField(max_length=150)
     role = models.CharField(max_length=150)
     sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
 
+    class Meta:
+        verbose_name = "Management Team"
+        verbose_name_plural = "Management Teams"
+
 
 class CompanyTestimonial(StatusTimestampBase, ImageBase):
     name = models.CharField(max_length=350)
     quote = models.TextField()
+
+    class Meta:
+        verbose_name = "Company Testimonial"
+        verbose_name_plural = "Company Testimonials"
 
 
 class Certification(StatusTimestampBase, ImageBase):
@@ -248,6 +274,9 @@ class History(StatusTimestampBase):
     title = models.CharField(max_length=500)
     description = models.TextField(null=True)
 
+    class Meta:
+        verbose_name_plural = "Histories"
+
     def __str__(self):
         return str(self.year)
 
@@ -260,3 +289,7 @@ class HistoryImage(StatusTimestampBase, ImageBase):  # active
         related_name="history_image",
         on_delete=models.CASCADE,
     )
+
+    class Meta:
+        verbose_name = "History Image"
+        verbose_name_plural = "History Images"
