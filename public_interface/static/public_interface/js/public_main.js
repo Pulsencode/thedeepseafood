@@ -557,29 +557,26 @@ function seterror(id, error) {
 document.addEventListener("DOMContentLoaded", function () {
   // Ensure the form exists before adding the event listener
   const form = document.getElementById("contactform", "careerform");
-  if (!form) {
-    console.error("Form with ID 'contactform' not found!");
-    return;
+  if (form) {
+    form.addEventListener("submit", function (event) {
+      clearerrors();
+
+      const email = document.forms["contactform"]["email"].value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(email)) {
+        seterror("email", "Enter a valid email address");
+        event.preventDefault();
+      } else {
+        document.getElementById("submitButton").disabled = true;
+
+        setTimeout(() => {
+          form.reset();
+          document.getElementById("submitButton").disabled = false;
+        }, 3000);
+      }
+    });
   }
-
-  form.addEventListener("submit", function (event) {
-    clearerrors();
-
-    const email = document.forms["contactform"]["email"].value;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      seterror("email", "Enter a valid email address");
-      event.preventDefault();
-    } else {
-      document.getElementById("submitButton").disabled = true;
-
-      setTimeout(() => {
-        form.reset();
-        document.getElementById("submitButton").disabled = false;
-      }, 3000);
-    }
-  });
 });
 
 //restrict document upload in career section
