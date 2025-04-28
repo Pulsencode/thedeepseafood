@@ -17,6 +17,7 @@ from company.models import (
     Promotion,
     PromotionImage,
     Supermarkets,
+    History,
 )
 
 
@@ -187,3 +188,6 @@ class SupermarketsAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ("sequence", "__str__")
     ordering = ("sequence",)
     readonly_fields = ("sequence",)
+
+
+admin.site.register(History)

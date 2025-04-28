@@ -30,7 +30,6 @@
                                     <span id="message001" style="color:green;display:none"><b>Status Updated Successfully</b></span>
                                 </div>
                             </div>
-                        </form>
                         <div class="table-responsive" id="seo-table">
                             <input type="hidden" id="page" name="page" value="{{ page }}">
                             <table class="table border-top table-bordered mb-0 table-hover">
@@ -42,20 +41,36 @@
                                         <th>Meta description</th>
                                         <th>Meta Author</th>
                                         <th>canonical</th>
-                                        <!-- <th>Status</th> -->
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-center">
-                                    {% if all_seo %}
-                                        {% for seo in all_seo %}
-                                            <tr class="text-center">
-                                                <td>{{ forloop.counter }}</td>
-                                                <td>{{ seo.page_name }}</td>
-                                                <td>{{ seo.meta_title }}</td>
-                                                <td>{{ seo.meta_description }}</td>
-                                                <td>{{ seo.meta_keywords }}</td>
-                                                <td>{{ seo.meta_author }}</td>
+                                        <th>
+                                            Status
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        {% if all_seo %}
+                                            {% for seo in all_seo %}
+                                                <tr class="text-center">
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ seo.page_name }}</td>
+                                                    <td>{{ seo.meta_title }}</td>
+                                                    <td>{{ seo.meta_description }}</td>
+                                                    <td>{{ seo.meta_keywords }}</td>
+                                                    <td>{{ seo.meta_author }}</td>
+                                                    <td>
+                                                        <form method="post" action="{% url 'list_seo' %}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="object_id" value="{{ seo.id }}">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input"
+                                                                       type="checkbox"
+                                                                       id="customSwitch1"
+                                                                       name="status"
+                                                                       {% if seo.status %}checked{% endif %}
+                                                                       onchange="this.form.submit()">
+                                                            </div>
+                                                        </form>
+                                                    </td>
+                                                </div>
                                                 <td>
                                                     <a class="btn btn-info btn-sm mb-1" href="{% url 'seo_update' seo.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
                                                     <button class="btn btn-danger btn-sm mb-1">

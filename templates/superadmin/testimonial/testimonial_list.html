@@ -1,4 +1,4 @@
-{% load static %}
+{% comment %} {% load static %}
 <input type="hidden" id="page" name="page" value="{{page}}">
 <table class="table border-top table-bordered mb-0 table-hover">
     <thead>
@@ -38,7 +38,7 @@
 
                 <a class="btn btn-info btn-sm mb-1" href="{% url 'testimonial_update'  testimonial.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
 
-                <button type="button" class="btn btn-danger btn-sm mb-1"  ><i class="side-menu__icon fe fe-trash"  onclick="show_modal({{ testimonial.id}})"></i></button>
+                <button type="button" class="btn btn-danger btn-sm mb-1"><i class="side-menu__icon fe fe-trash"  onclick="show_modal({{ testimonial.id}})"></i></button>
 
             </td>
         </tr>
@@ -61,7 +61,7 @@
         </div>
         {% endfor %}
         {% else %}
-        <tr >
+        <tr>
             <td colspan='10'><center>No record found</center></td>
         </tr>
         {% endif %}
@@ -70,4 +70,4 @@
     </tbody>
 </table>
 
-{%include "pagination.html"%}
+{%include "pagination.html"%} {% endcomment %}
