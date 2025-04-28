@@ -3,7 +3,7 @@
 
 <table class="table border-top table-bordered mb-0 table-hover">
     <thead>
-        <tr>
+        <tr class="text-center">
             <th>Sl No</th>
             <th>Sequence</th>
             <th>Title</th>
@@ -18,33 +18,33 @@
         </tr>
     </thead>
     <tbody>
-        {% if datas %}
-        {% for d in datas %}
-        <tr>
-            <td>{{datas.start_index|add:forloop.counter0}}</td>
-            <td>{{d.sequence}}</td>
-            <td>{{d.title}}</td>
-            <td>{{d.name}}</td>
-            <td>{{d.type}}</td>
-            <td>{{d.date|date:"d/m/Y"}}</td>
+        {% if all_news %}
+        {% for news in all_news%}
+        <tr class="text-center">
+            <td>{{forloop.counter}}</td>
+            <td>{{news.sequence}}</td>
+            <td>{{news.title}}</td>
+            <td>{{news.name}}</td>
+            <td>{{news.type}}</td>
+            <td>{{news.date}}</td>
             <td>
                 <a href="javascript:void(0)" class="btn btn-success" data-bs-toggle="modal"
-                    data-bs-target="#desc{{d.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                    data-bs-target="#desc{{news.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
             </td>
 
             <td>{{d.location}}</td>
             <td>
                 <a href="javascript:void(0)" class="btn btn-success" data-bs-toggle="modal"
-                    data-bs-target="#slider{{d.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                    data-bs-target="#slider{{news.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
             </td>
             <td>
                 <div class="material-switch">
-                    <input id="someSwitchOptionSuccess{{d.id}}" name="someSwitchOption001" type="checkbox" {% if d.status == True %} onclick="changenewsstatus({{d.id}},0)" checked {% else %}onclick="changenewsstatus({{d.id}},1)" {% endif %} />
-                    <label for="someSwitchOptionSuccess{{d.id}}" class="label-success"></label>
+                    <input id="someSwitchOptionSuccess{{news.id}}" name="someSwitchOption001" type="checkbox" {% if news.status == True %} onclick="changenewsstatus({{news.id}},0)" checked {% else %}onclick="changenewsstatus({{news.id}},1)" {% endif %} />
+                    <label for="someSwitchOptionSuccess{{news.id}}" class="label-success"></label>
                 </div>
             </td>
             <td>
-                <a class="btn btn-info btn-sm mb-1" href="{% url 'news_update' d.id %}"><i
+                <a class="btn btn-info btn-sm mb-1" href="{% url 'news_update' news.id %}"><i
                         class="side-menu__icon fe fe-edit"></i></a>
 
                 <button class="btn btn-danger btn-sm mb-1"  ><i class="side-menu__icon fe fe-trash"  onclick="show_modal({{d.id}})"></i></button>
@@ -70,7 +70,7 @@
 
         <!-- modal for slider-->
 
-        <div class="modal  fade" id="slider{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="slider{{news.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-md modal-dialog-centered text-center" role="document">
                 <div class="modal-content ">
                     <div class="modal-header">
@@ -78,8 +78,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        {% if d.news_image.exists %}
-                            {% for slider in d.news_image.all %}
+                        {% if news.news_image.exists %}
+                            {% for slider in news.news_image.all %}
                             <a href="{{slider.image.url}}" data-lightbox="images" data-title="">
                                 <img src="{{slider.image.url}}" height="100" width="100"></a>
                             {% endfor %}

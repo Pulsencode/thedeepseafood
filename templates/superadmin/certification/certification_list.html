@@ -2,7 +2,7 @@
 <input type="hidden" id="page" name="page" value="{{ page }}">
 <table class="table border-top table-bordered mb-0 table-hover">
     <thead>
-        <tr>
+        <tr class="text-center">
             <th>Sl No</th>
             <th>Logo</th>
             <!-- <th>Name</th> -->
@@ -11,32 +11,32 @@
         </tr>
     </thead>
     <tbody>
-        {% if datas %}
-            {% for d in datas %}
+        {% if all_certification %}
+            {% for certification in all_certification %}
                 <tr>
-                    <td>{{ datas.start_index|add:forloop.counter0 }}</td>
+                    <td>{{ forloop.counter}}</td>
                     <td>
-                        {% if d.image %}
-                            <a href="{{ d.image.url }}" data-lightbox="image-{{ forloop.counter }}">
-                                <img src="{{ d.image.url }}" style="width:90px;">
+                        {% if certification.image %}
+                            <a href="{{ certification.image.url }}" data-lightbox="image-{{ forloop.counter }}">
+                                <img src="{{ certification.image.url }}" style="width:90px;">
                             </a>
                         {% endif %}
                     </td>
                     <!-- <td>{{d.name}}</td> -->
                     <td>
                         <div class="material-switch">
-                            <input id="someSwitchOptionSuccess{{ d.id }}"
+                            <input id="someSwitchOptionSuccess{{ certification.id }}"
                                    name="someSwitchOption001"
                                    type="checkbox"
-                                   {% if d.status == True %} onclick="changecertificationstatus({{ d.id }},0)" checked {% else %}onclick="changecertificationstatus({{ d.id }},1)" {% endif %} />
-                            <label for="someSwitchOptionSuccess{{ d.id }}" class="label-success"></label>
+                                   {% if certification.status == True %} onclick="changecertificationstatus({{ certification.id }},0)" checked {% else %}onclick="changecertificationstatus({{ certification.id }},1)" {% endif %} />
+                            <label for="someSwitchOptionSuccess{{ certification.id }}" class="label-success"></label>
                         </div>
                     </td>
                     <td>
                         <a class="btn btn-info btn-sm mb-1"
-                           href="{% url 'certification_update' d.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                           href="{% url 'certification_update' certification.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
                         <button class="btn btn-danger btn-sm mb-1">
-                            <i class="side-menu__icon fe fe-trash"  onclick="show_modal({{ d.id }})"></i>
+                            <i class="side-menu__icon fe fe-trash"  onclick="show_modal({{ certification.id }})"></i>
                         </button>
                     </td>
                 </tr>
