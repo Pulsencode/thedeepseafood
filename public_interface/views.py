@@ -48,7 +48,7 @@ def home(request):
         "all_testimonials": CompanyTestimonial.objects.filter(status=True),
         "display_products": display_products,
     }
-    return render(request, "website/index/index.html", context)
+    return render(request, "public_interface/index.html", context)
 
 
 def about(request):
@@ -58,19 +58,19 @@ def about(request):
         "management_team": ManagementTeam.objects.filter(status=True),
         "history": History.objects.all(),
     }
-    return render(request, "website/about/about.html", context)
+    return render(request, "public_interface/about.html", context)
 
 
 def blog(request):
     context = {"all_blogs": Blog.objects.filter(status=True)}
-    return render(request, "website/blog/blog.html", context)
+    return render(request, "public_interface/blog.html", context)
 
 
 def blog_details(request, slug):
     blogs = get_object_or_404(Blog, slug=slug)
     recent_blogs = Blog.objects.filter(status=True).exclude(id=blogs.id).order_by("-id")
     context = {"blog_details": blogs, "recent_blogs": recent_blogs}
-    return render(request, "website/blog/blog-view.html", context)
+    return render(request, "public_interface/blog-view.html", context)
 
 
 def product(request):
@@ -78,7 +78,7 @@ def product(request):
         "page_title": "Products",
         "all_products": Product.objects.filter(status=True).order_by("sequence"),
     }
-    return render(request, "website/products/products.html", context)
+    return render(request, "public_interface/products.html", context)
 
 
 def product_details(request, slug):
@@ -89,17 +89,17 @@ def product_details(request, slug):
 
     context = {"product": product, "related_products": related_products}
 
-    return render(request, "website/products/product-view.html", context)
+    return render(request, "public_interface/product-view.html", context)
 
 
 def distribution_channel(request):
     context = {"page_title": "Leading Wholesale Seafood Supplier in UAE"}
-    return render(request, "website/distribution/distribution.html", context)
+    return render(request, "public_interface/distribution.html", context)
 
 
 def contact(request):
     context = {"page_title": "Contact The Deep Seafood Company"}
-    return render(request, "website/contact/contact.html", context)
+    return render(request, "public_interface/contact.html", context)
 
 
 def career(request):
@@ -108,7 +108,7 @@ def career(request):
         "page_title": "Careers at The Deep Seafood Company",
         "all_jobs": VaccancyDetails.objects.filter(status=True),
     }
-    return render(request, "website/career/career.html", context)
+    return render(request, "public_interface/career.html", context)
 
 
 def news_room(request):
@@ -118,14 +118,14 @@ def news_room(request):
         # "news": News.objects.filter(status=True, type="global news"),
         "all_events": Event.objects.filter(status=True),
     }
-    return render(request, "website/news/news-room.html", context)
+    return render(request, "public_interface/news-room.html", context)
 
 
 def news_detail(request, pk):
     news = get_object_or_404(News, id=pk)
     recent_news = News.objects.filter(status=True).exclude(id=news.id)
     context = {"news_detail": news, "recent_news": recent_news}
-    return render(request, "website/news/news-view.html", context)
+    return render(request, "public_interface/news-view.html", context)
 
 
 def brand(request):

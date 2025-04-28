@@ -1,0 +1,662 @@
+{% extends "public_interface/layouts/public_base.html" %}
+{% load static %}
+{% block content %}
+  <script src="{% static 'website/modules/slick-slider/slick.min.js' %}"
+          type="text/javascript"></script>
+  <style>
+    .slider, .slide {
+      height: 100vh;
+    }
+    .slide {
+      position: relative;
+    }
+    .slide .slide__img {
+      width: 100%;
+      height: auto;
+      overflow: hidden;
+    }
+    .slide .slide__img img {
+      width: 100%;
+      height: 100vh;
+      opacity: 1 !important;
+          object-fit: cover;
+    }
+    .slick-dotted .slick-slider {
+      margin-bottom: 30px;
+    }
+    .slick-nav {
+      --active: #fff;
+      --border: rgba(255, 255, 255, .12);
+      width: 44px;
+      height: 44px;
+      position: absolute;
+      cursor: pointer;
+      top: calc(50% - 44px);
+    }
+    .slick-nav.prev-arrow {
+      left: 3%;
+      transform: scaleX(-1);
+      z-index: 999;
+    }
+    .slick-nav.next-arrow {
+      left: auto;
+      right: 3%;
+    }
+    .slick-nav i {
+      display: block;
+      position: absolute;
+      margin: -10px 0 0 -10px;
+      width: 20px;
+      height: 20px;
+      left: 50%;
+      top: 50%;
+    }
+    .slick-nav i:before, .slick-nav i:after {
+      content: "";
+      width: 10px;
+      height: 2px;
+      border-radius: 1px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      background: var(--active);
+      margin: -1px 0 0 -5px;
+      display: block;
+      transform-origin: 9px 50%;
+    }
+    .slick-nav i:before {
+      transform: rotate(-40deg);
+    }
+    .slick-nav i:after {
+      transform: rotate(40deg);
+    }
+    .slick-nav:before, .slick-nav:after {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 1px;
+      right: 1px;
+      top: 1px;
+      bottom: 1px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+    }
+
+    .slick-nav.animate svg {
+      -webkit-animation: stroke 1s ease forwards 0.3s;
+              animation: stroke 1s ease forwards 0.3s;
+    }
+    .slick-nav.animate i {
+      -webkit-animation: arrow 1.6s ease forwards;
+              animation: arrow 1.6s ease forwards;
+    }
+    .slick-nav.animate i:before {
+      -webkit-animation: arrowUp 1.6s ease forwards;
+              animation: arrowUp 1.6s ease forwards;
+    }
+    .slick-nav.animate i:after {
+      -webkit-animation: arrowDown 1.6s ease forwards;
+              animation: arrowDown 1.6s ease forwards;
+    }
+  </style>
+  <div class="main-div pt-0 header-bg-transparent header-bg-black show-logo-oceano footer-bg-black">
+    <div class="banner__slider">
+      <div class="content_slid">
+        <div class="wrapper">
+          <div class="row text-white">
+            <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
+              <h3 class="text-pre-line">
+                PREMIUM  <span class="font-aref-ruqaabold">DIVE  TO</span>  DELICACY
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slider stick-dots">
+        <div class="slide">
+          <div class="slide__img">
+            <img width=""
+                 height=""
+                 src="{% static 'public_interface/images/brands/banner-cover/banner-top.jpg' %}"
+                 alt="banner_img"
+                 data-lazy="{% static 'public_interface/images/brands/banner-cover/banner-top.jpg' %}"
+                 class="full-image animated"
+                 data-animation-in="zoomInImage" />
+          </div>
+        </div>
+        <div class="slide">
+          <div class="slide__img">
+            <img width=""
+                 height=""
+                 src="{% static 'public_interface/images/brands/banner-cover/banner2.jpeg' %}"
+                 alt="banner_img"
+                 data-lazy="{% static 'public_interface/images/brands/banner-cover/banner2.jpeg' %}"
+                 class="full-image animated"
+                 data-animation-in="zoomOutImage" />
+          </div>
+        </div>
+        <div class="slide">
+          <div class="slide__img">
+            <img width=""
+                 height=""
+                 src="{% static 'public_interface/images/brands/banner-cover/w2.jpg' %}"
+                 alt="banner_img"
+                 data-lazy="{% static 'public_interface/images/brands/banner-cover/w2.jpg' %}"
+                 class="full-image animated"
+                 data-animation-in="zoomInImage" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main-div pt-0 header-bg-transparent header-bg-black show-logo-oceano footer-bg-black">
+      <!-- brands -->
+      <section id="brands" class="pt-0 pb-0 font-aref-ruqaa">
+        <div class="premium padd_t_b_50">
+          <div class="wrapper">
+            <div class="row justify-content-center text-center">
+              <div class="col-xl-8 col-lg-10">
+                <div class="section-head" data-aos="fade-up" data-aos-duration="1000">
+                  <img width=""
+                       height=""
+                       alt="Oceano Logo"
+                       class="img-fluid h-50-px h-40-px-md mb-20"
+                       src="{% static 'public_interface/images/general/logo-oceano-black.png' %}">
+                  <h5 class="font-aref-ruqaabold"
+                      data-aos="fade-up"
+                      data-aos-duration="1100">
+                    Oceano, our retail brand,
+                    provides packaged seafood products. We provide one-stop access to high-quality, freshly packed
+                    seafood from across the world.
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="oceano_product"></div>
+        </div>
+        <div class="rady-to-eat text-white padd_t_b_50">
+          <div class="wrapper">
+            <div class="row">
+              <div class="col-12 pt-20">
+                <div class="section-head text-center">
+                  <h1 class="font-aref-ruqaabold">OCEANO PRODUCTS</h1>
+                  <hr class="bg-white">
+                </div>
+                <div id="prod">
+                  <ul class="nav nav-tabs border-0 justify-content-center pt-20">
+                    {% for c in category %}
+                      <li class="nav-item">
+                        <a href=""
+                           class="nav-link text-white btn {% if forloop.first %}active{% endif %}"
+                           data-name="{{ c.name }}"
+                           onclick="loadProductContent(this)">{{ c.name }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="tab-content pt-20">
+                  <div class="tab-pane fade show active">
+                    <div class="row justify-content-center">
+                      <div class="col-lg-12 MOREBTN"
+                           data-aos="fade-right"
+                           data-aos-duration="1000">
+                        <div class="row pt-50" id="MixItUp">{% include "public_interface/brands/products_list.html" %}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row text-center pt-50">
+                    <div class="col-12">
+                      <button class="btn btn-more VIEWMORE"
+                              id="loadMoreButton"
+                              data-total="{{ total_product }}"
+                              data-limit="4"
+                              onclick="loadmoreproduct(this)">View More</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="highlights padd_t_b_50">
+        <div class="wrapper">
+          <div class="row justify-content-center text-center">
+            <div class="col-xl-8 col-lg-10">
+              <div class="section-head">
+                <h1 class="font-aref-ruqaabold"
+                    data-aos="fade-up"
+                    data-aos-duration="600">BRAND HIGHLIGHTS</h1>
+                <hr data-aos="fade-up" data-aos-duration="700">
+                <h5 class="font-aref-ruqaabold"
+                    data-aos="fade-up"
+                    data-aos-duration="700">
+                  we are committed to excellence
+                  in quality and services standards both for local and export market in seafood industry since 1986.
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-center mt-10">
+            <div class="col-lg-11">
+              <div class="row row-item">
+                <div class="col-md-4 col-sm-6 col-item">
+                  <div class="item" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="img-card">
+                      <img width=""
+                           height=""
+                           alt=""
+                           src="{% static 'public_interface/images/brands/highlights/Fresh.png' %}">
+                    </div>
+                    <div class="text-card">
+                      <div class="title font-aref-ruqaabold">FRESH</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-item">
+                  <div class="item" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="img-card">
+                      <img width=""
+                           height=""
+                           alt=""
+                           src="{% static 'public_interface/images/brands/highlights/Quality.png' %}">
+                    </div>
+                    <div class="text-card">
+                      <div class="title font-aref-ruqaabold">QUALITY</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-item">
+                  <div class="item" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="img-card">
+                      <img width=""
+                           height=""
+                           alt=""
+                           src="{% static 'public_interface/images/brands/highlights/Delivery.png' %}">
+                    </div>
+                    <div class="text-card">
+                      <div class="title font-aref-ruqaabold">DELIVERY</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-item">
+                  <div class="item" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="img-card">
+                      <img width=""
+                           height=""
+                           alt=""
+                           src="{% static 'public_interface/images/brands/highlights/Price.png' %}">
+                    </div>
+                    <div class="text-card">
+                      <div class="title font-aref-ruqaabold">PRICE</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-item">
+                  <div class="item" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="img-card">
+                      <img width=""
+                           height=""
+                           alt=""
+                           src="{% static 'public_interface/images/brands/highlights/Packing.png' %}">
+                    </div>
+                    <div class="text-card">
+                      <div class="title font-aref-ruqaabold">PACKING</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="watch-us">
+        <div class="wrapper">
+          <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <div class="col">
+                  <div class="card-thumbnail watch_thumbnail">
+                    <img width=""
+                         height=""
+                         alt=""
+                         class="img-primary"
+                         src="{% static 'public_interface/images/brands/watch-us/thumb.png' %}">
+                    <button class="btn-play watch_file_btn"
+                            type="button"
+                            data-file-src="https://www.youtube.com/embed/GvM8PTbD7Ok?autoplay=1&mute=1">
+                      <i class="fa fa-play" aria-hidden="true"></i>
+                    </button>
+                    <div class="caption bg-transparent">
+                      <div class="title font-lntermedium">Watch us.. Know us..</div>
+                      <div class="dec font-lnter">A video showcasing our products and services</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card-thumbnail watch_thumbnail">
+                    <img width=""
+                         height=""
+                         alt=""
+                         class="img-primary"
+                         src="{% static 'public_interface/images/brands/watch-us/thumb.png' %}">
+                    <button class="btn-play watch_file_btn"
+                            type="button"
+                            data-file-src="https://www.youtube.com/embed/GvM8PTbD7Ok?autoplay=1&mute=1">
+                      <i class="fa fa-play" aria-hidden="true"></i>
+                    </button>
+                    <div class="caption bg-transparent">
+                      <div class="title font-lntermedium">Explore our services</div>
+                      <div class="dec font-lnter">Another video showcasing our services</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card-thumbnail watch_thumbnail">
+                    <img width=""
+                         height=""
+                         alt=""
+                         class="img-primary"
+                         src="{% static 'public_interface/images/brands/watch-us/thumb.png' %}">
+                    <button class="btn-play watch_file_btn"
+                            type="button"
+                            data-file-src="https://www.youtube.com/embed/GvM8PTbD7Ok?autoplay=1&mute=1">
+                      <i class="fa fa-play" aria-hidden="true"></i>
+                    </button>
+                    <div class="caption bg-transparent">
+                      <div class="title font-lntermedium">Innovations</div>
+                      <div class="dec font-lnter">A glimpse of our innovations</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card-thumbnail watch_thumbnail">
+                    <img width=""
+                         height=""
+                         alt=""
+                         class="img-primary"
+                         src="{% static 'public_interface/images/brands/watch-us/thumb.png' %}">
+                    <button class="btn-play watch_file_btn"
+                            type="button"
+                            data-file-src="https://www.youtube.com/embed/GvM8PTbD7Ok?autoplay=1&mute=1">
+                      <i class="fa fa-play" aria-hidden="true"></i>
+                    </button>
+                    <div class="caption bg-transparent">
+                      <div class="title font-lntermedium">Our journey</div>
+                      <div class="dec font-lnter">Watch our company's journey</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Video player -->
+              <iframe class="video-player d-none" id="watch_src" width="560" height="315"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="available padd_t_b_50">
+        <div class="wrapper">
+          <div class="row justify-content-center text-center">
+            <div class="col-xl-8 col-lg-10">
+              <div class="section-head">
+                <h1 class="font-aref-ruqaabold text-uppercase fs-25 l-h-34"
+                    data-aos="fade-up"
+                    data-aos-duration="600">
+                  Available Across All Leading Supermarkets
+                  <br>
+                  & Hypermarkets in UAE
+                </h1>
+                <hr data-aos="fade-up" data-aos-duration="700">
+                <h5 class="font-aref-ruqaabold"
+                    data-aos="fade-up"
+                    data-aos-duration="700">
+                  we are committed to excellence
+                  in quality and services standards both for local and export market in seafood industry since 1986.
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="row pt-40 text-center">
+            <div class="col-12">
+              <div class="slick_slider_5 ps-50 pe-50">
+                {% for s in supermarkets %}
+                  <div class="item wow fadeInUp wow_item">
+                    <img width=""
+                         height=""
+                         class="img-fluid"
+                         src="{{ s.image.url }}"
+                         alt="{{ s.image_alt }}">
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cook-oceano padd_t_50 text-white">
+        <div class="wrapper">
+          <div class="row justify-content-center text-center">
+            <div class="col-xl-8 col-lg-10">
+              <div class="section-head">
+                <h1 class="font-aref-ruqaabold"
+                    data-aos="fade-up"
+                    data-aos-duration="600">COOK WITH OCEANO</h1>
+                <hr class="bg-white" data-aos="fade-up" data-aos-duration="700">
+                <h5 class="font-aref-ruqaabold"
+                    data-aos="fade-up"
+                    data-aos-duration="700">why you should swich to oceano</h5>
+              </div>
+            </div>
+          </div>
+          <div class="row row-item pt-40">
+            {% comment %} {% for r in recipes %} {% endcomment %}
+            <div class="col-lg-4 col-sm-6 col-item pb-50">
+              <div class="item box-occ-box" data-aos="fade-up" data-aos-duration="500">
+                <img width=""
+                     height=""
+                     class="img-fluid img-primary"
+                     src="{% if r.rec_image %}{{ r.rec_image.first.image.url }}{% endif %}"
+                     alt="{{ r.image_alt }}">
+                <div class="title font-aref-ruqaabold">{{ r.title }}</div>
+                <div class="dec r-dec-p">{{ r.description|safe }}</div>
+                <button type="button"
+                        class="btn btn-primary r-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal{{ r.id }}">Read more</button>
+              </div>
+            </div>
+            <!-- recipe Modal -->
+            <div class="modal fade"
+                 id="exampleModal{{ r.id }}"
+                 tabindex="-1"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ r.title }}</h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="r-main">
+                      <img width=""
+                           height=""
+                           class="img-fluid img-primary"
+                           src="{% if r.rec_image %}{{ r.rec_image.first.image.url }}{% endif %}"
+                           alt="{{ r.image_alt }}">
+                      {% if r.rec_ind.count >= 1 %}
+                        <div class="row crab">
+                          <b class="ps-0">
+                            <h5 class="mb-3">Ingredients</h5>
+                          </b>
+                          {% for i in r.rec_ind.all %}
+                            <div class="row">
+                              <div class="col-lg-6 col-md-6 col-sm-6 col-6 mb-2 ps-0">{{ i.title }}</div>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      {% endif %}
+                      {% if r.description %}
+                        <h6 class="text-dark fs-5 py-2 px-0">Instruction</h6>
+                        <div class="r-p-popup">{{ r.description|safe }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% comment %} {% endfor %} {% endcomment %}
+          </div>
+        </div>
+      </div>
+      <!-- view_modal -->
+      <div class="modal fade terms-modal"
+           id="view_modal"
+           tabindex="-1"
+           aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-body text-blue">
+              <div class="card border-0 rounded-0 p-tb-50-lr-30">
+                <div class="row align-items-center" id="pdetails"></div>
+              </div>
+            </div>
+            <div class="modal-footer border-0">
+              <button type="button"
+                      class="btn primary-btn btn-l-blue font-lnter"
+                      data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <link href="{% static 'public_interface/fonts/webfonts/Aref-ruqaa/font-aref-ruqaa.css' %}"
+        rel="stylesheet"
+        type="text/css">
+  <!-- Sticky Enquiry Button -->
+  {% include "public_interface/components/enquiry/enquiry-form.html" %}
+  <script>
+  $(document).ready(function() {
+      const productItems = $(".mix");
+      const loadMoreButton = $("#loadMoreButton");
+      const totalProduct = loadMoreButton.data('total');
+      loadMoreButton.hide();
+  
+      const itemsToShow = 4;
+      console.log('**',productItems.length)
+      console.log('**',totalProduct)
+      if (totalProduct>4) {
+          loadMoreButton.show();
+      } else {
+          loadMoreButton.hide();
+      }
+  });
+/*
+** With Slick Slider Plugin : https://github.com/marvinhuebner/slick-animation
+** And Slick Animation Plugin : https://github.com/marvinhuebner/slick-animation
+*/
+
+// Init slick slider + animation
+$('.slider').slick({
+  autoplay: true,
+  speed: 1500,
+  lazyLoad: 'progressive',
+  arrows: false,
+  dots: false,
+	loop:true,  
+	pauseOnHover:false,
+	prevArrow: '<div class="slick-nav prev-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
+	nextArrow: '<div class="slick-nav next-arrow"><i></i><svg><use xlink:href="#circle"></svg></div>',
+}).slickAnimation();
+
+
+
+$('.slick-nav').on('click touch', function(e) {
+
+    e.preventDefault();
+
+    let arrow = $(this);
+
+    if(!arrow.hasClass('animate')) {
+        arrow.addClass('animate');
+        setTimeout(() => {
+            arrow.removeClass('animate');
+        }, 1600);
+    }
+
+});
+// modal_watch_file
+$("body").on("click", ".watch_file_btn", function (event) {
+  $('#watch_src').attr('src', $(this).data('file-src'));
+  $('.watch_thumbnail').hide();
+  $('#watch_src').removeClass('d-none');
+});
+
+// Select all play buttons
+const playButtons = document.querySelectorAll('.btn-play');
+const videoPlayer = document.getElementById('watch_src');
+
+// Add click event to each play button
+playButtons.forEach(button => {
+  button.addEventListener('click', function() {
+    const videoSrc = this.getAttribute('data-file-src');
+    // Update the iframe source
+    videoPlayer.src = videoSrc;
+    // Show the iframe and play the video
+    videoPlayer.classList.remove('d-none');
+  });
+});
+$(".VIEWMODAL").click(function(){
+    $(".PNAME").text($(this).data("name"))
+    $(".PPRICE").text($(this).data("price"))
+    $(".PNET").text($(this).data("net_weight"))
+    $(".PDES").text($(this).data("description"))
+    $(".PIND").text($(this).data("ingredients"))
+    $(".PINS").text($(this).data("instructions"))
+    $(".PSINS").text($(this).data("storage_instructions"))
+    $(".PCAU").text($(this).data("causion"))
+    $(".PCODE").text($(this).data("product_code"))
+    $(".PIMG").prop("src",$(this).data("image"))
+    $("#view_modal").modal("show")
+  })
+
+
+  $(".VIEWMORE").on("click",function(){
+    var last_id = $('input[name="last_id"]').val()
+    var ids = last_id
+    var select_category = '10'
+    $.ajax({
+     url: "/get-oceano-products/",
+     type : "GET",
+     data: {
+         'last_id':last_id,
+         'select_category':select_category
+         }, 
+         success: function (data) { 
+          var ret = data['products'];  
+          var ex = data["more_count"]
+          if(ex != true){
+            $('.VIEWMORE').hide()
+          }
+          else{
+            $('.VIEWMORE').show()
+          }
+
+          $.each( ret, function( key, values ) {
+            ids = values["id"]
+            $('.MOREBTN').append('<div class="row align-items-center position-relative row-item pt-50"><div class="col-lg-4 col-sm-5 col-item"><img class="img-fluid img-primary" src='+values["image"]+'></div><div class="col-lg-8 col-sm-7 col-item"><div class="title font-aref-ruqaabold">'+values["name"]+'</div><div class="dec">'+values["description"]+'</div></div><button data-image='+values["image"]+' data-description='+values["description"]+' data-causion='+values["causion"]+' data-storage_instructions='+values["storage_instructions"]+' data-instructions='+values["instructions"]+' data-ingredients='+values["ingredients"]+' data-net_weight='+values["net_weight"]+' data-price='+values["price"]+' data-product_code='+values["product_code"]+' data-name='+values["name"]+' class="primary-btn VIEWMODAL" type="button"></button></div>');   
+          });  
+          $('input[name="last_id"]').val(ids)
+   
+         }  
+     });
+  })
+  </script>
+{% endblock content %}
