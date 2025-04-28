@@ -1,0 +1,249 @@
+{% load static %}
+<footer>
+  <div class="wrapper aos-init aos-animate"
+       data-aos="fade-down"
+       data-aos-duration="1000">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <a class="a-logo active" href="{% url "home" %}">
+          <img width=""
+               height=""
+               alt="Deep Sea Food Logo"
+               class="logo"
+               src="{% static 'public_interface/images/logo-white.png' %}">
+        </a>
+        <div class="caption">38 Years of excellence in quality &amp; service.</div>
+        <div>
+          <div class="title">THE DEEP SEAFOOD COMPANY</div>
+          <div class="address">United Arab Emirates</div>
+          <div class="info">
+            <a class="btn-zoom-hover mb-0" href="tel:+971 2 6733445">
+              <i class="fa fa-mobile" aria-hidden="true"></i>
+              <span>+971 2 6733445</span>
+            </a>
+            <a class="btn-zoom-hover mb-0">
+              <span>|</span>
+            </a>
+            <a class="btn-zoom-hover mb-0" href="tel:+971 4 2844227">
+              <i class="fa fa-mobile" aria-hidden="true"></i>
+              <span>+971 4 2844227</span>
+            </a>
+          </div>
+          <div class="info">
+            <a class="btn-zoom-hover" href="mailto:Info@thedeepseafood.com">
+              <i class="fa fa-envelope-o" aria-hidden="true"></i>
+              <span>Info@thedeepseafood.com</span>
+            </a>
+          </div>
+          <div class="footer-country">
+            <div class="country_nav_url">
+              <a class="a-item aos-init aos-animate"
+                 data-aos="fade-up"
+                 data-aos-duration="1000"
+                 href="{% url 'contact' %}?branch=UAE">UAE</a>
+              <a class="a-item aos-init aos-animate"
+                 data-aos="fade-up"
+                 data-aos-duration="1000"
+                 href="{% url 'contact' %}?branch=KSA">KSA</a>
+              <a class="a-item aos-init aos-animate"
+                 data-aos="fade-up"
+                 data-aos-duration="1000"
+                 href="{% url 'contact' %}?branch=QATAR">QATAR</a>
+              <a class="a-item aos-init aos-animate"
+                 data-aos="fade-up"
+                 data-aos-duration="1000"
+                 href="{% url 'contact' %}?branch=OMAN">OMAN</a>
+              <a class="a-item aos-init aos-animate"
+                 data-aos="fade-up"
+                 data-aos-duration="1000"
+                 href="{% url 'contact' %}?branch=INDIA">INDIA</a>
+              <a class="a-item aos-init aos-animate"
+                 data-aos="fade-up"
+                 data-aos-duration="1000"
+                 href="{% url 'contact' %}?branch=UK">UK</a>
+              <a class="a-item aos-init aos-animate"
+                 data-aos="fade-up"
+                 data-aos-duration="1000"
+                 href="{% url 'contact' %}?branch=MALDIVES">MALDIVES</a>
+            </div>
+            <div class="country_nav_btn d-none">
+              <ul class="nav nav-tabs tab-country border-0 justify-content-center country_tab"
+                  role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active info-item text-blue aos-init aos-animate"
+                          data-aos="fade-up"
+                          data-aos-duration="1000"
+                          data-bs-toggle="tab"
+                          data-bs-target="#tab_uae"
+                          type="button"
+                          role="tab"
+                          aria-selected="true">
+                    <div class="title a-item font-lnterbold">UAE</div>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link info-item text-blue aos-init aos-animate"
+                          data-aos="fade-up"
+                          data-aos-duration="1000"
+                          data-bs-toggle="tab"
+                          data-bs-target="#tab_ksa"
+                          type="button"
+                          role="tab"
+                          aria-selected="true">
+                    <div class="title a-item font-lnterbold">KSA</div>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link info-item text-blue aos-init aos-animate"
+                          data-aos="fade-up"
+                          data-aos-duration="1000"
+                          data-bs-toggle="tab"
+                          data-bs-target="#tab_qatar"
+                          type="button"
+                          role="tab"
+                          aria-selected="true">
+                    <div class="title a-item font-lnterbold">QATAR</div>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link info-item text-blue aos-init aos-animate"
+                          data-aos="fade-up"
+                          data-aos-duration="1000"
+                          data-bs-toggle="tab"
+                          data-bs-target="#tab_oman"
+                          type="button"
+                          role="tab"
+                          aria-selected="true">
+                    <div class="title a-item font-lnterbold">OMAN</div>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link info-item text-blue aos-init aos-animate"
+                          data-aos="fade-up"
+                          data-aos-duration="1000"
+                          data-bs-toggle="tab"
+                          data-bs-target="#tab_india"
+                          type="button"
+                          role="tab"
+                          aria-selected="true">
+                    <div class="title a-item font-lnterbold">INDIA</div>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link info-item text-blue aos-init aos-animate"
+                          data-aos="fade-up"
+                          data-aos-duration="1000"
+                          data-bs-toggle="tab"
+                          data-bs-target="#tab_uk"
+                          type="button"
+                          role="tab"
+                          aria-selected="true">
+                    <div class="title a-item font-lnterbold">UNITED KINGDOM</div>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link info-item text-blue aos-init aos-animate"
+                          data-aos="fade-up"
+                          data-aos-duration="1000"
+                          data-bs-toggle="tab"
+                          data-bs-target="#tab_ml"
+                          type="button"
+                          role="tab"
+                          aria-selected="true">
+                    <div class="title a-item font-lnterbold">MALDIVES</div>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="social">
+            <a class="btn-zoom-hover"
+               href="https://www.facebook.com/thedeepseafood"
+               target="_blank">
+              <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+            <a class="btn-zoom-hover"
+               href="https://www.instagram.com/thedeepseafood/"
+               target="_blank">
+              <i class="fa fa-instagram" aria-hidden="true"></i>
+            </a>
+            <a class="btn-zoom-hover"
+               href="https://www.linkedin.com/company/thedeepseafood"
+               target="_blank">
+              <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+            <a class="btn-zoom-hover"
+               href="https://twitter.com/thedeepseafood"
+               target="_blank">
+              <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            <a class="btn-zoom-hover"
+               href="https://www.youtube.com/channel/UCc3zTaCKRyM9AnYwftEe1hw/featured"
+               target="_blank">
+              <i class="fa fa-youtube-play" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <div class="link-list">
+            <ul class="nav-list font-lntermedium">
+              <div class="row align-items-center">
+                <div class="col-sm-5">
+                  <li>
+                    <a href="{% url "home" %}">Home Page</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'about' %}">About us</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'product' %}">Products</a>
+                  </li>
+                  <!-- <li>
+                    <a href="{% url 'brands' %}">Brands</a>
+                  </li> -->
+                  <li>
+                    <a href="{% url 'distribution' %}">Distribution Channel</a>
+                  </li>
+                </div>
+                <div class="col-sm-7">
+                  <li>
+                    <a href="{% url 'newsroom' %}">News Room</a>
+                  </li>
+                  {% if blog %}
+                    <li>
+                      <a href="{% url 'blog' %}">Blogs</a>
+                    </li>
+                  {% endif %}
+                  <li>
+                    <a href="{% url 'career' %}">Career</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'contact' %}">Contact us</a>
+                  </li>
+                </div>
+              </div>
+            </ul>
+          </div>
+          <div class="links">
+            <a href="#" class="btn btn-zoom-hover">Terms and Conditions</a>
+            <a href="#" class="btn btn-zoom-hover">Privacy Policy</a>
+          </div>
+          <div class="copyright">
+            <span>Copyright @2024 The Deep Seafood Company.</span>
+            <span>All rights are reserved.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="video-container">
+    <img width=""
+         height=""
+         alt="Fishes Swimming under water footer image"
+         loading="lazy"
+         class="cover"
+         src="{% static 'public_interface/images/footer/bg.png' %}">
+  </div>
+</footer>

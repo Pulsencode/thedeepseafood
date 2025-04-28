@@ -1,0 +1,33 @@
+{% extends "public_interface/layouts/public_base.html" %}
+{% load static %}
+{% block content %}
+  <div class="main-div pt-0 header-bg-transparent header-logo-white">
+    <!-- contact -->
+    <section id="contact" class="pt-0">
+      <div class="banner-cover">
+        <img class="img-primary"
+             width=""
+             height=""
+             loading="lazy"
+             alt="Contact Banner"
+             src="{% static 'public_interface/images/contact/banner-cover/contact-us.jpg' %}">
+        <div class="caption w-100 text-center">
+          <div class="wrapper">
+            <div class="row text-white">
+              <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
+                <h3 class="font-lnterbold">CONTACT US</h3>
+                <h5 class="font-lnterbold">
+                  <a href="{% url "home" %}">Home</a>
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  <a>Contact Us</a>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% include "public_interface/components/contact/get_in_touch.html" %}
+    </section>
+    <!-- /contact -->
+  </div>
+{% endblock content %}

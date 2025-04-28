@@ -291,26 +291,35 @@ function switchprodcategory(element) {
 
 //news room page scripts
 document.addEventListener("DOMContentLoaded", function () {
-  document
-    .querySelector('.exhibition a[href="#events"]')
-    .addEventListener("click", function (e) {
+  // Check each element before adding event listeners
+  const exhibitionLink = document.querySelector(
+    '.exhibition a[href="#events"]'
+  );
+  const companyLink = document.querySelector(
+    '.company a[href="#company-news"]'
+  );
+  const globalLink = document.querySelector('.global a[href="#global-news"]');
+
+  if (exhibitionLink) {
+    exhibitionLink.addEventListener("click", function (e) {
       e.preventDefault();
       getEvents();
     });
+  }
 
-  document
-    .querySelector('.company a[href="#company-news"]')
-    .addEventListener("click", function (e) {
+  if (companyLink) {
+    companyLink.addEventListener("click", function (e) {
       e.preventDefault();
       getNews();
     });
+  }
 
-  document
-    .querySelector('.global a[href="#global-news"]')
-    .addEventListener("click", function (e) {
+  if (globalLink) {
+    globalLink.addEventListener("click", function (e) {
       e.preventDefault();
       getGlobalNews();
     });
+  }
 });
 
 function getEvents() {
@@ -545,33 +554,33 @@ function seterror(id, error) {
 }
 
 //restricting submit button
+document.addEventListener("DOMContentLoaded", function () {
+  // Ensure the form exists before adding the event listener
+  const form = document.getElementById("contactform", "careerform");
+  if (!form) {
+    console.error("Form with ID 'contactform' not found!");
+    return;
+  }
 
-document
-  .getElementById("contactform")
-  .addEventListener("submit", function (event) {
-    // Clear errors before validation
+  form.addEventListener("submit", function (event) {
     clearerrors();
 
-    var email = document.forms["contactform"]["email"].value;
-    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const email = document.forms["contactform"]["email"].value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // Validate email
-    if (!email.match(emailRegex)) {
+    if (!emailRegex.test(email)) {
       seterror("email", "Enter a valid email address");
-      event.preventDefault(); // Prevent form submission if validation fails
+      event.preventDefault();
     } else {
-      // Additional functions to be executed if email validation is successful
-
-      // Disable the submit button when the form is submitted
       document.getElementById("submitButton").disabled = true;
 
-      // Reset the form and enable the submit button after 3 seconds
-      setTimeout(function () {
-        document.getElementById("contactform").reset();
+      setTimeout(() => {
+        form.reset();
         document.getElementById("submitButton").disabled = false;
       }, 3000);
     }
   });
+});
 
 //restrict document upload in career section
 function fileupload() {
