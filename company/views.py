@@ -1,4 +1,5 @@
 # from django.contrib.auth.mixins import UserPassesTestMixin
+# from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
     # TemplateView,
@@ -10,7 +11,7 @@ from django.views.generic import (
 )
 
 # from deepapp.helper import is_ajax, renderhelper
-from datetime import datetime
+# from datetime import datetime
 
 
 # from deepapp.helper import is_ajax, renderhelper
@@ -60,29 +61,24 @@ from company.models import (
     SEO,
     Supermarkets,
 )
+from company.mixin import SearchStatusMixin, StatusMixin
 
 
-class SeoListView(ListView):
+# def status(request, pk):
+#     if request.method == "POST":
+#         seo_list = get_object_or_404(SEO, id=pk)
+#         status = request.POST.get("status", "")
+#         seo_list.status = status == "on"
+#         seo_list.save()
+#         return redirect("list_seo")
+
+
+class SeoListView(SearchStatusMixin, StatusMixin, ListView):
     model = SEO
     context_object_name = "all_seo"
     paginate_by = 10
     template_name = "superadmin/seo/seo-view.html"
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        search = self.request.GET.get("search")
-        status_filter = self.request.GET.get("status_filter")
-
-        if search:
-            queryset = queryset.filter(page_name__icontains=search)
-
-        # Default to True if no status_filter is given
-        if status_filter == "False":
-            queryset = queryset.filter(status=False)
-        else:
-            queryset = queryset.filter(status=True)
-
-        return queryset
+    search_field = "page_name"
 
     # def test_func(self):
     #     return self.request.user.username == "DeepSeaAdmin"
@@ -170,24 +166,12 @@ class SeoUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class TeamListView(ListView):
+class TeamListView(SearchStatusMixin, StatusMixin, ListView):
     model = ManagementTeam
     paginate_by = 10
     context_object_name = "all_teams"
     template_name = "superadmin/team/management_team_view.html"
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        search = self.request.GET.get("search")
-        status_filter = self.request.GET.get("search_filter")
-        if search:
-            queryset = queryset.filter(role__icontains=search)
-        if status_filter == "False":
-            queryset = queryset.filter(status=False)
-        else:
-            queryset = queryset.filter(status=True)
-
-        return queryset
+    search_field = "role"
 
 
 # class TeamListView(UserPassesTestMixin, TemplateView):
@@ -291,11 +275,12 @@ class TeamUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class TestimonialListView(ListView):
+class TestimonialListView(SearchStatusMixin, StatusMixin, ListView):
     model = CompanyTestimonial
     paginated_by = 10
     context_object_name = "all_testimonials"
-    template_name = "superadmin/testimonial/testimonial_list.html"
+    template_name = "superadmin/testimonial/testimonial_view.html"
+    search_field = "name"
 
 
 # class TestimonialListView(UserPassesTestMixin, TemplateView):
@@ -402,11 +387,11 @@ class TestimonialUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class CertificationListView(ListView):
+class CertificationListView(SearchStatusMixin, StatusMixin, ListView):
     model = Certification
     context_object_name = "all_certification"
     paginate_by = 10
-    template_name = "superadmin/certification/certification_list.html"
+    template_name = "superadmin/certification/certification_view.html"
 
     # def test_func(self):
     #     return self.request.user.username == "DeepSeaAdmin"
@@ -510,24 +495,11 @@ class CertificationUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class SupermarketListView(ListView):
+class SupermarketListView(SearchStatusMixin, StatusMixin, ListView):
     model = Supermarkets
     context_object_name = "all_supermarkets"
     paginate_by = 10
     template_name = "superadmin/supermarket/supermarket_view.html"
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        search = self.request.GET.get("search")
-        status_filter = self.request.GET.get("search_filter")
-        if search:
-            queryset = queryset.filter(role__icontains=search)
-        if status_filter == "False":
-            queryset = queryset.filter(status=False)
-        else:
-            queryset = queryset.filter(status=True)
-
-        return queryset
 
 
 # class SupermarketListView(UserPassesTestMixin, TemplateView):
@@ -636,11 +608,12 @@ class SupermarketUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class BrandListView(ListView):
+class BrandListView(SearchStatusMixin, StatusMixin, ListView):
     model = Brand
     context_object_name = "all_brands"
     paginate_by = 10
-    template_name = "superadmin/brand/brand_list.html"
+    template_name = "superadmin/brand/brand_view.html"
+    search_field = "name"
 
     # def test_func(self):
     #     return self.request.user.username == "DeepSeaAdmin"
@@ -745,11 +718,12 @@ class BrandUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class BlogListView(ListView):
+class BlogListView(SearchStatusMixin, StatusMixin, ListView):
     model = Blog
     context_object_name = "all_blogs"
     paginated_by = 10
     template_name = "superadmin/blog/Blog_view.html"
+    search_field = "name"
 
 
 # class BlogListView(UserPassesTestMixin, ListView):
@@ -869,11 +843,12 @@ class BlogUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class EventListView(ListView):
+class EventListView(SearchStatusMixin, StatusMixin, ListView):
     model = Event
     context_object_name = "all_events"
     paginate_by = 10
-    template_name = "superadmin/event gallery/event_gallery_list.html"
+    template_name = "superadmin/event gallery/event_gallery_view.html"
+    search_field = "name"
 
 
 # class EventListView(UserPassesTestMixin, TemplateView):
@@ -1015,11 +990,12 @@ class EventImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class NewsListView(ListView):
+class NewsListView(SearchStatusMixin, StatusMixin, ListView):
     model = News
     context_object_name = "all_news"
     paginate_by = 10
-    template_name = "superadmin/news/news_list.html"
+    template_name = "superadmin/news/news_view.html"
+    search_field = "name"
 
 
 # class NewsListView(UserPassesTestMixin, TemplateView):
@@ -1159,11 +1135,12 @@ class NewsImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class PromotionListView(ListView):
+class PromotionListView(SearchStatusMixin, StatusMixin, ListView):
     model = Promotion
     context_object_name = "all_promotions"
     paginate_by = 10
-    template_name = "superadmin/promotion/promotion_info_list.html"
+    template_name = "superadmin/promotion/promotion_info_view.html"
+    search_field = "name"
 
 
 # promotion listview
@@ -1313,11 +1290,12 @@ class BlogImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class HistoryListView(ListView):
+class HistoryListView(SearchStatusMixin, StatusMixin, ListView):
     model = History
     context_object_name = "all_history"
     paginate_by = 10
-    template_name = "superadmin/history/history_list.html"
+    template_name = "superadmin/history/history_view.html"
+    search_field = "year"
     # history View
 
     # def test_func(self):
@@ -1457,11 +1435,12 @@ class HistoryImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class ContactListView(ListView):
+class ContactListView(SearchStatusMixin, StatusMixin, ListView):
     model = ContactUs
     context_object_name = "all_contacts"
     paginate_by = 10
-    template_name = "superadmin/contact/contact_list.html"
+    template_name = "superadmin/contact/contact_view.html"
+    search_field = "name"
 
     # def test_func(self):
     #     return self.request.user.username == "DeepSeaAdmin"
@@ -1517,11 +1496,12 @@ class ContactListView(ListView):
     # return renderhelper(request, "contact", "contact_view", context)
 
 
-class EnquiryListView(ListView):
+class EnquiryListView(SearchStatusMixin, StatusMixin, ListView):
     model = Enquiry
     context_object_name = "all_enquiry"
     paginate_by = 10
-    template_name = "superadmin/enquiry/enquiry_list.html"
+    template_name = "superadmin/enquiry/enquiry_view.html"
+    search_field = "year"
 
     # def test_func(self):
     #     return self.request.user.username == "DeepSeaAdmin"

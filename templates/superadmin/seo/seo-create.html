@@ -40,66 +40,85 @@
                 </div>
             </div>
             <!-- PAGE-HEADER END -->
-
             <!-- ROW OPEN -->
             <form method="post" enctype="multipart/form-data" id="myform">
                 {% csrf_token %}
                 <div class="row">
-                  
-
                     <div class="col-md-8 col-xl-8 col-12">
                         <div class="card">
                             <div class="card-body">
-                            
-                                    <div class="row col-lg-12">
-                                       
-                                       
-                                        
-                                        <div class="form-group col-lg-6 col-12" >
-                                            <label class="form-label">Page*</label>
-                                            <select name="page" class="select-drop " required>
-                                                <option value="">Select page</option>
-                                                <option {% if list.page == 'Home' %}selected{% endif %} value="Home">Home</option>
-                                                <option {% if list.page == 'About' %}selected{% endif %} value="About">About</option>
-                                                <option {% if list.page == 'Product' %}selected{% endif %} value="Product">Product</option>
-                                                <option {% if list.page == 'Oceano' %}selected{% endif %} value="Oceano">Oceano</option>
-                                                <option {% if list.page == 'Distribution Channel' %}selected{% endif %} value="Distribution Channel">Distribution Channel</option>
-                                                <option {% if list.page == 'News Room' %}selected{% endif %} value="News Room">News Room</option>
-                                                <option {% if list.page == 'Career' %}selected{% endif %} value="Career">Career</option>
-                                                <option {% if list.page == 'Contact Us' %}selected{% endif %} value="Contact Us">Contact Us</option>
-                                                <option {% if list.page == 'Blogs' %}selected{% endif %} value="Blogs">Blogs</option>
-                                                
-                                            </select>
+                                <div class="row col-lg-12">
+                                    <div class="form-group col-lg-6 col-12">
+                                        <label class="form-label">Page*</label>
+                                        <select name="page_name" class="select-drop " required>
+                                            <option value="">Select page</option>
+                                            <option {% if list.page == 'hm' %}selected{% endif %} value="hm">Home</option>
+                                            <option {% if list.page == 'abt' %}selected{% endif %} value="About">About</option>
+                                            <option {% if list.page == 'prd' %}selected{% endif %} value="Product">Product</option>
+                                            <option {% if list.page == 'car' %}selected{% endif %} value="Oceano">Oceano</option>
+                                            <option {% if list.page == 'Distribution Channel' %}selected{% endif %}
+                                                    value="Distribution Channel">Distribution Channel</option>
+                                            <option {% if list.page == 'nws' %}selected{% endif %} value="News Room">News Room</option>
+                                            <option {% if list.page == 'Career' %}selected{% endif %} value="Career">Career</option>
+                                            <option {% if list.page == 'Contact Us' %}selected{% endif %}
+                                                    value="Contact Us">Contact Us</option>
+                                            <option {% if list.page == 'blg' %}selected{% endif %} value="Blogs">Blogs</option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <h6>SEO section :</h6>
+                                        <br>
+                                        <div class="form-group col-lg-6 col-12">
+                                            <label for="" class="form-label">Title tag</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id=""
+                                                   placeholder="Title tag"
+                                                   name="meta_title"
+                                                   value="{{ seo.meta_title }}">
                                         </div>
-										
-                                        
-                                        
-                                        
-                                        <div class="row">
-                                            <h6>SEO section :</h6><br>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label"> Title tag</label>
-                                                <input type="text" class="form-control" id="" placeholder="Title tag" name="title_tag" value="{{list.title_tag}}" >
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label"> Meta description</label>
-                                                <input type="text" class="form-control" id="" placeholder="Meta description" name="metatag" value="{{list.metatag}}" >
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label"> Keyword tag</label>
-                                                <input type="text" class="form-control" id="" placeholder="Keyword tag" name="keyword" value="{{list.keyword}}" >
-                                            </div>
-                                            <div class="form-group col-lg-6 col-12">
-                                                <label for="" class="form-label"> Canonical url</label>
-                                                <input type="text" class="form-control" id="" placeholder="Canonical url" name="canonical" value="{{list.canonical}}" >
-                                            </div>
+                                        <div class="form-group col-lg-6 col-12">
+                                            <label for="" class="form-label">Meta Author</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id=""
+                                                   placeholder="Title tag"
+                                                   name="meta_author"
+                                                   value="{{ list.title_tag }}">
                                         </div>
-                                        <div class="form-group col-lg-12 col-12">
-                                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
-                                            <a href="{% url 'list_seo' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                                        <div class="form-group col-lg-6 col-12">
+                                            <label for="" class="form-label">Meta description</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id=""
+                                                   placeholder="Meta description"
+                                                   name="meta_description"
+                                                   value="{{ list.metatag }}">
+                                        </div>
+                                        <div class="form-group col-lg-6 col-12">
+                                            <label for="" class="form-label">Keyword tag</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id=""
+                                                   placeholder="Keyword tag"
+                                                   name="meta_keywords"
+                                                   value="{{ list.keyword }}">
+                                        </div>
+                                        <div class="form-group col-lg-6 col-12">
+                                            <label for="" class="form-label">Canonical url</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id=""
+                                                   placeholder="Canonical url"
+                                                   name="meta_json_ld"
+                                                   value="{{ list.canonical }}">
                                         </div>
                                     </div>
-                                
+                                    <div class="form-group col-lg-12 col-12">
+                                        <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                                        <a href="{% url 'list_seo' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- ROW CLOSED -->
@@ -110,5 +129,4 @@
         </div>
     </div>
     <!--app-content close-->
-
     {% include 'superadmin/layout/footer.html' %}

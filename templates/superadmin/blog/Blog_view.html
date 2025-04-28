@@ -15,7 +15,7 @@
     }
 </style>
 <!--app-content open-->
-<div class="main-content app-content mt-0">
+{% comment %} <div class="main-content app-content mt-0">
     <div class="side-app">
         <!-- CONTAINER -->
         <div class="main-container container-fluid">
@@ -25,46 +25,46 @@
                 <div>
                     <a class="btn btn-primary" href="{% url 'blog_add' %}"><i class="side-menu__icon fe fe-plus mx-1"></i>Add New</a>
                 </div>
+</div> {% endcomment %}
+<!-- PAGE-HEADER END -->
+{% for message in messages %}
+    <div class="alert alert-primary alert-dismissible fade show m-0 text-center"
+         id="success"
+         role="alert"
+         style="border-radius: 0">
+        {{ message }}
+        <button type="button"
+                class="btn-close text-dark "
+                data-bs-dismiss="alert"
+                aria-label="Close">x</button>
+    </div>
+{% endfor %}
+<!-- ROW OPEN -->
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">List Of All Blog</h3>
             </div>
-            <!-- PAGE-HEADER END -->
-            {% for message in messages %}
-                <div class="alert alert-primary alert-dismissible fade show m-0 text-center"
-                     id="success"
-                     role="alert"
-                     style="border-radius: 0">
-                    {{ message }}
-                    <button type="button"
-                            class="btn-close text-dark "
-                            data-bs-dismiss="alert"
-                            aria-label="Close">x</button>
-                </div>
-            {% endfor %}
-            <!-- ROW OPEN -->
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">List Of All Blog</h3>
-                        </div>
-                        <div class="card-body">
-                            <form>
-                                <div class="row">
-                                    <!------search_filter.html-->
-                                    {% include "search_filter.html" %}
-                                    <div class="form-group col-lg-5 col-7">
-                                        <span id ="message001" style="color:green;display:none"><b>Status Updated Successfully</b></span>
-                                    </div>
-                                </div>
-                            </form>
-                            <div class="table-responsive" id="blog-table">{% include 'superadmin/blog/Blog_list.html' %}</div>
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <!------search_filter.html-->
+                        {% include "search_filter.html" %}
+                        <div class="form-group col-lg-5 col-7">
+                            <span id ="message001" style="color:green;display:none"><b>Status Updated Successfully</b></span>
                         </div>
                     </div>
-                </div>
+                </form>
+                <div class="table-responsive" id="blog-table">{% include 'superadmin/blog/Blog_list.html' %}</div>
             </div>
-            <!-- ROW CLOSED -->
         </div>
-        <!-- CONTAINER END -->
     </div>
+</div>
+<!-- ROW CLOSED -->
+</div>
+<!-- CONTAINER END -->
+</div>
 </div>
 <!--app-content close-->
 <div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">
