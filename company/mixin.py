@@ -3,7 +3,7 @@
 from django.shortcuts import get_object_or_404, redirect
 
 
-class SearchStatusMixin:
+class SearchAndStatusFilterMixin:
     search_field = None  # Default search field, can override
     status_field = "status"  # Default status field
 
@@ -27,13 +27,13 @@ class SearchStatusMixin:
 """for updating status in  list used to avoid code repetition"""
 
 
-class StatusMixin:
+class StatusUpdateMixin:
     model = None
 
     def post(self, request, *args, **kwargs):
-        object_id = request.POST.get("object_id")
-        obj = get_object_or_404(self.model, id=object_id)
+        status_id = request.POST.get("status_id")
+        update_status = get_object_or_404(self.model, id=status_id)
         status_value = request.POST.get("status", "")
-        obj.status = status_value == "on"
-        obj.save()
+        update_status.status = status_value == "on"
+        update_status.save()
         return redirect(self.request.path)

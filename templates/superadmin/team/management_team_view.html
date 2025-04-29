@@ -9,7 +9,7 @@
             <div class="page-header">
                 <h1 class="page-title">Management Team</h1>
                 <div>
-                    <a class="btn btn-primary" href="{% url 'list_team' %}"><i class="side-menu__icon fe fe-plus mx-1"></i>Add New</a>
+                    <a class="btn btn-primary" href="{% url 'team_add' %}"><i class="side-menu__icon fe fe-plus mx-1"></i>Add New</a>
                 </div>
             </div>
             <!-- PAGE-HEADER END -->
@@ -59,13 +59,17 @@
                                                 {% endif %}
                                             </td>
                                             <td>
-                                                <div class="material-switch">
-                                                    <input id="someSwitchOptionSuccess{{ d.id }}"
-                                                           name="someSwitchOption001"
-                                                           type="checkbox"
-                                                           {% if team.status == True %} onclick="changeteamstatus({{ team.id }},0)" checked {% else %}onclick="changeteamstatus({{ team.id }},1)" {% endif %} />
-                                                    <label for="someSwitchOptionSuccess{{ d.id }}" class="label-success"></label>
-                                                </div>
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="status_id" value={{ team.id }}>
+                                                    <div class="material-switch">
+                                                        <input id="someSwitchOptionSuccess{{ d.id }}"
+                                                               name="status"
+                                                               type="checkbox"
+                                                               {% if team.status %}checked{% endif %}
+                                                               onchange="this.form.submit()" />
+                                                    </div>
+                                                </form>
                                             </td>
                                             <td>
                                                 <a class="btn btn-info btn-sm mb-1"

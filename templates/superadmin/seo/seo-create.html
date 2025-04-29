@@ -51,11 +51,11 @@
                                     <div class="form-group col-lg-6 col-12">
                                         <label class="form-label">Page*</label>
                                         <select name="page_name" class="select-drop " required>
-                                            <option value="">Select page</option>
+                                            <option value="{{ seo.page_name }}">Select page</option>
                                             <option {% if list.page == 'hm' %}selected{% endif %} value="hm">Home</option>
-                                            <option {% if list.page == 'abt' %}selected{% endif %} value="About">About</option>
-                                            <option {% if list.page == 'prd' %}selected{% endif %} value="Product">Product</option>
-                                            <option {% if list.page == 'car' %}selected{% endif %} value="Oceano">Oceano</option>
+                                            <option {% if list.page == 'abt' %}selected{% endif %} value="abt">About</option>
+                                            <option {% if list.page == 'prd' %}selected{% endif %} value="prd">Product</option>
+                                            <option {% if list.page == 'car' %}selected{% endif %} value="car">Career</option>
                                             <option {% if list.page == 'Distribution Channel' %}selected{% endif %}
                                                     value="Distribution Channel">Distribution Channel</option>
                                             <option {% if list.page == 'nws' %}selected{% endif %} value="News Room">News Room</option>
@@ -84,7 +84,7 @@
                                                    id=""
                                                    placeholder="Title tag"
                                                    name="meta_author"
-                                                   value="{{ list.title_tag }}">
+                                                   value="{{ seo.meta_author }}">
                                         </div>
                                         <div class="form-group col-lg-6 col-12">
                                             <label for="" class="form-label">Meta description</label>
@@ -93,7 +93,7 @@
                                                    id=""
                                                    placeholder="Meta description"
                                                    name="meta_description"
-                                                   value="{{ list.metatag }}">
+                                                   value="{{ seo.meta_description }}">
                                         </div>
                                         <div class="form-group col-lg-6 col-12">
                                             <label for="" class="form-label">Keyword tag</label>
@@ -102,16 +102,16 @@
                                                    id=""
                                                    placeholder="Keyword tag"
                                                    name="meta_keywords"
-                                                   value="{{ list.keyword }}">
+                                                   value="{{ seo.meta_keywords }}">
                                         </div>
                                         <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label">Canonical url</label>
+                                            <label for="" class="form-label">Meta Json ld</label>
                                             <input type="text"
                                                    class="form-control"
                                                    id=""
                                                    placeholder="Canonical url"
                                                    name="meta_json_ld"
-                                                   value="{{ list.canonical }}">
+                                                   value="{{ seo.meta_json_ld }}">
                                         </div>
                                     </div>
                                     <div class="form-group col-lg-12 col-12">

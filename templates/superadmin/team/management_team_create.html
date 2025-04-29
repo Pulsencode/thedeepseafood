@@ -35,7 +35,7 @@
                                 <!-- </div> -->
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <img {% if list.image %}src="{{ list.image.url }}" {% else %}src="" {% endif %}
+                                        <img {% if team.image %}src="{{ team.image.url }}" {% else %}src="" {% endif %}
                                              class="" />
                                         <label class="cabinet center-block">
                                             <figure>
@@ -46,10 +46,10 @@
                                                     <i class="fa fa-camera"></i>
                                                 </figcaption>
                                             </figure>
-                                            <input type="file" class="item-img6 file center-block" name="file_photo" />
+                                            <input type="file" class="item-img6 file center-block" name="image" />
                                         </label>
                                     </div>
-                                    <input type="hidden" id="cropped-img" name="team-image">
+                                    <input type="hidden" id="cropped-img" name="image">
                                     <!-- 1 -->
                                     <div class="modal modal6 fade"
                                          id="cropImagePop6"
@@ -93,7 +93,7 @@
                                                id=""
                                                placeholder="Name"
                                                name="name"
-                                               value="{{ list.name }}"
+                                               value="{{ team.name }}"
                                                required>
                                     </div>
                                     <div class="form-group col-lg-6 col-12">
@@ -102,8 +102,8 @@
                                                class="form-control"
                                                id=""
                                                placeholder="Designation"
-                                               name="desig"
-                                               value="{{ list.designation }}"
+                                               name="role"
+                                               value="{{ team.role }}"
                                                required>
                                     </div>
                                     <div class="form-group col-lg-6 col-12">
@@ -113,7 +113,7 @@
                                                id=""
                                                placeholder="Sequence"
                                                name="sequence"
-                                               value="{{ list.sequence }}"
+                                               value="{{ team.sequence }}"
                                                required>
                                     </div>
                                     <div class="form-group col-lg-6 col-12">
@@ -123,7 +123,7 @@
                                                id=""
                                                placeholder="Image Alt"
                                                name="image_alt"
-                                               value="{% if list.image_alt %}{{ list.image_alt }}{% endif %}">
+                                               value="{% if team.image_alt %}{{ team.image_alt }}{% endif %}">
                                     </div>
                                     <div class="form-group col-lg-12 col-12">
                                         <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>

@@ -77,13 +77,17 @@
                                                            data-bs-target="#slider{{ history.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
                                                     </td>
                                                     <td>
-                                                        <div class="material-switch">
-                                                            <input id="someSwitchOptionSuccess{{ history.id }}"
-                                                                   name="someSwitchOption001"
-                                                                   type="checkbox"
-                                                                   {% if history.status == True %} onclick="changehistorystatus({{ history.id }},0)" checked {% else %}onclick="changehistorystatus({{ history.id }},1)" {% endif %} />
-                                                            <label for="someSwitchOptionSuccess{{ history.id }}" class="label-success"></label>
-                                                        </div>
+                                                        <form method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="status_id"  value="{{ history.id }}">
+                                                            <div class="material-switch">
+                                                                <input id="someSwitchOptionSuccess{{ history.id }}"
+                                                                       name="status"
+                                                                       type="checkbox"
+                                                                       {% if history.status %}checked{% endif %}
+                                                                       onchange="this.form.submit()">
+                                                            </div>
+                                                        </form>
                                                     </td>
                                                     <td>
                                                         <a class="btn btn-info btn-sm mb-1"
