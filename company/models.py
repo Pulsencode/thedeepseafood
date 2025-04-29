@@ -4,6 +4,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from autoslug import AutoSlugField
 from django.core.validators import MinValueValidator, MaxValueValidator
 import uuid
+from accounts.models import User
 
 
 def image_upload_path(instance, filename):
@@ -132,9 +133,7 @@ class EventImage(StatusTimestampBase, ImageBase):
 class News(StatusTimestampBase, BaseInfoModel):
     TYPE_CHOICES = (("company news", "Company News"), ("global news", "Global News"))
     sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
-    name = models.CharField(
-        max_length=200
-    )  # TODO Need to change to user and add a foreign key
+    name = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(max_length=200, choices=TYPE_CHOICES)
     content = models.TextField(
         null=True
@@ -184,9 +183,8 @@ class PromotionImage(TimestampBase, ImageBase):
 
 
 class Blog(StatusTimestampBase, BaseInfoModel):
-    name = models.CharField(max_length=255)
+    name = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(null=True)
-
     slug = AutoSlugField(
         populate_from="title",
         editable=True,

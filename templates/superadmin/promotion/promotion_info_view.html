@@ -98,14 +98,17 @@
                                                            data-bs-target="#slider{{ promotions.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
                                                     </td>
                                                     <td>
-                                                        <div class="material-switch">
-                                                            <input id="someSwitchOptionSuccess{{ promotions.id }}"
-                                                                   name="someSwitchOption001"
-                                                                   type="checkbox"
-                                                                   {% if promotions.status == True %} onclick="changepromotionstatus({{ promotions.id }},0)" checked {% else %}onclick="changepromotionstatus({{ promotions.id }},1)" {% endif %} />
-                                                            <label for="someSwitchOptionSuccess{{ promotions.id }}"
-                                                                   class="label-success"></label>
-                                                        </div>
+                                                        <form method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="status_id" value={{ promotions.id }}>
+                                                            <div class="material-switch">
+                                                                <input id="someSwitchOptionSuccess{{ promotions.id }}"
+                                                                       name="status"
+                                                                       type="checkbox"
+                                                                       {% if promotions.status %}checked{% endif %}
+                                                                       onchange="this.form.submit()">
+                                                            </div>
+                                                        </form>
                                                     </td>
                                                     <td>
                                                         <a class="btn btn-info btn-sm mb-1"

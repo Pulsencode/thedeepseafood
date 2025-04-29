@@ -50,14 +50,17 @@
                                                         {% endif %}
                                                     </td>
                                                     <td>
-                                                        <div class="material-switch">
-                                                            <input id="someSwitchOptionSuccess{{ supermarket.id }}"
-                                                                   name="someSwitchOption001"
-                                                                   type="checkbox"
-                                                                   {% if d.status == True %} onclick="changesuperstatus({{ supermarket.id }},0)" checked {% else %}onclick="changesuperstatus({{ supermarket.id }},1)" {% endif %} />
-                                                            <label for="someSwitchOptionSuccess{{ supermarket.id }}"
-                                                                   class="label-success"></label>
-                                                        </div>
+                                                        <form method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="status_id" value={{ supermarket.id }}>
+                                                            <div class="material-switch">
+                                                                <input id="someSwitchOptionSuccess{{ supermarket.id }}"
+                                                                       name="status"
+                                                                       type="checkbox"
+                                                                       {% if supermarket.status %}checked{% endif %}
+                                                                       onchange="this.form.submit()">
+                                                            </div>
+                                                        </form>
                                                     </td>
                                                     <td>
                                                         <a class="btn btn-info btn-sm mb-1"

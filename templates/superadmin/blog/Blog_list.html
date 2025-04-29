@@ -17,42 +17,51 @@
     <tbody>
         {% if all_blogs %}
             {% for blog in all_blogs %}
-            <tr class="text-center">
-                <td>{{ forloop.counter}}</td>
+                <tr class="text-center">
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ blog.title }}</td>
                     <td>{{ blog.name }}</td>
-                    <td>{{ blog.date}}</td>
+                    <td>{{ blog.date }}</td>
                     <td>
                         <a href="javascript:void(0)"
                            class="btn btn-success"
                            data-bs-toggle="modal"
-                           data-bs-target="#desc{{  blog.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                           data-bs-target="#desc{{ blog.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
                     </td>
                     <td>{{ blog.location }}</td>
                     <td>
                         <a href="javascript:void(0)"
                            class="btn btn-success"
                            data-bs-toggle="modal"
-                           data-bs-target="#slider{{  blog.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                           data-bs-target="#slider{{ blog.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
                     </td>
                     <td>
-                        <div class="material-switch">
-                            <input id="someSwitchOptionSuccess{{  blog.id }}"
-                                   name="someSwitchOption001"
-                                   type="checkbox"
-                                   {% if blog.status == True %} onclick="changeblogstatus({{  blog.id }},0)" checked {% else %}onclick="changeblogstatus({{  blog.id }},1)" {% endif %} />
-                            <label for="someSwitchOptionSuccess{{  blog.id }}" class="label-success"></label>
-                        </div>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="status_id" value="{{ blog.id }}">
+                            <div class="material-switch">
+                                <input id="someSwitchOptionSuccess{{ blog.id }}"
+                                       name="status"
+                                       type="checkbox"
+                                       {% if blog.status %}checked{% endif %}
+                                       onchange="this.form.submit()">
+                            </div>
+                        </form>
                     </td>
                     <td>
-                        <a class="btn btn-info btn-sm mb-1" href="{% url 'blog_update'  blog.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                        <a class="btn btn-info btn-sm mb-1"
+                           href="{% url 'blog_update'  blog.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
                         <button class="btn btn-danger btn-sm mb-1">
-                            <i class="side-menu__icon fe fe-trash"  onclick="show_modal({{  blog.id }})"></i>
+                            <i class="side-menu__icon fe fe-trash"
+                               onclick="show_modal({{ blog.id }})"></i>
                         </button>
                     </td>
                 </tr>
                 <!-- modal for description-->
-                <div class="modal  fade" id="desc{{  blog.id }}" tabindex="-1" role="dialog">
+                <div class="modal  fade"
+                     id="desc{{ blog.id }}"
+                     tabindex="-1"
+                     role="dialog">
                     <div class="modal-dialog modal-md modal-dialog-centered text-center"
                          role="document">
                         <div class="modal-content ">
@@ -65,7 +74,10 @@
                     </div>
                 </div>
                 <!-- modal for slider-->
-                <div class="modal  fade" id="slider{{  blog.id }}" tabindex="-1" role="dialog">
+                <div class="modal  fade"
+                     id="slider{{ blog.id }}"
+                     tabindex="-1"
+                     role="dialog">
                     <div class="modal-dialog modal-md modal-dialog-centered text-center"
                          role="document">
                         <div class="modal-content ">

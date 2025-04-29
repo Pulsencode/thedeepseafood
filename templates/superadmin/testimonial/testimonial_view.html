@@ -74,64 +74,65 @@
                                                     {% endif %}
                                                 </td>
                                                 <td>
-                                                    <div class="material-switch">
-                                                        <input id="someSwitchOptionSuccess{{ testimonial.id }}"
-                                                            name="someSwitchOption001" type="checkbox" {% if
-                                                            testimonial.status==True %}
-                                                            onclick="changetestimonialstatus({{ testimonial.id }},0)" checked {%
-                                                            else %}onclick="changetestimonialstatus({{ testimonial.id }},1)" {%
-                                                            endif %} />
-                                                            <label for="someSwitchOptionSuccess{{ testimonial.id }}"
-                                                                   class="label-success"></label>
+                                                    <form method="post">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="status_id" value={{ testimonial.id }}>
+                                                        <div class="material-switch">
+                                                            <input id="someSwitchOptionSuccess{{ testimonial.id }}"
+                                                                   name="status"
+                                                                   type="checkbox"
+                                                                   {% if testimonial.status %}checked{% endif %}
+                                                                   onchange="this.form.submit()">
                                                         </div>
-                                                    </td>
-                                                    <td>
-                                                        <a class="btn btn-info btn-sm mb-1"
-                                                           href="{% url 'testimonial_update'  testimonial.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
-                                                        <button type="button" class="btn btn-danger btn-sm mb-1">
-                                                            <i class="side-menu__icon fe fe-trash"
-                                                               onclick="show_modal({{ testimonial.id }})"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <!-- modal for description-->
-                                                <div class="modal  fade"
-                                                     id="desc{{ testimonial.id }}"
-                                                     tabindex="-1"
-                                                     role="dialog">
-                                                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
-                                                         role="document">
-                                                        <div class="modal-content ">
-                                                            <div class="modal-body">
-                                                                <div>
-                                                                    <p>{{ d.message|safe }}</p>
-                                                                </div>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-info btn-sm mb-1"
+                                                       href="{% url 'testimonial_update'  testimonial.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                                                    <button type="button" class="btn btn-danger btn-sm mb-1">
+                                                        <i class="side-menu__icon fe fe-trash"
+                                                           onclick="show_modal({{ testimonial.id }})"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <!-- modal for description-->
+                                            <div class="modal  fade"
+                                                 id="desc{{ testimonial.id }}"
+                                                 tabindex="-1"
+                                                 role="dialog">
+                                                <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                                     role="document">
+                                                    <div class="modal-content ">
+                                                        <div class="modal-body">
+                                                            <div>
+                                                                <p>{{ d.message|safe }}</p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            {% endfor %}
-                                        {% else %}
-                                            <tr>
-                                                <td colspan='10'>
-                                                    <center>No record found</center>
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                    </tbody>
-                                </table>
-                                {% include "pagination.html" %}
-                                {% comment %} {% include 'superadmin/testimonial/testimonial_list.html' with page=page
-                                data=data %} {% endcomment %}
-                            </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan='10'>
+                                                <center>No record found</center>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            {% include "pagination.html" %}
+                            {% comment %} {% include 'superadmin/testimonial/testimonial_list.html' with page=page
+                            data=data %} {% endcomment %}
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ROW CLOSED -->
         </div>
-        <!-- CONTAINER END -->
+        <!-- ROW CLOSED -->
     </div>
+    <!-- CONTAINER END -->
+</div>
 </div>
 <!--app-content close-->
 <div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">

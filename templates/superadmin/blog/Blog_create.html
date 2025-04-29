@@ -30,20 +30,20 @@
                                                class="dropify"
                                                data-bs-height="180"
                                                multiple
-                                               name="files"
-                                               {% if not sliders %}required{% endif %}>
+                                               name="image"
+                                               {% if not images %}required{% endif %}>
                                     </div>
                                 </div>
-                                {% if sliders %}
+                                {% if "existing_images" %}
                                     <!-- Show existing slider images -->
                                     <div class="existing-slider-images">
-                                        {% for slider in sliders %}
-                                            <img src="{{ slider.image.url }}"
+                                        {% for image in "existing_images" %}
+                                            <img src="{{ image.image.url }}"
                                                  alt="Slider Image"
                                                  class="existing-slider-img"
-                                                 id="slider{{ slider.id }}" />
+                                                 id="slider{{ image.id }}" />
                                             <button type="button"
-                                                    id="btn-del{{ slider.id }}"
+                                                    id="btn-del{{ image.id }}"
                                                     class="delete-image-btn"
                                                     style="margin-top: 10px;
                                                            background: #0aa3ce;
@@ -51,7 +51,7 @@
                                                            padding: 4px 26px;
                                                            border: 0px;
                                                            border-radius: 2px"
-                                                    data-image-id="{{ slider.id }}">Delete</button>
+                                                    data-image-id="{{ image.id }}">Delete</button>
                                         {% endfor %}
                                     </div>
                                 {% endif %}
@@ -69,7 +69,7 @@
                                                id=""
                                                placeholder="Name"
                                                name="title"
-                                               value="{{ list.title }}"
+                                               value="{{ blog.title }}"
                                                required>
                                     </div>
                                     <div class="form-group col-lg-6 col-12">
@@ -79,7 +79,7 @@
                                                id=""
                                                placeholder="Name"
                                                name="name"
-                                               value="{{ list.name }}"
+                                               value="{{ blog.name }}"
                                                required>
                                     </div>
                                     <div class="form-group col-lg-6 col-12">
@@ -89,7 +89,7 @@
                                                id=""
                                                placeholder="Name"
                                                name="date"
-                                               value="{{ list.date|date:'Y-m-d' }}">
+                                               value="{{ blog.date}}">
                                     </div>
                                     <div class="form-group col-lg-6 col-12">
                                         <label for="" class="form-label">Location</label>
@@ -98,54 +98,20 @@
                                                id=""
                                                placeholder="Name"
                                                name="location"
-                                               value="{{ list.location }}"
+                                               value="{{ blog.location }}"
                                                required>
                                     </div>
                                     <div class="col-lg-12 col-12">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1" class="form-label">Description</label>
-                                            <textarea id="summernote" name="desc">{{list.description|safe}}</textarea>
+                                            <textarea id="summernote" name="desc">{{blog.description|safe}}</textarea>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <h6>SEO section :</h6>
                                         <br>
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label">Title tag</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   id=""
-                                                   placeholder="Title tag"
-                                                   name="title_tag"
-                                                   value="{% if list.title_tag %}{{ list.title_tag }}{% endif %}">
-                                        </div>
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label">Meta description</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   id=""
-                                                   placeholder="Meta description"
-                                                   name="metatag"
-                                                   value="{% if list.metatag %}{{ list.metatag }}{% endif %}">
-                                        </div>
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label">Keyword tag</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   id=""
-                                                   placeholder="Keyword tag"
-                                                   name="keyword"
-                                                   value="{% if list.keyword %}{{ list.keyword }}{% endif %}">
-                                        </div>
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label">Canonical url</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   id=""
-                                                   placeholder="Canonical url"
-                                                   name="canonical"
-                                                   value="{% if list.canonical %}{{ list.canonical }}{% endif %}">
-                                        </div>
+                                       
+                                    
                                         <div class="form-group col-lg-6 col-12">
                                             <label for="" class="form-label">Image Alt</label>
                                             <input type="text"
@@ -153,7 +119,7 @@
                                                    id=""
                                                    placeholder="Image Alt"
                                                    name="image_alt"
-                                                   value="{% if list.image_alt %}{{ list.image_alt }}{% endif %}">
+                                                   value="{% if blog.image_alt %}{{ blog.image_alt }}{% endif %}">
                                         </div>
                                     </div>
                                     <div class="form-group col-lg-12 col-12">
