@@ -24,6 +24,7 @@
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
                   <a href="{% url 'product' %}">Product</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  {% comment %} ----------------- NOTE: product type is changed to choices in model ----------------- {% endcomment %}
                   <a href="{% url 'product' %}?type={{ product.type }}">{{ product.type }}</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
                   <a>{{ product.name }}</a>
@@ -75,20 +76,22 @@
                     data-aos="fade-up"
                     data-aos-duration="2000"
                     id="pro-dtl">
-                  {% for c in category %}
-                    {% if product.id|product_belongs_to_category:c.id %}
+                  {% for category in categories %}
+                    {% if product.product.id|product_belongs_to_category:category.id %}
                       <li class="nav-item">
                         <a data-id="all"
-                           class="nav-link category-link {% if forloop.first or cat == c.id %}active{% endif %}"
-                           data-category-id="{{ c.id }}"
+                           class="nav-link category-link active"
+                           data-category-id="{{ category.id }}"
                            data-pid="{{ product.id }}"
-                           onclick="switchprodcategory(this)">{{ c.name }}</a>
+                           onclick="switchprodcategory(this)">{{ category.name }}</a>
                       </li>
                     {% endif %}
                   {% endfor %}
                 </ul>
               </div>
-              <div class="product-details text-blue" id="prod">{% include "public_interface/components/products/details.html" %}</div>
+              <div class="product-details text-blue" id="prod">
+                {% include "public_interface/components/products/details.html" %}
+              </div>
             </div>
           </div>
         </div>
@@ -112,8 +115,7 @@
                        src="{{ item.image.url }}"
                        alt="{{ item.image_alt }}">
                   <div class="title font-lntermedium text-blue">{{ item.name }}</div>
-                  <a class="url-primary"
-                     href="{% url 'product_details' item.slug %}#drt"></a>
+                  <a class="url-primary" href="{% url 'product_details' item.slug %}#drt"></a>
                 </div>
               </div>
             {% endfor %}
