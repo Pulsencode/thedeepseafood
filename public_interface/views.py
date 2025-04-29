@@ -84,10 +84,15 @@ def product(request):
 def product_details(request, slug):
     product = get_object_or_404(ProductDetails, slug=slug)
     related_products = (
-        Product.objects.filter(status=True).exclude(id=product.id).order_by("sequence")
+        Product.objects.filter(status=True).exclude(id=product.product_id).order_by("sequence")
     )
+    categories = Category.objects.all()
 
-    context = {"product": product, "related_products": related_products}
+    context = {
+        "product": product,
+        "related_products": related_products,
+        "categories": categories
+    }
 
     return render(request, "public_interface/product-view.html", context)
 

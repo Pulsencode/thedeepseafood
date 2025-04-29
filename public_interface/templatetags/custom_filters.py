@@ -49,10 +49,10 @@ def product_belongs_to_category_filter(product_id, category_id):
     """
     try:
         # Get the product object by ID
-        product = Product.objects.get(id=product_id)
+        product = Product.objects.get(id=product_id, status=True)
         # Check if it has any active product_details in the given category
         return product.product_details.filter(
-            status=True, category_id=category_id
+            category_id=category_id
         ).exists()
     except Product.DoesNotExist:
         return False
