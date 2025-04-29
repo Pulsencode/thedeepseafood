@@ -74,24 +74,32 @@ def blog_details(request, slug):
 
 
 def product(request):
-    context = {
-        "page_title": "Products",
-        "all_products": Product.objects.filter(status=True).order_by("sequence"),
-    }
+    search = request.GET.get("search")
+
+    if search:
+        all_products = Product.objects.filter(
+            status=True, name__icontains=search
+        ).order_by("sequence")
+    else:
+        all_products = Product.objects.filter(status=True).order_by("sequence")
+
+    context = {"page_title": "Products", "all_products": all_products}
     return render(request, "public_interface/products.html", context)
 
 
 def product_details(request, slug):
     product = get_object_or_404(ProductDetails, slug=slug)
     related_products = (
-        Product.objects.filter(status=True).exclude(id=product.product_id).order_by("sequence")
+        Product.objects.filter(status=True)
+        .exclude(id=product.product_id)
+        .order_by("sequence")
     )
     categories = Category.objects.all()
 
     context = {
         "product": product,
         "related_products": related_products,
-        "categories": categories
+        "categories": categories,
     }
 
     return render(request, "public_interface/product-view.html", context)

@@ -71,7 +71,7 @@
                   </li>
                 </ul>
                 <div class="search-form position-top-right">
-                  <form>
+                  <form method ="get">
                     <input type="hidden" id="prodtype">
                     <input class="form-control"
                            name="search"
@@ -79,7 +79,8 @@
                            type="search"
                            placeholder="Search..."
                            maxlength="200">
-                    <button type="button"
+                    {% comment %} <button type="button" {% endcomment %}
+                       <button type="submit"
                             class="btn bg-blue text-white"
                             onclick="searchproduct()">Search</button>
                   </form>
