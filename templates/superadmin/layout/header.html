@@ -1,275 +1,285 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en" dir="ltr">
-
-<head>
-    <!-- META DATA -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <!-- FAVICON -->
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'superadmin/assets/images_ex/icon.png' %}" />
-
-    <!-- TITLE -->
-    <title>The Deep Seafood Admin | Dashboard</title>
-
-    <!-- BOOTSTRAP CSS -->
-    <link id="style" href="{% static 'superadmin/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
-
-    <!-- BOOTSTRAP ICON CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <!-- STYLE CSS -->
-    <link href="{% static 'superadmin/assets/css/style.css' %}" rel="stylesheet" />
-    <link href="{% static 'superadmin/assets/css/dark-style.css' %}" rel="stylesheet" />
-    <link href="{% static 'superadmin/assets/css/transparent-style.css' %}" rel="stylesheet" />
-    <link href="{% static 'superadmin/assets/css/skin-modes.css' %}" rel="stylesheet" />
-    <link href="{% static 'superadmin/assets/css/style-custom.css' %}" rel="stylesheet" />
-
-    <!-- FONT ICONS -->
-    <link href="{% static 'superadmin/assets/css/icons.css' %}" rel="stylesheet" />
-
-    <!-- LIGHTBOX CSS -->
-    <link href="{% static 'superadmin/assets/css/lightbox.min.css' %}" rel="stylesheet" />
-
-    <!-- COLOR SKIN CSS -->
-    <link id="theme" rel="stylesheet" type="text/css" href="{% static 'superadmin/assets/colors/color1.css' %}" />
-
-    <!-- EXTERNAL CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://foliotek.github.io/Croppie/croppie.css">
-</head>
-
-<body class="app sidebar-mini ltr light-mode">
-    <!-- PAGE -->
-    <div class="page">
-        <div class="page-main">
-
-            <!-- HEADER -->
-            <div class="app-header header sticky">
-                <div class="container-fluid main-container">
-                    <div class="d-flex">
-                        <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar" href="javascript:void(0)"></a>
-
-                        <a class="logo-horizontal" href="{% url 'admin_dashboard' %}">
-                            <img src="{% static 'superadmin/assets/images_ex/logo-light.png' %}" class="header-brand-img desktop-logo" alt="logo">
-                            <img src="{% static 'superadmin/assets/images_ex/logo.png' %}" class="header-brand-img light-logo1" alt="logo">
-                        </a>
-
-                        <div class="d-flex order-lg-2 ms-auto header-right-icons">
-                            <div class="d-flex country">
-                                <a class="nav-link icon theme-layout nav-link-bg layout-setting">
-                                    <span class="dark-layout"><i class="fe fe-moon"></i></span>
-                                    <span class="light-layout"><i class="fe fe-sun"></i></span>
-                                </a>
-                            </div>
-
-                            <div class="dropdown d-flex profile-1">
-                                <a href="javascript:void(0)" data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
-                                    <img src="{% static 'superadmin/assets/images_ex/user.png' %}" alt="profile-user" class="avatar profile-user brround cover-image">
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                    <div class="drop-heading text-center">
-                                        <h5 class="text-dark mb-0 fs-14 fw-semibold">Username</h5>
-                                        <small class="text-muted">Admin</small>
+    <head>
+        <!-- META DATA -->
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- FAVICON -->
+        <link rel="shortcut icon"
+              type="image/x-icon"
+              href="{% static 'superadmin/assets/images_ex/icon.png' %}" />
+        <!-- TITLE -->
+        <title>The Deep Seafood Admin | Dashboard</title>
+        <!-- BOOTSTRAP CSS -->
+        <link id="style"
+              href="{% static 'superadmin/assets/plugins/bootstrap/css/bootstrap.min.css' %}"
+              rel="stylesheet" />
+        <!-- BOOTSTRAP ICON CSS -->
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <!-- STYLE CSS -->
+        <link href="{% static 'superadmin/assets/css/style.css' %}"
+              rel="stylesheet" />
+        <link href="{% static 'superadmin/assets/css/dark-style.css' %}"
+              rel="stylesheet" />
+        <link href="{% static 'superadmin/assets/css/transparent-style.css' %}"
+              rel="stylesheet" />
+        <link href="{% static 'superadmin/assets/css/skin-modes.css' %}"
+              rel="stylesheet" />
+        <link href="{% static 'superadmin/assets/css/style-custom.css' %}"
+              rel="stylesheet" />
+        <!-- FONT ICONS -->
+        <link href="{% static 'superadmin/assets/css/icons.css' %}"
+              rel="stylesheet" />
+        <!-- LIGHTBOX CSS -->
+        <link href="{% static 'superadmin/assets/css/lightbox.min.css' %}"
+              rel="stylesheet" />
+        <!-- COLOR SKIN CSS -->
+        <link id="theme"
+              rel="stylesheet"
+              type="text/css"
+              href="{% static 'superadmin/assets/colors/color1.css' %}" />
+        <!-- EXTERNAL CSS -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css"
+              rel="stylesheet" />
+        <link rel="stylesheet"
+              href="https://foliotek.github.io/Croppie/croppie.css">
+    </head>
+    <body class="app sidebar-mini ltr light-mode">
+        <!-- PAGE -->
+        <div class="page">
+            <div class="page-main">
+                <!-- HEADER -->
+                <div class="app-header header sticky">
+                    <div class="container-fluid main-container">
+                        <div class="d-flex">
+                            <a aria-label="Hide Sidebar"
+                               class="app-sidebar__toggle"
+                               data-bs-toggle="sidebar"
+                               href="javascript:void(0)"></a>
+                            <a class="logo-horizontal" href="{% url 'admin_dashboard' %}">
+                                <img src="{% static 'superadmin/assets/images_ex/logo-light.png' %}"
+                                     class="header-brand-img desktop-logo"
+                                     alt="logo">
+                                <img src="{% static 'superadmin/assets/images_ex/logo.png' %}"
+                                     class="header-brand-img light-logo1"
+                                     alt="logo">
+                            </a>
+                            <div class="d-flex order-lg-2 ms-auto header-right-icons">
+                                <div class="d-flex country">
+                                    <a class="nav-link icon theme-layout nav-link-bg layout-setting">
+                                        <span class="dark-layout"><i class="fe fe-moon"></i></span>
+                                        <span class="light-layout"><i class="fe fe-sun"></i></span>
+                                    </a>
+                                </div>
+                                <div class="dropdown d-flex profile-1">
+                                    <a href="javascript:void(0)"
+                                       data-bs-toggle="dropdown"
+                                       class="nav-link leading-none d-flex">
+                                        <img src="{% static 'superadmin/assets/images_ex/user.png' %}"
+                                             alt="profile-user"
+                                             class="avatar profile-user brround cover-image">
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                        <div class="drop-heading text-center">
+                                            <h5 class="text-dark mb-0 fs-14 fw-semibold">Username</h5>
+                                            <small class="text-muted">Admin</small>
+                                        </div>
+                                        <div class="dropdown-divider m-0"></div>
+                                        <a class="dropdown-item" href="{% url 'password_change' %}">
+                                            <i class="dropdown-icon fe fe-user"></i> Profile
+                                        </a>
+                                        <a class="dropdown-item" href="{% url 'logout_view' %}">
+                                            <i class="dropdown-icon fe fe-alert-circle"></i> Sign out
+                                        </a>
                                     </div>
-
-                                    <div class="dropdown-divider m-0"></div>
-
-                                    <a class="dropdown-item" href="{% url 'password_change' %}">
-                                        <i class="dropdown-icon fe fe-user"></i> Profile
-                                    </a>
-                                    <a class="dropdown-item" href="{% url 'logout_view' %}">
-                                        <i class="dropdown-icon fe fe-alert-circle"></i> Sign out
-                                    </a>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-            </div>
-            <!-- /HEADER -->
-
-            <!-- SIDEBAR -->
-            <div class="sticky">
-                <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
-
-                <div class="app-sidebar">
-                    <div class="side-header">
-                        <a class="header-brand1" href="{% url 'admin_dashboard' %}">
-                            <img src="{% static 'superadmin/assets/images_ex/logo-light.png' %}" class="header-brand-img desktop-logo" alt="logo">
-                            <img src="{% static 'superadmin/assets/images_ex/icon.png' %}" class="header-brand-img toggle-logo" alt="logo">
-                            <img src="{% static 'superadmin/assets/images_ex/icon.png' %}" class="header-brand-img light-logo" alt="logo">
-                            <img src="{% static 'superadmin/assets/images_ex/logo.png' %}" class="header-brand-img light-logo1" alt="logo">
-                        </a>
-                    </div>
-
-                    <div class="main-sidemenu">
-                        <div class="slide-left disabled" id="slide-left">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
-                                <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" />
-                            </svg>
+                <!-- /HEADER -->
+                <!-- SIDEBAR -->
+                <div class="sticky">
+                    <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
+                    <div class="app-sidebar">
+                        <div class="side-header">
+                            <a class="header-brand1" href="{% url 'admin_dashboard' %}">
+                                <img src="{% static 'superadmin/assets/images_ex/logo-light.png' %}"
+                                     class="header-brand-img desktop-logo"
+                                     alt="logo">
+                                <img src="{% static 'superadmin/assets/images_ex/icon.png' %}"
+                                     class="header-brand-img toggle-logo"
+                                     alt="logo">
+                                <img src="{% static 'superadmin/assets/images_ex/icon.png' %}"
+                                     class="header-brand-img light-logo"
+                                     alt="logo">
+                                <img src="{% static 'superadmin/assets/images_ex/logo.png' %}"
+                                     class="header-brand-img light-logo1"
+                                     alt="logo">
+                            </a>
                         </div>
-
-                        <ul class="side-menu">
-                            <li class="sub-category">
-                                <h3>Main</h3>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'admin_dashboard' %}">
-                                    <i class="side-menu__icon fe fe-home"></i>
-                                    <span class="side-menu__label">Dashboard</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'brand_view' %}">
-                                    <i class="side-menu__icon fe fe-image"></i>
-                                    <span class="side-menu__label">Brand</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'category_view' %}">
-                                    <i class="side-menu__icon fe fe-grid"></i>
-                                    <span class="side-menu__label">Category</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item" href="javascript:void(0)">
-                                    <i class="side-menu__icon fe fe-book-open"></i>
-                                    <span class="side-menu__label ms-2">Product</span>
-                                    <i class="angle fe fe-chevron-right"></i>
-                                </a>
-
-                                <ul class="slide-menu">
-                                    <li><a href="{% url 'product_view' %}" class="slide-item">DeepSea Product</a></li>
-                                    <li><a href="{% url 'product_details_view' %}" class="slide-item">Product Details</a></li>
-                                    <li><a href="{% url 'brand_product_view' %}" class="slide-item">Brands Product</a></li>
-                                    <li><a href="{% url 'brand_product_details_view' %}" class="slide-item">Brands Product Details</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="#">
-                                    <i class="side-menu__icon fe fe-layers"></i>
-                                    <span class="side-menu__label">Recipe</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'list_supermarket' %}">
-                                    <i class="side-menu__icon fa fa-adn"></i>
-                                    <span class="side-menu__label">Supermarket</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'list_certification' %}">
-                                    <i class="side-menu__icon fa fa-adn"></i>
-                                    <span class="side-menu__label">Certifications</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'gallery_view' %}">
-                                    <i class="side-menu__icon fe fe-book-open"></i>
-                                    <span class="side-menu__label">Event Gallery</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'news_view' %}">
-                                    <i class="side-menu__icon fe fe-folder"></i>
-                                    <span class="side-menu__label">News</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'promotion_view' %}">
-                                    <i class="side-menu__icon fa fa-empire"></i>
-                                    <span class="side-menu__label">Promotion Information</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'blog_view' %}">
-                                    <i class="side-menu__icon fe fe-tv"></i>
-                                    <span class="side-menu__label">Blog</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'list_team' %}">
-                                    <i class="side-menu__icon fa fa-gg-circle"></i>
-                                    <span class="side-menu__label">Management Team</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'list_testimonial' %}">
-                                    <i class="side-menu__icon fe fe-users"></i>
-                                    <span class="side-menu__label">Testimonial</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'career_view' %}">
-                                    <i class="side-menu__icon fe fe-box"></i>
-                                    <span class="side-menu__label">Career</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'application_view' %}">
-                                    <i class="side-menu__icon fe fe-settings"></i>
-                                    <span class="side-menu__label">Application</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'history_view' %}">
-                                    <i class="side-menu__icon fe fe-zap"></i>
-                                    <span class="side-menu__label">History</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'contact_view' %}">
-                                    <i class="side-menu__icon fe fe-file-text"></i>
-                                    <span class="side-menu__label">Contact Us</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'enquiry_view' %}">
-                                    <i class="side-menu__icon fe fe-smartphone"></i>
-                                    <span class="side-menu__label">Enquiry</span>
-                                </a>
-                            </li>
-
-                            <li class="slide">
-                                <a class="side-menu__item has-link" href="{% url 'list_seo' %}">
-                                    <i class="side-menu__icon fe fe-smartphone"></i>
-                                    <span class="side-menu__label">SEO</span>
-                                </a>
-                            </li>
-                        </ul>
-
-                        <div class="slide-right" id="slide-right">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
-                                <path d="M10 6.293l-5.707 5.707 5.707 5.707 1.414-1.414L7.414 12l4.293-4.293z" />
-                            </svg>
+                        <div class="main-sidemenu">
+                            <div class="slide-left disabled" id="slide-left">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     fill="#7b8191"
+                                     width="24"
+                                     height="24"
+                                     viewBox="0 0 24 24">
+                                    <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" />
+                                </svg>
+                            </div>
+                            <ul class="side-menu">
+                                <li class="sub-category">
+                                    <h3>Main</h3>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'admin_dashboard' %}">
+                                        <i class="side-menu__icon fe fe-home"></i>
+                                        <span class="side-menu__label">Dashboard</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'brand_view' %}">
+                                        <i class="side-menu__icon fe fe-image"></i>
+                                        <span class="side-menu__label">Brand</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'category_view' %}">
+                                        <i class="side-menu__icon fe fe-grid"></i>
+                                        <span class="side-menu__label">Category</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item" href="javascript:void(0)">
+                                        <i class="side-menu__icon fe fe-book-open"></i>
+                                        <span class="side-menu__label ms-2">Product</span>
+                                        <i class="angle fe fe-chevron-right"></i>
+                                    </a>
+                                    <ul class="slide-menu">
+                                        <li>
+                                            <a href="{% url 'product_view' %}" class="slide-item">DeepSea Product</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'product_details_view' %}" class="slide-item">Product Details</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'brand_product_view' %}" class="slide-item">Brands Product</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'brand_product_details_view' %}" class="slide-item">Brands Product Details</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="#">
+                                        <i class="side-menu__icon fe fe-layers"></i>
+                                        <span class="side-menu__label">Recipe</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'list_supermarket' %}">
+                                        <i class="side-menu__icon fa fa-adn"></i>
+                                        <span class="side-menu__label">Supermarket</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link"
+                                       href="{% url 'list_certification' %}">
+                                        <i class="side-menu__icon fa fa-adn"></i>
+                                        <span class="side-menu__label">Certifications</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'gallery_view' %}">
+                                        <i class="side-menu__icon fe fe-book-open"></i>
+                                        <span class="side-menu__label">Event Gallery</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'news_view' %}">
+                                        <i class="side-menu__icon fe fe-folder"></i>
+                                        <span class="side-menu__label">News</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'promotion_view' %}">
+                                        <i class="side-menu__icon fa fa-empire"></i>
+                                        <span class="side-menu__label">Promotion Information</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'blog_view' %}">
+                                        <i class="side-menu__icon fe fe-tv"></i>
+                                        <span class="side-menu__label">Blog</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'list_team' %}">
+                                        <i class="side-menu__icon fa fa-gg-circle"></i>
+                                        <span class="side-menu__label">Management Team</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'list_testimonial' %}">
+                                        <i class="side-menu__icon fe fe-users"></i>
+                                        <span class="side-menu__label">Testimonial</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'career_view' %}">
+                                        <i class="side-menu__icon fe fe-box"></i>
+                                        <span class="side-menu__label">Career</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'application_view' %}">
+                                        <i class="side-menu__icon fe fe-settings"></i>
+                                        <span class="side-menu__label">Application</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'history_view' %}">
+                                        <i class="side-menu__icon fe fe-zap"></i>
+                                        <span class="side-menu__label">History</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'contact_view' %}">
+                                        <i class="side-menu__icon fe fe-file-text"></i>
+                                        <span class="side-menu__label">Contact Us</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'enquiry_view' %}">
+                                        <i class="side-menu__icon fe fe-smartphone"></i>
+                                        <span class="side-menu__label">Enquiry</span>
+                                    </a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item has-link" href="{% url 'list_seo' %}">
+                                        <i class="side-menu__icon fe fe-smartphone"></i>
+                                        <span class="side-menu__label">SEO</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="slide-right" id="slide-right">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     fill="#7b8191"
+                                     width="24"
+                                     height="24"
+                                     viewBox="0 0 24 24">
+                                    <path d="M10 6.293l-5.707 5.707 5.707 5.707 1.414-1.414L7.414 12l4.293-4.293z" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</body>
+    </body>
 </html>

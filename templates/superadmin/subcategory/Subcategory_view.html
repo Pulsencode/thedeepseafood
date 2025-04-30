@@ -30,35 +30,62 @@
                             <h3 class="card-title">List Of All Category </h3>
                         </div>
                         <div class="card-body">
-                            <form>
-                                <div class="row">
-                                    <div class="form-group col-lg-2 col-12">
-                                        <input type="text" class="form-control" placeholder="Name" id="search">
-                                    </div>
+                        <!--search filter-->
+                        {% include "search_filter.html"%}
 
-                                    <div class="form-group col-lg-2 col-12">
-                                        <select name="country" id="status" class="form-control form-select select2" data-bs-placeholder="Select Country">
-                                            <option value="">Status</option>
-                                            <option value="True" >Active</option>
-                                            <option value="False">Inactive</option>
-
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group col-lg-3 col-12">
-                                        <a class="btn btn-primary mr-1" id="subcategory_search">Search</a>
-                                        <a class="btn btn-default" href="{% url 'subcategory_view' %}">Reset</a>
-                                    </div>
-                                    <div class="form-group col-lg-5 col-7">
-                                        <span id ="message001" style="color:green;display:none"><b>Status Updated Successfully</b></span>
-                                    </div>
-
-                                </div>
-                            </form>
                             <div class="table-responsive" id="sub-table">
 
-                                {% include 'superadmin/subcategory/Subcategory_list.html' with page=page data=data %}
-
+                              
+                                <input type="hidden" id="page" name="page" value="{{ page }}">
+                                <table class="table border-top table-bordered mb-0 table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Sl No</th>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if all_subcategory %}
+                                            {% for subcategory in all_subcategory %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ subcategory.name }}</td>
+                                                    <td>
+                                                        <form method ="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="status" value="{{ subcategory.id }}">
+                                                            <div class="material-switch">
+                                                                <input id="someSwitchOptionSuccess{{ subcategory.id }}"
+                                                                       name="status"
+                                                                       type="checkbox"
+                                                                       {% if subcategory.status %}onclick="changesubcategorystatus({{ subcategory.id }},0)" checked{% endif %}
+                                                                       onchange="this.form.submit()">
+                                                            </div>
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-info btn-sm mb-1"
+                                                           href="{% url 'subcategory_update' subcategory .id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                                                        <button class="btn btn-danger btn-sm mb-1">
+                                                            <i class="side-menu__icon fe fe-trash"
+                                                               onclick="show_modal({{ subcategory.id }})"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% else %}
+                                            <tr>
+                                                <td colspan='10'>
+                                                    <center>No record found</center>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                                {% include "pagination.html" %}
+                                
                             </div>
                         </div>
                     </div>
