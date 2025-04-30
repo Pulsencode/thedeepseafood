@@ -37,6 +37,9 @@ class VacancyDetails(StatusTimestampBase):
     type = MultiSelectField(choices=JOB_TYPE_CHOICES, null=True, blank=True)
     salary = models.PositiveIntegerField(null=True)
 
+    class Meta:
+        verbose_name_plural = "Vacancy Details"
+
 
 class ApplicationDetails(StatusTimestampBase):
     vacancy = models.ForeignKey(
@@ -55,7 +58,7 @@ class ApplicationDetails(StatusTimestampBase):
     job = models.CharField(max_length=150)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    email = models.TextField(null=True)
+    email = models.EmailField(null=True)
     phone_number = PhoneNumberField(null=True)
     notice_period = models.CharField(
         max_length=100,
@@ -68,3 +71,6 @@ class ApplicationDetails(StatusTimestampBase):
     message = models.TextField(null=True, blank=True)
     upload_cv = models.FileField(upload_to="cv")
     cover_letter = models.FileField(upload_to="cover_letter")
+
+    class Meta:
+        verbose_name_plural = "Application Details"
