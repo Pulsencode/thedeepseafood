@@ -27,11 +27,11 @@
         </tr>
     </thead>
     <tbody>
-        {% if datas %}
-        {% for d in datas %}
+        {% if product_details %}
+        {% for product in product_details %}
         <tr>
-            <td>{{datas.start_index|add:forloop.counter0}}</td>
-            <td class="psticky">{{d.product.name}}</td>
+            <td>{{forloop.counter}}</td>
+            <td class="psticky">{{product.product.name}}</td>
             <!-- <td>{{d.brand}}</td> -->
             <td>
                 <a class="btn btn-success btn-sm mb-1" href="#" data-bs-toggle="modal" data-bs-target="#category{{d.id}}"><i
@@ -135,12 +135,12 @@
         </div>
         <!-- sub category -->
 
-        <div class="modal  fade" id="subcategory{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="subcategory{{product.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
                        
-                                <p class="text-center">{{ d.sub_categories }}</p>
+                                <p class="text-center">{{ product.sub_categories }}</p>
                        
 
                     </div>
@@ -149,13 +149,13 @@
         </div>
         <!-- code -->
 
-        <div class="modal  fade" id="code{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="code{{product.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
                     
                         
-                        <p class="text-center">{{d.product_code}}</p>
+                        <p class="text-center">{{product.product_code}}</p>
                      
 
                     </div>
@@ -164,13 +164,13 @@
         </div>
         <!-- price -->
 
-        <div class="modal  fade" id="price{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="price{{product.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
                      
                         
-                        <p class="text-center">{{d.price}}</p>
+                        <p class="text-center">{{product.price}}</p>
                     
 
                     </div>
@@ -179,13 +179,13 @@
         </div>
         <!-- net -->
 
-        <div class="modal  fade" id="net{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="net{{product.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
                 
                         
-                        <p class="text-center">{{d.net_weight}}</p>
+                        <p class="text-center">{{product.net_weight}}</p>
                
 
                     </div>
@@ -194,7 +194,7 @@
         </div>
         <!-- origin -->
 
-        <div class="modal  fade" id="origin{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="origin{{product.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -209,13 +209,13 @@
         </div>
         <!-- causion -->
 
-        <div class="modal  fade" id="causion{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="causion{{product.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
                           
                         
-                        <p class="text-center">{{d.causion}}</p>
+                        <p class="text-center">{{product.causion}}</p>
                       
                     </div>
                 </div>
@@ -223,13 +223,13 @@
         </div>
         <!-- grade -->
 
-        <div class="modal  fade" id="grade{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="grade{{product.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
                     
                         
-                        <p class="text-center">{{d.grade}}</p>
+                        <p class="text-center">{{product.grade}}</p>
                      
 
                     </div>
@@ -238,13 +238,13 @@
         </div>
         <!-- packing -->
 
-        <div class="modal  fade" id="packing{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="packing{{product.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
                            
                         
-                        <p class="text-center">{{d.packing}}</p>
+                        <p class="text-center">{{product.packing}}</p>
                    
 
                     </div>
@@ -253,13 +253,13 @@
         </div>
         <!-- ingredients -->
 
-        <div class="modal  fade" id="ingredients{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="ingredients{{product.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
                          
                     
-                        <p class="text-center">{{d.ingredients}}</p>
+                        <p class="text-center">{{product.ingredients}}</p>
                        
 
                     </div>
@@ -268,13 +268,13 @@
         </div>
         <!-- instruction -->
 
-        <div class="modal  fade" id="instruction{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="instruction{{product.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
                       
                         
-                        <p class="text-center">{{d.instructions}}</p>
+                        <p class="text-center">{{product.instructions}}</p>
                     
 
                     </div>

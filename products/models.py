@@ -107,4 +107,4 @@ class Subcategory(StatusTimestampBase):
         verbose_name_plural = "Subcategories"
 
     def __str__(self):
-        return self.name
+        return str(self.name)

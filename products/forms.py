@@ -1,6 +1,6 @@
-import base64
-import uuid
-from django.core.files.base import ContentFile
+# import base64
+# import uuid
+# from django.core.files.base import ContentFile
 from django import forms
 from .models import (
     Product,
@@ -96,15 +96,10 @@ class CategoryForm(forms.ModelForm):
 
 
 class ProductForm(forms.ModelForm):
-    # replace the default FileField widget with a hidden text field
-    image = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = Product
-        fields = [
-            "brand", "sequence", "type", "name",
-            "image_alt", "image", "homepage", "status"
-        ]
+        fields = "__all__"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -117,18 +112,18 @@ class ProductForm(forms.ModelForm):
             else:
                 widget.attrs.update({"class": "form-control"})
 
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        data_url = self.cleaned_data.get("image")
-        if data_url:
-            header, b64data = data_url.split(";base64,")
-            ext = header.split("/")[-1]  # e.g. "png"
-            filename = f"{uuid.uuid4().hex}.{ext}"
-            decoded_file = base64.b64decode(b64data)
-            instance.image = ContentFile(decoded_file, name=filename)
-        if commit:
-            instance.save()
-        return instance
+    # def save(self, commit=True):
+    #     instance = super().save(commit=False)
+    #     data_url = self.cleaned_data.get("image")
+    #     if data_url:
+    #         header, b64data = data_url.split(";base64,")
+    #         ext = header.split("/")[-1]  # e.g. "png"
+    #         filename = f"{uuid.uuid4().hex}.{ext}"
+    #         decoded_file = base64.b64decode(b64data)
+    #         instance.image = ContentFile(decoded_file, name=filename)
+    #     if commit:
+    #         instance.save()
+    #     return instance
 
 
 class ProductDetailsForm(forms.ModelForm):
@@ -228,7 +223,9 @@ class BrandProductDetailsForm(forms.ModelForm):
         widgets = {
             "net_weight": forms.TextInput(attrs={"placeholder": "Net weight"}),
             "origin": forms.TextInput(attrs={"placeholder": "Country of origin"}),
-            "instructions": forms.Textarea(attrs={"placeholder": "Storage instructions"}),
+            "instructions": forms.Textarea(
+                attrs={"placeholder": "Storage instructions"}
+            ),
             "shelf_life": forms.TextInput(attrs={"placeholder": "Shelf life"}),
             "how_to_cook": forms.Textarea(
                 attrs={"placeholder": "Cooking instructions"}
