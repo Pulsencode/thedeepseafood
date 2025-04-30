@@ -10,19 +10,20 @@ from multiselectfield import MultiSelectField
 class JobCategory(StatusTimestampBase):
     name = models.CharField(max_length=200)
 
+    class Meta:
+        verbose_name_plural = "Job categories"
+
     def __str__(self):
         return self.name
 
 
-JOB_TYPE_CHOICES = (
-    ("full time", "Full-Time"),
-    ("part time", "Part-Time"),
-    ("remote", "Remote"),
-    ("contract", "Contract"),
-)
-
-
-class VaccancyDetails(StatusTimestampBase):
+class VacancyDetails(StatusTimestampBase):
+    JOB_TYPE_CHOICES = (
+        ("full time", "Full-Time"),
+        ("part time", "Part-Time"),
+        ("remote", "Remote"),
+        ("contract", "Contract"),
+    )
     category = models.ForeignKey(
         JobCategory,
         null=True,
@@ -38,8 +39,8 @@ class VaccancyDetails(StatusTimestampBase):
 
 
 class ApplicationDetails(StatusTimestampBase):
-    vaccancy = models.ForeignKey(
-        VaccancyDetails,
+    vacancy = models.ForeignKey(
+        VacancyDetails,
         null=True,
         blank=True,
         on_delete=models.CASCADE,

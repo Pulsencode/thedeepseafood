@@ -26,7 +26,7 @@ from company.models import (
     Supermarkets,
     Promotion,
 )
-from career.models import VaccancyDetails, ApplicationDetails
+from career.models import VacancyDetails, ApplicationDetails
 from products.models import Category, Product, ProductDetails
 
 
@@ -119,7 +119,7 @@ def career(request):
 
     context = {
         "page_title": "Careers at The Deep Seafood Company",
-        "all_jobs": VaccancyDetails.objects.filter(status=True),
+        "all_jobs": VacancyDetails.objects.filter(status=True),
     }
     return render(request, "public_interface/career.html", context)
 

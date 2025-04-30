@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView
-from career.models import JobCategory, VaccancyDetails, ApplicationDetails
+from career.models import JobCategory, VacancyDetails, ApplicationDetails
 
 # from datetime import datetime
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -51,7 +51,7 @@ class JobCategoryUpdateView(TemplateView):
 
 
 class CareerListView(StatusUpdateMixin, SearchAndStatusFilterMixin, ListView):
-    model = VaccancyDetails
+    model = VacancyDetails
     paginate_by = 10
     ordering = ["-id"]
     context_object_name = "all_vacancy"
@@ -75,7 +75,7 @@ class CareerCreateView(UserPassesTestMixin, TemplateView):
         types = request.POST.getlist("types")
         types_str = ", ".join(types)
 
-        career = VaccancyDetails(
+        career = VacancyDetails(
             salary=salary,
             type=types_str,
             title=name,
@@ -100,7 +100,7 @@ class CareerUpdateView(UserPassesTestMixin, TemplateView):
         return self.request.user.username == "DeepSeaHR"
 
     def get(self, request, id):
-        data = VaccancyDetails.objects.get(pk=id)
+        data = VacancyDetails.objects.get(pk=id)
         types_list = data.type.split(", ")
         # category = JobCategory.objects.filter(status=True)
         return render(
@@ -108,7 +108,7 @@ class CareerUpdateView(UserPassesTestMixin, TemplateView):
         )
 
     def post(self, request, id):
-        data = VaccancyDetails.objects.get(pk=id)
+        data = VacancyDetails.objects.get(pk=id)
         # category = JobCategory.objects.filter(status=True)
         desc = request.POST.get("desc")
         name = request.POST.get("title")

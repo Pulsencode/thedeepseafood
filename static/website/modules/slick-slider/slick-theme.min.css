@@ -13,9 +13,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-.slick-loading .slick-list {
+/* .slick-loading .slick-list {
     background: url(ajax-loader.gif) center center no-repeat #fff;
-}
+} */
 .slick-next,
 .slick-prev {
     font-size: 0;

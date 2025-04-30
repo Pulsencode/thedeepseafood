@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 
-from career.models import ApplicationDetails, JobCategory, VaccancyDetails
+from career.models import ApplicationDetails, JobCategory, VacancyDetails
 
 admin.site.register(ApplicationDetails)
 admin.site.register(JobCategory)
-admin.site.register(VaccancyDetails)
+admin.site.register(VacancyDetails)

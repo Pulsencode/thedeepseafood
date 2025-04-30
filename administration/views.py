@@ -14,7 +14,7 @@ from company.models import (
 )
 from django.contrib import messages
 
-from career.models import ApplicationDetails, JobCategory, VaccancyDetails
+from career.models import ApplicationDetails, JobCategory, VacancyDetails
 from products.models import Product, Category
 from django.contrib.auth import authenticate, login
 
@@ -35,7 +35,7 @@ class AdminDashboardView(TemplateView):
             "blog": Blog,
             "team": ManagementTeam,
             "testimonials": CompanyTestimonial,
-            "career": VaccancyDetails,
+            "career": VacancyDetails,
             "application": ApplicationDetails,
             "history": History,
             "contact": ContactUs,
