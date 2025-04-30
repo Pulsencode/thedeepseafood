@@ -1,77 +1,24 @@
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from career.models import JobCategory, VaccancyDetails, ApplicationDetails
-from datetime import datetime
+
+# from datetime import datetime
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.db.models import Q
 
 from django.contrib import messages
+
 # from deepapp.helper import is_ajax, renderhelper
-from django.http import JsonResponse
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.template import loader
+# from django.http import JsonResponse
+from company.mixin import StatusUpdateMixin, SearchAndStatusFilterMixin
 
 
-class JobCategoryListView(TemplateView):
-    template_name = "superadmin/job category/job_category_list.html"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "JobCategory"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = JobCategory.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(name__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                JobCategory.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = JobCategory.objects.get(id=item_id)
-                except JobCategory.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return renderhelper(request, "job category", "job_category_view", context)
+class JobCategoryListView(StatusUpdateMixin, SearchAndStatusFilterMixin, ListView):
+    model = JobCategory
+    context_object_name = "all_job_category"
+    paginate_by = 10
+    ordering = ["-id"]
+    template_name = "superadmin/job category/job_category_view.html"
+    search_field = "name"
 
 
 class JobCategoryCreateView(TemplateView):
@@ -103,69 +50,13 @@ class JobCategoryUpdateView(TemplateView):
         return redirect("job_category_view")
 
 
-class CareerListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/career/career_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaHR"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Career"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = VaccancyDetails.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(title__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                VaccancyDetails.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = VaccancyDetails.objects.get(id=item_id)
-                except VaccancyDetails.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return renderhelper(request, "career", "career_view", context)
+class CareerListView(StatusUpdateMixin, SearchAndStatusFilterMixin, ListView):
+    model = VaccancyDetails
+    paginate_by = 10
+    ordering = ["-id"]
+    context_object_name = "all_vacancy"
+    template_name = "superadmin/career/career_view.html"
+    search_field = "title"
 
 
 class CareerCreateView(UserPassesTestMixin, TemplateView):
@@ -239,76 +130,12 @@ class CareerUpdateView(UserPassesTestMixin, TemplateView):
         return redirect("career_view")
 
 
-class ApplicationListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/application/application_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaHR"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "application"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-        start_date = request.GET.get("start_date")  # Get start_date from request
-        end_date = request.GET.get("end_date")  # Get end_date from request
-
-        cd = ApplicationDetails.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(
-                    Q(first_name__icontains=search) | Q(job__icontains=search)
-                )
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                ApplicationDetails.objects.filter(id=item_id).update(status=status)
-
-            if start_date and end_date:  # Filter by date range if provided
-                start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
-                end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
-                cd = cd.filter(date__range=(start_date, end_date))
-
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = ApplicationDetails.objects.get(id=item_id)
-                except ApplicationDetails.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return renderhelper(request, "application", "application_view", context)
+class ApplicationListView(
+    SearchAndStatusFilterMixin, ListView
+):  # TODO need to filter wise date
+    model = ApplicationDetails
+    context_object_name = "all_applications"
+    paginate_by = 10
+    ordering = ["-id"]
+    template_name = "superadmin/application/application_view.html"
+    search_field = "job"

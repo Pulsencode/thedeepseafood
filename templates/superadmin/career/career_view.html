@@ -1,13 +1,10 @@
 {% include 'superadmin/layout/header.html' %}
 {% load static %}
-
 <!--app-content open-->
 <div class="main-content app-content mt-0">
     <div class="side-app">
-
         <!-- CONTAINER -->
         <div class="main-container container-fluid">
-
             <!-- PAGE-HEADER -->
             <div class="page-header">
                 <h1 class="page-title">Career</h1>
@@ -17,83 +14,140 @@
             </div>
             <!-- PAGE-HEADER END -->
             {% for message in messages %}
-            <div class="alert alert-primary alert-dismissible fade show m-0 text-center" id="success" role="alert"
-                style="border-radius: 0;">
-                {{message}}
-                <button type="button" class="btn-close text-dark " data-bs-dismiss="alert" aria-label="Close">x</button>
-            </div>
+                <div class="alert alert-primary alert-dismissible fade show m-0 text-center"
+                     id="success"
+                     role="alert"
+                     style="border-radius: 0">
+                    {{ message }}
+                    <button type="button"
+                            class="btn-close text-dark "
+                            data-bs-dismiss="alert"
+                            aria-label="Close">x</button>
+                </div>
             {% endfor %}
             <!-- ROW OPEN -->
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">List Of All Career </h3>
+                            <h3 class="card-title">List Of All Career</h3>
                         </div>
                         <div class="card-body">
-                            <form>
-                                <div class="row">
-
-                                    <div class="form-group col-lg-2 col-12">
-                                        <input type="text" class="form-control" placeholder="Keyword Search" id="search">
-                                    </div>
-
-                                    <div class="form-group col-lg-2 col-12">
-                                        <select name="country" id="status" class="form-control form-select select2" data-bs-placeholder="Select Country">
-                                            <option value="">Status</option>
-                                            <option value="True" >Active</option>
-                                            <option value="False">Inactive</option>
-
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-lg-3 col-12">
-                                        <a class="btn btn-primary mr-1" id="career_search">Search</a>
-                                        <a class="btn btn-default" href="{% url 'career_view' %}">Reset</a>
-                                    </div>
-                                    <div class="form-group col-lg-5 col-7">
-                                        <span id ="message001" style="color:green;display:none"><b>Status Updated Successfully</b></span>
-                                    </div>
-                                
-                                </div>
-                            </form>
+                            <!--search_filter-->
+                            {% include "search_filter.html" %}
                             <div class="table-responsive" id="career-table">
-                                {% include 'superadmin/career/career_list.html' with page=page data=data %}
-
+                                <input type="hidden" id="page" name="page" value="{{ page }}">
+                                <table class="table border-top table-bordered mb-0 table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Sl No</th>
+                                            <!-- <th>Category</th> -->
+                                            <th>Title</th>
+                                            <th>Job Type</th>
+                                            <th>Location</th>
+                                            <th>Salary</th>
+                                            <th>DESCRIPTION</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if all_vacancy %}
+                                            {% for vacancy in all_vacancy %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <!-- <td>{{d.category}}</td> -->
+                                                    <td>{{ vacancy.title }}</td>
+                                                    <td>{{ vacancy.type }}</td>
+                                                    <td>{{ vacancy.location }}</td>
+                                                    <td>{{ vacancy.salary }}</td>
+                                                    <td>
+                                                        <a href="javascript:void(0)"
+                                                           class="btn btn-success btn-sm mb-1"
+                                                           data-bs-toggle="modal"
+                                                           data-bs-target="#desc{{ vacancy.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                                                    </td>
+                                                    <td>
+                                                        <form method ="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="status_id" value="{{ vacancy.id }}">
+                                                            <div class="material-switch">
+                                                                <input id="someSwitchOptionSuccess{{ d.id }}"
+                                                                       name="status"
+                                                                       type="checkbox"
+                                                                       {% if vacancy.status %}checked{% endif %}
+                                                                       onchange="this.form.submit()">
+                                                            </div>
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-info btn-sm mb-1"
+                                                           href="{% url 'career_update' vacancy.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                                                        <button class="btn btn-danger btn-sm mb-1">
+                                                            <i class="side-menu__icon fe fe-trash"
+                                                               onclick="show_modal({{ vacancy.id }})"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <!-- modal for description-->
+                                                <div class="modal  fade"
+                                                     id="desc{{ vacancy.id }}"
+                                                     tabindex="-1"
+                                                     role="dialog">
+                                                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                                         role="document">
+                                                        <div class="modal-content ">
+                                                            <div class="modal-body">
+                                                                <div>
+                                                                    <p>{{ vacancy.description|safe }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <tr>
+                                                <td colspan='10'>
+                                                    <center>No record found</center>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                                {% include "pagination.html" %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- ROW CLOSED -->
-
-
-
         </div>
         <!-- CONTAINER END -->
     </div>
 </div>
-
 <!--app-content close-->
 <div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-md modal-dialog-centered text-center" role="document">
+    <div class="modal-dialog modal-md modal-dialog-centered text-center"
+         role="document">
         <div class="modal-content ">
-
             <div class="modal-body">
-                <button aria-label="Close" class="btn-close position-absolute" data-bs-dismiss="modal">
-                    <span aria-hidden="true">&times;</span></button>
+                <button aria-label="Close"
+                        class="btn-close position-absolute"
+                        data-bs-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                <input type="hidden" id="hid" >
+                <input type="hidden" id="hid">
                 <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
                 <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
                 <button class="btn btn-success" onclick="confirm_delete_career()">Yes</button>
-                <button aria-label="Close" class="btn btn-danger pd-x-25" data-bs-dismiss="modal">Cancel</button>
+                <button aria-label="Close"
+                        class="btn btn-danger pd-x-25"
+                        data-bs-dismiss="modal">Cancel</button>
             </div>
-            <div class="modal-footer">
-
-
-            </div>
+            <div class="modal-footer"></div>
         </div>
     </div>
 </div>
-
 {% include 'superadmin/layout/footer.html' %}

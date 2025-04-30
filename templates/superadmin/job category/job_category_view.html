@@ -36,44 +36,90 @@
                             <!---search_filter-->
                             {% include "search_filter.html" %}
                             <div class="form-group col-lg-5 col-7">
-                                <span id ="message001" style="color:green;display:none"><b>Status Updated Successfully</b></span>
+                                <div class="table-responsive" id="jcategory-table">
+                                    {% load static %}
+                                    <input type="hidden" id="page" name="page" value="{{ page }}">
+                                    <table class="table border-top table-bordered mb-0 table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Sl No</th>
+                                                <th>Job</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if all_job_category %}
+                                                {% for job in all_job_category %}
+                                                    <tr>
+                                                       
+                                                            <td>{{ forloop.counter }}</td>
+                                                            <td>{{ job.name }}</td>
+                                                            <td>
+                                                                <form method ="post">
+                                                                    {%  csrf_token %}
+                                                                    <input type="hidden"value="{{job.id}}"name="status_id">
+                                                                <div class="material-switch">
+                                                                    <input id="someSwitchOptionSuccess{{ job.id }}"
+                                                                           name="status"
+                                                                           type="checkbox"
+                                                                           {% if job.status %}checked{% endif %}
+                                                                           onchange="this.form.submit()">
+                                                                </div>
+                                                            </form>
+                                                        </td>
+                                                        <td>
+                                                            <a class="btn btn-info btn-sm mb-1"
+                                                               href="{% url 'job_category_update' job.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                                                            <button class="btn btn-danger btn-sm mb-1">
+                                                                <i class="side-menu__icon fe fe-trash"
+                                                                   onclick="show_modal({{ job.id }})"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% else %}
+                                                <tr>
+                                                    <td colspan='10'>
+                                                        <center>No record found</center>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                    {% include "pagination.html" %}
+                                </div>
                             </div>
                         </div>
-                    </form>
-                    <div class="table-responsive" id="jcategory-table">
-                        {% include 'superadmin/job category/job_category_list.html' with page=page data=data %}
                     </div>
                 </div>
+                <!-- ROW CLOSED -->
+            </div>
+            <!-- CONTAINER END -->
+        </div>
+    </div>
+    <!--app-content close-->
+    <div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-md modal-dialog-centered text-center"
+             role="document">
+            <div class="modal-content ">
+                <div class="modal-body">
+                    <button aria-label="Close"
+                            class="btn-close position-absolute"
+                            data-bs-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
+                    <input type="hidden" id="hid">
+                    <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
+                    <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
+                    <button class="btn btn-success" onclick="confirm_delete_jcategory()">Yes</button>
+                    <button aria-label="Close"
+                            class="btn btn-danger pd-x-25"
+                            data-bs-dismiss="modal">Cancel</button>
+                </div>
+                <div class="modal-footer"></div>
             </div>
         </div>
     </div>
-    <!-- ROW CLOSED -->
-</div>
-<!-- CONTAINER END -->
-</div>
-</div>
-<!--app-content close-->
-<div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-md modal-dialog-centered text-center"
-         role="document">
-        <div class="modal-content ">
-            <div class="modal-body">
-                <button aria-label="Close"
-                        class="btn-close position-absolute"
-                        data-bs-dismiss="modal">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                <input type="hidden" id="hid">
-                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
-                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
-                <button class="btn btn-success" onclick="confirm_delete_jcategory()">Yes</button>
-                <button aria-label="Close"
-                        class="btn btn-danger pd-x-25"
-                        data-bs-dismiss="modal">Cancel</button>
-            </div>
-            <div class="modal-footer"></div>
-        </div>
-    </div>
-</div>
-{% include 'superadmin/layout/footer.html' %}
+    {% include 'superadmin/layout/footer.html' %}
