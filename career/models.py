@@ -40,6 +40,9 @@ class VacancyDetails(StatusTimestampBase):
     class Meta:
         verbose_name_plural = "Vacancy Details"
 
+    def __str__(self):
+        return f"{self.title} - {self.category}"
+
 
 class ApplicationDetails(StatusTimestampBase):
     vacancy = models.ForeignKey(
@@ -74,3 +77,6 @@ class ApplicationDetails(StatusTimestampBase):
 
     class Meta:
         verbose_name_plural = "Application Details"
+
+    def __str__(self):
+        return f"Job - {self.job} - {self.first_name}"

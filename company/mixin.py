@@ -14,7 +14,7 @@ class SearchAndStatusFilterMixin:
         search = self.request.GET.get("search")
         status_filter = self.request.GET.get("status_filter")
 
-        if search: 
+        if search:
             queryset = queryset.filter(**{f"{self.search_field}__icontains": search})
             """**{ ... } → this unpacks the dictionary into keyword arguments when calling .filter"""
 
@@ -45,16 +45,10 @@ class StatusUpdateMixin:
             status_instance.save()
             messages.success(request, "Status updated successfully")
 
-
         if homepage_id:
             homepage_instance = get_object_or_404(self.model, id=homepage_id)
             homepage_instance.homepage = homepage_value == "on"
             homepage_instance.save()
             messages.success(request, "Homepage Status updated successfully")
 
-
         return redirect(self.request.path)
-
-
-
-    

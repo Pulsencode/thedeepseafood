@@ -1,5 +1,10 @@
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
+
+from career.models import ApplicationDetails, JobCategory, VacancyDetails
 from company.models import (
     Blog,
     Brand,
@@ -12,14 +17,10 @@ from company.models import (
     News,
     Promotion,
 )
-from django.contrib import messages
-
-from career.models import ApplicationDetails, JobCategory, VacancyDetails
-from products.models import Product, Category
-from django.contrib.auth import authenticate, login
+from products.models import Category, Product
 
 
-class AdminDashboardView(TemplateView):
+class AdminDashboardView(LoginRequiredMixin, TemplateView):
     template_name = "administration/pages/admin_dashboard.html"
 
     def get_context_data(self, **kwargs):
@@ -54,7 +55,7 @@ class AdminDashboardView(TemplateView):
 
 
 class LoginView(TemplateView):
-    template_name = "registration/login.html"
+    template_name = "administration/pages/login.html"
 
     def post(self, request, *args, **kwargs):
         uname = self.request.POST.get("uname")
