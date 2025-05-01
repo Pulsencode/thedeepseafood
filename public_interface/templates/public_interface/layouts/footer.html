@@ -1,4 +1,5 @@
 {% load static %}
+{% load tz %}
 <footer>
   <div class="wrapper aos-init aos-animate"
        data-aos="fade-down"
@@ -13,7 +14,7 @@
                class="logo"
                src="{% static 'public_interface/images/logo-white.png' %}">
         </a>
-        <div class="caption">38 Years of excellence in quality &amp; service.</div>
+        <div class="caption">{{years_elapsed}} Years of excellence in quality &amp; service.</div>
         <div>
           <div class="title">THE DEEP SEAFOOD COMPANY</div>
           <div class="address">United Arab Emirates</div>
@@ -125,7 +126,7 @@
             <a href="#" class="btn btn-zoom-hover">Privacy Policy</a>
           </div>
           <div class="copyright">
-            <span>Copyright @2024 The Deep Seafood Company.</span>
+            <span>Copyright @{% now "Y" %} The Deep Seafood Company.</span>
             <span>All rights are reserved.</span>
           </div>
         </div>

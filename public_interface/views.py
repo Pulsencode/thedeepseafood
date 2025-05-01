@@ -48,7 +48,7 @@ def home(request):
         "all_testimonials": CompanyTestimonial.objects.filter(status=True),
         "display_products": display_products,
     }
-    return render(request, "public_interface/index.html", context)
+    return render(request, "public_interface/home.html", context)
 
 
 def about(request):
