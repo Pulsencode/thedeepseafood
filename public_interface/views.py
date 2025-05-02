@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.core.exceptions import ValidationError
@@ -26,8 +25,9 @@ from company.models import (
     Supermarkets,
     Promotion,
 )
-from career.models import VacancyDetails, ApplicationDetails
+from career.models import VacancyDetails
 from products.models import Category, Product, ProductDetails
+from career.forms import ApplicationDetailsForm
 
 
 def home(request):
@@ -116,10 +116,10 @@ def contact(request):
 
 
 def career(request):
-
     context = {
         "page_title": "Careers at The Deep Seafood Company",
         "all_jobs": VacancyDetails.objects.filter(status=True),
+        "form": ApplicationDetailsForm(),
     }
     return render(request, "public_interface/career.html", context)
 
@@ -664,20 +664,21 @@ class BaseAjaxView(View):
     filters = {}
 
     def get_queryset(self):
-        return self.model.objects.filter(status=True, **self.filters).order_by("sequence")
+        return self.model.objects.filter(status=True, **self.filters).order_by(
+            "sequence"
+        )
 
     def get(self, request):
         if not request.headers.get("x-requested-with") == "XMLHttpRequest":
             return JsonResponse({"error": "Invalid request"}, status=400)
 
         try:
-            qs = self.get_queryset()[:self.default_limit]
-            context = {
-                self.context_key: qs,
-                "total": self.get_queryset().count()
-            }
+            qs = self.get_queryset()[: self.default_limit]
+            context = {self.context_key: qs, "total": self.get_queryset().count()}
             html = render_to_string(self.template, context)
-            return JsonResponse({"status": True, "template": html, "total": context["total"]})
+            return JsonResponse(
+                {"status": True, "template": html, "total": context["total"]}
+            )
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
 
@@ -705,11 +706,15 @@ class LoadPromotions(BaseAjaxView):
 
 
 def load_more_news(request):
-    return handle_load_more(request, News, "public_interface/components/news/loadmore_news.html")
+    return handle_load_more(
+        request, News, "public_interface/components/news/loadmore_news.html"
+    )
 
 
 def load_more_events(request):
-    return handle_load_more(request, Event, "public_interface/components/news/loadmore_events.html")
+    return handle_load_more(
+        request, Event, "public_interface/components/news/loadmore_events.html"
+    )
 
 
 def handle_load_more(request, model, template_name):
@@ -717,7 +722,7 @@ def handle_load_more(request, model, template_name):
         params = {
             "offset": int(request.GET.get("offset", 0)),
             "limit": int(request.GET.get("limit", 4)),
-            "type": request.GET.get("type", "")
+            "type": request.GET.get("type", ""),
         }
 
         filters = {"status": True}
@@ -725,15 +730,17 @@ def handle_load_more(request, model, template_name):
             filters["type__iexact"] = params["type"]
 
         qs = model.objects.filter(**filters).order_by("sequence")
-        items = qs[params["offset"]:params["offset"] + params["limit"]]
+        items = qs[params["offset"] : params["offset"] + params["limit"]]
         total = qs.count()
 
         html = render_to_string(
             f"public_interface/components/news/{template_name}",
-            {"data": items, "has_more": (params["offset"] + params["limit"]) < total}
+            {"data": items, "has_more": (params["offset"] + params["limit"]) < total},
         )
 
-        return JsonResponse({"data": html, "has_more": (params["offset"] + params["limit"]) < total})
+        return JsonResponse(
+            {"data": html, "has_more": (params["offset"] + params["limit"]) < total}
+        )
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
@@ -842,77 +849,72 @@ class ProductEnquiryView(View):
 
 class CareerEmailView(View):
     def post(self, request, *args, **kwargs):
-        applied = request.POST["applied"]
-        first_name = request.POST["first_name"]
-        last_name = request.POST["last_name"]
-        phone = request.POST["phone"]
-        email = request.POST["email"]
-        period = request.POST["notice_period"]
-        attachment = request.FILES["attachment"]
-        cover = request.FILES.get("cover", None)
-        linkedin = request.POST["linkedin"]
-        message = request.POST["message"]
-        honey = request.POST["honey"]
-        portfolio = request.POST["portfolio"]
-        date_str = request.POST.get("date")
-        try:
-            date = datetime.strptime(date_str, "%Y-%m-%d").date()
-        except ValueError:
-            date = None
-        # Validate email
-        try:
-            validate_email(email)
-        except ValidationError as e:
-            print(e)
-            messages.error(request, "Invalid email..Please try again..!!")
+        honey = request.POST.get("honey")
+        if honey:
+            messages.error(request, "Error: Form submission not allowed.")
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
-        if honey:
-            # Honey field is not empty, indicating potential spam
-            messages.error(request, "Error: Form submission not allowed.")
+        # Create mutable copies
+        adjusted_post = request.POST.copy()
+        adjusted_files = request.FILES.copy()
+
+        # Map field names to match form
+        field_mappings = {
+            "applied": "job",
+            "phone": "phone_number",
+            "linkedin": "linkedin_url",
+            "portfolio": "portfolio_url",
+            "date": "date_of_birth",
+            "attachment": "upload_cv",
+            "cover": "cover_letter",
+        }
+
+        for old_name, new_name in field_mappings.items():
+            if old_name in adjusted_post:
+                adjusted_post[new_name] = adjusted_post[old_name]
+            if old_name in adjusted_files:
+                adjusted_files[new_name] = adjusted_files[old_name]
+
+        form = ApplicationDetailsForm(adjusted_post, adjusted_files)
+
+        if form.is_valid():
+            application = form.save(commit=False)
+
+            # Prepare email
+            email = EmailMessage(
+                "New Form Submission-Deep Seafood Company Website",
+                self._build_email_body(form.cleaned_data),
+                "deepseafood.connect@gmail.com",
+                ["info@thedeepseafood.com"],
+            )
+
+            self._attach_files(email, form)
+            email.send()
+            application.save()
+
+            messages.success(request, "Your Request Shared Successfully")
         else:
-            # Honey field is empty, proceed with sending the email
-            if period and first_name and phone and email:
-                application_details = ApplicationDetails(
-                    job=applied,
-                    first_name=first_name,
-                    last_name=last_name,
-                    date=date,
-                    portfolio=portfolio,
-                    email=email,
-                    mobile_no=phone,
-                    notice=period,
-                    linkedin=linkedin,
-                    message=message,
-                    attachment=attachment if attachment else None,
-                    cover=cover if cover else None,
-                )
-                application_details.save()
-
-                subject = "New Form Submission-Deep Seafood Company Website"
-                message_body = f"First Name: {first_name}\nLast Name: {last_name}\nDate Of Birth: {date}\nMobile: {phone}\nEmail: {email}\nNotice Period:{period}\nPortfolio: {portfolio}\nLinkedIn:{linkedin}\nMessage: {message}"
-                email_message = EmailMessage(
-                    subject,
-                    message_body,
-                    "deepseafood.connect@gmail.com",
-                    ["info@thedeepseafood.com"],
-                )
-
-                # Attach the file if provided
-                if attachment:
-                    email_message.attach(
-                        attachment.name, attachment.read(), attachment.content_type
-                    )
-
-                # Attach the cover letter if provided
-                if cover:
-                    email_message.attach(cover.name, cover.read(), cover.content_type)
-
-                # Send the email
-                email_message.send()
-
-                messages.info(request, "Your Request Shared Successfully")
-            else:
-                messages.warning(request, "Please Fill All Fields Correctly!")
+            self._handle_form_errors(request, form)
 
         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+    def _build_email_body(self, cleaned_data):
+        return f"""First Name: {cleaned_data['first_name']}
+                Last Name: {cleaned_data['last_name']}
+                Date Of Birth: {cleaned_data['date_of_birth']}
+                Mobile: {cleaned_data['phone_number']}
+                Email: {cleaned_data['email']}
+                Notice Period: {cleaned_data['notice_period']}
+                Portfolio: {cleaned_data['portfolio_url']}
+                LinkedIn: {cleaned_data['linkedin_url']}
+                Message: {cleaned_data.get('message', '')}"""
+
+    def _attach_files(self, email, form):
+        for field in ["upload_cv", "cover_letter"]:
+            if file := form.cleaned_data.get(field):
+                email.attach(file.name, file.read(), file.content_type)
+
+    def _handle_form_errors(self, request, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(request, f"{form.fields[field].label}: {error}")

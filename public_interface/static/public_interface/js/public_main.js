@@ -318,15 +318,6 @@ function searchproduct() {
   });
 }
 
-function readmore(counter) {
-  $("#desc" + counter).toggleClass("line_2");
-  if ($("#desc" + counter).hasClass("line_2")) {
-    $("#readmore-btn" + counter).html("Read More");
-  } else {
-    $("#readmore-btn" + counter).html("Read Less");
-  }
-}
-
 // function readless(counter) {
 
 // $('#fullDesc' + counter).hide();
