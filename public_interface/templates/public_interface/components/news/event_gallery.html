@@ -14,7 +14,7 @@
           </div>
           <div class="col-lg-6 col-item">
             <div class="slick_slider_1 slick-dots-blue">
-              {% for img in event.news_image.all %}
+              {% for img in event.event_image.all %}
                 <div class="item">
                   <img class="img-fluid"
                        width=""
@@ -42,7 +42,7 @@
           </div>
           <div class="col-lg-7 col-item">
             <div class="slick_slider_1 slick-dots-blue">
-              {% for img in event.gallery_image.all %}
+              {% for img in event.event_image.all %}
                 <div class="item">
                   <img class="img-fluid"
                        width=""
@@ -60,14 +60,14 @@
 {% endfor %}
 <script>
 	$('.slick_slider_1').slick({
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  dots: true,
-  arrows: false,
-  autoplay: true,
-  autoplaySpeed: 3000,
-  pauseOnFocus: false,
-  pauseOnHover: false,
-  pauseOnDotsHover: false,
-});
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dots: true,
+    arrows: false,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnFocus: false,
+    pauseOnHover: false,
+    pauseOnDotsHover: false,
+  });
 </script>

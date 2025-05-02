@@ -1,5 +1,5 @@
 {% load static %}
-{% for event in news %}
+{% for event in items %}
     <div class="col-lg-4 col-sm-6 pt-30 news-box">
         <div class="item bg-x-light-blue news_card ">
             <div>
@@ -34,18 +34,20 @@
         </div>
     </div>
 {% endfor %}
-<div class="col-12 text-center mt-40">
-    <a href="#"
-       class="btn bg-white text-blue rounded-25 btn-icon btn-zoom-hover btn-more"
-       id="loadMore"
-       data-type="{{ type }}"
-       data-total="{{ total_news }}"
-       data-limit="4"
-       onclick="loadmore(this)">
-        <span>Load More</span>
-        <img width=""
-             height=""
-             alt="Right Arrow"
-             src="{% static 'public_interface/images/icons/right-arrow-blue.png' %}">
-    </a>
-</div>
+{% if total > 3 %}
+    <div class="col-12 text-center mt-40">
+        <a href="#"
+           class="btn bg-white text-blue rounded-25 btn-icon btn-zoom-hover btn-more"
+           id="loadMoreNews"
+           data-type="{{ type }}"
+           data-total="{{ total }}"
+           data-limit="4"
+           onclick="loadmore()">
+            <span>Load More</span>
+            <img alt="Right Arrow"
+                 width=""
+                 height=""
+                 src="{% static 'public_interface/images/icons/right-arrow-blue.png' %}">
+        </a>
+    </div>
+{% endif %}

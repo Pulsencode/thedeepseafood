@@ -126,10 +126,9 @@ def career(request):
 
 def news_room(request):
     context = {
-        "page_title": "Latest News & update",
-        "news": News.objects.filter(status=True, type="company news"),
-        # "news": News.objects.filter(status=True, type="global news"),
-        "all_events": Event.objects.filter(status=True),
+        "page_title": "Latest News & Updates",
+        "all_events": Event.objects.filter(status=True).order_by("sequence")[:3],
+        "total_events": Event.objects.filter(status=True).count(),
     }
     return render(request, "public_interface/news-room.html", context)
 
@@ -146,7 +145,7 @@ def brand(request):
         "page_title": "Explore oceano",
         "supermarkets": Supermarkets.objects.filter(status=True),
     }
-    return render(request, "public_interface/oceano.html", context)
+    return render(request, "public_interface/brands.html", context)
 
 
 def meeting(request):
@@ -314,7 +313,7 @@ def privacy_policy(request):
 
 
 class NewsListsView(TemplateView):
-    template_name = "website/news/news.html"
+    template_name = "public_interface/news.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -324,7 +323,7 @@ class NewsListsView(TemplateView):
 
 
 class IndexProductView(View):
-    template_name = "website/index/product_list.html"
+    template_name = "public_interface/home/product_list.html"
 
     def get(self, request):
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
@@ -353,7 +352,7 @@ class IndexProductView(View):
 
 
 class ProductListingView(View):
-    template_name = "website/products/product_lists.html"
+    template_name = "public_interface/components/products/product_lists.html"
 
     def get(self, request):
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
@@ -383,7 +382,7 @@ class ProductListingView(View):
 
 
 class GeneralProductDetailsView(View):
-    template_name = "website/products/details.html"
+    template_name = "public_interface/components/products/details.html"
 
     def get(self, request):
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
@@ -418,7 +417,7 @@ class GeneralProductDetailsView(View):
 
 
 class SearchProductView(View):
-    template_name = "website/products/search_product.html"
+    template_name = "public_interface/components/products/search_product.html"
 
     def get(self, request):
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
@@ -461,7 +460,7 @@ class SearchProductView(View):
 
 
 class BrandView(TemplateView):
-    template_name = "website/brands/brands.html"
+    template_name = "public_interface/brands.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -496,7 +495,7 @@ class BrandView(TemplateView):
 
 
 class ProductContentView(View):
-    template_name = "website/brands/products_list.html"
+    template_name = "public_interface/components/brands/products_list.html"
 
     def get(self, request):
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
@@ -569,7 +568,7 @@ def load_more_product(request):
 
 
 class OceanoProductDetailsView(View):
-    template_name = "website/brands/product_details.html"
+    template_name = "public_interface/components/brands/product_details.html"
 
     def get(self, request):
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
@@ -617,7 +616,7 @@ class OceanoProductDetailsView(View):
 
 
 class OceanoModalProductDetailsView(View):
-    template_name = "website/brands/product_data.html"
+    template_name = "public_interface/components/brands/product_data.html"
 
     def get(self, request):
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
@@ -654,144 +653,94 @@ class OceanoModalProductDetailsView(View):
 
 
 class BrandsListView(TemplateView):
-    template_name = "website/brands/brands_list.html"
+    template_name = "public_interface/components/brands/brands_list.html"
 
 
-class LoadEvents(View):
-    template_name = "website/news/event_gallery.html"
+class BaseAjaxView(View):
+    model = None
+    template = None
+    context_key = "items"
+    default_limit = 3
+    filters = {}
 
-    def get(self, request):
-        if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
-
-            try:
-                gallery = Event.objects.filter(status=True).order_by("sequence")[:3]
-                total_events = Event.objects.filter(status=True).count()
-                context = {
-                    "gallery": gallery,
-                    "total_events": total_events,
-                }
-                template = loader.get_template(self.template_name)
-                html_content = template.render(context, request)
-                return JsonResponse({"status": True, "template": html_content})
-            except Exception as e:
-                print(str(e))
-                return JsonResponse({"error": str(e)}, status=500)
-
-        return JsonResponse({"error": "Invalid request"}, status=400)
-
-
-class LoadNews(View):
-    template_name = "website/news/news_list.html"
+    def get_queryset(self):
+        return self.model.objects.filter(status=True, **self.filters).order_by("sequence")
 
     def get(self, request):
-        if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+        if not request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return JsonResponse({"error": "Invalid request"}, status=400)
 
-            try:
-                news = News.objects.filter(status=True, type="Company News").order_by(
-                    "sequence"
-                )[:3]
-                total_news = News.objects.filter(
-                    status=True, type="Company News"
-                ).count()
-                context = {
-                    "news": news,
-                    "type": "Company News",
-                    "total_news": total_news,
-                }
-                template = loader.get_template(self.template_name)
-                html_content = template.render(context, request)
-                return JsonResponse(
-                    {"status": True, "template": html_content, "total_news": total_news}
-                )
-            except Exception as e:
-                print(str(e))
-                return JsonResponse({"error": str(e)}, status=500)
-
-        return JsonResponse({"error": "Invalid request"}, status=400)
+        try:
+            qs = self.get_queryset()[:self.default_limit]
+            context = {
+                self.context_key: qs,
+                "total": self.get_queryset().count()
+            }
+            html = render_to_string(self.template, context)
+            return JsonResponse({"status": True, "template": html, "total": context["total"]})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
 
-class LoadGlobalNews(View):
-    template_name = "website/news/news_list.html"
-
-    def get(self, request):
-        if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
-
-            try:
-                news = News.objects.filter(status=True, type="Global News").order_by(
-                    "sequence"
-                )[:3]
-                total_news = News.objects.filter(
-                    status=True, type="Global News"
-                ).count()
-                context = {
-                    "news": news,
-                    "type": "Global News",
-                    "total_news": total_news,
-                }
-                template = loader.get_template(self.template_name)
-                html_content = template.render(context, request)
-                return JsonResponse(
-                    {"status": True, "template": html_content, "total_news": total_news}
-                )
-            except Exception as e:
-                print(str(e))
-                return JsonResponse({"error": str(e)}, status=500)
-
-        return JsonResponse({"error": "Invalid request"}, status=400)
+class LoadEvents(BaseAjaxView):
+    model = Event
+    template = "public_interface/components/news/event_gallery.html"
+    context_key = "all_events"
 
 
-class LoadPromotions(View):
-    template_name = "website/news/promotions_list.html"
+class LoadNews(BaseAjaxView):
+    model = News
+    template = "public_interface/components/news/news_list.html"
+    filters = {"type__iexact": "company news"}
 
-    def get(self, request):
-        if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
 
-            try:
-                promotion = Promotion.objects.filter(status=True).order_by("-id")
+class LoadGlobalNews(LoadNews):
+    filters = {"type__iexact": "global news"}
 
-                context = {"promotion": promotion}
-                template = loader.get_template(self.template_name)
-                html_content = template.render(context, request)
-                return JsonResponse({"status": True, "template": html_content})
-            except Exception as e:
-                print(str(e))
-                return JsonResponse({"error": str(e)}, status=500)
 
-        return JsonResponse({"error": "Invalid request"}, status=400)
+class LoadPromotions(BaseAjaxView):
+    model = Promotion
+    template = "public_interface/components/news/promotions_list.html"
+    default_limit = None
 
 
 def load_more_news(request):
-    offset = int(request.GET["offset"])
-    limit = int(request.GET["limit"])
-    type = request.GET["type"]
-    data = News.objects.filter(status=True, type=type).order_by("sequence")[
-        offset : offset + limit
-    ]
-    total_news = News.objects.filter(status=True, type=type).count()
-    t = render_to_string(
-        "website/news/loadmore_news.html",
-        {"data": data, "type": type, "total_news": total_news},
-    )
-    return JsonResponse({"data": t})
+    return handle_load_more(request, News, "public_interface/components/news/loadmore_news.html")
 
 
 def load_more_events(request):
-    offset = int(request.GET["offset"])
-    limit = int(request.GET["limit"])
-    # type = request.GET['type']
-    data = Event.objects.filter(status=True).order_by("sequence")[
-        offset : offset + limit
-    ]
-    total_events = Event.objects.filter(status=True).count()
-    t = render_to_string(
-        "website/news/loadmore_events.html",
-        {"data": data, "total_events": total_events},
-    )
-    return JsonResponse({"data": t})
+    return handle_load_more(request, Event, "public_interface/components/news/loadmore_events.html")
+
+
+def handle_load_more(request, model, template_name):
+    try:
+        params = {
+            "offset": int(request.GET.get("offset", 0)),
+            "limit": int(request.GET.get("limit", 4)),
+            "type": request.GET.get("type", "")
+        }
+
+        filters = {"status": True}
+        if params["type"]:
+            filters["type__iexact"] = params["type"]
+
+        qs = model.objects.filter(**filters).order_by("sequence")
+        items = qs[params["offset"]:params["offset"] + params["limit"]]
+        total = qs.count()
+
+        html = render_to_string(
+            f"public_interface/components/news/{template_name}",
+            {"data": items, "has_more": (params["offset"] + params["limit"]) < total}
+        )
+
+        return JsonResponse({"data": html, "has_more": (params["offset"] + params["limit"]) < total})
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
 
 
 class PromotionView(TemplateView):
-    template_name = "website/promotion/promotion-view.html"
+    template_name = "public_interface/promotion-view.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
