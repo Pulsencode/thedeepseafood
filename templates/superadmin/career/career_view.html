@@ -83,9 +83,11 @@
                                                     <td>
                                                         <a class="btn btn-info btn-sm mb-1"
                                                            href="{% url 'career_update' vacancy.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
-                                                        <button class="btn btn-danger btn-sm mb-1">
-                                                            <i class="side-menu__icon fe fe-trash"
-                                                               onclick="show_modal({{ vacancy.id }})"></i>
+                                                        <button type="button"
+                                                                class="btn btn-danger btn-sm mb-1"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#deleteModal{{ vacancy.id }}">
+                                                            <i class="side-menu__icon fe fe-trash"></i>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -102,6 +104,34 @@
                                                                     <p>{{ vacancy.description|safe }}</p>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--modal-->
+                                                <div class="modal fade"
+                                                     id="deleteModal{{ vacancy.id }}"
+                                                     tabindex="-1"
+                                                     role="dialog">
+                                                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                                         role="document">
+                                                        <div class="modal-content ">
+                                                            <div class="modal-body">
+                                                                {% comment %} <button aria-label="Close" class="btn-close position-absolute" data-bs-dismiss="modal">
+                                                                       <i class="fa fa-times" aria-hidden="true"></i>
+                                                                </button> {% endcomment %}
+                                                                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
+                                                                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
+                                                                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
+                                                                <form method="post">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="delete_id" value="{{ vacancy.id }}">
+                                                                    <button type="submit" class="btn btn-success btn-sm">Yes</button>
+                                                                    <button type="button"
+                                                                            class="btn btn-danger pd-x-25 btn-sm"
+                                                                            data-bs-dismiss="modal">Cancel</button>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -124,30 +154,6 @@
             <!-- ROW CLOSED -->
         </div>
         <!-- CONTAINER END -->
-    </div>
-</div>
-<!--app-content close-->
-<div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-md modal-dialog-centered text-center"
-         role="document">
-        <div class="modal-content ">
-            <div class="modal-body">
-                <button aria-label="Close"
-                        class="btn-close position-absolute"
-                        data-bs-dismiss="modal">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                <input type="hidden" id="hid">
-                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
-                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
-                <button class="btn btn-success" onclick="confirm_delete_career()">Yes</button>
-                <button aria-label="Close"
-                        class="btn btn-danger pd-x-25"
-                        data-bs-dismiss="modal">Cancel</button>
-            </div>
-            <div class="modal-footer"></div>
-        </div>
     </div>
 </div>
 {% include 'superadmin/layout/footer.html' %}
