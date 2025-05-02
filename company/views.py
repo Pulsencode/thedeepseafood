@@ -45,10 +45,10 @@ from company.models import (
     SEO,
     Supermarkets,
 )
-from company.mixin import SearchAndStatusFilterMixin, StatusUpdateMixin
+from company.mixin import SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin
 
 
-class SeoListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class SeoListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
     model = SEO
     context_object_name = "all_seo"
     paginate_by = 10
@@ -92,7 +92,7 @@ class SeoUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class TeamListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class TeamListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
     model = ManagementTeam
     paginate_by = 10
     context_object_name = "all_teams"
@@ -136,7 +136,9 @@ class TeamUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class TestimonialListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class TestimonialListView(
+    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
+):
     model = CompanyTestimonial
     paginated_by = 10
     context_object_name = "all_testimonials"
@@ -183,7 +185,9 @@ class TestimonialUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class CertificationListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class CertificationListView(
+    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
+):
     model = Certification
     context_object_name = "all_certification"
     paginate_by = 10
@@ -230,7 +234,9 @@ class CertificationUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class SupermarketListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class SupermarketListView(
+    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
+):
     model = Supermarkets
     context_object_name = "all_supermarkets"
     paginate_by = 10
@@ -277,7 +283,7 @@ class SupermarketUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class BrandListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class BrandListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
     model = Brand
     context_object_name = "all_brands"
     paginate_by = 10
@@ -326,7 +332,7 @@ class BrandUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class BlogListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class BlogListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
     model = Blog
     context_object_name = "all_blogs"
     paginated_by = 10
@@ -386,7 +392,7 @@ class BlogUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class EventListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class EventListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
     model = Event
     context_object_name = "all_events"
     paginate_by = 10
@@ -471,7 +477,7 @@ class EventImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class NewsListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class NewsListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
     model = News
     context_object_name = "all_news"
     paginate_by = 10
@@ -553,7 +559,9 @@ class NewsImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class PromotionListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class PromotionListView(
+    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
+):
     model = Promotion
     context_object_name = "all_promotions"
     paginate_by = 10
@@ -649,7 +657,7 @@ class BlogImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class HistoryListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class HistoryListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
     model = History
     context_object_name = "all_history"
     paginate_by = 10
@@ -736,7 +744,7 @@ class HistoryImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class ContactListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class ContactListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
     model = ContactUs
     context_object_name = "all_contacts"
     paginate_by = 10
@@ -744,11 +752,11 @@ class ContactListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
     search_field = "name"
 
 
-class EnquiryListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class EnquiryListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
     model = Enquiry
     context_object_name = "all_enquiry"
     paginate_by = 10
-    template_name = "superadmin/enquiry/enquiry_view.html"
+    template_name = "superadmin/enquiry/enquiry.html"
     search_field = "year"
 
 
