@@ -13,12 +13,6 @@
                 </div>
             </div>
             <!-- PAGE-HEADER END -->
-            {% comment %} {% for message in messages %}
-            <div class="alert alert-primary alert-dismissible fade show m-0 text-center" id="success" role="alert" style="border-radius: 0;">
-                {{message}}
-                <button type="button" class="btn-close text-dark " data-bs-dismiss="alert" aria-label="Close">x</button>
-            </div> {% endcomment %}
-            {% comment %} {% endfor %} {% endcomment %}
             <!-- ROW OPEN -->
             <div class="row">
                 <div class="col-xl-12">
@@ -27,135 +21,137 @@
                             <h3 class="card-title">List Of All Testimonial</h3>
                         </div>
                         <div class="card-body">
-                            <form>
-                                <!--search_filter-->
-                                {% include "search_filter.html" %}
-                                <div class="form-group col-lg-3 col-12">
-                                    <a class="btn btn-primary mr-1" id="testimonial_search">Search</a>
-                                    <a class="btn btn-default" href="{% url 'list_testimonial' %}">Reset</a>
-                                </div>
-                                <div class="form-group col-lg-5 col-7">
-                                    <span id="message001" style="color:green;display:none"><b>Status Updated
-                                    Successfully</b></span>
-                                </div>
+                            <!--search_filter-->
+                            {% include "search_filter.html" %}
+                            <div class="form-group col-lg-3 col-12">
+                                <a class="btn btn-primary mr-1" id="testimonial_search">Search</a>
+                                <a class="btn btn-default" href="{% url 'list_testimonial' %}">Reset</a>
                             </div>
-                        </form>
-                        <div class="table-responsive" id="testimonial-table">
-                            <input type="hidden" id="page" name="page" value="{{ page }}">
-                            <table class="table border-top table-bordered mb-0 table-hover">
-                                <thead>
-                                    <tr class="text-center">
-                                        <th>Sl No</th>
-                                        <th>Name</th>
-                                        <th>Quote</th>
-                                        <th>Image</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% if all_testimonials %}
-                                        {% for testimonial in all_testimonials %}
-                                            <tr class="text-center">
-                                                <td>{{ forloop.counter }}</td>
-                                                <td>{{ testimonial.name }}</td>
-                                                <td>
-                                                    <a href="javascript:void(0)"
-                                                       class="btn btn-success btn-sm mb-1"
-                                                       data-bs-toggle="modal"
-                                                       data-bs-target="#desc{{ testimonial.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
-                                                </td>
-                                                <td>
-                                                    {% if testimonial.image %}
-                                                        <a href="{{ testimonial.image.url }}"
-                                                           data-lightbox="team-{{ forloop.counter }}">
-                                                            <img src="{{ testimonial.image.url }}" style="width:90px;">
-                                                        </a>
-                                                    {% endif %}
-                                                </td>
-                                                <td>
-                                                    <form method="post">
-                                                        {% csrf_token %}
-                                                        <input type="hidden" name="status_id" value={{ testimonial.id }}>
-                                                        <div class="material-switch">
-                                                            <input id="someSwitchOptionSuccess{{ testimonial.id }}"
-                                                                   name="status"
-                                                                   type="checkbox"
-                                                                   {% if testimonial.status %}checked{% endif %}
-                                                                   onchange="this.form.submit()">
-                                                        </div>
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <a class="btn btn-info btn-sm mb-1"
-                                                       href="{% url 'testimonial_update'  testimonial.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
-                                                    <button type="button" class="btn btn-danger btn-sm mb-1">
-                                                        <i class="side-menu__icon fe fe-trash"
-                                                           onclick="show_modal({{ testimonial.id }})"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <!-- modal for description-->
-                                            <div class="modal  fade"
-                                                 id="desc{{ testimonial.id }}"
-                                                 tabindex="-1"
-                                                 role="dialog">
-                                                <div class="modal-dialog modal-md modal-dialog-centered text-center"
-                                                     role="document">
-                                                    <div class="modal-content ">
-                                                        <div class="modal-body">
-                                                            <div>
-                                                                <p>{{ d.message|safe }}</p>
+                            <div class="table-responsive" id="testimonial-table">
+                                <input type="hidden" id="page" name="page" value="{{ page }}">
+                                <table class="table border-top table-bordered mb-0 table-hover">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Sl No</th>
+                                            <th>Name</th>
+                                            <th>Quote</th>
+                                            <th>Image</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if all_testimonials %}
+                                            {% for testimonial in all_testimonials %}
+                                                <tr class="text-center">
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ testimonial.name }}</td>
+                                                    <td>
+                                                        <a href="javascript:void(0)"
+                                                           class="btn btn-success btn-sm mb-1"
+                                                           data-bs-toggle="modal"
+                                                           data-bs-target="#desc{{ testimonial.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                                                    </td>
+                                                    <td>
+                                                        {% if testimonial.image %}
+                                                            <a href="{{ testimonial.image.url }}"
+                                                               data-lightbox="team-{{ forloop.counter }}">
+                                                                <img src="{{ testimonial.image.url }}" style="width:90px;">
+                                                            </a>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <form method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="status_id" value={{ testimonial.id }}>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input"
+                                                                       type="checkbox"
+                                                                       id="customSwitch1"
+                                                                       name="status"
+                                                                       {% if testimonial.status %}checked{% endif %}
+                                                                       onchange="this.form.submit()">
+                                                            </div>
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-info btn-sm mb-1"
+                                                           href="{% url 'testimonial_update'  testimonial.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                                                        <button type="button"
+                                                                class="btn btn-danger btn-sm mb-1"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#deleteModal{{ testimonial.id }}">
+                                                            <i class="side-menu__icon fe fe-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <!-- modal for description-->
+                                                <div class="modal  fade"
+                                                     id="desc{{ testimonial.id }}"
+                                                     tabindex="-1"
+                                                     role="dialog">
+                                                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                                         role="document">
+                                                        <div class="modal-content ">
+                                                            <div class="modal-body">
+                                                                <div>
+                                                                    <p>{{ d.message|safe }}</p>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        {% endfor %}
-                                    {% else %}
-                                        <tr>
-                                            <td colspan='10'>
-                                                <center>No record found</center>
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-                                </tbody>
-                            </table>
-                            {% include "pagination.html" %}
-                            {% comment %} {% include 'superadmin/testimonial/testimonial_list.html' with page=page
-                            data=data %} {% endcomment %}
+                                                <div class="modal  fade"
+                                                     id="deleteModal{{ testimonial.id }}"
+                                                     tabindex="-1"
+                                                     role="dialog">
+                                                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                                         role="document">
+                                                        <div class="modal-content ">
+                                                            <div class="modal-body">
+                                                                <button aria-label="Close"
+                                                                        class="btn-close position-absolute"
+                                                                        data-bs-dismiss="modal">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
+                                                                <input type="hidden" id="hid">
+                                                                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
+                                                                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
+                                                                <form method="post">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="delete_id" value="{{ testimonial.id }}">
+                                                                    <button type="submit" class="btn btn-success btn-sm">Yes</button>
+                                                                    <button type="button"
+                                                                            class="btn btn-danger pd-x-25 btn-sm"
+                                                                            data-bs-dismiss="modal">Cancel</button>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <tr>
+                                                <td colspan='10'>
+                                                    <center>No record found</center>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                                {% include "pagination.html" %}
+                                {% comment %} {% include 'superadmin/testimonial/testimonial_list.html' with page=page
+                                data=data %} {% endcomment %}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- ROW CLOSED -->
         </div>
-        <!-- ROW CLOSED -->
-    </div>
-    <!-- CONTAINER END -->
-</div>
-</div>
-<!--app-content close-->
-<div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-md modal-dialog-centered text-center"
-         role="document">
-        <div class="modal-content ">
-            <div class="modal-body">
-                <button aria-label="Close"
-                        class="btn-close position-absolute"
-                        data-bs-dismiss="modal">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                <input type="hidden" id="hid">
-                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
-                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
-                <button class="btn btn-success" onclick="confirm_delete_testimonial()">Yes</button>
-                <button aria-label="Close"
-                        class="btn btn-danger pd-x-25"
-                        data-bs-dismiss="modal">Cancel</button>
-            </div>
-            <div class="modal-footer"></div>
-        </div>
+        <!-- CONTAINER END -->
     </div>
 </div>
 {% include 'superadmin/layout/footer.html' %}

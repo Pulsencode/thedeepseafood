@@ -1,4 +1,4 @@
-{% comment %} {% load static %}
+{% load static %}
 <input type="hidden" id="page" name="page" value="{{ page }}">
 <table class="table border-top table-bordered mb-0 table-hover">
     <thead>
@@ -14,32 +14,71 @@
         {% if all_certification %}
             {% for certification in all_certification %}
                 <tr>
-                    <td>{{ forloop.counter}}</td>
+                    <td>{{ forloop.counter }}</td>
                     <td>
                         {% if certification.image %}
-                            <a href="{{ certification.image.url }}" data-lightbox="image-{{ forloop.counter }}">
+                            <a href="{{ certification.image.url }}"
+                               data-lightbox="image-{{ forloop.counter }}">
                                 <img src="{{ certification.image.url }}" style="width:90px;">
                             </a>
                         {% endif %}
                     </td>
                     <!-- <td>{{d.name}}</td> -->
                     <td>
-                        <div class="material-switch">
-                            <input id="someSwitchOptionSuccess{{ certification.id }}"
-                                   name="someSwitchOption001"
-                                   type="checkbox"
-                                   {% if certification.status == True %} onclick="changecertificationstatus({{ certification.id }},0)" checked {% else %}onclick="changecertificationstatus({{ certification.id }},1)" {% endif %} />
-                            <label for="someSwitchOptionSuccess{{ certification.id }}" class="label-success"></label>
-                        </div>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="status_id" value="{{ certification.id }}">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="customSwitch1"
+                                       name="status"
+                                       {% if certification.status %}checked{% endif %}
+                                       onchange="this.form.submit()">
+                            </div>
+                        </form>
                     </td>
                     <td>
                         <a class="btn btn-info btn-sm mb-1"
                            href="{% url 'certification_update' certification.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
-                        <button class="btn btn-danger btn-sm mb-1">
-                            <i class="side-menu__icon fe fe-trash"  onclick="show_modal({{ certification.id }})"></i>
+                        <button type="button"
+                                class="btn btn-danger btn-sm mb-1"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal{{ certification.id }}">
+                            <i class="side-menu__icon fe fe-trash"></i>
                         </button>
                     </td>
                 </tr>
+                <div class="modal  fade"
+                     id="deleteModal{{ certification.id }}"
+                     tabindex="-1"
+                     role="dialog">
+                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                         role="document">
+                        <div class="modal-content ">
+                            <div class="modal-body">
+                                <button aria-label="Close"
+                                        class="btn-close position-absolute"
+                                        data-bs-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
+                                <input type="hidden" id="hid">
+                                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
+                                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="delete_id" value="{{ certification.id }}">
+                                    <button type="submit" class="btn btn-success btn-sm">Yes</button>
+                                    <button type="button"
+                                            class="btn btn-danger pd-x-25 btn-sm"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer"></div>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
         {% else %}
             <tr>
@@ -51,4 +90,4 @@
     </tbody>
 </table>
 {% include 'pagination.html' %}
-</div> {% endcomment %}
+</div>

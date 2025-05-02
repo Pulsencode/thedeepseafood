@@ -40,9 +40,7 @@
                             </div>
                         </div>
                     </form>
-                    <div class="table-responsive" id="brand-table">
-                        {% include 'superadmin/brand/brand_list.html' with page=page data=data %}
-                    </div>
+                    <div class="table-responsive" id="brand-table">{% include 'superadmin/brand/brand_list.html' %}</div>
                 </div>
             </div>
         </div>
@@ -52,28 +50,6 @@
 <!-- CONTAINER END -->
 </div>
 </div>
-<!--app-content close-->
-<div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-md modal-dialog-centered text-center"
-         role="document">
-        <div class="modal-content ">
-            <div class="modal-body">
-                <button aria-label="Close"
-                        class="btn-close position-absolute"
-                        data-bs-dismiss="modal">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                <input type="hidden" id="hid">
-                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
-                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
-                <button class="btn btn-success" onclick="confirm_delete_brand()">Yes</button>
-                <button aria-label="Close"
-                        class="btn btn-danger pd-x-25"
-                        data-bs-dismiss="modal">Cancel</button>
-            </div>
-            <div class="modal-footer"></div>
-        </div>
-    </div>
-</div>
+
+
 {% include 'superadmin/layout/footer.html' %}
