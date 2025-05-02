@@ -1,18 +1,18 @@
-from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, ListView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView
 from career.models import JobCategory, VacancyDetails, ApplicationDetails
+from career.forms import VacancyDetailForm, JobCategoryForm
 
-# from datetime import datetime
-from django.contrib.auth.mixins import UserPassesTestMixin
-
+# from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib import messages
 
-# from deepapp.helper import is_ajax, renderhelper
 # from django.http import JsonResponse
-from company.mixin import StatusUpdateMixin, SearchAndStatusFilterMixin
+from company.mixin import StatusUpdateAndDeleteMixin, SearchAndStatusFilterMixin
 
 
-class JobCategoryListView(StatusUpdateMixin, SearchAndStatusFilterMixin, ListView):
+class JobCategoryListView(
+    StatusUpdateAndDeleteMixin, SearchAndStatusFilterMixin, ListView
+):
     model = JobCategory
     context_object_name = "all_job_category"
     paginate_by = 10
@@ -21,36 +21,41 @@ class JobCategoryListView(StatusUpdateMixin, SearchAndStatusFilterMixin, ListVie
     search_field = "name"
 
 
-class JobCategoryCreateView(TemplateView):
+class JobCategoryCreateView(CreateView):
+    model = JobCategory
+    form_class = JobCategoryForm
+    success_url = reverse_lazy("job_category_list")
     template_name = "superadmin/job category/job_category_create.html"
 
-    def post(self, request, *args, **kwargs):
-        name = request.POST.get("name")
+    def form_valid(self, form):
+        messages.success(self.request, "Job Category Added Successfully...!!")
+        return super().form_valid(form)
 
-        jcategory = JobCategory(name=name)
-        jcategory.save()
-        messages.success(request, "Job category Added Successfully...!!")
-        return redirect("job_category_view")
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+        return super().form_invalid(form)
 
 
-class JobCategoryUpdateView(TemplateView):
+class JobCategoryUpdateView(UpdateView):
+    model = JobCategory
+    form_class = JobCategoryForm
+    success_url = reverse_lazy("job_category_list")
     template_name = "superadmin/job category/job_category_create.html"
 
-    def get(self, request, id):
-        data = JobCategory.objects.get(pk=id)
-        return render(request, self.template_name, {"list": data})
+    def form_valid(self, form):
+        messages.success(self.request, "Job Category Updated Successfully...!!")
+        return super().form_valid(form)
 
-    def post(self, request, id):
-        data = JobCategory.objects.get(pk=id)
-        name = request.POST.get("name")
-
-        data.name = name
-        data.save()
-        messages.success(request, "Job Category Updated Successfully...!!")
-        return redirect("job_category_view")
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+        return super().form_invalid(form)
 
 
-class CareerListView(StatusUpdateMixin, SearchAndStatusFilterMixin, ListView):
+class CareerListView(StatusUpdateAndDeleteMixin, SearchAndStatusFilterMixin, ListView):
     model = VacancyDetails
     paginate_by = 10
     ordering = ["-id"]
@@ -59,79 +64,44 @@ class CareerListView(StatusUpdateMixin, SearchAndStatusFilterMixin, ListView):
     search_field = "title"
 
 
-class CareerCreateView(UserPassesTestMixin, TemplateView):
+class CareerCreateView(CreateView):
+    model = VacancyDetails
+    success_url = reverse_lazy("career_view")
+    form_class = VacancyDetailForm
     template_name = "superadmin/career/career_create.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaHR"
+    def form_valid(self, form):
+        messages.success(self.request, "Career Added Successfully...!!")
 
-    def post(self, request, *args, **kwargs):
-        desc = request.POST.get("desc")
-        name = request.POST.get("title")
-        location = request.POST.get("location")
-        salary = request.POST.get("salary")
-        # cat_instance = request.POST.get('cat')
-        # category = JobCategory.objects.get(id=cat_instance)
-        types = request.POST.getlist("types")
-        types_str = ", ".join(types)
+        return super().form_valid(form)
 
-        career = VacancyDetails(
-            salary=salary,
-            type=types_str,
-            title=name,
-            description=desc,
-            location=location,
-        )
-        career.save()
-
-        messages.success(request, "Career Added Successfully...!!")
-        return redirect("career_view")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["category"] = JobCategory.objects.filter(status=True).order_by("-id")
-        return context
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+        return super().form_invalid(form)
 
 
-class CareerUpdateView(UserPassesTestMixin, TemplateView):
+class CareerUpdateView(UpdateView):
+    model = VacancyDetails
+    success_url = reverse_lazy("career_view")
+    form_class = VacancyDetailForm
     template_name = "superadmin/career/career_create.html"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaHR"
+    def form_valid(self, form):
+        messages.success(self.request, "Career Update Successfully...!!")
 
-    def get(self, request, id):
-        data = VacancyDetails.objects.get(pk=id)
-        types_list = data.type.split(", ")
-        # category = JobCategory.objects.filter(status=True)
-        return render(
-            request, self.template_name, {"list": data, "types_list": types_list}
-        )
+        return super().form_valid(form)
 
-    def post(self, request, id):
-        data = VacancyDetails.objects.get(pk=id)
-        # category = JobCategory.objects.filter(status=True)
-        desc = request.POST.get("desc")
-        name = request.POST.get("title")
-        location = request.POST.get("location")
-        salary = request.POST.get("salary")
-        # cat_instance = request.POST.get('cat')
-        # category = JobCategory.objects.get(id=cat_instance)
-
-        types = request.POST.getlist("types")
-
-        data.type = ", ".join(types)
-        data.title = name
-        # data.category = category
-        data.location = location
-        data.salary = salary
-        data.description = desc
-        data.save()
-        messages.success(request, "Career Updated Successfully...!!")
-        return redirect("career_view")
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+        return super().form_invalid(form)
 
 
 class ApplicationListView(
-    SearchAndStatusFilterMixin, ListView
+    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
 ):  # TODO need to filter wise date
     model = ApplicationDetails
     context_object_name = "all_applications"
@@ -139,3 +109,5 @@ class ApplicationListView(
     ordering = ["-id"]
     template_name = "superadmin/application/application_view.html"
     search_field = "job"
+    search_field = "start_date"
+    extra_context = {"status": True, "search_date": True}

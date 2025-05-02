@@ -5,6 +5,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 from multiselectfield import MultiSelectField
+from datetime import date, timedelta
 
 
 class JobCategory(StatusTimestampBase):
@@ -80,3 +81,14 @@ class ApplicationDetails(StatusTimestampBase):
 
     def __str__(self):
         return f"Job - {self.job} - {self.first_name}"
+
+    def save(self, *args, **kwargs):
+        if not self.start_date:
+            notice_mapping = {
+                "immediate": 0,
+                "2_weeks": 14,
+                "1_month": 30,
+            }
+            days = notice_mapping.get(self.notice_period, 0)
+            self.start_date = date.today() + timedelta(days=days)
+        super().save(*args, **kwargs)
