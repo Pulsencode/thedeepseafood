@@ -1,6 +1,5 @@
-{% include 'administration/layouts/header.html' %}
+{% include "superadmin/layout/header.html" %}
 {% load static %}
-
 <!-- Main Content Start -->
 <div class="main-content app-content mt-0">
     <div class="side-app">
@@ -19,7 +18,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{brand}}</h2>
+                                        <h2 class="mb-0 number-font">{{ brand }}</h2>
                                         <p class="text-white mb-0">Brand</p>
                                     </div>
                                     <div class="ms-auto">
@@ -30,7 +29,6 @@
                         </div>
                     </a>
                 </div>
-
                 <!-- Category Card -->
                 <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
                     <a href="{% url 'category_view' %}">
@@ -38,7 +36,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{category}}</h2>
+                                        <h2 class="mb-0 number-font">{{ category }}</h2>
                                         <p class="text-white mb-0">Category</p>
                                     </div>
                                     <div class="ms-auto">
@@ -49,7 +47,6 @@
                         </div>
                     </a>
                 </div>
-
                 <!-- Event Gallery Card -->
                 <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
                     <a href="{% url 'gallery_view' %}">
@@ -57,7 +54,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{gallery}}</h2>
+                                        <h2 class="mb-0 number-font">{{ gallery }}</h2>
                                         <p class="text-white mb-0">Event Gallery</p>
                                     </div>
                                     <div class="ms-auto">
@@ -68,7 +65,6 @@
                         </div>
                     </a>
                 </div>
-
                 <!-- News Card -->
                 <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
                     <a href="{% url 'news_view' %}">
@@ -76,7 +72,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{news}}</h2>
+                                        <h2 class="mb-0 number-font">{{ news }}</h2>
                                         <p class="text-white mb-0">News</p>
                                     </div>
                                     <div class="ms-auto">
@@ -87,7 +83,6 @@
                         </div>
                     </a>
                 </div>
-
                 <!-- Promotion Card -->
                 <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
                     <a href="{% url 'promotion_view' %}">
@@ -95,7 +90,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{promo}}</h2>
+                                        <h2 class="mb-0 number-font">{{ promo }}</h2>
                                         <p class="text-white mb-0">Promotion Information</p>
                                     </div>
                                     <div class="ms-auto">
@@ -106,7 +101,6 @@
                         </div>
                     </a>
                 </div>
-
                 <!-- Blog Card -->
                 <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
                     <a href="{% url 'blog_view' %}">
@@ -114,7 +108,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{blog}}</h2>
+                                        <h2 class="mb-0 number-font">{{ blog }}</h2>
                                         <p class="text-white mb-0">Blog</p>
                                     </div>
                                     <div class="ms-auto">
@@ -125,7 +119,6 @@
                         </div>
                     </a>
                 </div>
-
                 <!-- Management Team Card -->
                 <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
                     <a href="{% url 'list_team' %}">
@@ -133,7 +126,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{team}}</h2>
+                                        <h2 class="mb-0 number-font">{{ team }}</h2>
                                         <p class="text-white mb-0">Management Team</p>
                                     </div>
                                     <div class="ms-auto">
@@ -144,7 +137,6 @@
                         </div>
                     </a>
                 </div>
-
                 <!-- Testimonial Card -->
                 <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
                     <a href="{% url 'list_testimonial' %}">
@@ -152,7 +144,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{testimonials}}</h2>
+                                        <h2 class="mb-0 number-font">{{ testimonials }}</h2>
                                         <p class="text-white mb-0">Testimonial</p>
                                     </div>
                                     <div class="ms-auto">
@@ -163,7 +155,6 @@
                         </div>
                     </a>
                 </div>
-
                 <!-- History Card -->
                 <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
                     <a href="{% url 'history_view' %}">
@@ -171,7 +162,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{history}}</h2>
+                                        <h2 class="mb-0 number-font">{{ history }}</h2>
                                         <p class="text-white mb-0">History</p>
                                     </div>
                                     <div class="ms-auto">
@@ -182,7 +173,6 @@
                         </div>
                     </a>
                 </div>
-
                 <!-- Contact Card -->
                 <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
                     <a href="{% url 'contact_view' %}">
@@ -190,7 +180,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{contact}}</h2>
+                                        <h2 class="mb-0 number-font">{{ contact }}</h2>
                                         <p class="text-white mb-0">Contact Us</p>
                                     </div>
                                     <div class="ms-auto">
@@ -201,7 +191,6 @@
                         </div>
                     </a>
                 </div>
-
                 <!-- Enquiry Card -->
                 <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
                     <a href="{% url 'enquiry_view' %}">
@@ -209,7 +198,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{enquiry}}</h2>
+                                        <h2 class="mb-0 number-font">{{ enquiry }}</h2>
                                         <p class="text-white mb-0">Enquiry</p>
                                     </div>
                                     <div class="ms-auto">
@@ -220,7 +209,6 @@
                         </div>
                     </a>
                 </div>
-
                 <!-- Product Card -->
                 <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
                     <a href="{% url 'product_view' %}">
@@ -228,7 +216,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{product}}</h2>
+                                        <h2 class="mb-0 number-font">{{ product }}</h2>
                                         <p class="text-white mb-0">Product</p>
                                     </div>
                                     <div class="ms-auto">
@@ -239,7 +227,6 @@
                         </div>
                     </a>
                 </div>
-
                 <!-- Career Card -->
                 <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
                     <a href="{% url 'career_view' %}">
@@ -247,7 +234,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{career}}</h2>
+                                        <h2 class="mb-0 number-font">{{ career }}</h2>
                                         <p class="text-white mb-0">Career</p>
                                     </div>
                                     <div class="ms-auto">
@@ -258,7 +245,6 @@
                         </div>
                     </a>
                 </div>
-
                 <!-- Application Card -->
                 <div class="col-sm-4 col-md-4 col-lg-4 col-xl-3 col-6">
                     <a href="{% url 'application_view' %}">
@@ -266,7 +252,7 @@
                             <div class="card-body">
                                 <div class="d-flex">
                                     <div class="text-white">
-                                        <h2 class="mb-0 number-font">{{application}}</h2>
+                                        <h2 class="mb-0 number-font">{{ application }}</h2>
                                         <p class="text-white mb-0">Application</p>
                                     </div>
                                     <div class="ms-auto">
@@ -284,5 +270,4 @@
     </div>
 </div>
 <!-- Main Content End -->
-
-{% include 'administration/layouts/footer.html' %}
+{% include "superadmin/layout/footer.html" %}
