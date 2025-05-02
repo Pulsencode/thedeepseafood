@@ -1,7 +1,6 @@
 """for search filter & status filter to avoid Code repetition"""
 
 from django.shortcuts import get_object_or_404, redirect
-
 from django.contrib import messages
 
 
@@ -26,16 +25,17 @@ class SearchAndStatusFilterMixin:
         return queryset
 
 
-"""for updating status in  list used to avoid code repetition"""
+"""for updating status  and delete item in  list  mainly used to avoid code repetition"""
 
 
-class StatusUpdateMixin:
+class StatusUpdateAndDeleteMixin:
+
     model = None
 
     def post(self, request, *args, **kwargs):
+        # Status Update
         status_id = request.POST.get("status_id")
         homepage_id = request.POST.get("homepage_id")
-
         status_value = request.POST.get("status", "")
         homepage_value = request.POST.get("homepage", "")
 
@@ -50,5 +50,12 @@ class StatusUpdateMixin:
             homepage_instance.homepage = homepage_value == "on"
             homepage_instance.save()
             messages.success(request, "Homepage Status updated successfully")
+
+        # Delete
+        delete_id = request.POST.get("delete_id")
+        if delete_id:
+            delete_instance = get_object_or_404(self.model, id=delete_id)
+            delete_instance.delete()
+            messages.success(request, "Deleted successfully")
 
         return redirect(self.request.path)
