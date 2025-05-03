@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMessage, send_mail
 from django.core.validators import validate_email
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.template.loader import render_to_string
 from django.views import View
@@ -78,14 +78,26 @@ def blog_details(request, slug):
 def product(request):
     search = request.GET.get("search")
 
-    if search:
-        all_products = Product.objects.filter(
-            status=True, name__icontains=search
-        ).order_by("sequence")
-    else:
-        all_products = Product.objects.filter(status=True).order_by("sequence")
+    products = Product.objects.filter(status=True)
 
-    context = {"page_title": "Seafood Products", "all_products": all_products}
+    if search:
+        products = products.filter(name__icontains=search)
+
+    products = products.order_by("sequence")
+
+    context = {
+        "page_title": "Seafood Products",
+        "all_products": products,
+    }
+
+    # Check if this is an AJAX request
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        html = render_to_string(
+            "public_interface/components/products/product_lists.html",
+            {"all_products": products},
+        )
+        return HttpResponse(html)
+
     return render(request, "public_interface/products.html", context)
 
 
