@@ -1,13 +1,10 @@
 {% include 'superadmin/layout/header.html' %}
 {% load static %}
-
 <!--app-content open-->
 <div class="main-content app-content mt-0">
     <div class="side-app">
-
         <!-- CONTAINER -->
         <div class="main-container container-fluid">
-
             <!-- PAGE-HEADER -->
             <div class="page-header">
                 <h1 class="page-title">Category</h1>
@@ -17,25 +14,28 @@
             </div>
             <!-- PAGE-HEADER END -->
             {% for message in messages %}
-            <div class="alert alert-primary alert-dismissible fade show m-0 text-center" id="success" role="alert" style="border-radius: 0;">
-                {{message}}
-                <button type="button" class="btn-close text-dark " data-bs-dismiss="alert" aria-label="Close">x</button>
-            </div>
-        {% endfor %}
+                <div class="alert alert-primary alert-dismissible fade show m-0 text-center"
+                     id="success"
+                     role="alert"
+                     style="border-radius: 0">
+                    {{ message }}
+                    <button type="button"
+                            class="btn-close text-dark "
+                            data-bs-dismiss="alert"
+                            aria-label="Close">x</button>
+                </div>
+            {% endfor %}
             <!-- ROW OPEN -->
             <div class="row">
                 <div class="col-xl-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">List Of All Category </h3>
+                            <h3 class="card-title">List Of All Category</h3>
                         </div>
                         <div class="card-body">
-                        <!--search filter-->
-                        {% include "search_filter.html"%}
-
+                            <!--search filter-->
+                            {% include "search_filter.html" %}
                             <div class="table-responsive" id="sub-table">
-
-                              
                                 <input type="hidden" id="page" name="page" value="{{ page }}">
                                 <table class="table border-top table-bordered mb-0 table-hover">
                                     <thead>
@@ -53,76 +53,80 @@
                                                     <td>{{ forloop.counter }}</td>
                                                     <td>{{ subcategory.name }}</td>
                                                     <td>
-                                                        <form method ="post">
+                                                        <form method="post">
                                                             {% csrf_token %}
-                                                            <input type="hidden" name="status" value="{{ subcategory.id }}">
-                                                            <div class="material-switch">
-                                                                <input id="someSwitchOptionSuccess{{ subcategory.id }}"
-                                                                       name="status"
+                                                            <input type="hidden" name="status_id" value="{{ subcategory.id }}">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input"
                                                                        type="checkbox"
-                                                                       {% if subcategory.status %}onclick="changesubcategorystatus({{ subcategory.id }},0)" checked{% endif %}
+                                                                       id="customSwitch1"
+                                                                       name="status"
+                                                                       {% if subcategory.status %}checked{% endif %}
                                                                        onchange="this.form.submit()">
                                                             </div>
                                                         </form>
                                                     </td>
                                                     <td>
                                                         <a class="btn btn-info btn-sm mb-1"
-                                                           href="{% url 'subcategory_update' subcategory .id %}"><i class="side-menu__icon fe fe-edit"></i></a>
-                                                        <button class="btn btn-danger btn-sm mb-1">
-                                                            <i class="side-menu__icon fe fe-trash"
-                                                               onclick="show_modal({{ subcategory.id }})"></i>
+                                                           href="{% url 'subcategory_update' subcategory.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                                                        <button type="button"
+                                                                class="btn btn-danger btn-sm mb-1"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#deleteModal{{ subcategory.id }}">
+                                                            <i class="side-menu__icon fe fe-trash"></i>
                                                         </button>
                                                     </td>
                                                 </tr>
-                                            {% endfor %}
-                                        {% else %}
-                                            <tr>
-                                                <td colspan='10'>
-                                                    <center>No record found</center>
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                    </tbody>
-                                </table>
-                                {% include "pagination.html" %}
-                                
-                            </div>
+                                                <div class="modal  fade"
+                                                     id="deleteModal{{ subcategory.id }}"
+                                                     tabindex="-1"
+                                                     role="dialog">
+                                                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                                         role="document">
+                                                        <div class="modal-content ">
+                                                            <div class="modal-body">
+                                                                <button aria-label="Close"
+                                                                        class="btn-close position-absolute"
+                                                                        data-bs-dismiss="modal">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
+                                                                <input type="hidden" id="hid">
+                                                                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
+                                                                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
+                                                                <form method="post">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="delete_id" value="{{ subcategory.id }}">
+                                                                    <button type="submit" class="btn btn-success btn-sm">Yes</button>
+                                                                    <button type="button"
+                                                                            class="btn btn-danger pd-x-25 btn-sm"
+                                                                            data-bs-dismiss="modal">Cancel</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan='10'>
+                                                <center>No record found</center>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            {% include "pagination.html" %}
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ROW CLOSED -->
-
-
-
         </div>
-        <!-- CONTAINER END -->
+        <!-- ROW CLOSED -->
     </div>
+    <!-- CONTAINER END -->
 </div>
-
-<!--app-content close-->
-
-
-<div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-md modal-dialog-centered text-center" role="document">
-        <div class="modal-content ">
-
-            <div class="modal-body">
-                <button aria-label="Close" class="btn-close position-absolute" data-bs-dismiss="modal"><span
-                        aria-hidden="true">&times;</span></button>
-                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                <input type="hidden" id="hid" >
-                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
-                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
-                <button class="btn btn-success" onclick="confirm_delete_subcategory()">Yes</button>
-                <button aria-label="Close" class="btn btn-danger pd-x-25" data-bs-dismiss="modal">Cancel</button>
-            </div>
-            <div class="modal-footer">
-
-
-            </div>
-        </div>
-    </div>
 </div>
-
 {% include 'superadmin/layout/footer.html' %}
