@@ -1,11 +1,10 @@
 {% extends "public_interface/layouts/public_base.html" %}
 {% block page_title %}
-  {{ page_title }}
+  {{ news_detail.title }}
 {% endblock page_title %}
 {% load static %}
 {% block content %}
   <div class="main-div pt-0 header-bg-transparent header-logo-white">
-    <!-- news-view -->
     <section id="news-view" class="pt-0 pb-0 view-items-page">
       <div class="banner-cover">
         <img class="img-primary"
@@ -23,7 +22,7 @@
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
                   <a href="{% url 'newsroom' %}">Room News</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
-                  <a>{{ data.title }}</a>
+                  <a>{{ news_detail.title }}</a>
                 </h5>
               </div>
             </div>
@@ -48,7 +47,7 @@
               </div>
               <div class="right-item">
                 <h4 class="font-lnterbold text-blue">RECENT NEWS</h4>
-                {% for event in news %}
+                {% for event in recent_news %}
                   <a href="{% url 'news_details' event.id %}" class="text-decoration-none">
                     <div class="item border-b wow fadeInUp wow_item news-item">
                       <div class="row align-items-center">
@@ -61,7 +60,7 @@
                                alt="{{ event.image_alt }}">
                         </div>
                         <div class="col-9 ps-0">
-                          <div class="tilte">{{ event.description|truncatechars:50 }}</div>
+                          <div class="tilte">{{ event.content|truncatechars:50 }}</div>
                         </div>
                       </div>
                     </div>
@@ -71,45 +70,44 @@
             </div>
             <div class="col-lg-8 offset-lg-1 col-md-9 order-1-zero-sm">
               <div class="view-section" data-aos="fade-up" data-aos-duration="2000">
-                <div class="title font-lnterbold">{{ data.title }}</div>
-                {% if data.date %}
+                <div class="title font-lnterbold">{{ news_detail.title }}</div>
+                {% if news_detail.date %}
                   <div class="div-col">
                     <i class="fa fa-clock-o" aria-hidden="true"></i>
-                    <span>{{ data.date|date:'d/m/Y' }}</span>
+                    <span>{{ news_detail.date|date:'d/m/Y' }}</span>
                   </div>
                 {% endif %}
-                {% if data.name %}
+                {% if news_detail.name %}
                   <div class="div-col">
                     <i class="fa fa-user-o" aria-hidden="true"></i>
-                    <span>{{ data.name }}</span>
+                    <span>{{ news_detail.name }}</span>
                   </div>
                 {% endif %}
-                {% if data.location %}
+                {% if news_detail.location %}
                   <div class="div-col">
                     <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    <span>{{ data.location }}</span>
+                    <span>{{ news_detail.location }}</span>
                   </div>
                 {% endif %}
                 <div class="text-center pb-20 mt-30">
                   <div class="slick_slider_1 slick-dots-white mb-0">
-                    {% for i in data.news_image.all %}
+                    {% for i in news_detail.news_image.all %}
                       <div class="item">
                         <img class="img-fluid news-img11"
                              width=""
                              height=""
                              src="{{ i.image.url }}"
-                             alt="{{ data.image_alt }}">
+                             alt="{{ news_detail.image_alt }}">
                       </div>
                     {% endfor %}
                   </div>
                 </div>
-                <h5>{{ data.description }}</h5>
+                <h5>{{ news_detail.content }}</h5>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <!-- /news-view -->
   </div>
 {% endblock content %}
