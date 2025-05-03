@@ -14,7 +14,7 @@
                class="logo"
                src="{% static 'public_interface/images/logo-white.png' %}">
         </a>
-        <div class="caption">{{years_elapsed}} Years of excellence in quality &amp; service.</div>
+        <div class="caption">{{ years_elapsed }} Years of excellence in quality &amp; service.</div>
         <div>
           <div class="title">THE DEEP SEAFOOD COMPANY</div>
           <div class="address">United Arab Emirates</div>
@@ -106,7 +106,7 @@
                   <li>
                     <a href="{% url 'newsroom' %}">News Room</a>
                   </li>
-                  {% if blog %}
+                  {% if all_blogs %}
                     <li>
                       <a href="{% url 'blog' %}">Blogs</a>
                     </li>

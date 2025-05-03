@@ -30,7 +30,7 @@
           <div class="row ">
             {% for blog in all_blogs %}
               <div class="col-lg-4 ">
-                <div class="view-section text-blue"
+                <div class="view-section text-blue {% if forloop.counter > 3 %}mt-30{% endif %}"
                      data-aos="fade-up"
                      data-aos-duration="2000">
                   <div class="title font-lnterbold dfg">{{ blog.title }}</div>
@@ -55,7 +55,7 @@
                       {% endfor %}
                     </div>
                   </div>
-                  <div class="dfg mt-1">{{ blog.description|safe }}</div>
+                  <div class="dfg mt-1">{{ blog.content|safe }}</div>
                   <a class="btn bg-blue text-white rounded-25 btn-sm mt-15 btn-icon"
                      href="{% url 'blog_details' blog.slug %}">
                     <span>Read More</span>
