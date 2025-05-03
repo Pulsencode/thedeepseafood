@@ -74,7 +74,7 @@
                   </li>
                 </ul>
                 <div class="search-form position-top-right">
-                  <form method="get">
+                  <form method="get" id="search_form">
                     <input type="hidden" id="prodtype">
                     <input class="form-control"
                            name="search"
@@ -82,17 +82,11 @@
                            type="search"
                            placeholder="Search..."
                            maxlength="200">
-                    {% comment %}
-                    <button type="button"
-                            {% endcomment %}
-                            button
-                            type="submit"
-                            class="btn bg-blue text-white"
-                            onclick="searchproduct()">Search</button>
+                    <button type="submit" class="btn bg-blue text-white">Search</button>
                   </form>
                 </div>
               </div>
-              <div class="tab-content pt-30">
+              <div class="tab-content pt-30" i="">
                 <div class="tab-pane fade show active">
                   <div class="row card-white-image APPENDPRO"
                        data-aos="fade-up"
@@ -106,4 +100,23 @@
       </div>
     </section>
   </div>
+<script>
+  $(document).ready(function(){
+    $("#search_form").submit(function(event){
+      event.preventDefault(); // Prevent default form submission
+      $.ajax({
+        url: "{{ request.path }}",
+        type: "GET",
+        data: $(this).serialize(),
+        success: function(response) {
+          // Update the product list with the new data
+          $("#prodlist").html(response);
+        },
+        error: function(xhr, status, error) {
+          console.error("Search failed:", error);
+        }
+      });
+    });
+  });
+</script>
 {% endblock content %}
