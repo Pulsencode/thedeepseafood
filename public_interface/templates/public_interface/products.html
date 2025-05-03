@@ -1,4 +1,7 @@
 {% extends "public_interface/layouts/public_base.html" %}
+{% block page_title %}
+  {{ page_title }}
+{% endblock page_title %}
 {% load static %}
 {% block content %}
   <div class="main-div pt-0 header-bg-transparent header-logo-white">
@@ -79,8 +82,11 @@
                            type="search"
                            placeholder="Search..."
                            maxlength="200">
-                    {% comment %} <button type="button" {% endcomment %}
-                       <button type="submit"
+                    {% comment %}
+                    <button type="button"
+                            {% endcomment %}
+                            button
+                            type="submit"
                             class="btn bg-blue text-white"
                             onclick="searchproduct()">Search</button>
                   </form>
