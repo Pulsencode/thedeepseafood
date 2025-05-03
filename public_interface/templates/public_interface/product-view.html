@@ -1,10 +1,10 @@
 {% extends "public_interface/layouts/public_base.html" %}
+{% block page_title %}
+  {{ product.name }}
+{% endblock page_title %}
 {% load static %}
 {% load custom_filters %}
 {% block content %}
-  <!-- seo end -->
-  <div class="pre_loader pre-loader"></div>
-  <!-- pre-loader -->
   <div class="main-div pt-0 header-bg-transparent header-logo-white enquiry-btn-bg-transparent">
     <!-- product-view -->
     <section id="product-view" class="pt-0">

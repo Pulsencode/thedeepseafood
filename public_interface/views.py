@@ -41,7 +41,7 @@ def home(request):
         display_products = homepage_products
 
     context = {
-        "page_title": "Home",
+        "page_title": "Wholesale Seafood Export & Import Supplier in UAE, Middle East",
         "all_certifications": Certification.objects.filter(status=True),
         "all_brands": Brand.objects.filter(status=True).order_by("sequence"),
         "all_products": homepage_products,
@@ -53,7 +53,7 @@ def home(request):
 
 def about(request):
     context = {
-        "page_title": "About Us",
+        "page_title": "About The Deep Seafood Company | Leading Seafood Supplier in UAE",
         # "about": AboutUs.objects.filter(status=True),
         "management_team": ManagementTeam.objects.filter(status=True),
         "history": History.objects.all(),
@@ -62,7 +62,9 @@ def about(request):
 
 
 def blog(request):
-    context = {"all_blogs": Blog.objects.filter(status=True)}
+    context = {
+        "page_title": "Seafood Industry Insights & Tips",
+    }
     return render(request, "public_interface/blog.html", context)
 
 
@@ -83,7 +85,7 @@ def product(request):
     else:
         all_products = Product.objects.filter(status=True).order_by("sequence")
 
-    context = {"page_title": "Products", "all_products": all_products}
+    context = {"page_title": "Seafood Products", "all_products": all_products}
     return render(request, "public_interface/products.html", context)
 
 
