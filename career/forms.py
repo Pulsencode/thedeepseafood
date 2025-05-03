@@ -50,7 +50,7 @@ class ApplicationDetailsForm(forms.ModelForm):
         for fname, field in self.fields.items():
             widget = field.widget
             if isinstance(widget, forms.FileInput):
-                widget.attrs.update({"class": "form-check-input"})
+                widget.attrs.update({"class": ""})
             else:
                 widget.attrs.update({"class": "form-control"})
 

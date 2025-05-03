@@ -908,7 +908,7 @@ body:not(.mobile_device) .show-mobile {
 .form-default .form-body .attach-label-btn .attach-label {
    font-family: airbnb_cereal_appmedium;
    position: absolute;
-   top: 4px;
+   top: -8px;
    z-index: 5;
    background-color: #3b76a7;
    color: #fff;
@@ -917,16 +917,16 @@ body:not(.mobile_device) .show-mobile {
    height: 34px;
    line-height: 34px;
    font-size: 12px;
-   left: 11px;
+   left: -6px;
    border-radius: 5px;
 }
 
 .form-default .form-body .attach-label-btn input[type="file"] {
    font-size: 11px;
    position: relative;
-   bottom: 7px;
+   bottom: 1px;
    z-index: 0;
-   margin-left: 41px;
+   left: 41px;
 }
 
 .form-default .form-body .attach-label-btn img {
