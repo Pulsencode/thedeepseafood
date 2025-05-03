@@ -1,9 +1,7 @@
 {% load custom_filters %}
 <div class="div-col">
     <div class="data">
-        {% for sub_category in product.sub_categories|split_by_comma %}
-            <button class="sub-d-btn">{{ sub_category }}</button>
-        {% endfor %}
+        <button class="sub-d-btn text-uppercase">{{ product.sub_categories }}</button>
     </div>
 </div>
 {% if product.product_code %}
