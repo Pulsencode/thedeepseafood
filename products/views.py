@@ -24,7 +24,7 @@ from products.forms import (
 )
 from products.models import Category, Product, ProductDetails, Subcategory
 from public_interface.utils import is_ajax, render_helper
-from company.mixin import SearchAndStatusFilterMixin, StatusUpdateMixin
+from company.mixin import SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin
 
 
 class AdminPermissionMixin(UserPassesTestMixin):
@@ -32,7 +32,9 @@ class AdminPermissionMixin(UserPassesTestMixin):
         return self.request.user.username == "DeepSeaAdmin"
 
 
-class CategoryListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class CategoryListView(
+    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
+):
     model = Category
     paginate_by = 10
     context_object_name = "all_category"
@@ -237,7 +239,7 @@ class CategoryUpdateView(UpdateView):
 
 
 # deepsea product
-class ProductListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class ProductListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
     model = Product
     context_object_name = "all_products"
     paginated_by = 10
@@ -298,10 +300,13 @@ class ProductUpdateView(UpdateView):
 
 
 # deepsea product details
-class ProductDetailsListView(ListView):
+class ProductDetailsListView(
+    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
+):
     model = ProductDetails
     context_object_name = "products_details"
     paginate_by = 10
+    search_field = "product__name"
     template_name = "superadmin/deepsea-product-details/product_view.html"
 
 
@@ -604,13 +609,13 @@ class BrandLoadCategory(View):
         return JsonResponse({"error": "Invalid request"}, status=400)
 
 
-class SubcategoryListView(SearchAndStatusFilterMixin, StatusUpdateMixin, ListView):
+class SubcategoryListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
     model = Subcategory
-    context_object_name = "all_subcategory"
     paginate_by = 10
     ordering = ["-id"]
+    context_object_name = "all_subcategory"
     template_name = "superadmin/subcategory/Subcategory_view.html"
-    status_field = "name"
+    search_field = "name"
 
 
 class SubcategoryCreateView(TemplateView):

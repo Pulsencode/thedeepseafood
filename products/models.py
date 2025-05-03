@@ -53,7 +53,18 @@ class Product(StatusTimestampBase, ImageBase):
         return self.name
 
 
-class ProductDetails(models.Model):
+class Subcategory(StatusTimestampBase):
+    name = models.CharField(max_length=100, null=True)
+
+    class Meta:
+        verbose_name = "Subcategory"
+        verbose_name_plural = "Subcategories"
+
+    def __str__(self):
+        return str(self.name)
+
+
+class ProductDetails(StatusTimestampBase):
     product = models.ForeignKey(
         Product, related_name="product_details", null=True, on_delete=models.CASCADE
     )
@@ -64,7 +75,7 @@ class ProductDetails(models.Model):
         related_name="product_details",
         on_delete=models.CASCADE,
     )
-    sub_categories = models.CharField(max_length=100, null=True)
+    sub_categories = models.ForeignKey(Subcategory, on_delete=models.CASCADE, null=True)
     price = models.IntegerField(blank=True, null=True)
     product_code = models.CharField(max_length=100, blank=True, unique=True)
     net_weight = models.CharField(max_length=100, blank=True)
@@ -97,14 +108,3 @@ class ProductDetails(models.Model):
     class Meta:
         verbose_name = "Product Detail"
         verbose_name_plural = "Product Details"
-
-
-class Subcategory(StatusTimestampBase):
-    name = models.ForeignKey(Category, null=False, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = "Subcategory"
-        verbose_name_plural = "Subcategories"
-
-    def __str__(self):
-        return str(self.name)
