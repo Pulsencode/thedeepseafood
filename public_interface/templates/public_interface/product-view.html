@@ -79,11 +79,7 @@
                   {% for category in categories %}
                     {% if product.product.id|product_belongs_to_category:category.id %}
                       <li class="nav-item">
-                        <a data-id="all"
-                           class="nav-link category-link active"
-                           data-category-id="{{ category.id }}"
-                           data-pid="{{ product.id }}"
-                           onclick="switchprodcategory(this)">{{ category.name }}</a>
+                        <a data-id="all" class="nav-link category-link active">{{ category.name }}</a>
                       </li>
                     {% endif %}
                   {% endfor %}

@@ -256,39 +256,6 @@ function getprodu(value, element) {
   });
 }
 
-//switch product category in product detail page
-
-function switchprodcategory(element) {
-  $("a.category-link").removeClass("active");
-  $(element).addClass("active");
-
-  var cid = $(element).data("category-id");
-  var pid = $(element).data("pid");
-
-  $.ajax({
-    type: "GET",
-    url: "/product_details_switch/",
-    data: {
-      cid: cid,
-      pid: pid,
-    },
-
-    success: function (data) {
-      if (data.status) {
-        $("#prod").html(data.template);
-      } else {
-        $("#prod").html(data.template);
-        // Handle errors or display a message
-        console.error("Error loading product content.");
-      }
-    },
-    error: function (xhr, status, error) {
-      // Handle errors or display a message
-      console.error("Error loading product content:", status, error);
-    },
-  });
-}
-
 //product search
 
 function searchproduct() {
