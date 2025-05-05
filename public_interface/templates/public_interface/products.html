@@ -49,30 +49,7 @@
           <div class="row">
             <div class="col-12 pt-25">
               <div class="position-relative">
-                <ul class="nav nav-tabs nav-tabs-bg border-0  prod_tab_sc"
-                    data-aos="fade-up"
-                    data-aos-duration="1000">
-                  <li class="nav-item">
-                    <a data-id="all"
-                       class="nav-link {% if type is None %}active{% endif %}"
-                       onclick="getprodu('All',this)">ALL</a>
-                  </li>
-                  <li class="nav-item">
-                    <a data-id="all"
-                       class="nav-link {% if type == 'Local Catch' %}active{% endif %}"
-                       onclick="getprodu('Local Catch',this)">Local Catch</a>
-                  </li>
-                  <li class="nav-item">
-                    <a data-id="all"
-                       class="nav-link {% if type == 'Imported' %}active{% endif %}"
-                       onclick="getprodu('Imported',this)">Imported</a>
-                  </li>
-                  <li class="nav-item">
-                    <a data-id="all"
-                       class="nav-link {% if type == 'Value Added' %}active{% endif %}"
-                       onclick="getprodu('Value Added',this)">Value Added</a>
-                  </li>
-                </ul>
+                {% include "public_interface/components/products/product_filter.html" %}
                 <div class="search-form position-top-right">
                   <form method="get" id="search_form">
                     <input type="hidden" id="prodtype">
@@ -100,7 +77,7 @@
       </div>
     </section>
   </div>
-<script>
+  <script>
   $(document).ready(function(){
     $("#search_form").submit(function(event){
       event.preventDefault(); // Prevent default form submission
@@ -118,5 +95,5 @@
       });
     });
   });
-</script>
+  </script>
 {% endblock content %}

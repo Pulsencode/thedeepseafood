@@ -1,0 +1,28 @@
+<ul class="nav nav-tabs nav-tabs-bg border-0 prod_tab_sc justify-content-center {{ class }}"
+    data-aos="fade-up"
+    data-aos-duration="1000">
+    {% if request.resolver_match.url_name == 'product_details' %}
+        <div class="d-none"></div>
+    {% else %}
+        <li class="nav-item">
+            <a data-id="all"
+               class="nav-link {% if type is None %}active{% endif %}"
+               onclick="getprodu('All',this)">ALL</a>
+        </li>
+    {% endif %}
+    <li class="nav-item">
+        <a data-id="all"
+           class="nav-link {% if type == 'Local Catch' %}active{% endif %}"
+           onclick="getprodu('Local Catch',this)">Local Catch</a>
+    </li>
+    <li class="nav-item">
+        <a data-id="all"
+           class="nav-link {% if type == 'Imported' %}active{% endif %}"
+           onclick="getprodu('Imported',this)">Imported</a>
+    </li>
+    <li class="nav-item">
+        <a data-id="all"
+           class="nav-link {% if type == 'Value Added' %}active{% endif %}"
+           onclick="getprodu('Value Added',this)">Value Added</a>
+    </li>
+</ul>
