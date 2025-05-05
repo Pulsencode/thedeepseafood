@@ -158,24 +158,60 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="responseModal" tabindex="-1">
+        <div class="modal-dialog position-absolute top-0 end-0 m-3 rounded-5 shadow-lg">
+            <div class="modal-content">
+                <div class="modal-header p-2">
+                    <h6 class="modal-title"></h6>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-2"></div>
+            </div>
+        </div>
+    </div>
     <script>
         $(document).ready(function () {
-            $("#contact_form").submit(function (event) {
-                event.preventDefault();  
-    
-                $.ajax({
-                    type: "POST",
-                    url: "{{ request.path }}",  
-                    data: $(this).serialize(),
-                    success: function (response) {
-                        alert("Enquiry Submitted Successfully");                        
-                        $("#contact_form")[0].reset();
-                    },
-                    error: function (xhr) {
-                        let errorMessage = JSON.parse(xhr.responseText).message || "An error occurred";
-                        alert(errorMessage);
-                    }
-                });
+          const responseModal = new bootstrap.Modal(document.getElementById('responseModal'));
+      
+          $("#contact_form").submit(function (event) {
+            event.preventDefault();
+            const $form = $(this);
+      
+            $.ajax({
+              type: "POST",
+              url: $form.attr('action'),
+              data: $form.serialize(),
+              success: function (response) {
+                showModal("Success", "Enquiry submitted successfully!", "success");
+                $form[0].reset();
+              },
+              error: function (xhr) {
+                const errorMessage = JSON.parse(xhr.responseText).message || "An error occurred.";
+                showModal("Error", errorMessage, "danger");
+              }
             });
+          });
+      
+          function showModal(title, message, type) {
+            const modal = $('#responseModal');
+            const alertHTML = `${message}`;
+      
+            modal.find('.modal-header')
+              .removeClass('bg-success bg-danger text-white')
+              .addClass(type === 'success' ? 'bg-success text-white' : 'bg-danger text-white');
+      
+            modal.find('.modal-title').text(title);
+            modal.find('.modal-body').html(alertHTML);
+      
+            responseModal.show();
+      
+            setTimeout(() => {
+              responseModal.hide();
+            }, 5000);
+          }
         });
     </script>
