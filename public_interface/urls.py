@@ -13,6 +13,7 @@ urlpatterns = [
     path("blog", views.blog, name="blog"),
     path("blogs/<slug:slug>/", views.blog_details, name="blog_details"),
     path("career", views.career, name="career"),
+    path("job_application/", views.job_application, name="job_email"),
     path("product", views.product, name="product"),
     path(
         "product-details/<slug:slug>/",
@@ -20,6 +21,7 @@ urlpatterns = [
         name="product_details",
     ),
     path("contact", views.contact, name="contact"),
+    path("enquiry/", views.enquiry, name="enquiry"),
     path("news-room", views.news_room, name="newsroom"),
     path("news-details/<int:pk>/", views.news_detail, name="news_details"),
     path("brands/oceano", views.brand, name="brands"),
@@ -85,8 +87,7 @@ urlpatterns = [
         views.PromotionView.as_view(),
         name="promotion_details",
     ),
-    path("send_email/", views.SendEmailView.as_view(), name="send_email"),
+    # path("send_email/", views.SendEmailView.as_view(), name="send_email"),
     # path("job_email/", views.CareerEmailView.as_view(), name="job_email"),
-    path("job_email/", views.job_email, name="job_email"),
     path("enquiry_email/", views.ProductEnquiryView.as_view(), name="enquiry_email"),
 ]

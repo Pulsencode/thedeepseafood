@@ -9,8 +9,8 @@
                 <div class="card mt-30" data-aos="fade-up" data-aos-duration="1000">
                     <form method="post"
                           class="form"
-                          action="{% url 'send_email' %}"
-                          id="contactform">
+                          action="{% url 'enquiry' %}"
+                          id="contact_form">
                         {% csrf_token %}
                         <div class="body">
                             <div class="row">
@@ -24,7 +24,7 @@
                                 </div>
                                 <div class="col-12">
                                     <input class="form-control text-blue"
-                                           name="phone"
+                                           name="phone_number"
                                            type="text"
                                            maxlength="15"
                                            placeholder="Phone Number"
@@ -158,3 +158,24 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            $("#contact_form").submit(function (event) {
+                event.preventDefault();  
+    
+                $.ajax({
+                    type: "POST",
+                    url: "{{ request.path }}",  
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        alert("Enquiry Submitted Successfully");                        
+                        $("#contact_form")[0].reset();
+                    },
+                    error: function (xhr) {
+                        let errorMessage = JSON.parse(xhr.responseText).message || "An error occurred";
+                        alert(errorMessage);
+                    }
+                });
+            });
+        });
+    </script>
