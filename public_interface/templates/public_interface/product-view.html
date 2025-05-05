@@ -24,8 +24,7 @@
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
                   <a href="{% url 'product' %}">Product</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
-                  {% comment %} ----------------- NOTE: product type is changed to choices in model ----------------- {% endcomment %}
-                  <a href="{% url 'product' %}?type={{ product.type }}">{{ product.type }}</a>
+                  <a href="{% url 'product' %}?type={{ product.product.type }}">{{ product.product.get_type_display }}</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
                   <a>{{ product.name }}</a>
                 </h5>
