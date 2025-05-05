@@ -13,7 +13,6 @@
                 </div> -->
             </div>
             <!-- PAGE-HEADER END -->
-          
             <!-- ROW OPEN -->
             <div class="row">
                 <div class="col-xl-12">
@@ -23,35 +22,25 @@
                         </div>
                         <div class="card-body">
                             <!--search_filter-->
-                            {% include "search_filter.html"%}
+                            {% include "search_filter.html" %}
                             {% comment %} <form>
                                 <div class="row">
                                     <div class="form-group col-lg-2 col-12">
                                         <label>Search</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               placeholder="Keyword Search"
-                                               id="search"> {% endcomment %}
-                                    </div>
-                                    {% comment %} <div class="form-group col-lg-2 col-12">
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Keyword Search"
+                                   id="search"> {% endcomment %}
+                        </div>
+                        {% comment %} <div class="form-group col-lg-2 col-12">
                                         <label>Start Date</label>
-                                        <input type="date"
-                                               class="form-control"
-                                               placeholder=""
-                                               id="start_date"
-                                               name="start_date">
+                                        <input type="date" class="form-control" placeholder="" id="start_date" name="start_date">
                                     </div>
                                     <div class="form-group col-lg-2 col-12">
                                         <label>End Date</label>
-                                        <input type="date"
-                                               class="form-control"
-                                               placeholder=""
-                                               id="end_date"
-                                               name="end_date">
-                                    </div> {% endcomment %}
-                                    {% comment %} <div class="form-group col-lg-3 col-12"
-                                         style="display: flex;
-                                                align-items: end">
+                                        <input type="date" class="form-control" placeholder="" id="end_date" name="end_date">
+                        </div> {% endcomment %}
+                        {% comment %} <div class="form-group col-lg-3 col-12" style="display: flex; align-items: end">
                                         <a class="btn btn-primary mr-1 mt-2" id="application_search">Search</a>
                                         <a class="btn btn-default  mt-2" href="{% url 'application_view' %}">Reset</a>
                                     </div>
@@ -59,143 +48,138 @@
                                         <span id ="message001" style="color:green;display:none"><b>Status Updated Successfully</b></span>
                                     </div>
                                 </div>
-                            </form> {% endcomment %}
-                            <div class="table-responsive" id="application-table">
-                                {% load static %}
-                                <table class="table border-top table-bordered mb-0 table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Sl No</th>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>DOB</th>
-                                            <th>Email</th>
-                                            <th>Mobile Number</th>
-                                            <th>Job Applied</th>
-                                            <th>Resume</th>
-                                            <th>Cover</th>
-                                            <th>Message</th>
-                                            <th>Linkedin</th>
-                                            <th>portfolio</th>
-                                            <th>Notice Period</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% if all_applications %}
-                                            {% for application in all_applications %}
-                                                <tr>
-                                                    <td>{{ forloop.counter }}</td>
-                                                    <td>{{ application.first_name }}</td>
-                                                    <td>{{ application.last_name }}</td>
-                                                    <td>{{ application.date|date:"d/m/Y" }}</td>
-                                                    <td>{{ application.email }}</td>
-                                                    <td>{{ application.mobile_no }}</td>
-                                                    <td>
-                                                        {% if application.job %}{{ application.job }}{% endif %}
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ application.attachment.url }}"
+                        </form> {% endcomment %}
+                        <div class="table-responsive" id="application-table">
+                            {% load static %}
+                            <table class="table border-top table-bordered mb-0 table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Sl No</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>DOB</th>
+                                        <th>Email</th>
+                                        <th>Mobile Number</th>
+                                        <th>Job Applied</th>
+                                        <th>Resume</th>
+                                        <th>Cover</th>
+                                        <th>Message</th>
+                                        <th>Linkedin</th>
+                                        <th>portfolio</th>
+                                        <th>Notice Period</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if all_applications %}
+                                        {% for application in all_applications %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ application.first_name }}</td>
+                                                <td>{{ application.last_name }}</td>
+                                                <td>{{ application.date_of_birth|date:"d/m/Y" }}</td>
+                                                <td>{{ application.email }}</td>
+                                                <td>{{ application.phone_number }}</td>
+                                                <td>
+                                                    {% if application.vacancy %}{{ application.vacancy }}{% endif %}
+                                                </td>
+                                                <td>
+                                                    <a href="{{ application.upload_cv.url }}"
+                                                       target="_blank"
+                                                       style="color:rgb(255, 60, 0)">View</a>
+                                                </td>
+                                                <td>
+                                                    {% if application.cover_letter %}
+                                                        <a href="{{ application.cover_letter }}"
                                                            target="_blank"
                                                            style="color:rgb(255, 60, 0)">View</a>
-                                                    </td>
-                                                    <td>
-                                                        {% if application.cover %}
-                                                            <a href="{{ application.cover.url }}"
-                                                               target="_blank"
-                                                               style="color:rgb(255, 60, 0)">View</a>
-                                                        {% endif %}
-                                                    </td>
-                                                    <td>
-                                                        <a href="javascript:void(0)"
-                                                           class="btn btn-success btn-sm mb-1"
-                                                           data-bs-toggle="modal"
-                                                           data-bs-target="#over{{ application.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
-                                                    </td>
-                                                    <td>
-                                                        {% if d.linkedin %}{{ application.linkedin }}{% endif %}
-                                                    </td>
-                                                    <td>
-                                                        {% if d.portfolio %}{{ application.portfolio }}{% endif %}
-                                                    </td>
-                                                    <td>
-                                                        {% if d.notice %}{{ application.notice }}{% endif %}
-                                                    </td>
-                                                    <td>
-                                                        <button type="button"
-                                                        class="btn btn-danger btn-sm mb-1"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#deleteModal{{ application.id }}">
-                                                    <i class="side-menu__icon fe fe-trash"></i>
-                                                </button>
-                                                    </td>
-                                                </tr>
-                                                <!-- modal -->
-                                                <div class="modal  fade"
-                                                     id="over{{ application.id }}"
-                                                     tabindex="-1"
-                                                     role="dialog">
-                                                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-body">
-                                                                <p class="text-center">{{ application.message }}</p>
-                                                            </div>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <a href="javascript:void(0)"
+                                                       class="btn btn-success btn-sm mb-1"
+                                                       data-bs-toggle="modal"
+                                                       data-bs-target="#over{{ application.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                                                </td>
+                                                <td>
+                                                    {% if application.linkedin_url %}{{ application.linkedin_url }}{% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if application.portfolio_url %}{{ application.portfolio_url }}{% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if application.get_notice_period_display %}{{ application.get_notice_period_display }}{% endif %}
+                                                </td>
+                                                <td>
+                                                    <button type="button"
+                                                            class="btn btn-danger btn-sm mb-1"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal{{ application.id }}">
+                                                        <i class="side-menu__icon fe fe-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <!-- modal -->
+                                            <div class="modal  fade"
+                                                 id="over{{ application.id }}"
+                                                 tabindex="-1"
+                                                 role="dialog">
+                                                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <p class="text-center">{{ application.message }}</p>
                                                         </div>
                                                     </div>
                                                 </div>
-
-
-
-
-                                                  <!--modal-->
-                                                  <div class="modal fade"
-                                                  id="deleteModal{{ application.id }}"
-                                                  tabindex="-1"
-                                                  role="dialog">
-                                                 <div class="modal-dialog modal-md modal-dialog-centered text-center"
-                                                      role="document">
-                                                     <div class="modal-content ">
-                                                         <div class="modal-body">
-                                                             {% comment %} <button aria-label="Close" class="btn-close position-absolute" data-bs-dismiss="modal">
+                                            </div>
+                                            <!--modal-->
+                                            <div class="modal fade"
+                                                 id="deleteModal{{ application.id }}"
+                                                 tabindex="-1"
+                                                 role="dialog">
+                                                <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                                     role="document">
+                                                    <div class="modal-content ">
+                                                        <div class="modal-body">
+                                                            {% comment %} <button aria-label="Close" class="btn-close position-absolute" data-bs-dismiss="modal">
                                                                 <i class="fa fa-times" aria-hidden="true"></i>
-                                                             </button> {% endcomment %}
-                                                             <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                                                             <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
-                                                             <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
-                                                             <form method="post">
-                                                                 {% csrf_token %}
-                                                                 <input type="hidden" name="delete_id" value="{{ application.id }}">
-                                                                 <button type="submit" class="btn btn-success btn-sm">Yes</button>
-                                                                 <button type="button"
-                                                                         class="btn btn-danger pd-x-25 btn-sm"
-                                                                         data-bs-dismiss="modal">Cancel</button>
-                                                             </form>
-                                                         </div>
-                                                         <div class="modal-footer"></div>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                            {% endfor %}
-                                        {% else %}
-                                            <tr>
-                                                <td colspan='10'>
-                                                    <center>No record found</center>
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                    </tbody>
-                                </table>
-                                {% include "pagination.html" %}
-                            </div>
+                                                            </button> {% endcomment %}
+                                                            <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
+                                                            <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
+                                                            <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
+                                                            <form method="post">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" name="delete_id" value="{{ application.id }}">
+                                                                <button type="submit" class="btn btn-success btn-sm">Yes</button>
+                                                                <button type="button"
+                                                                        class="btn btn-danger pd-x-25 btn-sm"
+                                                                        data-bs-dismiss="modal">Cancel</button>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan='10'>
+                                                <center>No record found</center>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            {% include "pagination.html" %}
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ROW CLOSED -->
         </div>
-        <!-- CONTAINER END -->
+        <!-- ROW CLOSED -->
     </div>
+    <!-- CONTAINER END -->
+</div>
 </div>
 <!--app-content close-->
-
 {% include 'superadmin/layout/footer.html' %}

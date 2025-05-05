@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
 from django.core.exceptions import ValidationError
-from django.core.mail import EmailMessage, send_mail
+from django.core.mail import send_mail
+from django.conf import settings
 from django.core.validators import validate_email
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
@@ -136,6 +137,47 @@ def career(request):
         "form": ApplicationDetailsForm(),
     }
     return render(request, "public_interface/career.html", context)
+
+
+def job_email(request):
+
+    if request.method == "POST":
+        job_id = request.POST.get("job_id")
+        job = get_object_or_404(VacancyDetails, id=job_id)
+
+        form = ApplicationDetailsForm(request.POST, request.FILES)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.vacancy = job
+
+            application.save()
+            # Build the absolute URL for the uploaded CV
+            cv_url = request.build_absolute_uri(application.upload_cv.url)
+
+            # Send email to admin
+            subject = "New Job Submitted"
+            message = (
+                f"A new job application has been submitted.\n\n"
+                f"Job Applied: {job.title}\n"
+                f"Applicant Name: {application.first_name}\n"
+                f"Applicant CV: {cv_url}"
+            )
+            admin_email = "info@thedeepseafood.com"  # host email
+            send_mail(
+                subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                [admin_email],
+                fail_silently=False,
+            )
+
+            messages.success(request, "Application  Submitted successfully ")
+            return redirect("career")
+        else:
+            for error_list in form.errors.values():
+                for errors in error_list:
+                    messages.success(request, errors)
+            return redirect("career")
 
 
 def news_room(request):
@@ -861,74 +903,74 @@ class ProductEnquiryView(View):
         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
-class CareerEmailView(View):
-    def post(self, request, *args, **kwargs):
-        honey = request.POST.get("honey")
-        if honey:
-            messages.error(request, "Error: Form submission not allowed.")
-            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+# class CareerEmailView(View):
+#     def post(self, request, *args, **kwargs):
+#         honey = request.POST.get("honey")
+#         if honey:
+#             messages.error(request, "Error: Form submission not allowed.")
+#             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
-        # Create mutable copies
-        adjusted_post = request.POST.copy()
-        adjusted_files = request.FILES.copy()
+#         # Create mutable copies
+#         adjusted_post = request.POST.copy()
+#         adjusted_files = request.FILES.copy()
 
-        # Map field names to match form
-        field_mappings = {
-            "applied": "job",
-            "phone": "phone_number",
-            "linkedin": "linkedin_url",
-            "portfolio": "portfolio_url",
-            "date": "date_of_birth",
-            "attachment": "upload_cv",
-            "cover": "cover_letter",
-        }
+#         # Map field names to match form
+#         field_mappings = {
+#             "applied": "job",
+#             "phone": "phone_number",
+#             "linkedin": "linkedin_url",
+#             "portfolio": "portfolio_url",
+#             "date": "date_of_birth",
+#             "attachment": "upload_cv",
+#             "cover": "cover_letter",
+#         }
 
-        for old_name, new_name in field_mappings.items():
-            if old_name in adjusted_post:
-                adjusted_post[new_name] = adjusted_post[old_name]
-            if old_name in adjusted_files:
-                adjusted_files[new_name] = adjusted_files[old_name]
+#         for old_name, new_name in field_mappings.items():
+#             if old_name in adjusted_post:
+#                 adjusted_post[new_name] = adjusted_post[old_name]
+#             if old_name in adjusted_files:
+#                 adjusted_files[new_name] = adjusted_files[old_name]
 
-        form = ApplicationDetailsForm(adjusted_post, adjusted_files)
+#         form = ApplicationDetailsForm(adjusted_post, adjusted_files)
 
-        if form.is_valid():
-            application = form.save(commit=False)
+#         if form.is_valid():
+#             application = form.save(commit=False)
 
-            # Prepare email
-            email = EmailMessage(
-                "New Form Submission-Deep Seafood Company Website",
-                self._build_email_body(form.cleaned_data),
-                "deepseafood.connect@gmail.com",
-                ["info@thedeepseafood.com"],
-            )
+#             # Prepare email
+#             email = EmailMessage(
+#                 "New Form Submission-Deep Seafood Company Website",
+#                 self._build_email_body(form.cleaned_data),
+#                 "deepseafood.connect@gmail.com",
+#                 ["info@thedeepseafood.com"],
+#             )
 
-            self._attach_files(email, form)
-            email.send()
-            application.save()
+#             self._attach_files(email, form)
+#             email.send()
+#             application.save()
 
-            messages.success(request, "Your Request Shared Successfully")
-        else:
-            self._handle_form_errors(request, form)
+#             messages.success(request, "Your Request Shared Successfully")
+#         else:
+#             self._handle_form_errors(request, form)
 
-        return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+#         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
-    def _build_email_body(self, cleaned_data):
-        return f"""First Name: {cleaned_data['first_name']}
-                Last Name: {cleaned_data['last_name']}
-                Date Of Birth: {cleaned_data['date_of_birth']}
-                Mobile: {cleaned_data['phone_number']}
-                Email: {cleaned_data['email']}
-                Notice Period: {cleaned_data['notice_period']}
-                Portfolio: {cleaned_data['portfolio_url']}
-                LinkedIn: {cleaned_data['linkedin_url']}
-                Message: {cleaned_data.get('message', '')}"""
+#     def _build_email_body(self, cleaned_data):
+#         return f"""First Name: {cleaned_data['first_name']}
+#                 Last Name: {cleaned_data['last_name']}
+#                 Date Of Birth: {cleaned_data['date_of_birth']}
+#                 Mobile: {cleaned_data['phone_number']}
+#                 Email: {cleaned_data['email']}
+#                 Notice Period: {cleaned_data['notice_period']}
+#                 Portfolio: {cleaned_data['portfolio_url']}
+#                 LinkedIn: {cleaned_data['linkedin_url']}
+#                 Message: {cleaned_data.get('message', '')}"""
 
-    def _attach_files(self, email, form):
-        for field in ["upload_cv", "cover_letter"]:
-            if file := form.cleaned_data.get(field):
-                email.attach(file.name, file.read(), file.content_type)
+#     def _attach_files(self, email, form):
+#         for field in ["upload_cv", "cover_letter"]:
+#             if file := form.cleaned_data.get(field):
+#                 email.attach(file.name, file.read(), file.content_type)
 
-    def _handle_form_errors(self, request, form):
-        for field, errors in form.errors.items():
-            for error in errors:
-                messages.error(request, f"{form.fields[field].label}: {error}")
+#     def _handle_form_errors(self, request, form):
+#         for field, errors in form.errors.items():
+#             for error in errors:
+#                 messages.error(request, f"{form.fields[field].label}: {error}")
