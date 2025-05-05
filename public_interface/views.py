@@ -162,7 +162,8 @@ def job_email(request):
                 f"Applicant Name: {application.first_name}\n"
                 f"Applicant CV: {cv_url}"
             )
-            admin_email = "info@thedeepseafood.com"  # host email
+            # admin_email = "info@thedeepseafood.com"  # host email
+            admin_email = "sinankodur24@gmail.com"
             send_mail(
                 subject,
                 message,
