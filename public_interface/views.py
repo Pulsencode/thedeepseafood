@@ -16,7 +16,7 @@ from company.models import (
     Brand,
     Certification,
     CompanyTestimonial,
-    ContactUs,
+    # ContactUs,
     Enquiry,
     Event,
     History,
@@ -29,6 +29,7 @@ from company.models import (
 from career.models import VacancyDetails
 from products.models import Category, Product, ProductDetails
 from career.forms import ApplicationDetailsForm
+from public_interface.forms import EnquiryForm
 
 
 def home(request):
@@ -139,7 +140,7 @@ def career(request):
     return render(request, "public_interface/career.html", context)
 
 
-def job_email(request):
+def job_application(request):
 
     if request.method == "POST":
         job_id = request.POST.get("job_id")
@@ -815,47 +816,73 @@ class PromotionView(TemplateView):
         return context
 
 
-class SendEmailView(View):
-    def post(self, request, *args, **kwargs):
-        name = request.POST["name"]
-        location = request.POST["location"]
-        phone = request.POST["phone"]
-        email = request.POST["email"]
-        message = request.POST["message"]
-        honey = request.POST["honey"]
-        # Validate email
-        try:
-            validate_email(email)
-        except ValidationError as e:
-            print(e)
-            messages.error(request, "Invalid email..Please try again..!!")
-            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
-        if honey:
-            # Honey field is not empty, indicating potential spam
-            messages.error(request, "Error: Form submission not allowed.")
+def enquiry(request):
+    if request.method == "POST":
+        form = EnquiryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse(
+                {"message": "Enquiry Submitted Successfully", "status": "success"}
+            )
         else:
-            # Honey field is empty, proceed with sending the email
-            if name and location and phone and email:
-                contact = ContactUs(
-                    name=name,
-                    email=email,
-                    location=location,
-                    mobile_no=phone,
-                    message=message,
-                )
-                contact.save()
-                subject = "New Form Submission-Deep Seafood Company Website"
-                message_body = f"Name: {name}\nLocation: {location}\nMobile: {phone}\nEmail: {email}\nMessage: {message}"
-                from_email = "deepseafood.connect@gmail.com"
-                to_email = "info@thedeepseafood.com"
-                send_mail(subject, message_body, from_email, [to_email])
+            errors = []
+            for error_list in form.errors.values():
+                for error in error_list:
+                    errors.append(error)
+            return JsonResponse(
+                {
+                    "message": errors[0] if errors else "Invalid form data",
+                    "status": "error",
+                },
+                status=400,
+            )
 
-                messages.info(request, "Your Request Shared Successfully")
-            else:
-                messages.warning(request, "Please Fill All Fields Correctly!")
+    return JsonResponse(
+        {"message": "Error when submitting", "status": "error"}, status=400
+    )
 
-        return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+# class SendEmailView(View):
+#     def post(self, request, *args, **kwargs):
+#         name = request.POST["name"]
+#         location = request.POST["location"]
+#         phone = request.POST["phone"]
+#         email = request.POST["email"]
+#         message = request.POST["message"]
+#         honey = request.POST["honey"]
+#         # Validate email
+#         try:
+#             validate_email(email)
+#         except ValidationError as e:
+#             print(e)
+#             messages.error(request, "Invalid email..Please try again..!!")
+#             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+#         if honey:
+#             # Honey field is not empty, indicating potential spam
+#             messages.error(request, "Error: Form submission not allowed.")
+#         else:
+#             # Honey field is empty, proceed with sending the email
+#             if name and location and phone and email:
+#                 contact = ContactUs(
+#                     name=name,
+#                     email=email,
+#                     location=location,
+#                     mobile_no=phone,
+#                     message=message,
+#                 )
+#                 contact.save()
+#                 subject = "New Form Submission-Deep Seafood Company Website"
+#                 message_body = f"Name: {name}\nLocation: {location}\nMobile: {phone}\nEmail: {email}\nMessage: {message}"
+#                 from_email = "deepseafood.connect@gmail.com"
+#                 to_email = "info@thedeepseafood.com"
+#                 send_mail(subject, message_body, from_email, [to_email])
+
+#                 messages.info(request, "Your Request Shared Successfully")
+#             else:
+#                 messages.warning(request, "Please Fill All Fields Correctly!")
+
+#         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
 class ProductEnquiryView(View):
