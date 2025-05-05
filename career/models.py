@@ -59,7 +59,6 @@ class ApplicationDetails(StatusTimestampBase):
     ]
 
     start_date = models.DateField(null=True, blank=True)
-    job = models.CharField(max_length=150)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(null=True)

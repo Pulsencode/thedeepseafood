@@ -86,6 +86,7 @@ urlpatterns = [
         name="promotion_details",
     ),
     path("send_email/", views.SendEmailView.as_view(), name="send_email"),
-    path("job_email/", views.CareerEmailView.as_view(), name="job_email"),
+    # path("job_email/", views.CareerEmailView.as_view(), name="job_email"),
+    path("job_email/", views.job_email, name="job_email"),
     path("enquiry_email/", views.ProductEnquiryView.as_view(), name="enquiry_email"),
 ]

@@ -28,7 +28,7 @@ class ApplicationDetailsAdmin(admin.ModelAdmin):
         "last_name",
         "email",
         "phone_number",
-        "job",
+        # "job",
         "notice_period",
         "vacancy",
     )
