@@ -158,104 +158,84 @@
                                 {% endif %}
                                 {{ form.honey }}
                                 <div class="col-lg-6">
-                                  <label class="form-label">First Name</label>
-                                  <input type="text"
-                                         name="first_name"
-                                         class="form-control"
-                                         placeholder="First"
-                                         required>
+                                  <label class="form-label">First Name*</label>
+                                  {{ form.first_name }}
                                   <input type="hidden" name="applied" id="applied">
                                 </div>
                                 <div class="col-lg-6">
-                                  <label class="form-label">Last Name</label>
-                                  <input type="text"
-                                         name="last_name"
-                                         class="form-control"
-                                         placeholder="Last"
-                                         required>
+                                  <label class="form-label">Last Name*</label>
+                                  {{ form.last_name }}
                                 </div>
                                 <div class="col-lg-6">
                                   <label class="form-label">Date Of Birth</label>
-                                  <input type="date" name="date_of_birth" class="form-control" required>
+                                  {{ form.date_of_birth }}
                                 </div>
                                 <div class="col-lg-6" id="email">
                                   <label class="form-label">Email</label>
-                                  <input type="email" name="email" class="form-control" required>
+                                  {{ form.email }}
                                   <b><span class="text-danger formerror"></span></b>
                                 </div>
                                 <div class="col-lg-6">
                                   <label class="form-label">Phone*</label>
-                                  <input type="text"
-                                         name="phone_number"
-                                         class="form-control"
-                                         required
-                                         onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-                                  </div>
-                                  <div class="col-lg-6">
-                                    <label class="form-label">Linkedin URL</label>
-                                    <input type="text" name="linkedin_url" class="form-control">
-                                    <input type="hidden" name="honey">
-                                  </div>
-                                  <div class="col-lg-6">
-                                    <label class="form-label">Portfolio URL</label>
-                                    <input type="text" name="portfolio_url" class="form-control">
-                                  </div>
-                                  <div class="col-lg-6">
-                                    <label class="form-label">Notice period*</label>
-                                    <select class="chosen-select"
-                                            name="notice_period"
-                                            data-placeholder="Select any"
-                                            required>
-                                      <option value="">Select any</option>
-                                      <option value="immediate">Immediate join</option>
-                                      <option value="2_weeks">2 week</option>
-                                      <option value="1_month">1 month</option>
-                                    </select>
-                                  </div>
-                                  <div class="col-lg-6">
-                                    <label class="form-label">Upload CV*</label>
-                                    <label class="attach-label-btn">
-                                      <div class="attach-label">Choose File*</div>
-                                      <input type="file" name="upload_cv" required onchange="fileupload()">
-                                    </label>
-                                  </div>
-                                  <div class="col-lg-6">
-                                    <label class="form-label">Cover Letter</label>
-                                    <label class="attach-label-btn">
-                                      <div class="attach-label">Cover Letter</div>
-                                      <input type="file" name="cover_letter" onchange="fileupload()">
-                                    </label>
-                                  </div>
-                                  <div class="col-lg-12">
-                                    <label class="form-label">Message</label>
-                                    <textarea name="message" class="form-control h-100-px" maxlength="500"></textarea>
-                                  </div>
-                                  <div class="col-lg-12">
-                                    <button type="submit"
-                                            class="btn bg-blue text-white rounded-25 min-width-100-px BTN_SUBMIT">
-                                      Submit Application
-                                    </button>
-                                  </div>
+                                  {{ form.phone_number }}
+                                </div>
+                                <div class="col-lg-6">
+                                  <label class="form-label">Linkedin URL</label>
+                                  {{ form.linkedin_url }}
+                                  <input type="hidden" name="honey">
+                                </div>
+                                <div class="col-lg-6">
+                                  <label class="form-label">Portfolio URL</label>
+                                  {{ form.portfolio_url }}
+                                </div>
+                                <div class="col-lg-6">
+                                  <label class="form-label">Notice period*</label>
+                                  {{ form.notice_period }}
+                                </div>
+                                <div class="col-lg-6">
+                                  <label class="form-label">Upload CV*</label>
+                                  <label class="attach-label-btn">
+                                    <div class="attach-label">Choose File*</div>
+                                    {{ form.upload_cv }}
+                                  </label>
+                                </div>
+                                <div class="col-lg-6">
+                                  <label class="form-label">Cover Letter</label>
+                                  <label class="attach-label-btn">
+                                    <div class="attach-label">Cover Letter</div>
+                                    {{ form.cover_letter }}
+                                  </label>
+                                </div>
+                                <div class="col-lg-12">
+                                  <label class="form-label">Message</label>
+                                  {{ form.message }}
+                                </div>
+                                <div class="col-lg-12">
+                                  <button type="submit"
+                                          class="btn bg-blue text-white rounded-25 min-width-100-px BTN_SUBMIT">
+                                    Submit Application
+                                  </button>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </form>
-                      </div>
+                        </div>
+                      </form>
                     </div>
                   </div>
-                {% endfor %}
-              </div>
+                </div>
+              {% endfor %}
             </div>
           </div>
         </div>
-      </section>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-            async
-            defer></script>
-    <script>
+      </div>
+    </section>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+          async
+          defer></script>
+  <script>
       // Initialize the selectpicker
       $(document).ready(function () {
         $('.selectpicker').selectpicker();
@@ -282,5 +262,5 @@
           $("#readmore-btn" + counter).html("Read Less");
         }
       }
-    </script>
-  {% endblock content %}
+  </script>
+{% endblock content %}

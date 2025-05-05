@@ -34,6 +34,8 @@ class ApplicationDetailsForm(forms.ModelForm):
             "cover_letter",
         ]
         widgets = {
+            "first_name": forms.TextInput(attrs={"placeholder": "First Name"}),
+            "last_name": forms.TextInput(attrs={"placeholder": "Last Name"}),
             "date_of_birth": forms.DateInput(attrs={"type": "date"}),
             "message": forms.Textarea(attrs={"rows": 4}),
             "notice_period": forms.Select(
@@ -47,6 +49,14 @@ class ApplicationDetailsForm(forms.ModelForm):
         self.fields["phone_number"].widget.attrs.update({
             "onkeypress": "return event.charCode >= 48 && event.charCode <= 57"
         })
+        original = [
+            (val, label)
+            for val, label in self.fields["notice_period"].choices
+            if val != ""
+        ]
+        self.fields["notice_period"].choices = [
+            ("", "Select any")
+        ] + original
         for fname, field in self.fields.items():
             widget = field.widget
             if isinstance(widget, forms.FileInput):
