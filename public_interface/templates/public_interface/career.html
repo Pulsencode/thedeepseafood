@@ -92,11 +92,14 @@
                       {% endwith %}
                     </div>
                     <div class="d-flex align-items-end">
-                      <div class="location-box text-center">
+                      <div class="fes location-box text-center">
                         <p class="loc">{{ job.location }}</p>
                       </div>
-                      <div class="fes career-job-types ms-2 location-box"
-                           data-types="{{ types_list|join:',' }}"></div>
+                      {% if job.hiring_status %}
+                        <div class="career-job-types ms-2 location-box">
+                          <p class="loc">{{ job.hiring_status }}</p>
+                        </div>
+                      {% endif %}
                     </div>
                   </div>
                   <div class="col-lg-4 amount-k">

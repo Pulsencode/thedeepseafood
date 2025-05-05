@@ -16,7 +16,7 @@ class VacancyDetailsAdmin(admin.ModelAdmin):
     autocomplete_fields = ("category",)
 
     fieldsets = (
-        (None, {"fields": ("title", "category", "location", "type", "salary")}),
+        (None, {"fields": ("title", "category", "location", "type", "salary", "hiring_status")}),
         ("Description", {"classes": ("collapse",), "fields": ("description",)}),
     )
 

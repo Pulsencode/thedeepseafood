@@ -35,8 +35,14 @@ class VacancyDetails(StatusTimestampBase):
     title = models.CharField(max_length=200)
     location = models.CharField(max_length=255)
     description = models.TextField(null=True)
+    hiring_status = models.CharField(
+        null=True,
+        blank=True,
+        max_length=100,
+        help_text="Status of the job's hiring process (e.g., 'Urgent Requirement')."
+    )
     type = MultiSelectField(choices=JOB_TYPE_CHOICES, null=True, blank=True)
-    salary = models.PositiveIntegerField(null=True)
+    salary = models.CharField(max_length=150, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Vacancy Details"
