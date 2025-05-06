@@ -4,25 +4,48 @@
     {% if request.resolver_match.url_name == 'product_details' %}
         <div class="d-none"></div>
     {% else %}
-        <li class="nav-item">
+         <li class="nav-item">
             <a data-id="all"
                class="nav-link {% if type is None %}active{% endif %}"
-               onclick="getprodu('All',this)">ALL</a>
-        </li>
+               onclick="filterItems('all')">ALL</a>
+        </li> 
+
     {% endif %}
     <li class="nav-item">
-        <a data-id="all"
-           class="nav-link {% if type == 'Local Catch' %}active{% endif %}"
-           onclick="getprodu('Local Catch',this)">Local Catch</a>
+        <a data-id="local catch"
+           class="nav-link {% if type == 'local catch' %}active{% endif %}"
+           onclick="filterItems('local catch')">Local Catch</a> 
+
     </li>
     <li class="nav-item">
         <a data-id="all"
-           class="nav-link {% if type == 'Imported' %}active{% endif %}"
-           onclick="getprodu('Imported',this)">Imported</a>
+           class="nav-link {% if type == 'imported' %}active{% endif %}"
+           onclick="filterItems('imported')">Imported</a> 
+
     </li>
     <li class="nav-item">
-        <a data-id="all"
-           class="nav-link {% if type == 'Value Added' %}active{% endif %}"
-           onclick="getprodu('Value Added',this)">Value Added</a>
+      <a data-id="all"
+           class="nav-link {% if type == 'value added' %}active{% endif %}"
+           onclick="filterItems('value added')">Value Added</a>
+
     </li>
 </ul>
+
+    
+    <script>
+        function filterItems(type) {
+          const items = document.querySelectorAll('.item');
+          items.forEach(item => {
+            const itemType = item.getAttribute('data-type');
+            if (type === 'all' || itemType === type) {
+              item.style.display = 'block';  // show matching items
+            } else {
+              item.style.display = 'none';   // hide non-matching items
+            }
+          });
+        }
+        </script>
+
+
+        
+        
