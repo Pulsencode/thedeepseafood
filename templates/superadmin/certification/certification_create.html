@@ -1,83 +1,84 @@
 {% include 'superadmin/layout/header.html' %}
 {% load static %}
-<!--app-content open-->
-<div class="main-content app-content mt-0">
-    <div class="side-app">
-        <!-- CONTAINER -->
-        <div class="main-container container-fluid">
-            <!-- PAGE-HEADER -->
-            <div class="page-header">
-                <h1 class="page-title">Certification</h1>
-                <div>
-                    <a class="btn btn-primary" href="{% url 'list_certification' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View
-                        All</a>
+<!-- ROW OPEN -->
+<form method="post" enctype="multipart/form-data" id="myform">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-4 col-xl-4 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Add New Image*( 400 x 400px )</h4>
                 </div>
-            </div>
-            <!-- PAGE-HEADER END -->
-
-            <!-- ROW OPEN -->
-            <form method="post" enctype="multipart/form-data" id="myform">
-                {% csrf_token %}
-            <div class="row">
-                <div class="col-md-4 col-xl-4 col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Add New Image*( 400 x 400px )</h4>
-                        </div>
-                        <div class="card-body">
-                          <input type="file" class="dropify" data-bs-height="180" name="image" id="image-upload" {% if list.image %}
-                                            data-default-file="{{list.image.url}}" {% endif %}{% if not list.image  %}required {% endif %} />
-                            <input type="text" class="form-control" placeholder="image alt" name="image_alt" value="{% if list.image_alt %}{{list.image_alt}}{% endif %}" />
-									<!-- <div class="row"> -->
-										<!-- <div class="col-lg-12"> -->
-											<!-- <img {% if list.image %}src="{{list.image.url}}" {% else %}src="" {% endif %} class="" /> -->
-											<!-- <label class="cabinet center-block"> -->
-												<!-- <figure> -->
-													<!-- <img src="" class="gambar4 img-responsive img-thumbnail4" id="item-img-output4" /> -->
-													<!-- <figcaption><i class="fa fa-camera"></i></figcaption> -->
-												<!-- </figure> -->
-												<!-- <input type="file" class="item-img4 file center-block" name="file_photo" /> -->
-											<!-- </label> -->
-										<!-- </div> -->
-										<!-- <input type="hidden" id="cropped-img" name="certification-image"> -->
-										<!-- 1 -->
-										<!-- <div class="modal modal4 fade" id="cropImagePop4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4" -->
-											<!-- aria-hidden="true"> -->
-											<!-- <div class="modal-dialog"> -->
-												<!-- <div class="modal-content"> -->
-													<!-- <div class="modal-header"> -->
-														<!-- <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span -->
-																<!-- aria-hidden="true">&times;</span></button> -->
-														<!-- <h4 class="modal-title" id="myModalLabel4"> -->
-															<!-- Edit Photo</h4> -->
-													<!-- </div> -->
-													<!-- <div class="modal-body"> -->
-														<!-- <div id="upload-demo4" class="center-block"></div> -->
-													<!-- </div> -->
-													<!-- <div class="modal-footer"> -->
-														<!-- <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button> -->
-														<!-- <button type="button" id="cropImageBtn4" class="btn btn-primary">Crop</button> -->
-													<!-- </div> -->
-												<!-- </div> -->
-											<!-- </div> -->
-										<!-- </div> -->
-									<!-- </div> -->
-                                <div class="form-group col-lg-12 col-12">
-                                    <button type="submit" class="btn btn-primary mt-4 mb-0"
-                                        id="submitButton">Submit</button>
-                                    <a href="{% url 'list_certification' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
-                                </div>
-                            
-                        </div>
+                <div class="card-body">
+                    <input type="file"
+                           class="dropify"
+                           data-bs-height="180"
+                           name="image"
+                           id="image-upload"
+                           {% if certification.image %}data-default-file="{{ certification.image.url }}"{% endif %}
+                           {% if certification.image %}required{% endif %} />
+                    <input type="text"
+                           class="form-control"
+                           placeholder="image alt"
+                           name="image_alt"
+                           value="{% if list.image_alt %}{{ list.image_alt }}{% endif %}" />
+                    <!-- <div class="row"> -->
+                    <!-- <div class="col-lg-12"> -->
+                    <!-- <img {% if list.image %}src="{{list.image.url}}" {% else %}src="" {% endif %}
+      class="" /> -->
+                    <!-- <label class="cabinet center-block"> -->
+                    <!-- <figure> -->
+                    <!-- <img src=""
+      class="gambar4 img-responsive img-thumbnail4"
+      id="item-img-output4" /> -->
+                    <!-- <figcaption><i class="fa fa-camera"></i></figcaption> -->
+                    <!-- </figure> -->
+                    <!-- <input type="file" class="item-img4 file center-block" name="file_photo" /> -->
+                    <!-- </label> -->
+                    <!-- </div> -->
+                    <!-- <input type="hidden" id="cropped-img" name="certification-image"> -->
+                    <!-- 1 -->
+                    <!-- <div class="modal modal4 fade"
+      id="cropImagePop4"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel4"
+      -->
+                    <!-- aria-hidden="true"> -->
+                    <!-- <div class="modal-dialog"> -->
+                    <!-- <div class="modal-content"> -->
+                    <!-- <div class="modal-header"> -->
+                    <!-- <button type="button"
+         class="close"
+         data-bs-dismiss="modal"
+         aria-label="Close"><span -->
+                    <!-- aria-hidden="true">&times;</span></button> -->
+                    <!-- <h4 class="modal-title" id="myModalLabel4"> -->
+                    <!-- Edit Photo</h4> -->
+                    <!-- </div> -->
+                    <!-- <div class="modal-body"> -->
+                    <!-- <div id="upload-demo4" class="center-block"></div> -->
+                    <!-- </div> -->
+                    <!-- <div class="modal-footer"> -->
+                    <!-- <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button> -->
+                    <!-- <button type="button" id="cropImageBtn4" class="btn btn-primary">Crop</button> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <div class="form-group col-lg-12 col-12">
+                        <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                        <a href="{% url 'list_certification' %}"
+                           class="btn btn-danger mt-4 mb-0">Cancel</a>
                     </div>
                 </div>
-
-              
-                <!-- CONTAINER END -->
             </div>
-            </form>
         </div>
+        <!-- CONTAINER END -->
     </div>
-    <!--app-content close-->
-   
-    {% include 'superadmin/layout/footer.html' %}
+</form>
+</div>
+</div>
+<!--app-content close-->
+{% include 'superadmin/layout/footer.html' %}

@@ -1,44 +1,22 @@
 {% include 'superadmin/layout/header.html' %}
 {% load static %}
-<!--app-content open-->
-<div class="main-content app-content mt-0">
-    <div class="side-app">
-        <!-- CONTAINER -->
-        <div class="main-container container-fluid">
-            <!-- PAGE-HEADER -->
-            <div class="page-header">
-                <h1 class="page-title">Enquiry</h1>
+<!-- ROW OPEN -->
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">List Of All Enquiry</h3>
             </div>
-            <!-- PAGE-HEADER END -->
-            {% for message in messages %}
-                <div class="alert alert-primary alert-dismissible fade show m-0 text-center"
-                     id="success"
-                     role="alert"
-                     style="border-radius: 0">
-                    {{ message }}
-                    <button type="button"
-                            class="btn-close text-dark "
-                            data-bs-dismiss="alert"
-                            aria-label="Close">x</button>
-                </div>
-            {% endfor %}
-            <!-- ROW OPEN -->
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">List Of All Enquiry</h3>
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="form-group col-lg-2 col-12">
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Keyword Search"
+                                   id="search">
                         </div>
-                        <div class="card-body">
-                            <form>
-                                <div class="row">
-                                    <div class="form-group col-lg-2 col-12">
-                                        <input type="text"
-                                               class="form-control"
-                                               placeholder="Keyword Search"
-                                               id="search">
-                                    </div>
-                                    <!-- <div class="form-group col-lg-2 col-12">
+                        <!-- <div class="form-group col-lg-2 col-12">
                                         <select name="country" id="status" class="form-control form-select select2" data-bs-placeholder="Select Country">
                                             <option value="">Status</option>
                                             <option value="True">Active</option>
@@ -46,103 +24,105 @@
 
                                         </select>
 </div> -->
-                                    <div class="form-group col-lg-2 col-12">
-                                        <input type="date"
-                                               class="form-control"
-                                               placeholder="Keyword Search"
-                                               id="start_date">
-                                    </div>
-                                    <div class="form-group col-lg-2 col-12">
-                                        <input type="date"
-                                               class="form-control"
-                                               placeholder="Keyword Search"
-                                               id="end_date">
-                                    </div>
-                                    <div class="form-group col-lg-4 col-12">
-                                        <a class="btn btn-primary mr-1" id="enquiry_search">Search</a>
-                                        <a class="btn btn-default" href="{% url 'enquiry_view' %}">Reset</a>
-                                        <a class="btn btn-primary mr-1"
-                                           id="excel_export"
-                                           onclick="exportEnquiry()">Export</a>
-                                    </div>
-                                </div>
-                            </form>
-                            <div class="table-responsive" id="enquiry-table">
-                                <input type="hidden" id="page" name="page" value="{{ page }}">
-                                <table class="table border-top table-bordered mb-0 table-hover">
-                                    <thead>
-                                        <tr class="text-center">
-                                            <th>Sl No</th>
-                                            <th>product</th>
-                                            <th>name</th>
-                                            <th>location</th>
-                                            <th>email</th>
-                                            <th>mobile</th>
-                                            <th>message</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% if all_enquiry %}
-                                            {% for enquiry in all_enquiry %}
-                                                <tr class="text-center">
-                                                    <td>{{ forloop.counter }}</td>
-                                                    <td>
-                                                        {% if enquiry.product %}{{ enquiry.product }}{% endif %}
-                                                    </td>
-                                                    <td>{{ enquiry.name }}</td>
-                                                    <td>{{ enquiry.location }}</td>
-                                                    <td>{{ enquiry.email }}</td>
-                                                    <td>{{ enquiry.phone_number }}</td>
-                                                    <td>
-                                                        <a href="javascript:void(0)"
-                                                           class="btn btn-success btn-sm mb-1"
-                                                           data-bs-toggle="modal"
-                                                           data-bs-target="#desc{{ enquiry.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger btn-sm mb-1">
-                                                            <i class="side-menu__icon fe fe-trash"
-                                                               onclick="show_modal({{ enquiry.id }})"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <!-- modal for description-->
-                                                <div class="modal  fade"
-                                                     id="desc{{ enquiry.id }}"
-                                                     tabindex="-1"
-                                                     role="dialog">
-                                                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
-                                                         role="document">
-                                                        <div class="modal-content ">
-                                                            <div class="modal-body">
-                                                                <div>
-                                                                    <p>{{ enquiry.message }}</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        {% else %}
-                                            <tr>
-                                                <td colspan='10'>
-                                                    <center>No record found</center>
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                    </tbody>
-                                </table>
-                                {% include "pagination.html" %}
-                            </div>
+                        <div class="form-group col-lg-2 col-12">
+                            <input type="date"
+                                   class="form-control"
+                                   placeholder="Keyword Search"
+                                   id="start_date">
+                        </div>
+                        <div class="form-group col-lg-2 col-12">
+                            <input type="date"
+                                   class="form-control"
+                                   placeholder="Keyword Search"
+                                   id="end_date">
+                        </div>
+                        <div class="form-group col-lg-4 col-12">
+                            <a class="btn btn-primary mr-1" id="enquiry_search">Search</a>
+                            <a class="btn btn-default" href="{% url 'enquiry_view' %}">Reset</a>
+                            <a class="btn btn-primary mr-1"
+                               id="excel_export"
+                               onclick="exportEnquiry()">Export</a>
                         </div>
                     </div>
+                </form>
+                <div class="table-responsive" id="enquiry-table">
+                    <input type="hidden" id="page" name="page" value="{{ page }}">
+                    <table class="table border-top table-bordered mb-0 table-hover">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Sl No</th>
+                                <th>product</th>
+                                <th>name</th>
+                                <th>location</th>
+                                <th>email</th>
+                                <th>mobile</th>
+                                <th>message</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if all_enquiry %}
+                                {% for enquiry in all_enquiry %}
+                                    <tr class="text-center">
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>
+                                            {% if enquiry.product %}{{ enquiry.product }}{% endif %}
+                                        </td>
+                                        <td>{{ enquiry.name }}</td>
+                                        <td>{{ enquiry.location }}</td>
+                                        <td>{{ enquiry.email }}</td>
+                                        <td>{{ enquiry.phone_number }}</td>
+                                        <td>
+                                            <a href="javascript:void(0)"
+                                               class="btn btn-success btn-sm mb-1"
+                                               data-bs-toggle="modal"
+                                               data-bs-target="#desc{{ enquiry.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-sm mb-1">
+                                                <i class="side-menu__icon fe fe-trash"
+                                                   onclick="show_modal({{ enquiry.id }})"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!-- modal for description-->
+                                    <div class="modal  fade"
+                                         id="desc{{ enquiry.id }}"
+                                         tabindex="-1"
+                                         role="dialog">
+                                        <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                             role="document">
+                                            <div class="modal-content ">
+                                                <div class="modal-body">
+                                                    <div>
+                                                        <p>{{ enquiry.message }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan='10'>
+                                        <center>No record found</center>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    {% if all_enquiry %}
+                        {% include "pagination.html" %}
+                    {% endif %}
                 </div>
             </div>
-            <!-- ROW CLOSED -->
         </div>
-        <!-- CONTAINER END -->
     </div>
+</div>
+<!-- ROW CLOSED -->
+</div>
+<!-- CONTAINER END -->
+</div>
 </div>
 <!--app-content close-->
 <div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">

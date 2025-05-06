@@ -27,106 +27,74 @@
         cursor: pointer;
     }
 </style>
-<!--app-content open-->
-<div class="main-content app-content mt-0">
-    <div class="side-app">
-        <!-- CONTAINER -->
-        <div class="main-container container-fluid">
-            <!-- PAGE-HEADER -->
-            <div class="page-header">
-                <h1 class="page-title">SEO</h1>
-                <div>
-                    <a class="btn btn-primary" href="{% url 'product_view' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
-                </div>
-            </div>
-            <!-- PAGE-HEADER END -->
-            <!-- ROW OPEN -->
-            <form method="post" enctype="multipart/form-data" id="myform">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-8 col-xl-8 col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row col-lg-12">
-                                    <div class="form-group col-lg-6 col-12">
-                                        <label class="form-label">Page*</label>
-                                        <select name="page_name" class="select-drop " required>
-                                            <option value="{{ seo.page_name }}">Select page</option>
-                                            <option {% if list.page == 'hm' %}selected{% endif %} value="hm">Home</option>
-                                            <option {% if list.page == 'abt' %}selected{% endif %} value="abt">About</option>
-                                            <option {% if list.page == 'prd' %}selected{% endif %} value="prd">Product</option>
-                                            <option {% if list.page == 'car' %}selected{% endif %} value="car">Career</option>
-                                            <option {% if list.page == 'Distribution Channel' %}selected{% endif %}
-                                                    value="Distribution Channel">Distribution Channel</option>
-                                            <option {% if list.page == 'nws' %}selected{% endif %} value="News Room">News Room</option>
-                                            <option {% if list.page == 'Career' %}selected{% endif %} value="Career">Career</option>
-                                            <option {% if list.page == 'Contact Us' %}selected{% endif %}
-                                                    value="Contact Us">Contact Us</option>
-                                            <option {% if list.page == 'blg' %}selected{% endif %} value="Blogs">Blogs</option>
-                                        </select>
-                                    </div>
-                                    <div class="row">
-                                        <h6>SEO section :</h6>
-                                        <br>
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label">Title tag</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   id=""
-                                                   placeholder="Title tag"
-                                                   name="meta_title"
-                                                   value="{{ seo.meta_title }}">
-                                        </div>
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label">Meta Author</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   id=""
-                                                   placeholder="Title tag"
-                                                   name="meta_author"
-                                                   value="{{ seo.meta_author }}">
-                                        </div>
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label">Meta description</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   id=""
-                                                   placeholder="Meta description"
-                                                   name="meta_description"
-                                                   value="{{ seo.meta_description }}">
-                                        </div>
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label">Keyword tag</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   id=""
-                                                   placeholder="Keyword tag"
-                                                   name="meta_keywords"
-                                                   value="{{ seo.meta_keywords }}">
-                                        </div>
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label">Meta Json ld</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   id=""
-                                                   placeholder="Canonical url"
-                                                   name="meta_json_ld"
-                                                   value="{{ seo.meta_json_ld }}">
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-lg-12 col-12">
-                                        <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
-                                        <a href="{% url 'list_seo' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
-                                    </div>
-                                </div>
+<!-- ROW OPEN -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-8 col-xl-8 col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row col-lg-12">
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Page*</label>
+                            {{ form.page_name }}
+                        </div>
+                        <div class="row">
+                            <h6>SEO section :</h6>
+                            <br>
+                            <div class="form-group col-lg-6 col-12">
+                                <label for="" class="form-label">Title tag</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Title tag"
+                                       name="meta_title"
+                                       value="{{ seo.meta_title }}">
+                            </div>
+                            <div class="form-group col-lg-6 col-12">
+                                <label for="" class="form-label">Meta Author</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Title tag"
+                                       name="meta_author"
+                                       value="{{ seo.meta_author }}">
+                            </div>
+                            <div class="form-group col-lg-6 col-12">
+                                <label for="" class="form-label">Meta description</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Meta description"
+                                       name="meta_description"
+                                       value="{{ seo.meta_description }}">
+                            </div>
+                            <div class="form-group col-lg-6 col-12">
+                                <label for="" class="form-label">Keyword tag</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Keyword tag"
+                                       name="meta_keywords"
+                                       value="{{ seo.meta_keywords }}">
+                            </div>
+                            <div class="form-group col-lg-6 col-12">
+                                <label for="" class="form-label">Meta Json ld</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Canonical url"
+                                       name="meta_json_ld"
+                                       value="{{ seo.meta_json_ld }}">
                             </div>
                         </div>
-                        <!-- ROW CLOSED -->
+                        <div class="form-group col-lg-12 col-12">
+                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                            <a href="{% url 'list_seo' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                        </div>
                     </div>
-                    <!-- CONTAINER END -->
                 </div>
-            </form>
+            </div>
+            <!-- ROW CLOSED -->
         </div>
+        <!-- CONTAINER END -->
     </div>
-    <!--app-content close-->
-    {% include 'superadmin/layout/footer.html' %}
+</form>
+
+<!--app-content close-->
+{% include 'superadmin/layout/footer.html' %}
