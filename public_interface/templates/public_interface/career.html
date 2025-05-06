@@ -128,7 +128,7 @@
                       <form method="post"
                             class="form"
                             enctype="multipart/form-data"
-                            action="{% url 'job_application' %}"
+                            action="{% url 'job_email' %}"
                             id="careerform">
                         <input type="hidden" name="job_id"   value="{{ job.id }}">
                         {% csrf_token %}
