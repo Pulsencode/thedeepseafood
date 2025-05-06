@@ -14,212 +14,183 @@
         object-fit: cover;
     }
 </style>
-<!--app-content open-->
-<div class="main-content app-content mt-0">
-    <div class="side-app">
-        <!-- CONTAINER -->
-        <div class="main-container container-fluid">
-            <!-- PAGE-HEADER -->
-            <div class="page-header">
-                <h1 class="page-title">News</h1>
-                <div>
-                    <a class="btn btn-primary" href="{% url 'news_add' %}"><i class="side-menu__icon fe fe-plus mx-1"></i>Add
-                    New</a>
-                </div>
+<!-- ROW OPEN -->
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">List Of News</h3>
             </div>
-            <!-- PAGE-HEADER END -->
-            {% for message in messages %}
-                <div class="alert alert-primary alert-dismissible fade show m-0 text-center"
-                     id="success"
-                     role="alert"
-                     style="border-radius: 0">
-                    {{ message }}
-                    <button type="button"
-                            class="btn-close text-dark "
-                            data-bs-dismiss="alert"
-                            aria-label="Close">x</button>
+            <div class="card-body">
+                <div class="row">
+                    <!---search_filter-->
+                    {% include "search_filter.html" %}
                 </div>
-            {% endfor %}
-            <!-- ROW OPEN -->
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">List Of News</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <!---search_filter-->
-                                {% include "search_filter.html" %}
-                                <div class="form-group col-lg-5 col-7">
-                                    <span id ="message002" style="color:green;display:none"><b>Latest Project Status Updated Successfully</b></span>
-                                </div>
-                            </div>
-                            <div class="table-responsive" id="news-table">
-                                {% load static %}
-                                <input type="hidden" id="page" name="page" value="{{ page }}">
-                                <table class="table border-top table-bordered mb-0 table-hover">
-                                    <thead>
-                                        <tr class="text-center">
-                                            <th>Sl No</th>
-                                            <th>Sequence</th>
-                                            <th>Title</th>
-                                            <th>Name</th>
-                                            <th>Type</th>
-                                            <th>Date</th>
-                                            <th>Description</th>
-                                            <th>Location</th>
-                                            <th>Image</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% if all_news %}
-                                            {% for news in all_news %}
-                                                <tr class="text-center">
-                                                    <td>{{ forloop.counter }}</td>
-                                                    <td>{{ news.sequence }}</td>
-                                                    <td>{{ news.title }}</td>
-                                                    <td>{{ news.name }}</td>
-                                                    <td>{{ news.type }}</td>
-                                                    <td>{{ news.date }}</td>
-                                                    <td>
-                                                        <a href="javascript:void(0)"
-                                                           class="btn btn-success"
-                                                           data-bs-toggle="modal"
-                                                           data-bs-target="#desc{{ news.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
-                                                    </td>
-                                                    <td>{{ news.location }}</td>
-                                                    <td>
-                                                        <a href="javascript:void(0)"
-                                                           class="btn btn-success"
-                                                           data-bs-toggle="modal"
-                                                           data-bs-target="#slider{{ news.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
-                                                    </td>
-                                                    <td>
-                                                        <form method="post">
-                                                            {% csrf_token %}
-                                                            <input type="hidden" name="status_id" value={{ news.id }}>
-                                                            <div class="form-check form-switch">
-                                                                <input class="form-check-input"
-                                                                       type="checkbox"
-                                                                       id="customSwitch1"
-                                                                       name="status"
-                                                                       {% if news.status %}checked{% endif %}
-                                                                       onchange="this.form.submit()">
-                                                            </div>
-                                                        </form>
-                                                    </td>
-                                                    <td>
-                                                        <a class="btn btn-info btn-sm mb-1"
-                                                           href="{% url 'news_update' news.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                <div class="table-responsive" id="news-table">
+                    {% load static %}
+                    <input type="hidden" id="page" name="page" value="{{ page }}">
+                    <table class="table border-top table-bordered mb-0 table-hover">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Sl No</th>
+                                <th>Sequence</th>
+                                <th>Title</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Location</th>
+                                <th>Image</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if all_news %}
+                                {% for news in all_news %}
+                                    <tr class="text-center">
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ news.sequence }}</td>
+                                        <td>{{ news.title }}</td>
+                                        <td>{{ news.name }}</td>
+                                        <td>{{ news.type }}</td>
+                                        <td>{{ news.date }}</td>
+                                        <td>
+                                            <a href="javascript:void(0)"
+                                               class="btn btn-success"
+                                               data-bs-toggle="modal"
+                                               data-bs-target="#desc{{ news.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                                        </td>
+                                        <td>{{ news.location }}</td>
+                                        <td>
+                                            <a href="javascript:void(0)"
+                                               class="btn btn-success"
+                                               data-bs-toggle="modal"
+                                               data-bs-target="#slider{{ news.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                                        </td>
+                                        <td>
+                                            <form method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="status_id" value={{ news.id }}>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input"
+                                                           type="checkbox"
+                                                           id="customSwitch1"
+                                                           name="status"
+                                                           {% if news.status %}checked{% endif %}
+                                                           onchange="this.form.submit()">
+                                                </div>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-info btn-sm mb-1"
+                                               href="{% url 'news_update' news.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                                            <button type="button"
+                                                    class="btn btn-danger btn-sm mb-1"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal{{ news.id }}">
+                                                <i class="side-menu__icon fe fe-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!-- modal for description-->
+                                    <div class="modal  fade"
+                                         id="desc{{ news.id }}"
+                                         tabindex="-1"
+                                         role="dialog">
+                                        <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                             role="document">
+                                            <div class="modal-content ">
+                                                <div class="modal-body">
+                                                    <div>
+                                                        <p>{{ news.description|safe }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- modal for slider-->
+                                    <div class="modal  fade"
+                                         id="slider{{ news.id }}"
+                                         tabindex="-1"
+                                         role="dialog">
+                                        <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                             role="document">
+                                            <div class="modal-content ">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Slider Images</h5>
+                                                    <button type="button"
+                                                            class="btn-close"
+                                                            data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {% if news.news_image.exists %}
+                                                        {% for slider in news.news_image.all %}
+                                                            <a href="{{ slider.image.url }}" data-lightbox="images" data-title="">
+                                                                <img src="{{ slider.image.url }}" height="100" width="100">
+                                                            </a>
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <p>No slider images available for this event</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal  fade"
+                                         id="deleteModal{{ news.id }}"
+                                         tabindex="-1"
+                                         role="dialog">
+                                        <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                             role="document">
+                                            <div class="modal-content ">
+                                                <div class="modal-body">
+                                                    <button aria-label="Close"
+                                                            class="btn-close position-absolute"
+                                                            data-bs-dismiss="modal">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
+                                                    <input type="hidden" id="hid">
+                                                    <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
+                                                    <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
+                                                    <form method="post">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="delete_id" value="{{ news.id }}">
+                                                        <button type="submit" class="btn btn-success btn-sm">Yes</button>
                                                         <button type="button"
-                                                                class="btn btn-danger btn-sm mb-1"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#deleteModal{{ news.id }}">
-                                                            <i class="side-menu__icon fe fe-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <!-- modal for description-->
-                                                <div class="modal  fade"
-                                                     id="desc{{ news.id }}"
-                                                     tabindex="-1"
-                                                     role="dialog">
-                                                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
-                                                         role="document">
-                                                        <div class="modal-content ">
-                                                            <div class="modal-body">
-                                                                <div>
-                                                                    <p>{{ news.description|safe }}</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                                class="btn btn-danger pd-x-25 btn-sm"
+                                                                data-bs-dismiss="modal">Cancel</button>
+                                                    </form>
                                                 </div>
-                                                <!-- modal for slider-->
-                                                <div class="modal  fade"
-                                                     id="slider{{ news.id }}"
-                                                     tabindex="-1"
-                                                     role="dialog">
-                                                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
-                                                         role="document">
-                                                        <div class="modal-content ">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Slider Images</h5>
-                                                                <button type="button"
-                                                                        class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                {% if news.news_image.exists %}
-                                                                    {% for slider in news.news_image.all %}
-                                                                        <a href="{{ slider.image.url }}" data-lightbox="images" data-title="">
-                                                                            <img src="{{ slider.image.url }}" height="100" width="100">
-                                                                        </a>
-                                                                    {% endfor %}
-                                                                {% else %}
-                                                                    <p>No slider images available for this event</p>
-                                                                {% endif %}
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal  fade"
-                                                     id="deleteModal{{ news.id }}"
-                                                     tabindex="-1"
-                                                     role="dialog">
-                                                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
-                                                         role="document">
-                                                        <div class="modal-content ">
-                                                            <div class="modal-body">
-                                                                <button aria-label="Close"
-                                                                        class="btn-close position-absolute"
-                                                                        data-bs-dismiss="modal">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                                                                <input type="hidden" id="hid">
-                                                                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
-                                                                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
-                                                                <form method="post">
-                                                                    {% csrf_token %}
-                                                                    <input type="hidden" name="delete_id" value="{{ news.id }}">
-                                                                    <button type="submit" class="btn btn-success btn-sm">Yes</button>
-                                                                    <button type="button"
-                                                                            class="btn btn-danger pd-x-25 btn-sm"
-                                                                            data-bs-dismiss="modal">Cancel</button>
-                                                                </form>
-                                                            </div>
-                                                            <div class="modal-footer"></div>
-                                                        </div>
-                                                    </div>
-                                                {% endfor %}
-                                            {% else %}
-                                                <tr>
-                                                    <td colspan='10'>
-                                                        <center>No record found</center>
-                                                    </td>
-                                                </tr>
-                                            {% endif %}
-                                        </tbody>
-                                    </table>
-                                    {% include 'pagination.html' %}
-                                </div>
-                            </div>
-                        </div>
+                                                <div class="modal-footer"></div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan='10'>
+                                            <center>No record found</center>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                        {% if all_news %}
+                            <div class="mt-4">{% include 'pagination.html' %}</div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-            <!-- ROW CLOSED -->
         </div>
-        <!-- CONTAINER END -->
     </div>
 </div>
+<!-- ROW CLOSED -->
+</div>
+<!-- CONTAINER END -->
 </div>
 {% include 'superadmin/layout/footer.html' %}

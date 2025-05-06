@@ -1,18 +1,6 @@
 {% include 'superadmin/layout/header.html' %}
 {% load static %}
-<!--app-content open-->
-<div class="main-content app-content mt-0">
-    <div class="side-app">
-        <!-- CONTAINER -->
-        <div class="main-container container-fluid">
-            <!-- PAGE-HEADER -->
-            <div class="page-header">
-                <h1 class="page-title">Event Gallery</h1>
-                <div>
-                    <a class="btn btn-primary" href="{% url 'gallery_view' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
-                </div>
-            </div>
-            <!-- PAGE-HEADER END -->
+
             <!-- ROW OPEN -->
             <form method="post" enctype="multipart/form-data" id="myform">
                 {% csrf_token %}
@@ -85,7 +73,6 @@
                                         <label for="" class="form-label">Date</label>
                                         <input type="date"
                                                class="form-control"
-                                               id=""
                                                placeholder="Name"
                                                name="date"
                                                value="{{ event.date }}">
@@ -94,7 +81,6 @@
                                         <label for="" class="form-label">Location*</label>
                                         <input type="text"
                                                class="form-control"
-                                               id=""
                                                placeholder="Location"
                                                name="location"
                                                value="{{ event.location }}"
@@ -104,7 +90,6 @@
                                         <label for="" class="form-label">Sequence*</label>
                                         <input type="text"
                                                class="form-control"
-                                               id=""
                                                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                placeholder="sequence"
                                                name="sequence"
@@ -115,7 +100,7 @@
                                             <label for="" class="form-label">Image Alt</label>
                                             <input type="text"
                                                    class="form-control"
-                                                   id=""
+                                            
                                                    placeholder="Image Alt"
                                                    name="image_alt"
                                                    value="{% if event.image_alt %}{{ event.image_alt }}{% endif %}">

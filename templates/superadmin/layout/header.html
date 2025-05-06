@@ -155,8 +155,7 @@
                             </a>
                         </li>
                         <li class="slide">
-                            <a class="side-menu__item has-link"
-                               href="{% url 'list_certification' %}">
+                            <a class="side-menu__item has-link" href="{% url 'list_certification' %}">
                                 <i class="side-menu__icon fa fa-adn"></i>
                                 <span class="side-menu__label">Certifications</span>
                             </a>
@@ -246,6 +245,36 @@
                 </div>
             </div>
         </div>
-    </body>
-</html>
-{% include "superadmin/layout/scripts.html" %}
+        <!--app-content open-->
+        <div class="main-content app-content mt-0">
+            <div class="side-app">
+                <!-- CONTAINER -->
+                <div class="main-container container-fluid">
+                    <!-- PAGE-HEADER -->
+                    <div class="page-header">
+                        <h1 class="page-title">{{ page_title }}</h1>
+                        {% if add_item %}
+                            <div>
+                                <a class="btn btn-primary" href={{ path_url }}><i class="side-menu__icon fe fe-plus mx-1"></i>{{ path_name }}</a>
+                            </div>
+                        {% endif %}
+                        {% if view_item %}
+                            <div>
+                                <a class="btn btn-primary" href={{ path_url }}><i class="side-menu__icon fe fe-eye mx-1"></i>{{ path_name }}</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% for message in messages %}
+                        <div class="alert alert-primary alert-dismissible fade show m-0 text-center border-0"
+                             id="success"
+                             role="alert">
+                            {{ message }}
+                            <button type="button"
+                                    class="btn-close text-dark "
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close">x</button>
+                        </div>
+                    {% endfor %}
+                </body>
+            </html>
+            {% include "superadmin/layout/scripts.html" %}

@@ -14,214 +14,180 @@
         object-fit: cover;
     }
 </style>
-<!--app-content open-->
-<div class="main-content app-content mt-0">
-    <div class="side-app">
-        <!-- CONTAINER -->
-        <div class="main-container container-fluid">
-            <!-- PAGE-HEADER -->
-            <div class="page-header">
-                <h1 class="page-title">Promotion information</h1>
-                <div>
-                    <a class="btn btn-primary" href="{% url 'promotion_add' %}"><i class="side-menu__icon fe fe-plus mx-1"></i>Add New</a>
-                </div>
+<!-- ROW OPEN -->
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">List Of Promotion information</h3>
             </div>
-            <!-- PAGE-HEADER END -->
-            {% for message in messages %}
-                <div class="alert alert-primary alert-dismissible fade show m-0 text-center"
-                     id="success"
-                     role="alert"
-                     style="border-radius: 0">
-                    {{ message }}
-                    <button type="button"
-                            class="btn-close text-dark "
-                            data-bs-dismiss="alert"
-                            aria-label="Close">x</button>
-                </div>
-            {% endfor %}
-            <!-- ROW OPEN -->
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">List Of Promotion information</h3>
-                        </div>
-                        <div class="card-body">
-                            <form>
-                                <div class="row">
-                                    <!---search_filter-->
-                                    {% include "search_filter.html" %}
-                                    <div class="form-group col-lg-5 col-7">
-                                        <span id ="message001" style="color:green;display:none"><b>Status Updated Successfully</b></span>
-                                    </div>
-                                    <div class="form-group col-lg-5 col-7">
-                                        <span id ="message002" style="color:green;display:none"><b>Latest Project Status Updated Successfully</b></span>
-                                    </div>
-                                </div>
-                            </form>
-                            <div class="table-responsive" id="promotion-table">
-                                {% load static %}
-                                <input type="hidden" id="page" name="page" value="{{ page }}">
-                                <table class="table border-top table-bordered mb-0 table-hover">
-                                    <thead>
-                                        <tr class="text-center">
-                                            <th>Sl No</th>
-                                            <th>Title</th>
-                                            <th>Name</th>
-                                            <th>Date</th>
-                                            <th>Description</th>
-                                            <th>Location</th>
-                                            <th>Image</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+            <div class="card-body">
+                <div class="row">
+                    <!---search_filter-->
+                    {% include "search_filter.html" %}
+                    <div class="table-responsive" id="promotion-table">
+                        {% load static %}
+                        <input type="hidden" id="page" name="page" value="{{ page }}">
+                        <table class="table border-top table-bordered mb-0 table-hover">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Sl No</th>
+                                    <th>Title</th>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Location</th>
+                                    <th>Image</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if all_promotions %}
+                                    {% for promotions in all_promotions %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ promotions.title }}</td>
+                                            <td>{{ promotions.name }}</td>
+                                            <td>{{ promotions.date }}</td>
+                                            <td>
+                                                <a href="javascript:void(0)"
+                                                   class="btn btn-success"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#desc{{ promotions.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                                            </td>
+                                            <td>{{ promotions.location }}</td>
+                                            <td>
+                                                <a href="javascript:void(0)"
+                                                   class="btn btn-success"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#slider{{ promotions.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                                            </td>
+                                            <td>
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="status_id" value={{ promotions.id }}>
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input"
+                                                               type="checkbox"
+                                                               id="customSwitch1"
+                                                               name="status"
+                                                               {% if promotions.status %}checked{% endif %}
+                                                               onchange="this.form.submit()">
+                                                    </div>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-info btn-sm mb-1"
+                                                   {% comment %}
+                                                   href="{% url 'promotion_update'  promotions.id %}"><i class="side-menu__icon fe fe-edit"></i></a> {% endcomment %}
+                                                <button type="button"
+                                                        class="btn btn-danger btn-sm mb-1"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#deleteModal{{ promotions.id }}">
+                                                    <i class="side-menu__icon fe fe-trash"></i>
+                                                </button>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% if all_promotions %}
-                                            {% for promotions in all_promotions %}
-                                                <tr>
-                                                    <td>{{ forloop.counter }}</td>
-                                                    <td>{{ promotions.title }}</td>
-                                                    <td>{{ promotions.name }}</td>
-                                                    <td>{{ promotions.date }}</td>
-                                                    <td>
-                                                        <a href="javascript:void(0)"
-                                                           class="btn btn-success"
-                                                           data-bs-toggle="modal"
-                                                           data-bs-target="#desc{{ promotions.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
-                                                    </td>
-                                                    <td>{{ promotions.location }}</td>
-                                                    <td>
-                                                        <a href="javascript:void(0)"
-                                                           class="btn btn-success"
-                                                           data-bs-toggle="modal"
-                                                           data-bs-target="#slider{{ promotions.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
-                                                    </td>
-                                                    <td>
+                                        <!-- modal for description-->
+                                        <div class="modal  fade"
+                                             id="desc{{ promotions.id }}"
+                                             tabindex="-1"
+                                             role="dialog">
+                                            <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                                 role="document">
+                                                <div class="modal-content ">
+                                                    <div class="modal-body">
+                                                        <div>
+                                                            <p>{{ promotions.description|safe }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- modal for slider-->
+                                        <div class="modal  fade"
+                                             id="slider{{ promotions.id }}"
+                                             tabindex="-1"
+                                             role="dialog">
+                                            <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                                 role="document">
+                                                <div class="modal-content ">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Slider Images</h5>
+                                                        <button type="button"
+                                                                class="btn-close"
+                                                                data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {% if promotions.promo_image.exists %}
+                                                            {% for slider in promotions.promo_image.all %}
+                                                                <a href="{{ slider.image.url }}" data-lightbox="images" data-title="">
+                                                                    <img src="{{ slider.image.url }}" height="100" width="100">
+                                                                </a>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <p>No slider images available for this event</p>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal  fade"
+                                             id="deleteModal{{ promotions.id }}"
+                                             tabindex="-1"
+                                             role="dialog">
+                                            <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                                                 role="document">
+                                                <div class="modal-content ">
+                                                    <div class="modal-body">
+                                                        <button aria-label="Close"
+                                                                class="btn-close position-absolute"
+                                                                data-bs-dismiss="modal">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
+                                                        <input type="hidden" id="hid">
+                                                        <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
+                                                        <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
                                                         <form method="post">
                                                             {% csrf_token %}
-                                                            <input type="hidden" name="status_id" value={{ promotions.id }}>
-                                                            <div class="form-check form-switch">
-                                                                <input class="form-check-input"
-                                                                       type="checkbox"
-                                                                       id="customSwitch1"
-                                                                       name="status"
-                                                                       {% if promotions.status %}checked{% endif %}
-                                                                       onchange="this.form.submit()">
-                                                            </div>
+                                                            <input type="hidden" name="delete_id" value="{{ promotions.id }}">
+                                                            <button type="submit" class="btn btn-success btn-sm">Yes</button>
+                                                            <button type="button"
+                                                                    class="btn btn-danger pd-x-25 btn-sm"
+                                                                    data-bs-dismiss="modal">Cancel</button>
                                                         </form>
-                                                    </td>
-                                                    <td>
-                                                        <a class="btn btn-info btn-sm mb-1"
-                                                           {% comment %}
-                                                           href="{% url 'promotion_update'  promotions.id %}"><i class="side-menu__icon fe fe-edit"></i></a> {% endcomment %}
-                                                        <button type="button"
-                                                                class="btn btn-danger btn-sm mb-1"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#deleteModal{{ promotions.id }}">
-                                                            <i class="side-menu__icon fe fe-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <!-- modal for description-->
-                                                <div class="modal  fade"
-                                                     id="desc{{ promotions.id }}"
-                                                     tabindex="-1"
-                                                     role="dialog">
-                                                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
-                                                         role="document">
-                                                        <div class="modal-content ">
-                                                            <div class="modal-body">
-                                                                <div>
-                                                                    <p>{{ promotions.description|safe }}</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
+                                                    <div class="modal-footer"></div>
                                                 </div>
-                                                <!-- modal for slider-->
-                                                <div class="modal  fade"
-                                                     id="slider{{ promotions.id }}"
-                                                     tabindex="-1"
-                                                     role="dialog">
-                                                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
-                                                         role="document">
-                                                        <div class="modal-content ">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Slider Images</h5>
-                                                                <button type="button"
-                                                                        class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                {% if promotions.promo_image.exists %}
-                                                                    {% for slider in promotions.promo_image.all %}
-                                                                        <a href="{{ slider.image.url }}" data-lightbox="images" data-title="">
-                                                                            <img src="{{ slider.image.url }}" height="100" width="100">
-                                                                        </a>
-                                                                    {% endfor %}
-                                                                {% else %}
-                                                                    <p>No slider images available for this event</p>
-                                                                {% endif %}
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal  fade"
-                                                     id="deleteModal{{ promotions.id }}"
-                                                     tabindex="-1"
-                                                     role="dialog">
-                                                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
-                                                         role="document">
-                                                        <div class="modal-content ">
-                                                            <div class="modal-body">
-                                                                <button aria-label="Close"
-                                                                        class="btn-close position-absolute"
-                                                                        data-bs-dismiss="modal">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                                                                <input type="hidden" id="hid">
-                                                                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
-                                                                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
-                                                                <form method="post">
-                                                                    {% csrf_token %}
-                                                                    <input type="hidden" name="delete_id" value="{{ promotions.id }}">
-                                                                    <button type="submit" class="btn btn-success btn-sm">Yes</button>
-                                                                    <button type="button"
-                                                                            class="btn btn-danger pd-x-25 btn-sm"
-                                                                            data-bs-dismiss="modal">Cancel</button>
-                                                                </form>
-                                                            </div>
-                                                            <div class="modal-footer"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        {% else %}
-                                            <tr>
-                                                <td colspan='10'>
-                                                    <center>No record found</center>
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                    </tbody>
-                                </table>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan='10'>
+                                            <center>No record found</center>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                        {% if all_promotions %}
+                            <div class="mt-4">
                                 {% include "pagination.html" %}
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- ROW CLOSED -->
     </div>
-    <!-- CONTAINER END -->
+    <!-- ROW CLOSED -->
 </div>
-</div>
-<!--app-content close-->
+<!-- CONTAINER END -->
 {% include 'superadmin/layout/footer.html' %}

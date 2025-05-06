@@ -1,143 +1,105 @@
-{% include 'superadmin/layout/header.html' %}
+{% include "superadmin/layout/header.html" %}
 {% load static %}
-<!--app-content open-->
-<div class="main-content app-content mt-0">
-    <div class="side-app">
-        <!-- CONTAINER -->
-        <div class="main-container container-fluid">
-            <!-- PAGE-HEADER -->
-            <div class="page-header">
-                <h1 class="page-title">Management Team</h1>
-                <div>
-                    <a class="btn btn-primary" href="{% url 'list_team' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
+<form method="post" enctype="multipart/form-data" id="myform">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-4 col-xl-4 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Add New Management Team</h4>
                 </div>
-            </div>
-            <!-- PAGE-HEADER END -->
-            <!-- ROW OPEN -->
-            <form method="post" enctype="multipart/form-data" id="myform">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-4 col-xl-4 col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Add New Management Team</h4>
-                            </div>
-                            <div class="card-body">
-                                <!-- <div class="row"> -->
-                                <!-- <div class="col-lg-12 col-sm-12 mb-4 mb-lg-0"> -->
-                                <!-- <input type="file"
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 mb-4 mb-lg-0">
+                            {{ form.image }}
+                            {% comment %} <input type="file"
         class="dropify"
         data-bs-height="180"
         name="image"
-        {% if list.image %}data-default-file="{{list.image.url}}"{% endif %}
-        {% if not list.image %}required {% endif %} /> -->
-                                <!-- </div> -->
-                                <!-- </div> -->
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <img {% if team.image %}src="{{ team.image.url }}" {% else %}src="" {% endif %}
-                                             class="" />
-                                        <label class="cabinet center-block">
-                                            <figure>
-                                                <img src=""
-                                                     class="gambar6 img-responsive img-thumbnail6"
-                                                     id="item-img-output6" />
-                                                <figcaption>
-                                                    <i class="fa fa-camera"></i>
-                                                </figcaption>
-                                            </figure>
-                                            <input type="file" class="item-img6 file center-block" name="image" />
-                                        </label>
+        {% if team.image %}data-default-file="{{team.image.url}}"{% endif %}
+        {% if not list.image %}required {% endif %} />  {% endcomment %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <img {% if team.image %}src="{{ team.image.url }}" {% else %}src="" {% endif %}
+                                 class="">
+                            <label class="cabinet center-block">
+                                <figure>
+                                    {% comment %} <img src=""
+      class="gambar6 img-responsive img-thumbnail6"
+      id="item-img-output6" /> {% endcomment %}
+                                    <figcaption>
+                                        <i class="fa fa-camera"></i>
+                                    </figcaption>
+                                </figure>
+                                <input type="file" class="item-img6 file center-block" name="image" />
+                            </label>
+                        </div>
+                        <input type="hidden" id="cropped-img" name="image">
+                        <!-- 1 -->
+                        <div class="modal modal6 fade"
+                             id="cropImagePop6"
+                             tabindex="-1"
+                             role="dialog"
+                             aria-labelledby="myModalLabel6"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button"
+                                                class="close"
+                                                data-bs-dismiss="modal"
+                                                aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h6 class="modal-title" id="myModalLabel6">Edit Photo</h6>
                                     </div>
-                                    <input type="hidden" id="cropped-img" name="image">
-                                    <!-- 1 -->
-                                    <div class="modal modal6 fade"
-                                         id="cropImagePop6"
-                                         tabindex="-1"
-                                         role="dialog"
-                                         aria-labelledby="myModalLabel6"
-                                         aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button"
-                                                            class="close"
-                                                            data-bs-dismiss="modal"
-                                                            aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                    <h6 class="modal-title" id="myModalLabel6">Edit Photo</h6>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div id="upload-demo6" class="center-block"></div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" id="cropImageBtn6" class="btn btn-primary">Crop</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="modal-body">
+                                        <div id="upload-demo6" class="center-block"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" id="cropImageBtn6" class="btn btn-primary">Crop</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-8 col-xl-8 col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row col-lg-12">
-                                    <div class="form-group col-lg-6 col-12">
-                                        <label for="" class="form-label">Name</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               id=""
-                                               placeholder="Name"
-                                               name="name"
-                                               value="{{ team.name }}"
-                                               required>
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        <label for="" class="form-label">Designation</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               id=""
-                                               placeholder="Designation"
-                                               name="role"
-                                               value="{{ team.role }}"
-                                               required>
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        <label for="" class="form-label">Sequence*</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               id=""
-                                               placeholder="Sequence"
-                                               name="sequence"
-                                               value="{{ team.sequence }}"
-                                               required>
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        <label for="" class="form-label">Image Alt</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               id=""
-                                               placeholder="Image Alt"
-                                               name="image_alt"
-                                               value="{% if team.image_alt %}{{ team.image_alt }}{% endif %}">
-                                    </div>
-                                    <div class="form-group col-lg-12 col-12">
-                                        <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
-                                        <a href="{% url 'list_team' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ROW CLOSED -->
-                    </div>
-                    <!-- CONTAINER END -->
                 </div>
-            </form>
+            </div>
         </div>
+        <div class="col-md-8 col-xl-8 col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row col-lg-12">
+                        <div class="form-group col-lg-6 col-12">
+                            <label for="" class="form-label">Name</label>
+                            {{ form.name }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label for="" class="form-label">Designation</label>
+                            {{ form.role }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label for="" class="form-label">Sequence*</label>
+                            {{ form.sequence }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label for="" class="form-label">Image Alt</label>
+                            {{ form.image_alt }}
+                        </div>
+                        <div class="form-group col-lg-12 col-12">
+                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                            <a href="{% url 'list_team' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ROW CLOSED -->
+        </div>
+        <!-- CONTAINER END -->
     </div>
-    <!--app-content close-->
-    {% include 'superadmin/layout/footer.html' %}
+</form>
+<!--app-content close-->
+{% include "superadmin/layout/footer.html" %}

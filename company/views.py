@@ -45,23 +45,45 @@ from company.models import (
     SEO,
     Supermarkets,
 )
-from company.mixin import SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin
+from company.mixin import (
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    SuperuserOrAdminRequiredMixin,
+)
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class SeoListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
+class SeoListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
     model = SEO
-    context_object_name = "all_seo"
     paginate_by = 10
+    context_object_name = "all_seo"
     template_name = "superadmin/seo/seo-view.html"
     search_field = "page_name"
+    extra_context = {
+        "page_title": "SEO",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("seo_add"),
+    }
 
 
-class SeoCreateView(CreateView):
+class SeoCreateView(LoginRequiredMixin, CreateView):
     model = SEO
     form_class = SEOForm
     template_name = "superadmin/seo/seo-create.html"
-    extra_context = {"page_title": "Create SEO"}
     success_url = reverse_lazy("list_seo")
+    extra_context = {
+        "page_title": "SEO",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_seo"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Seo Added Successfully...!!")
@@ -74,12 +96,18 @@ class SeoCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class SeoUpdateView(UpdateView):
+class SeoUpdateView(LoginRequiredMixin, UpdateView):
     model = SEO
     form_class = SEOForm
     template_name = "superadmin/seo/seo-create.html"
     extra_context = {"page_title": "Update SEO"}
     success_url = reverse_lazy("list_seo")
+    extra_context = {
+        "page_title": "SEO",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_seo"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Seo Updated Successfully...!!")
@@ -92,20 +120,36 @@ class SeoUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class TeamListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
+class TeamListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    ListView,
+):
     model = ManagementTeam
     paginate_by = 10
     context_object_name = "all_teams"
     template_name = "superadmin/team/management_team_view.html"
     search_field = "role"
+    extra_context = {
+        "page_title": "Management Team",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("team_add"),
+    }
 
 
-class TeamCreateView(CreateView):
+class TeamCreateView(LoginRequiredMixin, CreateView):
     model = ManagementTeam
     form_class = ManagementForm
     success_url = reverse_lazy("list_team")
     template_name = "superadmin/team/management_team_create.html"
-    extra_context = {"page_title": "Create Team"}
+    extra_context = {
+        "page_title": "Management Team",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_team"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Team Added Successfully...!!")
@@ -118,12 +162,17 @@ class TeamCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class TeamUpdateView(UpdateView):
+class TeamUpdateView(LoginRequiredMixin, UpdateView):
     model = ManagementTeam
     form_class = ManagementForm
     success_url = reverse_lazy("list_team")
     template_name = "superadmin/team/management_team_create.html"
-    extra_context = {"page_title": "Update Team"}
+    extra_context = {
+        "page_title": "Management Team",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_team"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Team Updated  Successfully...!!")
@@ -137,20 +186,36 @@ class TeamUpdateView(UpdateView):
 
 
 class TestimonialListView(
-    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
 ):
     model = CompanyTestimonial
-    paginated_by = 10
+    paginate_by = 10
     context_object_name = "all_testimonials"
     template_name = "superadmin/testimonial/testimonial_view.html"
     search_field = "name"
+    extra_context = {
+        "page_title": "Testimonial",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("testimonial_add"),
+    }
 
 
-class TestimonialCreateView(CreateView):
+class TestimonialCreateView(LoginRequiredMixin, CreateView):
     model = CompanyTestimonial
     form_class = TestimonialForm
     success_url = reverse_lazy("list_testimonial")
     template_name = "superadmin/testimonial/testimonial_create.html"
+    extra_context = {
+        "page_title": "Testimonial",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_testimonial"),
+    }
 
     def form_valid(self, form):
         # Handle cropped image
@@ -166,12 +231,17 @@ class TestimonialCreateView(CreateView):
         return super().form_valid(form)
 
 
-class TestimonialUpdateView(UpdateView):
+class TestimonialUpdateView(LoginRequiredMixin, UpdateView):
     model = CompanyTestimonial
     form_class = TestimonialForm
     success_url = reverse_lazy("list_testimonial")
     template_name = "superadmin/testimonial/testimonial_create.html"
-    extra_context = {"page_title": "Update Testimonial"}
+    extra_context = {
+        "page_title": "Testimonial",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_testimonial"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Testimonial Updated Successfully...!!")
@@ -186,20 +256,36 @@ class TestimonialUpdateView(UpdateView):
 
 
 class CertificationListView(
-    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
 ):
     model = Certification
     context_object_name = "all_certification"
     paginate_by = 10
     template_name = "superadmin/certification/certification_view.html"
+    extra_context = {
+        "page_title": "Certification",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("certification_add"),
+        "search": True,
+    }
 
 
-class CertificationCreateView(CreateView):
+class CertificationCreateView(LoginRequiredMixin, CreateView):
     model = Certification
     form_class = CertificationForm
     success_url = reverse_lazy("list_certification")
     template_name = "superadmin/certification/certification_create.html"
-    extra_context = {"page_title": "Create Certification"}
+    extra_context = {
+        "page_title": "Certification",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_certification"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Certification Added Successfully...!!")
@@ -214,12 +300,17 @@ class CertificationCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class CertificationUpdateView(UpdateView):
+class CertificationUpdateView(LoginRequiredMixin, UpdateView):
     model = Certification
     form_class = CertificationForm
     success_url = reverse_lazy("list_certification")
     template_name = "superadmin/certification/certification_create.html"
-    extra_context = {"page_title": "Update Certification"}
+    extra_context = {
+        "page_title": "Certification",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_certification"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Certification Updated Successfully...!!")
@@ -235,12 +326,22 @@ class CertificationUpdateView(UpdateView):
 
 
 class SupermarketListView(
-    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
 ):
     model = Supermarkets
     context_object_name = "all_supermarkets"
     paginate_by = 10
     template_name = "superadmin/supermarket/supermarket_view.html"
+    extra_context = {
+        "page_title": "Supermarkets",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("supermarket_add"),
+    }
 
 
 class SupermarketCreateView(CreateView):
@@ -248,7 +349,12 @@ class SupermarketCreateView(CreateView):
     model = Supermarkets
     form_class = SupermarketForm
     success_url = reverse_lazy("list_supermarket")
-    extra_context = {"page_title": "Create Supermarket"}
+    extra_context = {
+        "page_title": "Supermarkets",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_supermarket"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Supermarket Added Successfully...!!")
@@ -263,12 +369,17 @@ class SupermarketCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class SupermarketUpdateView(UpdateView):
+class SupermarketUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "superadmin/supermarket/supermarket_create.html"
     model = Supermarkets
     form_class = SupermarketForm
     success_url = reverse_lazy("list_supermarket")
-    extra_context = {"page_title": "Create Supermarket"}
+    extra_context = {
+        "page_title": "Supermarkets",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_supermarket"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Supermarket Updated Successfully...!!")
@@ -283,20 +394,37 @@ class SupermarketUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class BrandListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
+class BrandListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
     model = Brand
     context_object_name = "all_brands"
     paginate_by = 10
     template_name = "superadmin/brand/brand_view.html"
     search_field = "name"
+    extra_context = {
+        "page_title": "Brand",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("brand_add"),
+    }
 
 
-class BrandCreateView(CreateView):
+class BrandCreateView(LoginRequiredMixin, CreateView):
     model = Brand
     form_class = BrandForm
     success_url = reverse_lazy("brand_view")
-    success_url = reverse_lazy("brand_view")
     template_name = "superadmin/brand/brand_create.html"
+    extra_context = {
+        "page_title": "Brand",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("brand_view"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Brand Created Successfully...!!")
@@ -311,13 +439,19 @@ class BrandCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class BrandUpdateView(UpdateView):
+class BrandUpdateView(LoginRequiredMixin, UpdateView):
 
     model = Brand
     form_class = BrandForm
     success_url = reverse_lazy("brand_view")
     # success_url=reverse_lazy("list_brand")
     template_name = "superadmin/brand/brand_create.html"
+    extra_context = {
+        "page_title": "Brand",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("brand_view"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Brand Updated Successfully...!!")
@@ -332,19 +466,37 @@ class BrandUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class BlogListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
+class BlogListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
     model = Blog
     context_object_name = "all_blogs"
-    paginated_by = 10
+    paginate_by = 10
     template_name = "superadmin/blog/Blog_view.html"
     search_field = "name"
+    extra_context = {
+        "page_title": "Blog",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("blog_add"),
+    }
 
 
-class BlogCreateView(CreateView):
+class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Blog
     form_class = BlogForm
     template_name = "superadmin/blog/Blog_create.html"
     success_url = reverse_lazy("blog_view")
+    extra_context = {
+        "page_title": "Blog",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("blog_view"),
+    }
 
     def form_valid(self, form):
         self.object = form.save()
@@ -363,11 +515,17 @@ class BlogCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
     model = Blog
     form_class = BlogForm
     success_url = reverse_lazy("blog_view")
     template_name = "superadmin/blog/Blog_create.html"
+    extra_context = {
+        "page_title": "Blog",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("blog_view"),
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -392,19 +550,39 @@ class BlogUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class EventListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
+class EventListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
     model = Event
     context_object_name = "all_events"
     paginate_by = 10
     template_name = "superadmin/event gallery/event_gallery_view.html"
     search_field = "name"
 
+    extra_context = {
+        "page_title": "Event Gallery",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("gallery_add"),
+    }
 
-class EventCreateView(CreateView):
+
+class EventCreateView(LoginRequiredMixin, CreateView):
     model = Event
     form_class = EventForm
     success_url = reverse_lazy("gallery_view")
     template_name = "superadmin/event gallery/event_gallery_create.html"
+
+    extra_context = {
+        "page_title": "Event Gallery",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("gallery_view"),
+    }
 
     def form_valid(self, form):
         self.object = form.save()
@@ -426,11 +604,17 @@ class EventCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class EventUpdateView(UpdateView):
+class EventUpdateView(LoginRequiredMixin, UpdateView):
     model = Event
     form_class = EventForm
     success_url = reverse_lazy("gallery_view")
     template_name = "superadmin/event gallery/event_gallery_create.html"
+    extra_context = {
+        "page_title": "Event Gallery",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("gallery_view"),
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -477,19 +661,38 @@ class EventImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class NewsListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
+class NewsListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
     model = News
     context_object_name = "all_news"
     paginate_by = 10
     template_name = "superadmin/news/news_view.html"
     search_field = "name"
 
+    extra_context = {
+        "page_title": "News",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("news_add"),
+    }
 
-class NewsCreateView(CreateView):
+
+class NewsCreateView(LoginRequiredMixin, CreateView):
     model = News
     form_class = NewsForm
     success_url = reverse_lazy("news_view")
     template_name = "superadmin/news/news_create.html"
+    extra_context = {
+        "page_title": "News",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("news_view"),
+    }
 
     def form_valid(self, form):
         self.object = form.save()
@@ -509,11 +712,17 @@ class NewsCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class NewsUpdateView(UpdateView):
+class NewsUpdateView(LoginRequiredMixin, UpdateView):
     model = News
     form_class = NewsForm
     success_url = reverse_lazy("news_view")
     template_name = "superadmin/news/news_create.html"
+    extra_context = {
+        "page_title": "News",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("news_view"),
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -560,20 +769,36 @@ class NewsImageDelete(DeleteView):
 
 
 class PromotionListView(
-    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
 ):
     model = Promotion
     context_object_name = "all_promotions"
     paginate_by = 10
     template_name = "superadmin/promotion/promotion_info_view.html"
     search_field = "name"
+    extra_context = {
+        "page_title": "Promotion information",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("promotion_add"),
+    }
 
 
-class PromotionCreateView(CreateView):
+class PromotionCreateView(LoginRequiredMixin, CreateView):
     model = Promotion
     form_class = PromotionForm
     template_name = "superadmin/promotion/promotion_info_create.html"
     success_url = reverse_lazy("promotion_view")
+    extra_context = {
+        "page_title": "Promotion information",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("promotion_view"),
+    }
 
     def form_valid(self, form):
         self.object = form.save()
@@ -596,11 +821,17 @@ class PromotionCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class PromotionUpdateView(UpdateView):
+class PromotionUpdateView(LoginRequiredMixin, UpdateView):
     model = Promotion
     form_class = PromotionForm
     template_name = "superadmin/promotion/promotion_info_create.html"
     success_url = reverse_lazy("promotion_view")
+    extra_context = {
+        "page_title": "Promotion information",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("promotion_view"),
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -657,19 +888,37 @@ class BlogImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class HistoryListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
+class HistoryListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
     model = History
     context_object_name = "all_history"
     paginate_by = 10
     template_name = "superadmin/history/history_view.html"
     search_field = "year"
+    extra_context = {
+        "page_title": "History",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("history_add"),
+    }
 
 
-class HistoryCreateView(CreateView):
+class HistoryCreateView(LoginRequiredMixin, CreateView):
     model = History
     form_class = HistoryForm
     template_name = "superadmin/history/history_create.html"
     success_url = reverse_lazy("history_view")
+    extra_context = {
+        "page_title": "History",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("history_view"),
+    }
 
     def form_valid(self, form):
         self.objects = form.save()
@@ -692,11 +941,17 @@ class HistoryCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class HistoryUpdateView(UpdateView):
+class HistoryUpdateView(LoginRequiredMixin, UpdateView):
     model = History
     form_class = HistoryForm
     template_name = "superadmin/history/history_create.html"
     success_url = reverse_lazy("history_view")
+    extra_context = {
+        "page_title": "History",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("history_view"),
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -744,20 +999,38 @@ class HistoryImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class ContactListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
+class ContactListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
     model = ContactUs
     context_object_name = "all_contacts"
     paginate_by = 10
     template_name = "superadmin/contact/contact_view.html"
     search_field = "name"
+    extra_context = {
+        "page_title": "Contact",
+    }
 
 
-class EnquiryListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
+class EnquiryListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
     model = Enquiry
     context_object_name = "all_enquiry"
     paginate_by = 10
     template_name = "superadmin/enquiry/enquiry.html"
     search_field = "year"
+    extra_context = {
+        "page_title": "Enquiry",
+    }
 
 
 class ExportExcel(View):

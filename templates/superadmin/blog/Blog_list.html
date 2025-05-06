@@ -148,5 +148,7 @@
         {% endif %}
     </tbody>
 </table>
-{% include 'pagination.html' %}
+{% if all_blogs %}
+    <div class=" mt-2">{% include 'pagination.html' %}</div>
+{% endif %}
 </div>
