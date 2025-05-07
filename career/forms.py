@@ -1,18 +1,44 @@
 from django import forms
 from career.models import VacancyDetails, JobCategory
 from career.models import ApplicationDetails
+from django_summernote.widgets import SummernoteWidget
 
 
 class VacancyDetailForm(forms.ModelForm):
     class Meta:
         model = VacancyDetails
-        fields = "__all__"
+        fields = ["title", "location", "description", "type", "salary", "category"]
+
+        widgets = {
+            "description": SummernoteWidget(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            if isinstance(
+                field.widget,
+                (forms.TextInput, forms.NumberInput, forms.Select, forms.Textarea),
+            ):
+                field.widget.attrs.update(
+                    {"class": "form-control", "placeholder": field.label, "rows": 1}
+                )
+            elif isinstance(field.widget, forms.CheckboxInput):
+                field.widget.attrs.update({"class": "form-check-input"})
 
 
 class JobCategoryForm(forms.ModelForm):
     class Meta:
         model = JobCategory
-        fields = "__all__"
+        fields = ["name"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update(
+                {"class": "form-control", "placeholder": "Name"}
+            )
 
 
 class ApplicationDetailsForm(forms.ModelForm):
@@ -37,41 +63,28 @@ class ApplicationDetailsForm(forms.ModelForm):
             "first_name": forms.TextInput(attrs={"placeholder": "First Name"}),
             "last_name": forms.TextInput(attrs={"placeholder": "Last Name"}),
             "date_of_birth": forms.DateInput(attrs={"type": "date"}),
-            "message": forms.Textarea(attrs={"rows": 4}),
-            "notice_period": forms.Select(
-                choices=ApplicationDetails.NOTICE_PERIOD_CHOICES
-            )
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["date_of_birth"].input_formats = ["%Y-%m-%d"]
-        self.fields["phone_number"].widget.attrs.update({
-            "onkeypress": "return event.charCode >= 48 && event.charCode <= 57"
-        })
-        original = [
-            (val, label)
-            for val, label in self.fields["notice_period"].choices
-            if val != ""
-        ]
-        self.fields["notice_period"].choices = [
-            ("", "Select any")
-        ] + original
+
         for fname, field in self.fields.items():
             widget = field.widget
             if isinstance(widget, forms.FileInput):
                 widget.attrs.update({"class": ""})
             else:
-                widget.attrs.update({"class": "form-control"})
+                widget.attrs.update({"class": "form-control", "rows": 4})
 
-    def clean_upload_cv(self):
-        upload_cv = self.cleaned_data.get("upload_cv")
-        if upload_cv and not upload_cv.name.lower().endswith('.pdf'):
-            raise forms.ValidationError("Only PDF files are allowed.")
-        return upload_cv
+    def clean(self):
+        cleaned_data = super().clean()
+        upload_cv = cleaned_data.get("upload_cv")
+        cover_letter = cleaned_data.get("cover_letter")
 
-    def clean_cover_letter(self):
-        cover_letter = self.cleaned_data.get("cover_letter")
-        if cover_letter and not cover_letter.name.lower().endswith('.pdf'):
-            raise forms.ValidationError("Only PDF files are allowed.")
-        return cover_letter
+        for file_field, file_value in [
+            ("upload_cv", upload_cv),
+            ("cover_letter", cover_letter),
+        ]:
+            if file_value and not file_value.name.lower().endswith(".pdf"):
+                self.add_error(file_field, "Only PDF files are allowed.")
+
+        return cleaned_data

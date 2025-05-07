@@ -13,5 +13,7 @@ urlpatterns = [
     path("career/", include("career.urls")),
     path("products/", include("products.urls")),
     path("accounts/", include("accounts.urls")),
+    path("summernote/", include("django_summernote.urls")),
+
     path("administration/", include("administration.urls")),
 ]

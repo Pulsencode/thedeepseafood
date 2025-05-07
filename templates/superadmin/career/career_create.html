@@ -1,82 +1,51 @@
-{% include 'superadmin/layout/header.html' %}
+{% include "superadmin/layout/header.html" %}
 {% load static %}
-
-
-<!--app-content open-->
-<div class="main-content app-content mt-0">
-    <div class="side-app">
-        <!-- CONTAINER -->
-        <div class="main-container container-fluid">
-            <!-- PAGE-HEADER -->
-            <div class="page-header">
-                <h1 class="page-title">Career</h1>
-                <div>
-                    <a class="btn btn-primary" href="{% url 'career_view' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View All</a>
-                </div>
-            </div>
-            <!-- PAGE-HEADER END -->
-
-            <!-- ROW OPEN -->
-            <form method="post" enctype="multipart/form-data" id="myform">
-                {% csrf_token %}
-                <div class="row">
-                <div class="col-md-12 col-xl-12 col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            
-                                <div class="row col-lg-12">
-                                    <!-- <div class="col-lg-6"> -->
-                                        <!-- <div class="form-group"> -->
-                                            <!-- <label class="form-label">Category </label> -->
-                                            <!-- <select name="cat" class="form-control form-select select2 select2-hidden-accessible" data-bs-placeholder="Select Country" tabindex="-1" aria-hidden="true"> -->
-                                                <!-- <option value="">Select Category</option> -->
-                                                <!-- {% for s in category %} -->
-                                                <!-- <option {% if list.category.id == s.id %} selected{% endif %} value="{{s.id}}">{{s.name}}</option> -->
-                                                <!-- {% endfor %} -->
-                                            <!-- </select> -->
-                                        <!-- </div> -->
-                                    <!-- </div> -->
-                                    <div class="form-group col-lg-6 col-6">
-                                        <label for="" class="form-label"> Title </label>
-                                        <input type="text" class="form-control" id="" placeholder="Name" name="title" value="{{list.title}}" required>
-                                    </div>
-                                    <div class="form-group col-lg-6 col-6">
-                                        <label for="" class="form-label"> Location </label>
-                                        <input type="text" class="form-control" id="" placeholder="Location" name="location" value="{{list.location}}" required>
-                                    </div>
-                                    <div class="form-group col-lg-6 col-6">
-                                        <label for="" class="form-label"> Salary package </label>
-                                        <input type="text" class="form-control" id="" placeholder="Salary" name="salary" value="{{list.salary}}" >
-                                    </div>
-                                    <div class="form-group col-lg-6 col-6 ">
-                                        <label  class="form-label">Job Type</label>
-                                        <select id="multiple" name="types" class="js-states form-control" multiple required>
-                                            <option value="Full Time" {% if 'Full Time' in types_list %}selected{% endif %}>Full Time</option>
-                                            <option value="Part Time" {% if 'Part Time' in types_list %}selected{% endif %}>Part Time</option>
-                                            <option value="Hybrid" {% if 'Hybrid' in types_list %}selected{% endif %}>Hybrid</option>
-                                            <option value="Remote" {% if 'Remote' in types_list %}selected{% endif %}>Remote</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1" class="form-label">Description</label>
-                                            <textarea class="form-control" id="summernote" name="desc">{{list.description|safe}}</textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-lg-12 col-12">
-                                        <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
-                                        <a href="{% url 'career_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
-                                    </div>
-                                </div>
-                    
+<!-- ROW OPEN -->
+<form method="post" enctype="multipart/form-data" id="myform">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-12 col-xl-12 col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row col-lg-12">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                {{ form.category }}
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6 col-6">
+                            <label for="" class="form-label">Title</label>
+                            {{ form.title }}
+                        </div>
+                        <div class="form-group col-lg-6 col-6">
+                            <label for="" class="form-label">Location</label>
+                            {{ form.location }}
+                        </div>
+                        <div class="form-group col-lg-6 col-6">
+                            <label for="" class="form-label">Salary package</label>
+                            {{ form.salary }}
+                        </div>
+                        <div class="form-group col-lg-6 col-6 ">
+                            <label class="form-label">Job Type</label>
+                            {{ form.type }}
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="" class="form-label">Description</label>
+                                {{ form.description }}
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-12 col-12">
+                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                            <a href="{% url 'career_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
                         </div>
                     </div>
-                    <!-- ROW CLOSED -->
                 </div>
-                <!-- CONTAINER END -->
-                </div>
-            </form>
+            </div>
+            <!-- ROW CLOSED -->
         </div>
+        <!-- CONTAINER END -->
     </div>
-
-    {% include 'superadmin/layout/footer.html' %}
+</form>
+{% include "superadmin/layout/footer.html" %}
