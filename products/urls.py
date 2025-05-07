@@ -17,25 +17,11 @@ urlpatterns = [
         "subcategory-add", views.SubcategoryCreateView.as_view(), name="subcategory_add"
     ),
     path(
-        "subcategory-update/<int:pk>/",
+        "subcategory-update/<int:id>/",
         views.SubcategoryUpdateView.as_view(),
         name="subcategory_update",
     ),
-    # path("recipe-view", views.RecipeListView.as_view(), name="recipe_view"),
-    # path("recipe-add", views.RecipeCreateView.as_view(), name="recipe_add"),
-    # path(
-    #     "recipe-update/<int:pk>/",
-    #     views.RecipeUpdateView.as_view(),
-    #     name="recipe_update",
-    # ),
-    # #
-    # path("delete-ingredient/", views.delete_spec, name="delete_ingredient"),
-    # path(
-    #     "delete-recipeslider/<int:image_id>/",
-    #     views.delete_recipeslider,
-    #     name="delete_recipeslider",
-    # ),
-    #
+
     path("product-view", views.ProductListView.as_view(), name="product_view"),
     path("product-add", views.ProductCreateView.as_view(), name="product_add"),
     path(
@@ -58,40 +44,56 @@ urlpatterns = [
         views.ProductDetailsUpdateView.as_view(),
         name="product_details_update",
     ),
+    # path("recipe-view", views.RecipeListView.as_view(), name="recipe_view"),
+    # path("recipe-add", views.RecipeCreateView.as_view(), name="recipe_add"),
+    # path(
+    #     "recipe-update/<int:pk>/",
+    #     views.RecipeUpdateView.as_view(),
+    #     name="recipe_update",
+    # ),
+    # #
+    # path("delete-ingredient/", views.delete_spec, name="delete_ingredient"),
+    # path(
+    #     "delete-recipeslider/<int:image_id>/",
+    #     views.delete_recipeslider,
+    #     name="delete_recipeslider",
+    # ),
+    #
+   
     # brandproduct
-    path(
-        "brand-product-view",
-        views.BrandProductListView.as_view(),
-        name="brand_product_view",
-    ),
-    path(
-        "brand-product-add",
-        views.BrandProductCreateView.as_view(),
-        name="brand_product_add",
-    ),
-    path(
-        "brand-product-update/<int:pk>/",
-        views.BrandProductUpdateView.as_view(),
-        name="brand_product_update",
-    ),
-    path(
-        "brand-product-details-view",
-        views.BrandProductDetailsListView.as_view(),
-        name="brand_product_details_view",
-    ),
-    path(
-        "brandproduct-getcategory/",
-        views.BrandLoadCategory.as_view(),
-        name="getbrandcategory",
-    ),
-    path(
-        "brand-product-details-add",
-        views.BrandProductDetailsCreateView.as_view(),
-        name="brand_product_details_add",
-    ),
-    path(
-        "brand-product-details-update/<int:pk>/",
-        views.BrandProductDetailsUpdateView.as_view(),
-        name="brand_product_details_update",
-    ),
-]
+#     path(
+#         "brand-product-view",
+#         views.BrandProductListView.as_view(),
+#         name="brand_product_view",
+#     ),
+#     path(
+#         "brand-product-add",
+#         views.BrandProductCreateView.as_view(),
+#         name="brand_product_add",
+#     ),
+#     path(
+#         "brand-product-update/<int:pk>/",
+#         views.BrandProductUpdateView.as_view(),
+#         name="brand_product_update",
+#     ),
+#     path(
+#         "brand-product-details-view",
+#         views.BrandProductDetailsListView.as_view(),
+#         name="brand_product_details_view",
+#     ),
+#     path(
+#         "brandproduct-getcategory/",
+#         views.BrandLoadCategory.as_view(),
+#         name="getbrandcategory",
+#     ),
+#     path(
+#         "brand-product-details-add",
+#         views.BrandProductDetailsCreateView.as_view(),
+#         name="brand_product_details_add",
+#     ),
+#     path(
+#         "brand-product-details-update/<int:pk>/",
+#         views.BrandProductDetailsUpdateView.as_view(),
+#         name="brand_product_details_update",
+#     ),
+ ]

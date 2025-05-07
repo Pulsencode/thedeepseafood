@@ -22,26 +22,11 @@ class CategoryForm(forms.ModelForm):
 
         self.fields["brand"].queryset = Brand.objects.filter(status=True)
         self.fields["brand"].empty_label = "Select Brand"
-        self.fields["brand"].widget.attrs.update(
-            {"class": "form-control form-select select2", "required": "true"}
-        )
 
-        self.fields["name"].widget.attrs.update(
-            {
-                "class": "form-control",
-                "placeholder": "Name",
-                "required": "true",
-            }
-        )
-
-        self.fields["sequence"].widget.attrs.update(
-            {
-                "class": "form-control",
-                "placeholder": "Sequence",
-                "required": "true",
-                "onkeypress": "return event.charCode >= 48 && event.charCode <= 57",
-            }
-        )
+        for field in self.fields:
+            self.fields[field].widget.attrs.update(
+                {"class": "form-control", "placeholder": self.fields[field].label}
+            )
 
 
 # class RecipeForm(forms.ModelForm):
@@ -99,18 +84,19 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = "__all__"
+        fields = ["name", "image", "sequence", "type", "image_alt"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for fname, field in self.fields.items():
             widget = field.widget
-            if isinstance(widget, forms.CheckboxInput):
-                widget.attrs.update({"class": "form-check-input"})
-            elif isinstance(widget, forms.HiddenInput):
+            if isinstance(widget, forms.HiddenInput):
                 widget.attrs.update({"id": "cropped-img", "name": "image"})
             else:
-                widget.attrs.update({"class": "form-control"})
+                if not isinstance(widget, forms.CheckboxInput):
+                    widget.attrs.update(
+                        {"class": "form-control", "placeholder": field.label}
+                    )
 
     # def save(self, commit=True):
     #     instance = super().save(commit=False)
@@ -148,50 +134,17 @@ class ProductDetailsForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        deepsea_active_filters = {"status": True, "brand__name": "Deep Sea"}
-        self.fields["product"].queryset = Product.objects.filter(
-            **deepsea_active_filters
-        ).order_by("-id")
-        self.fields["category"].queryset = Category.objects.filter(
-            **deepsea_active_filters
-        ).order_by("-id")
-
-        for name, field in self.fields.items():
-            widget = field.widget
-
-            if isinstance(widget, forms.Select):
-                widget.attrs.update(
-                    {
-                        "class": "select-drop",
-                        "required": True,
-                    }
-                )
-
-            elif isinstance(widget, forms.Textarea):
-                widget.attrs.update(
-                    {
-                        "class": "form-control",
-                        "placeholder": field.label or name.replace("_", " ").title(),
-                    }
-                )
-
-            else:
-                widget.attrs.update(
-                    {
-                        "class": "form-control",
-                        "placeholder": field.label or name.replace("_", " ").title(),
-                    }
-                )
-
-        self.fields["product"].label = "Product*"
-        self.fields["category"].label = "Category*"
+        for field_name in self.fields:
+            field = self.fields[field_name]
+            field.widget.attrs.update(
+                {"class": "form-control", "rows": 4, "placeholder": field.label}
+            )
 
 
 class BrandProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ["name", "brand", "sequence", "image_alt"]
+        fields = ["name", "sequence", "image_alt"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

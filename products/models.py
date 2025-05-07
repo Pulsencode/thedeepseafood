@@ -24,19 +24,21 @@ class Category(StatusTimestampBase, ImageBase):
 
 class Product(StatusTimestampBase, ImageBase):
     TYPE_CHOICES = (
+        ("", "Select the Type"),
+
         ("local catch", "Local Catch"),
         ("imported", "Imported"),
         ("value added", "Value Added"),
     )
     name = models.CharField(max_length=150)
     homepage = models.BooleanField(default=False)
-    brand = models.ForeignKey(
-        Brand,
-        null=True,
-        blank=True,
-        related_name="product_brand",
-        on_delete=models.CASCADE,
-    )
+    # brand = models.ForeignKey(
+    #     Brand,
+    #     null=True,
+    #     blank=True,
+    #     related_name="product_brand",
+    #     on_delete=models.CASCADE,
+    # )
     sequence = models.PositiveIntegerField(default=0)
     type = models.CharField(max_length=200, choices=TYPE_CHOICES)
     slug = AutoSlugField(
