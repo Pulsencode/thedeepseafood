@@ -35,19 +35,21 @@
     </div>
 {% endfor %}
 {% if total > 3 %}
-    <div class="col-12 text-center mt-40">
-        <a href="#"
-           class="btn bg-white text-blue rounded-25 btn-icon btn-zoom-hover btn-more"
-           id="loadMoreNews"
-           data-type="{{ type }}"
-           data-total="{{ total }}"
-           data-limit="4"
-           onclick="loadmore()">
-            <span>Load More</span>
-            <img alt="Right Arrow"
-                 width=""
-                 height=""
-                 src="{% static 'public_interface/images/icons/right-arrow-blue.png' %}">
-        </a>
+    <div class="col-12 text-center mt-40 load-more-container">
+        <div class="load-more-content">
+            <a class="btn load-more-btn bg-white text-blue rounded-25 btn-icon btn-zoom-hover news-load-more"
+               href="#"
+               id="loadMore"
+               onclick="loadmore(this)"
+               data-limit="4"
+               data-total="{{ total_count }}"
+               data-type="company">
+                <span>Load More</span>
+                <img src="{% static 'public_interface/images/icons/right-arrow-blue.png' %}"
+                     width=""
+                     height=""
+                     alt="Right Arrow">
+            </a>
+        </div>
     </div>
 {% endif %}
