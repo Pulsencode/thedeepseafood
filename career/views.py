@@ -9,9 +9,16 @@ from django.contrib import messages
 # from django.http import JsonResponse
 from company.mixin import StatusUpdateAndDeleteMixin, SearchAndStatusFilterMixin
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from accounts.mixin import HROnlyAccessMixin, SuperuserOrAdminRequiredMixin
+
 
 class JobCategoryListView(
-    StatusUpdateAndDeleteMixin, SearchAndStatusFilterMixin, ListView
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    StatusUpdateAndDeleteMixin,
+    SearchAndStatusFilterMixin,
+    ListView,
 ):
     model = JobCategory
     context_object_name = "all_job_category"
@@ -19,13 +26,27 @@ class JobCategoryListView(
     ordering = ["-id"]
     template_name = "superadmin/job category/job_category_view.html"
     search_field = "name"
+    extra_context = {
+        "page_title": "Job Category",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("job_category_add"),
+    }
 
 
-class JobCategoryCreateView(CreateView):
+class JobCategoryCreateView(
+    LoginRequiredMixin, SuperuserOrAdminRequiredMixin, CreateView
+):
     model = JobCategory
     form_class = JobCategoryForm
-    success_url = reverse_lazy("job_category_list")
+    success_url = reverse_lazy("job_category_view")
     template_name = "superadmin/job category/job_category_create.html"
+    extra_context = {
+        "page_title": "Job Category",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("job_category_view"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Job Category Added Successfully...!!")
@@ -38,11 +59,19 @@ class JobCategoryCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class JobCategoryUpdateView(UpdateView):
+class JobCategoryUpdateView(
+    LoginRequiredMixin, SuperuserOrAdminRequiredMixin, UpdateView
+):
     model = JobCategory
     form_class = JobCategoryForm
-    success_url = reverse_lazy("job_category_list")
+    success_url = reverse_lazy("job_category_view")
     template_name = "superadmin/job category/job_category_create.html"
+    extra_context = {
+        "page_title": "Job Category",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("job_category_view"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Job Category Updated Successfully...!!")
@@ -55,20 +84,38 @@ class JobCategoryUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class CareerListView(StatusUpdateAndDeleteMixin, SearchAndStatusFilterMixin, ListView):
+class CareerListView(
+    LoginRequiredMixin,
+    HROnlyAccessMixin,
+    StatusUpdateAndDeleteMixin,
+    SearchAndStatusFilterMixin,
+    ListView,
+):
     model = VacancyDetails
     paginate_by = 10
     ordering = ["-id"]
     context_object_name = "all_vacancy"
     template_name = "superadmin/career/career_view.html"
     search_field = "title"
+    extra_context = {
+        "page_title": "Career",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("career_add"),
+    }
 
 
-class CareerCreateView(CreateView):
+class CareerCreateView(LoginRequiredMixin, HROnlyAccessMixin, CreateView):
     model = VacancyDetails
     success_url = reverse_lazy("career_view")
     form_class = VacancyDetailForm
     template_name = "superadmin/career/career_create.html"
+    extra_context = {
+        "page_title": "Career",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("career_view"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Career Added Successfully...!!")
@@ -82,11 +129,17 @@ class CareerCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class CareerUpdateView(UpdateView):
+class CareerUpdateView(LoginRequiredMixin, HROnlyAccessMixin, UpdateView):
     model = VacancyDetails
     success_url = reverse_lazy("career_view")
     form_class = VacancyDetailForm
     template_name = "superadmin/career/career_create.html"
+    extra_context = {
+        "page_title": "Career",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("career_view"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Career Update Successfully...!!")
@@ -101,7 +154,11 @@ class CareerUpdateView(UpdateView):
 
 
 class ApplicationListView(
-    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
+    LoginRequiredMixin,
+    HROnlyAccessMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
 ):  # TODO need to filter wise date
     model = ApplicationDetails
     context_object_name = "all_applications"
@@ -110,4 +167,4 @@ class ApplicationListView(
     template_name = "superadmin/application/application_view.html"
     search_field = "job"
     search_field = "start_date"
-    extra_context = {"status": True, "search_date": True}
+    extra_context = {"page_title": "Application", "status": True, "search_date": True}

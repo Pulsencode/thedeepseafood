@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "career",
     "phonenumber_field",
     "adminsortable2",
+    "django_summernote",
 ]
 
 MIDDLEWARE = [
@@ -121,6 +122,22 @@ LOGOUT_REDIRECT_URL = "home"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+
+SUMMERNOTE_CONFIG = {
+    "iframe": True,  # Use iframe for rendering
+    "summernote": {
+        "width": "100%",
+        "height": "400px",
+    },
+    "toolbar": [
+        ["style", ["style"]],
+        ["font", ["bold", "italic", "underline", "clear"]],
+        ["para", ["ul", "ol", "paragraph"]],
+        ["table", ["table"]],
+        ["view", ["fullscreen", "codeview", "help"]],
+    ],
+}
 
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

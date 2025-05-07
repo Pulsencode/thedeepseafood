@@ -14,7 +14,7 @@ urlpatterns = [
         name="job_category_add",
     ),
     path(
-        "job-category-update/<int:id>/",
+        "job-category-update/<int:pk>/",
         views.JobCategoryUpdateView.as_view(),
         name="job_category_update",
     ),

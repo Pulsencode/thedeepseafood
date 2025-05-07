@@ -39,7 +39,7 @@ class VacancyDetails(StatusTimestampBase):
         null=True,
         blank=True,
         max_length=100,
-        help_text="Status of the job's hiring process (e.g., 'Urgent Requirement')."
+        help_text="Status of the job's hiring process (e.g., 'Urgent Requirement').",
     )
     type = MultiSelectField(choices=JOB_TYPE_CHOICES, null=True, blank=True)
     salary = models.CharField(max_length=150, null=True, blank=True)
@@ -59,6 +59,7 @@ class ApplicationDetails(StatusTimestampBase):
         on_delete=models.CASCADE,
     )
     NOTICE_PERIOD_CHOICES = [
+        ("", "Select any"),
         ("immediate", "Immediate Join"),
         ("2_weeks", "2 Weeks"),
         ("1_month", "1 Month"),
@@ -66,20 +67,20 @@ class ApplicationDetails(StatusTimestampBase):
 
     start_date = models.DateField(null=True, blank=True)
     first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(null=True)
     phone_number = PhoneNumberField(null=True)
     notice_period = models.CharField(
         max_length=100,
         choices=NOTICE_PERIOD_CHOICES,
     )
-    linkedin_url = models.URLField(null=True)
-    portfolio_url = models.URLField(null=True)
+    linkedin_url = models.URLField(null=True, blank=True)
+    portfolio_url = models.URLField(null=True, blank=True)
     date_of_birth = models.DateField(null=True)
 
     message = models.TextField(null=True, blank=True)
     upload_cv = models.FileField(upload_to="cv")
-    cover_letter = models.FileField(upload_to="cover_letter")
+    cover_letter = models.FileField(upload_to="cover_letter", null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Application Details"

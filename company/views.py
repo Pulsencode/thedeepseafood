@@ -48,9 +48,9 @@ from company.models import (
 from company.mixin import (
     SearchAndStatusFilterMixin,
     StatusUpdateAndDeleteMixin,
-    SuperuserOrAdminRequiredMixin,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
+from accounts.mixin import SuperuserOrAdminRequiredMixin
 
 
 class SeoListView(
