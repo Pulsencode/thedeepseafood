@@ -1,8 +1,7 @@
 {% load static %}
-<input type="hidden" id="page" name="page" value="{{ page }}">
 <table class="table border-top table-bordered mb-0 table-hover">
     <thead>
-        <tr>
+        <tr class="text-center">
             <th>Sl No</th>
             <th class="psticky">Product</th>
             <!-- <th>brand</th> -->
@@ -20,8 +19,6 @@
             <th>instruction</th>
             <th>storage instruction</th>
             <th>causion</th>
-            <!-- <th>image</th> -->
-            <!-- <th>home page</th> -->
             <th>Status</th>
             <th>Action</th>
         </tr>
@@ -29,7 +26,7 @@
     <tbody>
         {% if products_details %}
             {% for product in products_details %}
-                <tr>
+                <tr class="text-center">
                     <td>{{ forloop.counter }}</td>
                     <td class="psticky">{{ product.product.name }}</td>
                     <!-- <td>{{d.brand}}</td> -->
@@ -127,7 +124,8 @@
                         </form>
                     </td>
                     <td>
-                        {% comment %} <a class="btn btn-info btn-sm mb-1" href="{% url 'product_details_update' d.id %}?page={{ page }}"><i class="side-menu__icon fe fe-edit"></i></a> {% endcomment %}
+                        <a class="btn btn-info btn-sm mb-1"
+                           href="{% url 'product_details_update' product.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
                         <button type="button"
                                 class="btn btn-danger btn-sm mb-1"
                                 data-bs-toggle="modal"
@@ -338,7 +336,7 @@
                 </div>
             {% endfor %}
         {% else %}
-            <tr>
+            <tr class="text-center">
                 <td colspan='10'>
                     <center>No record found</center>
                 </td>
@@ -346,4 +344,6 @@
         {% endif %}
     </tbody>
 </table>
-{% include "pagination.html" %}
+{% if products_details %}
+    <div class="mt-4">{% include "pagination.html" %}</div>
+{% endif %}

@@ -36,7 +36,7 @@ class ProductDetailsInline(admin.TabularInline):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "brand", "type", "homepage", "created")
+    list_display = ("name", "type", "homepage", "created")
     list_filter = ("type", "homepage")
     search_fields = ("name",)
     ordering = ("sequence",)

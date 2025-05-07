@@ -1,52 +1,68 @@
-import base64
+# import base64
 
 from django.contrib import messages
-from django.contrib.auth.mixins import UserPassesTestMixin
 
 # # import os
-from django.core.files.base import ContentFile
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+# from django.core.files.base import ContentFile
+# from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
-from django.db.models import Q
-from django.http import JsonResponse
+# from django.db.models import Q
+# from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from django.template import loader
+
+# from django.template import loader
 from django.urls import reverse_lazy
-from django.views import View
+
+# from django.views import View
 from django.views.generic import CreateView, TemplateView, UpdateView, ListView
-from company.models import Brand
+
+# from company.models import Brand
 from products.forms import (
-    BrandProductDetailsForm,
-    BrandProductForm,
+    # BrandProductDetailsForm,
+    # BrandProductForm,
     CategoryForm,
     ProductDetailsForm,
     ProductForm,
 )
 from products.models import Category, Product, ProductDetails, Subcategory
-from public_interface.utils import is_ajax, render_helper
+
+# from public_interface.utils import is_ajax, render_helper
 from company.mixin import SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin
-
-
-class AdminPermissionMixin(UserPassesTestMixin):
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+from django.contrib.auth.mixins import LoginRequiredMixin
+from accounts.mixin import SuperuserOrAdminRequiredMixin
 
 
 class CategoryListView(
-    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
 ):
     model = Category
     paginate_by = 10
     context_object_name = "all_category"
     template_name = "superadmin/category/Category_view.html"
     search_field = "name"
+    extra_context = {
+        "page_title": "Category",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("category_add"),
+    }
 
 
-class CategoryCreateView(CreateView):
+class CategoryCreateView(LoginRequiredMixin, SuperuserOrAdminRequiredMixin, CreateView):
     model = Category
     template_name = "superadmin/category/Category_create.html"
     form_class = CategoryForm
     success_url = reverse_lazy("category_view")
+    extra_context = {
+        "page_title": "Create Category",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("category_view"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Category Added Successfully...!!")
@@ -60,11 +76,17 @@ class CategoryCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class CategoryUpdateView(UpdateView):
+class CategoryUpdateView(LoginRequiredMixin, SuperuserOrAdminRequiredMixin, UpdateView):
     model = Category
     form_class = CategoryForm
     template_name = "superadmin/category/Category_create.html"
     success_url = reverse_lazy("category_view")
+    extra_context = {
+        "page_title": "Update Category",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("category_view"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Category Added Successfully...!!")
@@ -76,6 +98,74 @@ class CategoryUpdateView(UpdateView):
             for errors in error_list:
                 messages.error(self.request, errors)
         return super().form_invalid(form)
+
+
+class SubcategoryListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
+    model = Subcategory
+    paginate_by = 10
+    ordering = ["-id"]
+    context_object_name = "all_subcategory"
+    template_name = "superadmin/subcategory/Subcategory_view.html"
+    search_field = "name"
+    extra_context = {
+        "page_title": "Sub Category",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("subcategory_add"),
+    }
+
+
+class SubcategoryCreateView(
+    LoginRequiredMixin, SuperuserOrAdminRequiredMixin, TemplateView
+):
+    template_name = "superadmin/subcategory/Subcategory_create.html"
+
+    extra_context = {
+        "page_title": "Sub Category",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("subcategory_view"),
+    }
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get("name")
+
+        sub = Subcategory(name=name)
+        sub.save()
+        messages.success(request, "Subcategory Added Successfully...!!")
+        return redirect("subcategory_view")
+
+
+class SubcategoryUpdateView(
+    LoginRequiredMixin, SuperuserOrAdminRequiredMixin, TemplateView
+):
+    template_name = "superadmin/subcategory/Subcategory_create.html"
+    extra_context = {
+        "page_title": "Sub Category",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("subcategory_view"),
+    }
+
+    def get(self, request, id):
+        data = Subcategory.objects.get(pk=id)
+        return render(request, self.template_name, {"subcategory": data})
+
+    def post(self, request, id):
+        data = Subcategory.objects.get(pk=id)
+        name = request.POST.get("name")
+
+        data.name = name
+        data.save()
+
+        messages.success(request, "Subcategory Updated Successfully...!!")
+        return redirect("subcategory_view")
 
 
 # class RecipeListView(AdminPermissionMixin, TemplateView):
@@ -239,19 +329,37 @@ class CategoryUpdateView(UpdateView):
 
 
 # deepsea product
-class ProductListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
+class ProductListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
     model = Product
     context_object_name = "all_products"
-    paginated_by = 10
+    paginate_by = 10
     template_name = "superadmin/deepsea-product/product_view.html"
     search_field = "name"
+    extra_context = {
+        "page_title": "Product",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("product_add"),
+    }
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, SuperuserOrAdminRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = "superadmin/deepsea-product/product_create.html"
     success_url = reverse_lazy("product_view")
+    extra_context = {
+        "page_title": "Product",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("product_view"),
+    }
 
     def form_valid(self, form):
 
@@ -273,11 +381,17 @@ class ProductCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, SuperuserOrAdminRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = "superadmin/deepsea-product/product_create.html"
     success_url = reverse_lazy("product_view")
+    extra_context = {
+        "page_title": "Product",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("product_view"),
+    }
 
     def form_valid(self, form):
 
@@ -301,20 +415,38 @@ class ProductUpdateView(UpdateView):
 
 # deepsea product details
 class ProductDetailsListView(
-    SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
 ):
     model = ProductDetails
     context_object_name = "products_details"
     paginate_by = 10
     search_field = "product__name"
     template_name = "superadmin/deepsea-product-details/product_view.html"
+    extra_context = {
+        "page_title": "Product Details",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("product_details_add"),
+    }
 
 
-class ProductDetailsCreateView(AdminPermissionMixin, CreateView):
+class ProductDetailsCreateView(
+    LoginRequiredMixin, SuperuserOrAdminRequiredMixin, CreateView
+):
     model = ProductDetails
     form_class = ProductDetailsForm
     template_name = "superadmin/deepsea-product-details/product_create.html"
     success_url = reverse_lazy("product_details_view")
+    extra_context = {
+        "page_title": "Deep Sea Product Details",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("product_details_view"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Product Details Added Successfully…!!")
@@ -327,11 +459,19 @@ class ProductDetailsCreateView(AdminPermissionMixin, CreateView):
         return super().form_invalid(form)
 
 
-class ProductDetailsUpdateView(AdminPermissionMixin, UpdateView):
+class ProductDetailsUpdateView(
+    LoginRequiredMixin, SuperuserOrAdminRequiredMixin, UpdateView
+):
     model = ProductDetails
     form_class = ProductDetailsForm
     template_name = "superadmin/deepsea-product-details/product_create.html"
     success_url = reverse_lazy("product_details_view")
+    extra_context = {
+        "page_title": "Deep Sea Product Details",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("product_details_view"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Product Details Updated Successfully…!!")
@@ -345,304 +485,265 @@ class ProductDetailsUpdateView(AdminPermissionMixin, UpdateView):
 
 
 # brand product
-class BrandProductListView(TemplateView):
-    template_name = "superadmin/brand-product/product_list.html"
+# class BrandProductListView(TemplateView):
+#     template_name = "superadmin/brand-product/product_list.html"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Brand Product"
-        page = request.GET.get("page", 1)
+#     def get(self, request, *args, **kwargs):
+#         context = {}
+#         path = "Brand Product"
+#         page = request.GET.get("page", 1)
 
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-        # homepage = request.GET.get("new")
+#         search = request.GET.get("search")
+#         delete = request.GET.get("delete")
+#         status = request.GET.get("status")
+#         sts = request.GET.get("sts")
+#         # homepage = request.GET.get("new")
 
-        cd = Product.objects.exclude(brand__name="Deep Sea").order_by("-id")
+#         cd = Product.objects.exclude(brand__name="Deep Sea").order_by("-id")
 
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(
-                    Q(name__icontains=search)
-                    | Q(product_details__category__name__icontains=search)
-                )
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                Product.objects.filter(id=item_id).update(status=status)
+#         if is_ajax(request):
+#             if search:
+#                 cd = cd.filter(
+#                     Q(name__icontains=search)
+#                     | Q(product_details__category__name__icontains=search)
+#                 )
+#             if sts:
+#                 cd = cd.filter(status=sts)
+#             if status:
+#                 if status == "1":
+#                     status = True
+#                 else:
+#                     status = False
+#                 item_id = request.GET.get("item_id")
+#                 Product.objects.filter(id=item_id).update(status=status)
 
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Product.objects.get(id=item_id)
-                except Product.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
+#             if delete:
+#                 item_id = request.GET.get("item_id")
+#                 try:
+#                     datas = Product.objects.get(id=item_id)
+#                 except Product.DoesNotExist:
+#                     datas = None
+#                 if datas:
+#                     datas.delete()
 
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
+#             paginator = Paginator(cd, 10)
+#             try:
+#                 datas = paginator.get_page(page)
+#             except PageNotAnInteger:
+#                 datas = paginator.get_page(1)
+#             except EmptyPage:
+#                 datas = paginator.get_page(paginator.num_pages)
+#             context["datas"] = datas
+#             context["page"] = page
+#             template = loader.get_template(self.template_name)
+#             html_content = template.render(context, request)
+#             return JsonResponse({"status": True, "template": html_content})
 
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
+#         paginator = Paginator(cd, 10)
+#         try:
+#             datas = paginator.get_page(page)
+#         except PageNotAnInteger:
+#             datas = paginator.get_page(1)
+#         except EmptyPage:
+#             datas = paginator.get_page(paginator.num_pages)
+#         context["datas"] = datas
+#         context["page"] = page
+#         context["path"] = path
 
-        return render_helper(request, "brand-product", "product_view", context)
-
-
-class BrandProductCreateView(AdminPermissionMixin, CreateView):
-    model = Brand
-    form_class = BrandProductForm
-    template_name = "superadmin/brand-product/product_create.html"
-    success_url = reverse_lazy("brand_product_view")
-
-    def form_valid(self, form):
-        image_data = self.request.POST.get("brand-image")
-        if not image_data:
-            form.add_error(None, "Image is required.")
-            return self.form_invalid(form)
-
-        try:
-            format, imgstr = image_data.split(";base64,")
-            ext = format.split("/")[-1]
-            decoded_image = base64.b64decode(imgstr)
-            file_name = f"{form.cleaned_data['name']}.{ext}"
-
-            form.instance.image.save(file_name, ContentFile(decoded_image), save=False)
-        except Exception as e:
-            form.add_error(None, f"Invalid image data: {str(e)}")
-            return self.form_invalid(form)
-
-        messages.success(self.request, "Product Added Successfully...!!")
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        for error_list in form.errors.values():
-            for errors in error_list:
-                messages.error(self.request, errors)
-        return super().form_invalid(form)
+#         return render_helper(request, "brand-product", "product_view", context)
 
 
-class BrandProductUpdateView(AdminPermissionMixin, UpdateView):
-    model = Product
-    form_class = BrandProductForm
-    template_name = "superadmin/brand-product/product_create.html"
-    success_url = reverse_lazy("brand_product_view")
+# class BrandProductCreateView(AdminPermissionMixin, CreateView):
+#     model = Brand
+#     form_class = BrandProductForm
+#     template_name = "superadmin/brand-product/product_create.html"
+#     success_url = reverse_lazy("brand_product_view")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["brands"] = Brand.objects.filter(status=True).order_by("-id")
-        return context
+#     def form_valid(self, form):
+#         image_data = self.request.POST.get("brand-image")
+#         if not image_data:
+#             form.add_error(None, "Image is required.")
+#             return self.form_invalid(form)
 
-    def form_valid(self, form):
-        image_data = self.request.POST.get("brand-image")
-        if image_data:
-            format, imgstr = image_data.split(";base64,")
-            ext = format.split("/")[-1]
-            decoded_image = base64.b64decode(imgstr)
-            form.instance.image.save(
-                form.cleaned_data["name"] + "." + ext,
-                ContentFile(decoded_image),
-                save=False,
-            )
+#         try:
+#             format, imgstr = image_data.split(";base64,")
+#             ext = format.split("/")[-1]
+#             decoded_image = base64.b64decode(imgstr)
+#             file_name = f"{form.cleaned_data['name']}.{ext}"
 
-        messages.success(self.request, "Product Updated Successfully...!!")
-        return super().form_valid(form)
+#             form.instance.image.save(file_name, ContentFile(decoded_image), save=False)
+#         except Exception as e:
+#             form.add_error(None, f"Invalid image data: {str(e)}")
+#             return self.form_invalid(form)
 
+#         messages.success(self.request, "Product Added Successfully...!!")
+#         return super().form_valid(form)
 
-class BrandProductDetailsListView(TemplateView):
-    template_name = "superadmin/brand-product-details/product_list.html"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Brand Product Details"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-        # homepage = request.GET.get("new")
-
-        cd = ProductDetails.objects.exclude(product__brand__name="Deep Sea").order_by(
-            "-id"
-        )
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(product__name__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                ProductDetails.objects.filter(id=item_id).update(status=status)
-
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = ProductDetails.objects.get(id=item_id)
-                except ProductDetails.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return render_helper(request, "brand-product-details", "product_view", context)
+#     def form_invalid(self, form):
+#         for error_list in form.errors.values():
+#             for errors in error_list:
+#                 messages.error(self.request, errors)
+#         return super().form_invalid(form)
 
 
-class BrandProductDetailsCreateView(AdminPermissionMixin, CreateView):
-    model = ProductDetails
-    form_class = BrandProductDetailsForm
-    template_name = "superadmin/brand-product-details/product_create.html"
-    success_url = reverse_lazy("brand_product_details_view")
+# class BrandProductUpdateView(AdminPermissionMixin, UpdateView):
+#     model = Product
+#     form_class = BrandProductForm
+#     template_name = "superadmin/brand-product/product_create.html"
+#     success_url = reverse_lazy("brand_product_view")
 
-    def form_valid(self, form):
-        messages.success(self.request, "Brand Product Details Added Successfully...!!")
-        return super().form_valid(form)
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context["brands"] = Brand.objects.filter(status=True).order_by("-id")
+#         return context
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["products"] = (
-            Product.objects.filter(status=True)
-            .exclude(brand__name="Deep Sea")
-            .order_by("-id")
-        )
-        return context
+#     def form_valid(self, form):
+#         image_data = self.request.POST.get("brand-image")
+#         if image_data:
+#             format, imgstr = image_data.split(";base64,")
+#             ext = format.split("/")[-1]
+#             decoded_image = base64.b64decode(imgstr)
+#             form.instance.image.save(
+#                 form.cleaned_data["name"] + "." + ext,
+#                 ContentFile(decoded_image),
+#                 save=False,
+#             )
 
-
-class BrandProductDetailsUpdateView(AdminPermissionMixin, UpdateView):
-    model = ProductDetails
-    form_class = BrandProductDetailsForm
-    template_name = "superadmin/brand-product-details/product_create.html"
-    success_url = reverse_lazy("brand_product_details_view")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        data = self.get_object()
-        context["products"] = Product.objects.exclude(brand__name="Deep Sea").order_by(
-            "-id"
-        )
-        context["category"] = Category.objects.filter(
-            brand=data.product.brand
-        ).order_by("-id")
-        return context
-
-    def form_valid(self, form):
-        messages.success(
-            self.request, "Brand Product Details Updated Successfully...!!"
-        )
-        return super().form_valid(form)
+#         messages.success(self.request, "Product Updated Successfully...!!")
+#         return super().form_valid(form)
 
 
-class BrandLoadCategory(View):
-    template_name = "superadmin/brand-product-details/category_list.html"
+# class BrandProductDetailsListView(TemplateView):
+#     template_name = "superadmin/brand-product-details/product_list.html"
 
-    def get(self, request):
-        if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
-            id = request.GET.get("id")
+#     def get(self, request, *args, **kwargs):
+#         context = {}
+#         path = "Brand Product Details"
+#         page = request.GET.get("page", 1)
 
-            try:
-                product = Product.objects.get(id=id)
-                brand = product.brand
-                category = list(
-                    Category.objects.filter(brand=brand).values("id", "name")
-                )
+#         search = request.GET.get("search")
+#         delete = request.GET.get("delete")
+#         status = request.GET.get("status")
+#         sts = request.GET.get("sts")
+#         # homepage = request.GET.get("new")
 
-                context = {"category": category}
-                template = loader.get_template(self.template_name)
-                html_content = template.render(context, request)
-                return JsonResponse({"status": True, "template": html_content})
-            except Exception as e:
-                print(str(e))
-                return JsonResponse({"error": str(e)}, status=500)
+#         cd = ProductDetails.objects.exclude(product__brand__name="Deep Sea").order_by(
+#             "-id"
+#         )
 
-        return JsonResponse({"error": "Invalid request"}, status=400)
+#         if is_ajax(request):
+#             if search:
+#                 cd = cd.filter(product__name__icontains=search)
+#             if sts:
+#                 cd = cd.filter(status=sts)
+#             if status:
+#                 if status == "1":
+#                     status = True
+#                 else:
+#                     status = False
+#                 item_id = request.GET.get("item_id")
+#                 ProductDetails.objects.filter(id=item_id).update(status=status)
+
+#             if delete:
+#                 item_id = request.GET.get("item_id")
+#                 try:
+#                     datas = ProductDetails.objects.get(id=item_id)
+#                 except ProductDetails.DoesNotExist:
+#                     datas = None
+#                 if datas:
+#                     datas.delete()
+
+#             paginator = Paginator(cd, 10)
+#             try:
+#                 datas = paginator.get_page(page)
+#             except PageNotAnInteger:
+#                 datas = paginator.get_page(1)
+#             except EmptyPage:
+#                 datas = paginator.get_page(paginator.num_pages)
+#             context["datas"] = datas
+#             context["page"] = page
+#             template = loader.get_template(self.template_name)
+#             html_content = template.render(context, request)
+#             return JsonResponse({"status": True, "template": html_content})
+
+#         paginator = Paginator(cd, 10)
+#         try:
+#             datas = paginator.get_page(page)
+#         except PageNotAnInteger:
+#             datas = paginator.get_page(1)
+#         except EmptyPage:
+#             datas = paginator.get_page(paginator.num_pages)
+#         context["datas"] = datas
+#         context["page"] = page
+#         context["path"] = path
+
+#         return render_helper(request, "brand-product-details", "product_view", context)
 
 
-class SubcategoryListView(SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin, ListView):
-    model = Subcategory
-    paginate_by = 10
-    ordering = ["-id"]
-    context_object_name = "all_subcategory"
-    template_name = "superadmin/subcategory/Subcategory_view.html"
-    search_field = "name"
+# class BrandProductDetailsCreateView(AdminPermissionMixin, CreateView):
+#     model = ProductDetails
+#     form_class = BrandProductDetailsForm
+#     template_name = "superadmin/brand-product-details/product_create.html"
+#     success_url = reverse_lazy("brand_product_details_view")
+
+#     def form_valid(self, form):
+#         messages.success(self.request, "Brand Product Details Added Successfully...!!")
+#         return super().form_valid(form)
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context["products"] = (
+#             Product.objects.filter(status=True)
+#             .exclude(brand__name="Deep Sea")
+#             .order_by("-id")
+#         )
+#         return context
 
 
-class SubcategoryCreateView(TemplateView):
-    template_name = "superadmin/subcategory/Subcategory_create.html"
+# class BrandProductDetailsUpdateView(AdminPermissionMixin, UpdateView):
+#     model = ProductDetails
+#     form_class = BrandProductDetailsForm
+#     template_name = "superadmin/brand-product-details/product_create.html"
+#     success_url = reverse_lazy("brand_product_details_view")
 
-    def post(self, request, *args, **kwargs):
-        name = request.POST.get("name")
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         data = self.get_object()
+#         context["products"] = Product.objects.exclude(brand__name="Deep Sea").order_by(
+#             "-id"
+#         )
+#         context["category"] = Category.objects.filter(
+#             brand=data.product.brand
+#         ).order_by("-id")
+#         return context
 
-        sub = Subcategory(name=name)
-        sub.save()
-        messages.success(request, "Subcategory Added Successfully...!!")
-        return redirect("subcategory_view")
+#     def form_valid(self, form):
+#         messages.success(
+#             self.request, "Brand Product Details Updated Successfully...!!"
+#         )
+#         return super().form_valid(form)
 
 
-class SubcategoryUpdateView(TemplateView):
-    template_name = "superadmin/subcategory/Subcategory_create.html"
+# class BrandLoadCategory(View):
+#     template_name = "superadmin/brand-product-details/category_list.html"
 
-    def get(self, request, id):
-        data = Subcategory.objects.get(pk=id)
-        return render(request, self.template_name, {"list": data})
+#     def get(self, request):
+#         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+#             id = request.GET.get("id")
 
-    def post(self, request, id):
-        data = Subcategory.objects.get(pk=id)
-        name = request.POST.get("name")
+#             try:
+#                 product = Product.objects.get(id=id)
+#                 brand = product.brand
+#                 category = list(
+#                     Category.objects.filter(brand=brand).values("id", "name")
+#                 )
 
-        data.name = name
-        data.save()
+#                 context = {"category": category}
+#                 template = loader.get_template(self.template_name)
+#                 html_content = template.render(context, request)
+#                 return JsonResponse({"status": True, "template": html_content})
+#             except Exception as e:
+#                 print(str(e))
+#                 return JsonResponse({"error": str(e)}, status=500)
 
-        messages.success(request, "Subcategory Updated Successfully...!!")
-        return redirect("subcategory_view")
+#         return JsonResponse({"error": "Invalid request"}, status=400)
