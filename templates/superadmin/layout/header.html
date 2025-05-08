@@ -115,7 +115,7 @@
                                 <span class="side-menu__label">Brand</span>
                             </a>
                         </li>
-                        {% comment %} <li class="slide">
+                        <li class="slide">
                             <a class="side-menu__item has-link" href="{% url 'category_view' %}">
                                 <i class="side-menu__icon fe fe-grid"></i>
                                 <span class="side-menu__label">Category</span>
@@ -134,12 +134,12 @@
                                 <li>
                                     <a href="{% url 'product_details_view' %}" class="slide-item">Product Details</a>
                                 </li>
-                                <li>
+                                {% comment %} <li>
                                     <a href="{% url 'brand_product_view' %}" class="slide-item">Brands Product</a>
-                                </li>
+                                </li> 
                                 <li>
                                     <a href="{% url 'brand_product_details_view' %}" class="slide-item">Brands Product Details</a>
-                                </li>
+                                </li> {% endcomment %}
                             </ul>
                         </li>
                         <li class="slide">
@@ -155,7 +155,8 @@
                             </a>
                         </li>
                         <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'list_certification' %}">
+                            <a class="side-menu__item has-link"
+                               href="{% url 'list_certification' %}">
                                 <i class="side-menu__icon fa fa-adn"></i>
                                 <span class="side-menu__label">Certifications</span>
                             </a>
@@ -225,7 +226,7 @@
                                 <i class="side-menu__icon fe fe-smartphone"></i>
                                 <span class="side-menu__label">Enquiry</span>
                             </a>
-                        </li> {% endcomment %}
+                        </li>
                         <li class="slide">
                             <a class="side-menu__item has-link" href="{% url 'list_seo' %}">
                                 <i class="side-menu__icon fe fe-smartphone"></i>
@@ -277,4 +278,3 @@
                     {% endfor %}
                 </body>
             </html>
-            {% include "superadmin/layout/scripts.html" %}

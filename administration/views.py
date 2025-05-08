@@ -26,6 +26,8 @@ class AdminDashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        context["page_title"] = "Dashboard"
+
         models_to_count = {
             "brand": Brand,
             "category": Category,
