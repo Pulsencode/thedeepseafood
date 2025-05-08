@@ -1,129 +1,125 @@
-{% include 'superadmin/layout/header.html' %}
+{% include "superadmin/layout/header.html" %}
 {% load static %}
-
-            <!-- ROW OPEN -->
-            <form method="post" enctype="multipart/form-data" id="myform">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-4 col-xl-4 col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Add New Event Gallery*</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-12 col-sm-12 mb-4 mb-lg-0">
-                                        <input type="file"
-                                               class="dropify"
-                                               data-bs-height="180"
-                                               multiple
-                                               name="imagse"
-                                               {% if not sliders %}required{% endif %}>
-                                    </div>
-                                </div>
-                                {% if existing_images %}
-                                    <!-- Show existing slider images -->
-                                    <div class="existing-slider-images">
-                                        {% for slider in existing_images %}
-                                            <img src="{{ slider.image.url }}"
-                                                 alt="Slider Image"
-                                                 class="existing-slider-img"
-                                                 id="slider{{ slider.id }}" />
-                                            <button type="button"
-                                                    id="btn-del{{ slider.id }}"
-                                                    class="delete-image-btn"
-                                                    style="margin-top: 10px;
-                                                           background: #0aa3ce;
-                                                           color: #fff;
-                                                           padding: 4px 26px;
-                                                           border: 0px;
-                                                           border-radius: 2px"
-                                                    data-image-id="{{ slider.id }}">Delete</button>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
+<!-- ROW OPEN -->
+<form method="post" enctype="multipart/form-data" id="myform">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-4 col-xl-4 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Add New Event Gallery*</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 mb-4 mb-lg-0">
+                            <input type="file"
+                                   class="dropify"
+                                   data-bs-height="180"
+                                   multiple
+                                   name="imagse"
+                                   {% if not sliders %}required{% endif %}>
                         </div>
                     </div>
-                    <div class="col-md-8 col-xl-8 col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row col-lg-12">
-                                    <div class="form-group col-lg-6 col-12">
-                                        <label for="" class="form-label">Title*</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               id=""
-                                               placeholder="Title"
-                                               name="title"
-                                               value="{{ event.title }}"
-                                               required>
-                                    </div>
-                                    <!-- <div class="form-group col-lg-6 col-12"> -->
-                                    <!-- <label for="" class="form-label"> Name</label> -->
-                                    <!-- <input type="text"
+                    {% if existing_images %}
+                        <!-- Show existing slider images -->
+                        <div class="existing-slider-images">
+                            {% for slider in existing_images %}
+                                <img src="{{ slider.image.url }}"
+                                     alt="Slider Image"
+                                     class="existing-slider-img"
+                                     id="slider{{ slider.id }}" />
+                                <button type="button"
+                                        id="btn-del{{ slider.id }}"
+                                        class="delete-image-btn"
+                                        style="margin-top: 10px;
+                                               background: #0aa3ce;
+                                               color: #fff;
+                                               padding: 4px 26px;
+                                               border: 0px;
+                                               border-radius: 2px"
+                                        data-image-id="{{ slider.id }}">Delete</button>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-xl-8 col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row col-lg-12">
+                        <div class="form-group col-lg-6 col-12">
+                            <label for="" class="form-label">Title*</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id=""
+                                   placeholder="Title"
+                                   name="title"
+                                   value="{{ event.title }}"
+                                   required>
+                        </div>
+                        <!-- <div class="form-group col-lg-6 col-12"> -->
+                        <!-- <label for="" class="form-label"> Name</label> -->
+                        <!-- <input type="text"
         class="form-control"
         id=""
         placeholder="Name"
         name="name"
         value="{{list.name}}"
         required> -->
-                                    <!-- </div> -->
-                                    <div class="form-group col-lg-6 col-12">
-                                        <label for="" class="form-label">Date</label>
-                                        <input type="date"
-                                               class="form-control"
-                                               placeholder="Name"
-                                               name="date"
-                                               value="{{ event.date }}">
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        <label for="" class="form-label">Location*</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               placeholder="Location"
-                                               name="location"
-                                               value="{{ event.location }}"
-                                               required>
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        <label for="" class="form-label">Sequence*</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                               placeholder="sequence"
-                                               name="sequence"
-                                               value="{{ event.sequence }}"
-                                               required>
-                                        </div>
-                                        <div class="form-group col-lg-6 col-12">
-                                            <label for="" class="form-label">Image Alt</label>
-                                            <input type="text"
-                                                   class="form-control"
-                                            
-                                                   placeholder="Image Alt"
-                                                   name="image_alt"
-                                                   value="{% if event.image_alt %}{{ event.image_alt }}{% endif %}">
-                                        </div>
-                                        <div class="col-lg-12 col-12">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1" class="form-label">Description*</label>
-                                                <textarea class="form-control" id="" name="desc" required>{{event.description|safe}}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-lg-12 col-12">
-                                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
-                                            <a href="{% url 'gallery_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
-                                        </div>
-                                    </div>
+                        <!-- </div> -->
+                        <div class="form-group col-lg-6 col-12">
+                            <label for="" class="form-label">Date</label>
+                            <input type="date"
+                                   class="form-control"
+                                   placeholder="Name"
+                                   name="date"
+                                   value="{{ event.date }}">
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label for="" class="form-label">Location*</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Location"
+                                   name="location"
+                                   value="{{ event.location }}"
+                                   required>
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label for="" class="form-label">Sequence*</label>
+                            <input type="text"
+                                   class="form-control"
+                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                   placeholder="sequence"
+                                   name="sequence"
+                                   value="{{ event.sequence }}"
+                                   required>
+                            </div>
+                            <div class="form-group col-lg-6 col-12">
+                                <label for="" class="form-label">Image Alt</label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="Image Alt"
+                                       name="image_alt"
+                                       value="{% if event.image_alt %}{{ event.image_alt }}{% endif %}">
+                            </div>
+                            <div class="col-lg-12 col-12">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1" class="form-label">Description*</label>
+                                    <textarea class="form-control" id="" name="desc" required>{{event.description|safe}}</textarea>
                                 </div>
                             </div>
-                            <!-- ROW CLOSED -->
+                            <div class="form-group col-lg-12 col-12">
+                                <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                                <a href="{% url 'gallery_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                            </div>
                         </div>
-                        <!-- CONTAINER END -->
                     </div>
-                </form>
+                </div>
+                <!-- ROW CLOSED -->
             </div>
+            <!-- CONTAINER END -->
         </div>
-        <!--app-content close-->
-        {% include 'superadmin/layout/footer.html' %}
+    </form>
+    <!--app-content close-->
+    {% include "superadmin/layout/footer.html" %}
