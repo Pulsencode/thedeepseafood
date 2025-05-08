@@ -14,7 +14,6 @@
             <th>origin</th>
             <th>grade</th>
             <th>packing</th>
-            <th>description</th>
             <th>ingredients</th>
             <th>instruction</th>
             <th>storage instruction</th>
@@ -83,12 +82,6 @@
                         <a class="btn btn-success btn-sm mb-1"
                            href="#"
                            data-bs-toggle="modal"
-                           data-bs-target="#desc{{ product.id }}"><i class="side-menu__icon fe fe-eye"></i></a>
-                    </td>
-                    <td>
-                        <a class="btn btn-success btn-sm mb-1"
-                           href="#"
-                           data-bs-toggle="modal"
                            data-bs-target="#ingredients{{ product.id }}"><i class="side-menu__icon fe fe-eye"></i></a>
                     </td>
                     <td>
@@ -134,19 +127,6 @@
                         </button>
                     </td>
                 </tr>
-                <!-- modal -->
-                <div class="modal  fade"
-                     id="desc{{ product.id }}"
-                     tabindex="-1"
-                     role="dialog">
-                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <p class="text-center">{{ product.description }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <!-- category -->
                 <div class="modal  fade"
                      id="category{{ product.id }}"
@@ -233,7 +213,7 @@
                     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
-                                <p class="text-center">{{ product.causion }}</p>
+                                <p class="text-center">{{ product.allergic }}</p>
                             </div>
                         </div>
                     </div>
