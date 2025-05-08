@@ -16,28 +16,29 @@
                                    class="dropify"
                                    data-bs-height="180"
                                    multiple
-                                   name="image"
-                                   {% if not images %}required{% endif %}>
+                                   name="images"
+                                   >
                         </div>
                     </div>
-                    {% if "existing_images" %}
+                    {% if existing_images %}
                         <!-- Show existing slider images -->
                         <div class="existing-slider-images">
-                            {% for image in "existing_images" %}
+                            {% for image in existing_images %}
                                 <img src="{{ image.image.url }}"
                                      alt="Slider Image"
                                      class="existing-slider-img"
                                      id="slider{{ image.id }}" />
-                                <button type="button"
-                                        id="btn-del{{ image.id }}"
-                                        class="delete-image-btn"
-                                        style="margin-top: 10px;
-                                               background: #0aa3ce;
-                                               color: #fff;
-                                               padding: 4px 26px;
-                                               border: 0px;
-                                               border-radius: 2px"
-                                        data-image-id="{{ image.id }}">Delete</button>
+                                <a href="{% url 'delete_blog' image.id %}">
+                                    <button type="button"
+                                            id="btn-del{{ image.id }}"
+                                            class="delete-image-btn"
+                                            style="margin-top: 10px;
+                                                   background: #0aa3ce;
+                                                   color: #fff;
+                                                   padding: 4px 26px;
+                                                   border: 0px;
+                                                   border-radius: 2px">Delete</button>
+                                </a>
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -50,43 +51,24 @@
                     <div class="row col-lg-12">
                         <div class="form-group col-lg-6 col-12">
                             <label for="" class="form-label">Title</label>
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder="Name"
-                                   name="title"
-                                   value="{{ blog.title }}"
-                                   required>
+                            {{ form.title }}
                         </div>
                         <div class="form-group col-lg-6 col-12">
                             <label for="" class="form-label">Name</label>
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder="Name"
-                                   name="name"
-                                   value="{{ blog.name }}"
-                                   required>
+                            {{ form.name }}
                         </div>
                         <div class="form-group col-lg-6 col-12">
                             <label for="" class="form-label">Date</label>
-                            <input type="date"
-                                   class="form-control"
-                                   placeholder="Name"
-                                   name="date"
-                                   value="{{ blog.date }}">
+                            {{ form.date }}
                         </div>
                         <div class="form-group col-lg-6 col-12">
                             <label for="" class="form-label">Location</label>
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder="Name"
-                                   name="location"
-                                   value="{{ blog.location }}"
-                                   required>
+                            {{ form.location }}
                         </div>
                         <div class="col-lg-12 col-12">
                             <div class="form-group">
-                                <label for="exampleInputEmail1" class="form-label">Description</label>
-                                <textarea id="summernote" name="content">{{blog.content|safe}}</textarea>
+                                <label for="exampleInputEmail1" class="form-label">Content</label>
+                                {{ form.content }}
                             </div>
                         </div>
                         <div class="row">
@@ -98,7 +80,7 @@
                                        class="form-control"
                                        placeholder="Image Alt"
                                        name="image_alt"
-                                       value="{% if blog.image_alt %}{{ blog.image_alt }}{% endif %}">
+                                       value="{{blog.blog_image.first.image_alt}}">
                             </div>
                         </div>
                         <div class="form-group col-lg-12 col-12">

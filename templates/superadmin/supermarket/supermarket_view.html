@@ -10,8 +10,6 @@
                 <!--search_filter.html-->
                 {% include "search_filter.html" %}
                 <div class="table-responsive" id="supermarket-table">
-                    {% load static %}
-                    <input type="hidden" id="page" name="page" value="{{ page }}">
                     <table class="table border-top table-bordered mb-0 table-hover">
                         <thead>
                             <tr class="text-center">
@@ -67,13 +65,7 @@
                                              role="document">
                                             <div class="modal-content ">
                                                 <div class="modal-body">
-                                                    <button aria-label="Close"
-                                                            class="btn-close position-absolute"
-                                                            data-bs-dismiss="modal">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
                                                     <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                                                    <input type="hidden" id="hid">
                                                     <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
                                                     <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
                                                     <form method="post">

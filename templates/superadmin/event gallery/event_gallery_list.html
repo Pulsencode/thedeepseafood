@@ -1,5 +1,4 @@
 {% load static %}
-<input type="hidden" id="page" name="page" value="{{ page }}">
 <table class="table border-top table-bordered mb-0 table-hover">
     <thead>
         <tr class="text-center">
@@ -23,16 +22,16 @@
                     <td>{{ event.sequence }}</td>
                     <td>{{ event.title }}</td>
                     <td>{{ event.name }}</td>
-                    <td>{{ event.date }}</td>
+                    <td>{{ event.date|date:"d/m/Y" }}</td>
                     <td>
-                        <a href="javascript:void(0)"
+                        <a href
                            class="btn btn-success"
                            data-bs-toggle="modal"
                            data-bs-target="#desc{{ event.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
                     </td>
                     <td>{{ event.location }}</td>
                     <td>
-                        <a href="javascript:void(0)"
+                        <a href
                            class="btn btn-success"
                            data-bs-toggle="modal"
                            data-bs-target="#slider{{ event.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
@@ -64,7 +63,10 @@
                     </td>
                 </tr>
                 <!-- modal for description-->
-                <div class="modal  fade" id="desc{{ d.id }}" tabindex="-1" role="dialog">
+                <div class="modal  fade"
+                     id="desc{{ event.id }}"
+                     tabindex="-1"
+                     role="dialog">
                     <div class="modal-dialog modal-md modal-dialog-centered text-center"
                          role="document">
                         <div class="modal-content ">
@@ -92,8 +94,8 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                {% if event.gallery_image.exists %}
-                                    {% for slider in event.gallery_image.all %}
+                                {% if event.event_image.exists %}
+                                    {% for slider in event.event_image.all %}
                                         <a href="{{ slider.image.url }}" data-lightbox="images" data-title="">
                                             <img src="{{ slider.image.url }}" height="100" width="100">
                                         </a>
@@ -116,13 +118,7 @@
                          role="document">
                         <div class="modal-content ">
                             <div class="modal-body">
-                                <button aria-label="Close"
-                                        class="btn-close position-absolute"
-                                        data-bs-dismiss="modal">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
                                 <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                                <input type="hidden" id="hid">
                                 <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
                                 <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
                                 <form method="post">
@@ -148,5 +144,6 @@
         {% endif %}
     </tbody>
 </table>
-{% include 'pagination.html' %}
-</div>
+{% if all_events %}
+    <div class="mt-4">{% include 'pagination.html' %}</div>
+{% endif %}

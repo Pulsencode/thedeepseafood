@@ -1,6 +1,4 @@
-{% comment %} {% load static %}
-<input type="hidden" id="page" name="page" value="{{page}}">
-
+{% load static %}
 <table class="table border-top table-bordered mb-0 table-hover">
     <thead>
         <tr class="text-center">
@@ -10,7 +8,7 @@
             <th>Name</th>
             <th>Type</th>
             <th>Date</th>
-            <th>Description</th>
+            <th>Content</th>
             <th>Location</th>
             <th>Image</th>
             <th>Status</th>
@@ -19,91 +17,134 @@
     </thead>
     <tbody>
         {% if all_news %}
-        {% for news in all_news%}
-        <tr class="text-center">
-            <td>{{forloop.counter}}</td>
-            <td>{{news.sequence}}</td>
-            <td>{{news.title}}</td>
-            <td>{{news.name}}</td>
-            <td>{{news.type}}</td>
-            <td>{{news.date}}</td>
-            <td>
-                <a href="javascript:void(0)" class="btn btn-success" data-bs-toggle="modal"
-                    data-bs-target="#desc{{news.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
-            </td>
-
-            <td>{{d.location}}</td>
-            <td>
-                <a href="javascript:void(0)" class="btn btn-success" data-bs-toggle="modal"
-                    data-bs-target="#slider{{news.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
-            </td>
-            <td>
-                <div class="material-switch">
-                    <input id="someSwitchOptionSuccess{{news.id}}" name="someSwitchOption001" type="checkbox" {% if news.status == True %} onclick="changenewsstatus({{news.id}},0)" checked {% else %}onclick="changenewsstatus({{news.id}},1)" {% endif %} />
-                    <label for="someSwitchOptionSuccess{{news.id}}" class="label-success"></label>
-                </div>
-            </td>
-            <td>
-                <a class="btn btn-info btn-sm mb-1" href="{% url 'news_update' news.id %}"><i
-                        class="side-menu__icon fe fe-edit"></i></a>
-
-                <button class="btn btn-danger btn-sm mb-1"  ><i class="side-menu__icon fe fe-trash"  onclick="show_modal({{d.id}})"></i></button>
-            </td>
-        </tr>
-        <!-- modal for description-->
-
-        <div class="modal  fade" id="desc{{d.id}}" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-md modal-dialog-centered text-center" role="document">
-                <div class="modal-content ">
-
-                    <div class="modal-body">
-                        <div>
-                            <p>
-                                {{d.description|safe}}
-                            </p>
+            {% for news in all_news %}
+                <tr class="text-center">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ news.sequence }}</td>
+                    <td>{{ news.title }}</td>
+                    <td>{{ news.name }}</td>
+                    <td>{{ news.get_type_display }}</td>
+                    <td>{{ news.date|date:"d/m/Y" }}</td>
+                    <td>
+                        <a href
+                           class="btn btn-success"
+                           data-bs-toggle="modal"
+                           data-bs-target="#desc{{ news.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                    </td>
+                    <td>{{ news.location }}</td>
+                    <td>
+                        <a href
+                           class="btn btn-success"
+                           data-bs-toggle="modal"
+                           data-bs-target="#slider{{ news.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                    </td>
+                    <td>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="status_id" value={{ news.id }}>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="customSwitch1"
+                                       name="status"
+                                       {% if news.status %}checked{% endif %}
+                                       onchange="this.form.submit()">
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <a class="btn btn-info btn-sm mb-1"
+                           href="{% url 'news_update' news.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                        <button type="button"
+                                class="btn btn-danger btn-sm mb-1"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal{{ news.id }}">
+                            <i class="side-menu__icon fe fe-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                <!-- modal for description-->
+                <div class="modal  fade"
+                     id="desc{{ news.id }}"
+                     tabindex="-1"
+                     role="dialog">
+                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                         role="document">
+                        <div class="modal-content ">
+                            <div class="modal-body">
+                                <div>
+                                    <p>{{ news.content|safe }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                   
                 </div>
-            </div>
-        </div>
-
-        <!-- modal for slider-->
-
-        <div class="modal  fade" id="slider{{news.id}}" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-md modal-dialog-centered text-center" role="document">
-                <div class="modal-content ">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Slider Images</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        {% if news.news_image.exists %}
-                            {% for slider in news.news_image.all %}
-                            <a href="{{slider.image.url}}" data-lightbox="images" data-title="">
-                                <img src="{{slider.image.url}}" height="100" width="100"></a>
-                            {% endfor %}
-                        {% else %}
-                        <p>No slider images available for this event</p>
-                        {% endif %}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
+                <!-- modal for slider-->
+                <div class="modal  fade"
+                     id="slider{{ news.id }}"
+                     tabindex="-1"
+                     role="dialog">
+                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                         role="document">
+                        <div class="modal-content ">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Slider Images</h5>
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                {% if news.news_image.exists %}
+                                    {% for slider in news.news_image.all %}
+                                        <a href="{{ slider.image.url }}" data-lightbox="images" data-title="">
+                                            <img src="{{ slider.image.url }}" height="100" width="100">
+                                        </a>
+                                    {% endfor %}
+                                {% else %}
+                                    <p>No slider images available for this event</p>
+                                {% endif %}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        {% endfor %}
-        {% else %}
-        <tr >
-            <td colspan='10'><center>No record found</center></td>
-        </tr>
-        {% endif %}
-
-    </tbody>
-</table>
-
-{% include 'pagination.html'%}
-
-</div>   {% endcomment %}
+                <div class="modal  fade"
+                     id="deleteModal{{ news.id }}"
+                     tabindex="-1"
+                     role="dialog">
+                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                         role="document">
+                        <div class="modal-content ">
+                            <div class="modal-body">
+                                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
+                                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
+                                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="delete_id" value="{{ news.id }}">
+                                    <button type="submit" class="btn btn-success btn-sm">Yes</button>
+                                    <button type="button"
+                                            class="btn btn-danger pd-x-25 btn-sm"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan='10'>
+                        <center>No record found</center>
+                    </td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    {% if all_news %}
+        <div class="mt-4">{% include 'pagination.html' %}</div>
+    {% endif %}
+</div>

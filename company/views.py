@@ -174,6 +174,11 @@ class TeamUpdateView(LoginRequiredMixin, UpdateView):
         "path_url": reverse_lazy("list_team"),
     }
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["team"] = self.object
+        return context
+
     def form_valid(self, form):
         messages.success(self.request, "Team Updated  Successfully...!!")
         return super().form_valid(form)
@@ -242,6 +247,11 @@ class TestimonialUpdateView(LoginRequiredMixin, UpdateView):
         "view_item": True,
         "path_url": reverse_lazy("list_testimonial"),
     }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["testimonial"] = self.object
+        return context
 
     def form_valid(self, form):
         messages.success(self.request, "Testimonial Updated Successfully...!!")
@@ -312,6 +322,11 @@ class CertificationUpdateView(LoginRequiredMixin, UpdateView):
         "path_url": reverse_lazy("list_certification"),
     }
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["certification"] = self.object
+        return context
+
     def form_valid(self, form):
         messages.success(self.request, "Certification Updated Successfully...!!")
 
@@ -381,6 +396,11 @@ class SupermarketUpdateView(LoginRequiredMixin, UpdateView):
         "path_url": reverse_lazy("list_supermarket"),
     }
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["supermarkets"] = self.object
+        return context
+
     def form_valid(self, form):
         messages.success(self.request, "Supermarket Updated Successfully...!!")
 
@@ -444,7 +464,6 @@ class BrandUpdateView(LoginRequiredMixin, UpdateView):
     model = Brand
     form_class = BrandForm
     success_url = reverse_lazy("brand_view")
-    # success_url=reverse_lazy("list_brand")
     template_name = "superadmin/brand/brand_create.html"
     extra_context = {
         "page_title": "Brand",
@@ -452,6 +471,11 @@ class BrandUpdateView(LoginRequiredMixin, UpdateView):
         "view_item": True,
         "path_url": reverse_lazy("brand_view"),
     }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["brand"] = self.object
+        return context
 
     def form_valid(self, form):
         messages.success(self.request, "Brand Updated Successfully...!!")
@@ -476,6 +500,7 @@ class BlogListView(
     model = Blog
     context_object_name = "all_blogs"
     paginate_by = 10
+    ordering = ["-id"]
     template_name = "superadmin/blog/Blog_view.html"
     search_field = "name"
     extra_context = {
@@ -502,7 +527,7 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
         self.object = form.save()
 
         images = self.request.FILES.getlist("images")
-        image_alt = self.request.POST["id_image_alt"]
+        image_alt = self.request.POST["image_alt"]
         for image in images:
             BlogImage.objects.create(blog=self.object, image=image, image_alt=image_alt)
         messages.success(self.request, "Blog Added Successfully")
@@ -536,10 +561,12 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         self.object = form.save()
         images = self.request.FILES.getlist("images")
-        image_alt = self.request.POST["id_image_alt"]
+        image_alt = self.request.POST["image_alt"]
 
         for image in images:
             BlogImage.objects.create(blog=self.object, image=image, image_alt=image_alt)
+
+        self.object.blog_image.update(image_alt=image_alt)
         messages.success(self.request, "Blog Updated  Successfully")
         return super().form_valid(form)
 
@@ -560,6 +587,7 @@ class EventListView(
     model = Event
     context_object_name = "all_events"
     paginate_by = 10
+    ordering = ["-id"]
     template_name = "superadmin/event gallery/event_gallery_view.html"
     search_field = "name"
 
@@ -587,7 +615,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         self.object = form.save()
         images = self.request.FILES.getlist("images")
-        image_alt = self.request.POST["id_image_alt"]
+        image_alt = self.request.POST["image_alt"]
 
         for image in images:
             EventImage.objects.create(
@@ -625,10 +653,13 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         self.object = form.save()
         images = self.request.FILES.getlist("images")
+        image_alt = self.request.POST["image_alt"]
 
         for image in images:
-            EventImage.objects.create(event=self.object, image=image)
-
+            EventImage.objects.create(
+                event=self.object, image=image, image_alt=image_alt
+            )
+        self.object.event_image.update(image_alt=image_alt)
         messages.success(self.request, "Event Updated Successfully")
         return super().form_valid(form)
 
@@ -639,17 +670,6 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-# def delete_slider(request, image_id):
-#     try:
-#         # Get the image by its ID and delete it
-#         image = Event.objects.get(pk=image_id)
-#         image.image.delete()  # Delete the image file
-#         image.delete()  # Delete the database record
-#         return JsonResponse({"success": True})
-#     except EventImage.DoesNotExist:
-#         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
-#     except Exception as e:
-#         return JsonResponse({"success": False, "error": str(e)}, status=500)
 class EventImageDelete(DeleteView):
     model = EventImage
     success_url = reverse_lazy("gallery_view")
@@ -671,6 +691,7 @@ class NewsListView(
     model = News
     context_object_name = "all_news"
     paginate_by = 10
+    ordering = ["-id"]
     template_name = "superadmin/news/news_view.html"
     search_field = "name"
 
@@ -697,7 +718,7 @@ class NewsCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         self.object = form.save()
         images = self.request.FILES.getlist("images")
-        image_alt = self.request.POST["id_image_alt"]
+        image_alt = self.request.POST["image_alt"]
 
         for image in images:
             NewsImage.objects.create(news=self.object, image=image, image_alt=image_alt)
@@ -732,8 +753,11 @@ class NewsUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         self.object = form.save()
         images = self.request.FILES.getlist("images")
+        image_alt = self.request.POST["image_alt"]
+
         for image in images:
-            NewsImage.objects.create(news=self.object, image=image)
+            NewsImage.objects.create(news=self.object, image=image, image_alt=image_alt)
+        self.object.news_image.update(image_alt=image_alt)
         messages.success(self.request, "News Updated Successfully...!!")
 
         return super().form_valid(form)
@@ -745,17 +769,6 @@ class NewsUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-# def delete_newsslider(request, image_id):
-#     try:
-#         # Get the image by its ID and delete it
-#         image = NewsImage.objects.get(pk=image_id)
-#         image.image.delete()  # Delete the image file
-#         image.delete()  # Delete the database record
-#         return JsonResponse({"success": True})
-#     except EventImage.DoesNotExist:
-#         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
-#     except Exception as e:
-#         return JsonResponse({"success": False, "error": str(e)}, status=500)
 class NewsImageDelete(DeleteView):
     model = NewsImage
     success_url = reverse_lazy("news_view")
@@ -803,11 +816,12 @@ class PromotionCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         self.object = form.save()
         images = self.request.FILES.getlist("images")
-        image_alt = self.request.POST["id_image_alt"]
+        # image_alt = self.request.POST["image_alt"]
 
         for image in images:
             PromotionImage.objects.create(
-                promotion=self.object, image=image, image_alt=image_alt
+                promotion=self.object,
+                image=image,
             )
         messages.success(self.request, "Promotion Added Successfully...!!")
 
@@ -855,17 +869,6 @@ class PromotionUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-# def delete_promotionslider(request, image_id):
-#     try:
-#         # Get the image by its ID and delete it
-#         image = PromotionImage.objects.get(pk=image_id)
-#         image.image.delete()  # Delete the image file
-#         image.delete()  # Delete the database record
-#         return JsonResponse({"success": True})
-#     except EventImage.DoesNotExist:
-#         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
-#     except Exception as e:
-#         return JsonResponse({"success": False, "error": str(e)}, status=500)
 class PromotionImageDelete(DeleteView):
     model = PromotionImage
     success_url = reverse_lazy("promotion_view")
@@ -898,6 +901,7 @@ class HistoryListView(
     model = History
     context_object_name = "all_history"
     paginate_by = 10
+    ordering = ["-id"]
     template_name = "superadmin/history/history_view.html"
     search_field = "year"
     extra_context = {
@@ -923,7 +927,7 @@ class HistoryCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         self.objects = form.save()
         images = self.request.FILES.getlist("images")
-        image_alt = self.request.POST["id_image_alt"]
+        image_alt = self.request.POST["image_alt"]
 
         for image in images:
             HistoryImage.objects.create(
@@ -961,8 +965,14 @@ class HistoryUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         self.objects = form.save()
         images = self.request.FILES.getlist("images")
+        image_alt = self.request.POST.get("image_alt")
+
         for image in images:
-            HistoryImage.objects.create(history=self.objects, image=image)
+            HistoryImage.objects.create(
+                history=self.objects, image=image, image_alt=image_alt
+            )
+        self.object.history_image.update(image_alt=image_alt)
+
         messages.success(self.request, "History Updated Successfully...!!")
 
         return super().form_valid(form)
@@ -973,19 +983,6 @@ class HistoryUpdateView(LoginRequiredMixin, UpdateView):
                 messages.error(self.request, errors)
 
         return super().form_invalid(form)
-
-
-# def delete_historyslider(request, image_id):
-#     try:
-#         # Get the image by its ID and delete it
-#         image = HistoryImage.objects.get(pk=image_id)
-#         image.image.delete()  # Delete the image file
-#         image.delete()  # Delete the database record
-#         return JsonResponse({"success": True})
-#     except EventImage.DoesNotExist:
-#         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
-#     except Exception as e:
-#         return JsonResponse({"success": False, "error": str(e)}, status=500)
 
 
 class HistoryImageDelete(DeleteView):

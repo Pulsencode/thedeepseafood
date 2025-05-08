@@ -1,5 +1,4 @@
 {% load static %}
-<input type="hidden" id="page" name="page" value="{{ page }}">
 <table class="table border-top table-bordered mb-0 table-hover">
     <thead>
         <tr class="text-center">
@@ -7,7 +6,7 @@
             <th>Title</th>
             <th>Name</th>
             <th>Date</th>
-            <th>Description</th>
+            <th>Content</th>
             <th>Location</th>
             <th>Image</th>
             <th>Status</th>
@@ -21,16 +20,16 @@
                     <td>{{ forloop.counter }}</td>
                     <td>{{ blog.title }}</td>
                     <td>{{ blog.name }}</td>
-                    <td>{{ blog.date }}</td>
+                    <td>{{ blog.date|date:"d/m/Y" }}</td>
                     <td>
-                        <a href="javascript:void(0)"
+                        <a href
                            class="btn btn-success"
                            data-bs-toggle="modal"
                            data-bs-target="#desc{{ blog.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
                     </td>
                     <td>{{ blog.location }}</td>
                     <td>
-                        <a href="javascript:void(0)"
+                        <a href
                            class="btn btn-success"
                            data-bs-toggle="modal"
                            data-bs-target="#slider{{ blog.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
@@ -70,7 +69,7 @@
                         <div class="modal-content ">
                             <div class="modal-body">
                                 <div>
-                                    <p>{{ blog.description|safe }}</p>
+                                    <p>{{ blog.content|safe }}</p>
                                 </div>
                             </div>
                         </div>
@@ -118,11 +117,8 @@
                             <div class="modal-body">
                                 <button aria-label="Close"
                                         class="btn-close position-absolute"
-                                        data-bs-dismiss="modal">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                        data-bs-dismiss="modal"></button>
                                 <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                                <input type="hidden" id="hid">
                                 <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
                                 <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
                                 <form method="post">
@@ -151,4 +147,3 @@
 {% if all_blogs %}
     <div class=" mt-2">{% include 'pagination.html' %}</div>
 {% endif %}
-</div>

@@ -35,7 +35,7 @@
                                 <input type="file" class="item-img1 file center-block" name="image" />
                             </label>
                         </div>
-                        <input type="hidden" id="cropped-img" name="image">
+                        <input type="hidden" id="cropped-img" name="brand-image">
                         <!-- 1 -->
                         <div class="modal modal1 fade"
                              id="cropImagePop1"
@@ -70,43 +70,33 @@
                 <div class="card-body">
                     <div class="row col-lg-12">
                         <div class="form-group col-lg-6">
-                            <label for="" class="form-label">Name*</label>
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder="Name"
-                                   name="name"
-                                   value="{{ brand.name }}"
-                                   required>
+                            <label class="form-label">Name*</label>
+                            {{ form.name }}
                         </div>
                         <div class="form-group col-lg-6">
-                            <label for="" class="form-label">Sequence*</label>
+                            <label class="form-label">Sequence*</label>
+                            {{ form.sequence }}
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="" class="form-label">Image Alt</label>
                             <input type="text"
                                    class="form-control"
-                                   placeholder="Sequence"
-                                   name="sequence"
-                                   value="{{ brand.sequence }}"
-                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                                   required>
-                            </div>
-                            <div class="form-group col-lg-6">
-                                <label for="" class="form-label">Image Alt</label>
-                                <input type="text"
-                                       class="form-control"
-                                       placeholder=""
-                                       name="image_alt"
-                                       value="{{ brand.image_alt }}">
-                            </div>
-                            <div class="form-group col-lg-12 col-12">
-                                <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
-                                <a href="{% url 'brand_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
-                            </div>
+                                   id=""
+                                   placeholder="Image Alt"
+                                   name="image_alt"
+                                   value="{{ list.image_alt }}">
+                        </div>
+                        <div class="form-group col-lg-12 col-12">
+                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                            <a href="{% url 'brand_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
                         </div>
                     </div>
                 </div>
-                <!-- ROW CLOSED -->
             </div>
-            <!-- CONTAINER END -->
+            <!-- ROW CLOSED -->
         </div>
-    </form>
-    <!--app-content close-->
-    {% include 'superadmin/layout/footer.html' %}
+        <!-- CONTAINER END -->
+    </div>
+</form>
+<!--app-content close-->
+{% include 'superadmin/layout/footer.html' %}
