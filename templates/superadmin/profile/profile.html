@@ -1,0 +1,71 @@
+{% include "superadmin/layout/header.html" %}
+{% load static %}
+<!-- ROW-1 OPEN -->
+<div class="row">
+    <div class="col-xl-8 col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Edit Password</h3>
+            </div>
+            <form method="post" action=".">
+                {% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="form-label">Current Password</label>
+                            <div class="wrap-input100 validate-input input-group" id="Password-toggle">
+                                <a href="#"
+                                   class="input-group-text bg-white text-muted">
+                                    <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
+                                </a>
+                                <input class="input100 form-control"
+                                       type="password"
+                                       placeholder="Current Password"
+                                       autocomplete="current-password"
+                                       name="old_password"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">New Password</label>
+                            <div class="wrap-input100 validate-input input-group"
+                                 id="Password-toggle1">
+                                <a href="#"
+                                   class="input-group-text bg-white text-muted">
+                                    <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
+                                </a>
+                                <input class="input100 form-control"
+                                       type="password"
+                                       placeholder="New Password"
+                                       autocomplete="new-password"
+                                       name="new_password1"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password</label>
+                            <div class="wrap-input100 validate-input input-group"
+                                 id="Password-toggle2">
+                                <a href="#"
+                                   class="input-group-text bg-white text-muted">
+                                    <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
+                                </a>
+                                <input class="input100 form-control"
+                                       type="password"
+                                       placeholder="Confirm Password"
+                                       autocomplete="new-password"
+                                       name="new_password2"
+                                       required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        <button type="submit" class="btn btn-success">Update</button>
+                        <a href="{% url 'admin_dashboard' %}" class="btn btn-danger">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% include "superadmin/layout/footer.html" %}
