@@ -29,7 +29,7 @@
                                         <td>{{ forloop.counter }}</td>
                                         <td>{{ testimonial.name }}</td>
                                         <td>
-                                            <a href="javascript:void(0)"
+                                            <a href
                                                class="btn btn-success btn-sm mb-1"
                                                data-bs-toggle="modal"
                                                data-bs-target="#desc{{ testimonial.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
@@ -58,7 +58,7 @@
                                         </td>
                                         <td>
                                             <a class="btn btn-info btn-sm mb-1"
-                                               href="{% url 'testimonial_update'  testimonial.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                                               href="{% url 'testimonial_update' testimonial.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
                                             <button type="button"
                                                     class="btn btn-danger btn-sm mb-1"
                                                     data-bs-toggle="modal"
@@ -91,13 +91,7 @@
                                              role="document">
                                             <div class="modal-content ">
                                                 <div class="modal-body">
-                                                    <button aria-label="Close"
-                                                            class="btn-close position-absolute"
-                                                            data-bs-dismiss="modal">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
                                                     <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                                                    <input type="hidden" id="hid">
                                                     <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
                                                     <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
                                                     <form method="post">
@@ -124,12 +118,11 @@
                         </tbody>
                     </table>
                     {% if all_testimonials %}
-                    <div class="mt-3">{% include "pagination.html" %}</div>
-                {% endif %}
+                        <div class="mt-3">{% include "pagination.html" %}</div>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 {% include 'superadmin/layout/footer.html' %}

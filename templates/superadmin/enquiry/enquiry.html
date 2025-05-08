@@ -46,7 +46,6 @@
                     </div>
                 </form>
                 <div class="table-responsive" id="enquiry-table">
-                    <input type="hidden" id="page" name="page" value="{{ page }}">
                     <table class="table border-top table-bordered mb-0 table-hover">
                         <thead>
                             <tr class="text-center">
@@ -120,10 +119,6 @@
     </div>
 </div>
 <!-- ROW CLOSED -->
-</div>
-<!-- CONTAINER END -->
-</div>
-</div>
 <!--app-content close-->
 <div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-md modal-dialog-centered text-center"
@@ -132,11 +127,8 @@
             <div class="modal-body">
                 <button aria-label="Close"
                         class="btn-close position-absolute"
-                        data-bs-dismiss="modal">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                        data-bs-dismiss="modal"></button>
                 <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                <input type="hidden" id="hid">
                 <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
                 <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
                 <button class="btn btn-success" onclick="confirm_delete_enquiry()">Yes</button>

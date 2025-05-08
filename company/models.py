@@ -62,6 +62,7 @@ class BaseInfoModel(models.Model):
 
 class SEO(StatusTimestampBase):
     PAGE_NAME_CHOICES = [
+        ("", "Select the Page"),
         ("hm", "Home"),
         ("abt", "About"),
         ("brd", "Brand"),
@@ -131,7 +132,11 @@ class EventImage(StatusTimestampBase, ImageBase):
 
 
 class News(StatusTimestampBase, BaseInfoModel):
-    TYPE_CHOICES = (("company news", "Company News"), ("global news", "Global News"))
+    TYPE_CHOICES = (
+        ("", "Select the Type"),
+        ("company news", "Company News"),
+        ("global news", "Global News"),
+    )
     sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
     name = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(max_length=200, choices=TYPE_CHOICES)
@@ -236,7 +241,7 @@ class CompanyTestimonial(StatusTimestampBase, ImageBase):
 
 
 class Certification(StatusTimestampBase, ImageBase):
-    sequence = models.IntegerField(null=True)  # TODO no change needed
+    sequence = models.IntegerField(null=True, blank=True)  # TODO no change needed
 
     class Meta:
         ordering = ["sequence"]

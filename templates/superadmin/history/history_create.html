@@ -16,27 +16,27 @@
                                    class="dropify"
                                    data-bs-height="180"
                                    multiple
-                                   name="files" />
+                                   name="images">
                         </div>
                     </div>
-                    {% if sliders %}
+                    {% if existing_images %}
                         <!-- Show existing slider images -->
                         <div class="existing-slider-images">
-                            {% for slider in sliders %}
+                            {% for slider in existing_images %}
                                 <img src="{{ slider.image.url }}"
                                      alt="Slider Image"
                                      class="existing-slider-img"
                                      id="slider{{ slider.id }}" />
-                                <button type="button"
-                                        id="btn-del{{ slider.id }}"
-                                        class="delete-image-btn"
-                                        style="margin-top: 10px;
-                                               background: #0aa3ce;
-                                               color: #fff;
-                                               padding: 4px 26px;
-                                               border: 0px;
-                                               border-radius: 2px"
-                                        data-image-id="{{ slider.id }}">Delete</button>
+                                <a href="{% url 'delete_history' slider.id %}">
+                                    <button type="button"
+                                            class="delete-image-btn"
+                                            style="margin-top: 10px;
+                                                   background: #0aa3ce;
+                                                   color: #fff;
+                                                   padding: 4px 26px;
+                                                   border: 0px;
+                                                   border-radius: 2px">Delete</button>
+                                </a>
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -48,27 +48,17 @@
                 <div class="card-body">
                     <div class="row col-lg-12">
                         <div class="form-group col-lg-6 col-12">
-                            <label for="" class="form-label">Title</label>
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder="Title"
-                                   name="title"
-                                   value="{{ list.title }}"
-                                   required>
+                            <label class="form-label">Title</label>
+                            {{ form.title }}
                         </div>
                         <div class="form-group col-lg-6 col-12">
-                            <label for="" class="form-label">Year</label>
-                            <input type="number"
-                                   class="form-control"
-                                   placeholder="Year"
-                                   name="year"
-                                   value="{{ list.year }}">
+                            <label class="form-label">Year</label>
+                            {{ form.year }}
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label for="exampleInputEmail1" class="form-label">Description</label>
-                                <textarea id="summernote" name="desc">
-                                            {{list.description|safe}}</textarea>
+                                {{ form.description }}
                             </div>
                             <div class="form-group col-lg-6 col-12">
                                 <label for="" class="form-label">Image alt</label>
@@ -76,7 +66,7 @@
                                        class="form-control"
                                        placeholder="Image alt"
                                        name="image_alt"
-                                       value="{% if list.image_alt %}{{ list.image_alt }}{% endif %}">
+                                       value="{{ history.history_image.first.image_alt }}">
                             </div>
                             <div class="form-group col-lg-12 col-12">
                                 <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>

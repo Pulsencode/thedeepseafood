@@ -13,7 +13,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <img {% if form.instance.image %}src="{{ form.instance.image.url }}" {% else %}src="" {% endif %}
+                            <img {% if testimonial.image %}src="{{ form.instance.image.url }}" {% else %}src="" {% endif %}
                                  class="" />
                             <label class="cabinet center-block">
                                 <figure>
@@ -24,7 +24,7 @@
                                         <i class="fa fa-camera"></i>
                                     </figcaption>
                                 </figure>
-                                {{ form.image }}
+                                <input type="file" class="item-img5 file center-block" name="image">
                             </label>
                         </div>
                         <input type="hidden" id="cropped-img" name="testi-image">
@@ -61,9 +61,6 @@
         </div>
     </div>
 </form>
-</div>
-</div>
-</div>
 {% include "superadmin/layout/footer.html" %}
 <!-- 5 -->
 <script>

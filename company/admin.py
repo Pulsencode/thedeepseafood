@@ -18,6 +18,7 @@ from company.models import (
     PromotionImage,
     Supermarkets,
     History,
+    HistoryImage
 )
 
 
@@ -191,3 +192,4 @@ class SupermarketsAdmin(SortableAdminMixin, admin.ModelAdmin):
 
 
 admin.site.register(History)
+admin.site.register(HistoryImage)

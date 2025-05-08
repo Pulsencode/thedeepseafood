@@ -12,6 +12,7 @@ from company.models import (
     Promotion,
     Blog,
 )
+from django_summernote.widgets import SummernoteWidget
 
 
 class SEOForm(forms.ModelForm):
@@ -39,39 +40,40 @@ class ManagementForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label}
+            )
 
 
 class TestimonialForm(forms.ModelForm):
     class Meta:
         model = CompanyTestimonial
         fields = ["name", "quote", "image", "image_alt"]
-        widgets = {
-            "quote": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
-        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["image"].required = False
-        for field in self.fields:
-            if field == "image":
-                self.fields[field].widget.attrs.update(
-                    {"class": "item-img5 file center-block"}
-                )
+        for field_name, field in self.fields.items():
+            if field_name == "image":
+                field.widget.attrs.update({"class": "item-img5 file center-block"})
             else:
-                self.fields[field].widget.attrs.update({"class": "form-control"})
+                field.widget.attrs.update(
+                    {"class": "form-control", "rows": 4, "placeholder": field.label}
+                )
 
 
 class CertificationForm(forms.ModelForm):
     class Meta:
         model = Certification
-        fields = ["sequence", "image", "image_alt"]
+        fields = ["image", "image_alt"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 4}
+            )
 
 
 class SupermarketForm(forms.ModelForm):
@@ -92,8 +94,10 @@ class BrandForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label}
+            )
 
 
 class BlogForm(forms.ModelForm):
@@ -107,18 +111,21 @@ class BlogForm(forms.ModelForm):
                     "class": "form-control",
                 }
             ),
+            "content": SummernoteWidget(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 4}
+            )
 
 
 class PromotionForm(forms.ModelForm):
     class Meta:
         model = Promotion
-        fields = "__all__"
+        fields = ["name", "location", "date", "description", "title"]
         widgets = {
             "date": forms.DateInput(
                 attrs={
@@ -126,18 +133,21 @@ class PromotionForm(forms.ModelForm):
                     "class": "form-control",
                 }
             ),
+            "description": SummernoteWidget(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 4}
+            )
 
 
 class HistoryForm(forms.ModelForm):
     class Meta:
         model = History
-        fields = "__all__"
+        fields = ["year", "title", "description"]
         widgets = {
             "date": forms.DateInput(
                 attrs={
@@ -145,18 +155,21 @@ class HistoryForm(forms.ModelForm):
                     "class": "form-control",
                 }
             ),
+            "description": SummernoteWidget(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 4}
+            )
 
 
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = "__all__"
+        fields = ["sequence", "name", "description", "location", "date", "title"]
         widgets = {
             "date": forms.DateInput(
                 attrs={
@@ -164,12 +177,15 @@ class EventForm(forms.ModelForm):
                     "class": "form-control",
                 }
             ),
+            "description": SummernoteWidget(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 4}
+            )
 
 
 class NewsForm(forms.ModelForm):
@@ -183,9 +199,12 @@ class NewsForm(forms.ModelForm):
                     "class": "form-control",
                 }
             ),
+            "content": SummernoteWidget(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 4}
+            )

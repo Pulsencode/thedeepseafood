@@ -60,11 +60,6 @@ urlpatterns = [
     path("blog-view", views.BlogListView.as_view(), name="blog_view"),
     path("blog-add", views.BlogCreateView.as_view(), name="blog_add"),
     path("blog-update/<int:pk>/", views.BlogUpdateView.as_view(), name="blog_update"),
-    # path(
-    #     "delete-blogslider/<int:image_id>/",
-    #     views.delete_blogslider,
-    #     name="delete_blogslider",
-    # ),
     path(
         "delete-blog-image/<int:pk>/",
         views.BlogImageDelete.as_view(),  # TODO Check if AJAX is needed currently in normal delete
@@ -78,7 +73,6 @@ urlpatterns = [
         views.EventUpdateView.as_view(),
         name="gallery_update",
     ),
-    # path("delete-slider/<int:image_id>/", views.delete_slider, name="delete_slider"),
     path(
         "delete-event-image/<int:pk>/",
         views.EventImageDelete.as_view(),
@@ -88,11 +82,6 @@ urlpatterns = [
     path("news-view", views.NewsListView.as_view(), name="news_view"),
     path("news-add", views.NewsCreateView.as_view(), name="news_add"),
     path("news-update/<int:pk>/", views.NewsUpdateView.as_view(), name="news_update"),
-    # path(
-    #     "delete-newsslider/<int:pk/",
-    #     views.delete_newsslider,
-    #     name="delete_newsslider",
-    # ),
     path(
         "delete-news-image/<int:pk>/",
         views.NewsImageDelete.as_view(),  # TODO Check if AJAX is needed currently in normal delete
@@ -106,11 +95,6 @@ urlpatterns = [
         views.PromotionUpdateView.as_view(),
         name="promotion_update",
     ),
-    # path(
-    #     "delete-promotionslider/<int:image_id>/",
-    #     views.delete_promotionslider,
-    #     name="delete_promotionslider",
-    # ),
     path(
         "delete-promotion-image/<int:pk>/",
         views.PromotionImageDelete.as_view(),  # TODO Check if AJAX is needed currently in normal delete
@@ -124,11 +108,6 @@ urlpatterns = [
         views.HistoryUpdateView.as_view(),
         name="history_update",
     ),
-    # path(
-    #     "delete-historyslider/<int:image_id>/",
-    #     views.delete_historyslider,
-    #     name="delete_historyslider",
-    # ),
     path(
         "delete-history-image/<int:pk>/",
         views.HistoryImageDelete.as_view(),  # TODO Check if AJAX is needed currently in normal delete
