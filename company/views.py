@@ -62,6 +62,7 @@ class SeoListView(
 ):
     model = SEO
     paginate_by = 10
+    ordering = ["-id"]
     context_object_name = "all_seo"
     template_name = "superadmin/seo/seo-view.html"
     search_field = "page_name"
@@ -128,6 +129,7 @@ class TeamListView(
 ):
     model = ManagementTeam
     paginate_by = 10
+    ordering = ["-id"]
     context_object_name = "all_teams"
     template_name = "superadmin/team/management_team_view.html"
     search_field = "role"
@@ -199,6 +201,7 @@ class TestimonialListView(
 ):
     model = CompanyTestimonial
     paginate_by = 10
+    ordering = ["-id"]
     context_object_name = "all_testimonials"
     template_name = "superadmin/testimonial/testimonial_view.html"
     search_field = "name"
@@ -275,6 +278,8 @@ class CertificationListView(
     model = Certification
     context_object_name = "all_certification"
     paginate_by = 10
+    ordering = ["-id"]
+
     template_name = "superadmin/certification/certification_view.html"
     extra_context = {
         "page_title": "Certification",
@@ -350,6 +355,8 @@ class SupermarketListView(
     model = Supermarkets
     context_object_name = "all_supermarkets"
     paginate_by = 10
+    ordering = ["-id"]
+
     template_name = "superadmin/supermarket/supermarket_view.html"
     extra_context = {
         "page_title": "Supermarkets",
@@ -424,6 +431,8 @@ class BrandListView(
     model = Brand
     context_object_name = "all_brands"
     paginate_by = 10
+    ordering = ["-id"]
+
     template_name = "superadmin/brand/brand_view.html"
     search_field = "name"
     extra_context = {
@@ -577,6 +586,19 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
+class BlogImageDelete(DeleteView):
+    model = BlogImage
+
+    def get_success_url(self):
+        return reverse_lazy("blog_update", kwargs={"pk": self.object.blog.pk})
+
+    def get(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
+
+
 class EventListView(
     LoginRequiredMixin,
     SuperuserOrAdminRequiredMixin,
@@ -672,7 +694,9 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
 
 class EventImageDelete(DeleteView):
     model = EventImage
-    success_url = reverse_lazy("gallery_view")
+
+    def get_success_url(self):
+        return reverse_lazy("gallery_update", kwargs={"pk": self.object.event.pk})
 
     def get(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
@@ -771,7 +795,9 @@ class NewsUpdateView(LoginRequiredMixin, UpdateView):
 
 class NewsImageDelete(DeleteView):
     model = NewsImage
-    success_url = reverse_lazy("news_view")
+
+    def get_success_url(self):
+        return reverse_lazy("news_update", kwargs={"pk": self.object.news.pk})
 
     def get(self, request, *args, **kwargs):
 
@@ -791,6 +817,8 @@ class PromotionListView(
     model = Promotion
     context_object_name = "all_promotions"
     paginate_by = 10
+    ordering = ["-id"]
+
     template_name = "superadmin/promotion/promotion_info_view.html"
     search_field = "name"
     extra_context = {
@@ -871,18 +899,9 @@ class PromotionUpdateView(LoginRequiredMixin, UpdateView):
 
 class PromotionImageDelete(DeleteView):
     model = PromotionImage
-    success_url = reverse_lazy("promotion_view")
 
-    def get(self, request, *args, **kwargs):
-        return super().delete(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return super().delete(request, *args, **kwargs)
-
-
-class BlogImageDelete(DeleteView):
-    model = BlogImage
-    success_url = reverse_lazy("blog_view")
+    def get_success_url(self):
+        return reverse_lazy("promotion_update", kwargs={"pk": self.object.promotion.pk})
 
     def get(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
@@ -987,7 +1006,9 @@ class HistoryUpdateView(LoginRequiredMixin, UpdateView):
 
 class HistoryImageDelete(DeleteView):
     model = HistoryImage
-    success_url = reverse_lazy("history_view")
+
+    def get_success_url(self):
+        return reverse_lazy("history_update", kwargs={"pk": self.object.history.pk})
 
     def get(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
