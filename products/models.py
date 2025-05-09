@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from company.models import Brand, StatusTimestampBase, ImageBase
 from autoslug import AutoSlugField
 
@@ -25,7 +26,6 @@ class Category(StatusTimestampBase, ImageBase):
 class Product(StatusTimestampBase, ImageBase):
     TYPE_CHOICES = (
         ("", "Select the Type"),
-
         ("local catch", "Local Catch"),
         ("imported", "Imported"),
         ("value added", "Value Added"),
@@ -106,6 +106,9 @@ class ProductDetails(StatusTimestampBase):
 
     def __str__(self) -> str:
         return self.product.name
+
+    def get_absolute_url(self):
+        return reverse("product_details", kwargs={"slug": self.slug})
 
     class Meta:
         verbose_name = "Product Detail"
