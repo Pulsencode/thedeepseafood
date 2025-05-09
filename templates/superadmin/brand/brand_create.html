@@ -26,45 +26,22 @@
                             <label class="cabinet center-block">
                                 <figure>
                                     <img src=""
-                                         class="gambar1 img-responsive img-thumbnail1"
-                                         id="item-img-output1" />
+                                         class="gambar6 img-responsive img-thumbnail1"
+                                         id="item-img-output6" />
                                     <figcaption>
                                         <i class="fa fa-camera"></i>
                                     </figcaption>
                                 </figure>
-                                <input type="file" class="item-img1 file center-block" name="image" />
+                                <input type="file" class="item-img6 file center-block" name="image" />
                             </label>
                         </div>
                         <input type="hidden" id="cropped-img" name="brand-image">
-                        <!-- 1 -->
-                        <div class="modal modal1 fade"
-                             id="cropImagePop1"
-                             tabindex="-1"
-                             role="dialog"
-                             aria-labelledby="myModalLabel1"
-                             aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        <h4 class="modal-title" id="myModalLabel1">Edit Photo</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div id="upload-demo1" class="center-block"></div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" id="cropImageBtn1" class="btn btn-primary">Crop</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- crop modal -->
+        {% include "crop_modal.html" %}
         <div class="col-md-8 col-xl-8 col-12">
             <div class="card">
                 <div class="card-body">
@@ -98,5 +75,5 @@
         <!-- CONTAINER END -->
     </div>
 </form>
-<!--app-content close-->
 {% include 'superadmin/layout/footer.html' %}
+<script src="{% static 'superadmin/js/crop_image.js' %}"></script>
