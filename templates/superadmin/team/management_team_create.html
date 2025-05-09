@@ -1,5 +1,11 @@
 {% include "superadmin/layout/header.html" %}
 {% load static %}
+<!-- JS & Cropper -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"
+      rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 <form method="post" enctype="multipart/form-data" id="myform">
     {% csrf_token %}
     <div class="row">
@@ -25,49 +31,23 @@
                                  class="">
                             <label class="cabinet center-block">
                                 <figure>
-                                    {% comment %} <img src=""
-      class="gambar6 img-responsive img-thumbnail6"
-      id="item-img-output6" /> {% endcomment %}
+                                    <img src=""
+                                         class="gambar6 img-responsive img-thumbnail6"
+                                         id="item-img-output6" />
                                     <figcaption>
                                         <i class="fa fa-camera"></i>
                                     </figcaption>
                                 </figure>
-                                <input type="file" class="item-img6 file center-block" name="image" />
+                                <input type="file" class="item-img6 file center-block" name="image">
                             </label>
                         </div>
                         <input type="hidden" id="cropped-img" name="image">
-                        <!-- 1 -->
-                        <div class="modal modal6 fade"
-                             id="cropImagePop6"
-                             tabindex="-1"
-                             role="dialog"
-                             aria-labelledby="myModalLabel6"
-                             aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button"
-                                                class="close"
-                                                data-bs-dismiss="modal"
-                                                aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        <h6 class="modal-title" id="myModalLabel6">Edit Photo</h6>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div id="upload-demo6" class="center-block"></div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" id="cropImageBtn6" class="btn btn-primary">Crop</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!--crop modal-->
+        {% include "crop_modal.html" %}
         <div class="col-md-8 col-xl-8 col-12">
             <div class="card">
                 <div class="card-body">
@@ -102,3 +82,4 @@
 </form>
 <!--app-content close-->
 {% include "superadmin/layout/footer.html" %}
+<script src="{% static 'superadmin/js/crop_image.js' %}"></script>

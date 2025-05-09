@@ -18,21 +18,22 @@
                             <label class="cabinet center-block">
                                 <figure>
                                     <img src=""
-                                         class="gambar5 img-responsive img-thumbnail5"
-                                         id="item-img-output5" />
+                                         class="gambar6 img-responsive img-thumbnail5"
+                                         id="item-img-output6" />
                                     <figcaption>
                                         <i class="fa fa-camera"></i>
                                     </figcaption>
                                 </figure>
-                                <input type="file" class="item-img5 file center-block" name="image">
+                                <input type="file" class="item-img6 file center-block" name="image">
                             </label>
                         </div>
-                        <input type="hidden" id="cropped-img" name="testi-image">
-                        <!-- Modal content remains unchanged -->
+                        <input type="hidden" id="cropped-img" name="image">
                     </div>
                 </div>
             </div>
         </div>
+        <!-- crop modal -->
+        {% include "crop_modal.html" %}
         <div class="col-md-8 col-xl-8 col-12">
             <div class="card">
                 <div class="card-body">
@@ -62,65 +63,4 @@
     </div>
 </form>
 {% include "superadmin/layout/footer.html" %}
-<!-- 5 -->
-<script>
-    // Start upload preview image
-    $(".gambar5").attr("src", "https://deepsea.noviindus.in/static/superadmin/images_ex/up.png");
-    var $uploadCrop5,
-        tempFilename5,
-        rawImg5,
-        imageId5;
-
-    function readFile5(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('.upload-demo5').addClass('ready');
-                $('#cropImagePop5').modal('show');
-                rawImg5 = e.target.result;
-            }
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            swal("Sorry - you're browser doesn't support the FileReader API");
-        }
-    }
-
-    $uploadCrop5 = $('#upload-demo5').croppie({
-        viewport: {
-            width: 80,
-            height: 60,
-        },
-        enforceBoundary: false,
-        enableExif: true
-    });
-    $('#cropImagePop5').on('shown.bs.modal', function () {
-       
-        $uploadCrop5.croppie('bind', {
-            url: rawImg5
-        }).then(function () {
-            console.log('jQuery bind complete');
-        });
-    });
-
-    $('.item-img5').on('change', function () {
-        imageId5 = $(this).data('id');
-        tempFilename5 = $(this).val();
-        $('#cancelCropBtn5').data('id', imageId5);
-        readFile5(this);
-    });
-    $('#cropImageBtn5').on('click', function (ev) {
-        $uploadCrop5.croppie('result', {
-            type: 'base64',
-            format: 'png',
-            size: {
-                width: 80,
-                height: 60
-            }
-        }).then(function (resp) {
-            $('#item-img-output5').attr('src', resp);
-            $('#cropped-img').val(resp);
-            $('#cropImagePop5').modal('hide');
-        });
-    });
-    // End upload preview image
-</script>
+<script src="{% static 'superadmin/js/crop_image.js' %}"></script>

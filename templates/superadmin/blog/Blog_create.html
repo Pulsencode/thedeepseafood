@@ -16,8 +16,7 @@
                                    class="dropify"
                                    data-bs-height="180"
                                    multiple
-                                   name="images"
-                                   >
+                                   name="images">
                         </div>
                     </div>
                     {% if existing_images %}
@@ -80,7 +79,7 @@
                                        class="form-control"
                                        placeholder="Image Alt"
                                        name="image_alt"
-                                       value="{{blog.blog_image.first.image_alt}}">
+                                       value="{{ blog.blog_image.first.image_alt }}">
                             </div>
                         </div>
                         <div class="form-group col-lg-12 col-12">
