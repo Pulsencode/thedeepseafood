@@ -586,7 +586,7 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class BlogImageDelete(DeleteView):
+class BlogImageDelete(LoginRequiredMixin, DeleteView):
     model = BlogImage
 
     def get_success_url(self):
@@ -692,7 +692,7 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class EventImageDelete(DeleteView):
+class EventImageDelete(LoginRequiredMixin, DeleteView):
     model = EventImage
 
     def get_success_url(self):
@@ -793,7 +793,7 @@ class NewsUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class NewsImageDelete(DeleteView):
+class NewsImageDelete(LoginRequiredMixin, DeleteView):
     model = NewsImage
 
     def get_success_url(self):
@@ -897,7 +897,7 @@ class PromotionUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class PromotionImageDelete(DeleteView):
+class PromotionImageDelete(LoginRequiredMixin, DeleteView):
     model = PromotionImage
 
     def get_success_url(self):
@@ -1004,7 +1004,7 @@ class HistoryUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class HistoryImageDelete(DeleteView):
+class HistoryImageDelete(LoginRequiredMixin, DeleteView):
     model = HistoryImage
 
     def get_success_url(self):

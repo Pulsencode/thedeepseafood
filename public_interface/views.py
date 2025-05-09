@@ -215,15 +215,11 @@ def catalogue(request):
 
 
 def terms_and_condition(request):
-    context = {"page_title": "Terms and Conditions"}
-
-    return render(request, "termsandconditions.html", context)
+    return render(request, "termsandconditions.html")
 
 
 def privacy_policy(request):
-    context = {"page_title": "Privacy Policy"}
-
-    return render(request, "privacy_policy.html", context)
+    return render(request, "privacy_policy.html")
 
 
 # class IndexView(TemplateView):
@@ -381,7 +377,7 @@ class NewsListsView(TemplateView):
 
 
 class IndexProductView(View):
-    template_name = "public_interface/home/product_list.html"
+    template_name = "public_interface/components/home/product_list.html"
 
     def get(self, request):
         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":

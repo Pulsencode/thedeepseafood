@@ -1,5 +1,7 @@
-{% load static %}
-<form method="post" class="form" action="{% url 'web:common:contact' %}">
+<form method="post"
+      class="form"
+      action="{% url 'enquiry' %}"
+      id="contact_form">
   {% csrf_token %}
   <div class="body">
     <div class="row">
@@ -13,55 +15,133 @@
       </div>
       <div class="col-12">
         <input class="form-control text-blue"
-               name="mobile_no"
+               name="phone_number"
                type="text"
                maxlength="15"
                placeholder="Phone Number"
-               required>
+               required
+               onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+          <input type="text" name="honey" class="d-none">
+        </div>
+        <div class="col-12" id="email">
+          <input class="form-control text-blue"
+                 name="email"
+                 type="email"
+                 maxlength="100"
+                 placeholder="Email"
+                 required>
+          <b><span class="text-danger formerror"></span></b>
+        </div>
+        <div class="col-12">
+          <input class="form-control text-blue"
+                 name="location"
+                 type="text"
+                 maxlength="100"
+                 placeholder="Location"
+                 required>
+        </div>
+        <div class="col-12">
+          <textarea class="form-control text-blue h-70-px"
+                    name="message"
+                    maxlength="500"
+                    placeholder="Message"
+                    required></textarea>
+        </div>
       </div>
-      <div class="col-12">
-        <input class="form-control text-blue"
-               name="email"
-               type="email"
-               maxlength="100"
-               placeholder="Email"
-               required>
-      </div>
-      <div class="col-12">
-        <input class="form-control text-blue"
-               name="location"
-               type="text"
-               maxlength="100"
-               placeholder="Location"
-               required>
-      </div>
-      <div class="col-12">
-        <textarea class="form-control text-blue h-70-px"
-                  name="message"
-                  maxlength="500"
-                  placeholder="Message"
-                  required></textarea>
+    </div>
+    <div class="foot text-center">
+      <button type="submit"
+              id="submitButton"
+              class="BTN_SUBMIT btn btn-primary font-lntermedium">Send Enquiry</button>
+    </div>
+  </form>
+  <!-- Enhanced Modal -->
+  <div class="modal fade"
+       id="responseModal"
+       tabindex="-1"
+       aria-hidden="true"
+       data-bs-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content rounded-4 shadow-lg">
+        <div class="modal-body text-center p-2">
+          <div class="icon-status mb-3">
+            <i class="fa fa-check-circle fa-3x text-success d-none"></i>
+            <i class="fa fa-times-circle fa-3x text-danger d-none"></i>
+          </div>
+          <h5 class="modal-title mb-3"></h5>
+          <p class="modal-message mb-0"></p>
+          <div class="progress mt-3">
+            <div class="progress-bar w-100" role="progressbar"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="foot text-center">
-    <input type="hidden" name="recaptcha_token">
-    <button type="submit" class="d-none" id="BTN_SUBMIT_HIDDEN"></button>
-    <button type="button"
-            onclick="submitWithReCaptcha()"
-            class="BTN_SUBMIT btn btn-primary font-lntermedium">Send Enquiry</button>
-  </div>
-</form>
-<script src="https://www.google.com/recaptcha/api.js?render={{recaptcha_site_key}}"></script>
-<script>
-  window.recaptcha_site_key="{{recaptcha_site_key}}";
-  function submitWithReCaptcha() {
-    if(window.captcha_loading) return;
-    window.captcha_loading=true;
-    grecaptcha.execute(window.recaptcha_site_key, {action: 'onlineadmission'}).then(function(token) {
-      $('input[name="recaptcha_token"]').val(token);
-      window.captcha_loading=false;
-      $('#BTN_SUBMIT_HIDDEN').click();
+  <script>
+    $(document).ready(function () {
+      const responseModal = new bootstrap.Modal('#responseModal', {
+        backdrop: false,
+        keyboard: false
+      });
+      let timeoutId;
+
+      $("#contact_form").submit(function (event) {
+        event.preventDefault();
+        const $form = $(this);
+
+        $.ajax({
+          type: "POST",
+          url: $form.attr("action"),
+          data: $form.serialize(),
+          success: function (response) {
+            showModal("Success", "Enquiry submitted successfully!", "success");
+            $form[0].reset();
+          },
+          error: function (xhr) {
+            const errorMessage =
+              JSON.parse(xhr.responseText).message || "An error occurred.";
+            showModal("Error", errorMessage, "danger");
+          }
+        });
+      });
+
+      function showModal(title, message, type) {
+        const modal = $('#responseModal');
+        const iconStatus = modal.find('.icon-status');
+        
+        // Reset modal content
+        modal.find('.fa-check-circle, .fa-times-circle').addClass('d-none');
+        modal.find('.modal-title').text(title);
+        modal.find('.modal-message').text(message);
+        
+        // Update styling based on type
+        if (type === 'success') {
+          iconStatus.find('.fa-check-circle').removeClass('d-none');
+          modal.find('.progress-bar').addClass('bg-success');
+        } else {
+          iconStatus.find('.fa-times-circle').removeClass('d-none');
+          modal.find('.progress-bar').addClass('bg-danger');
+        }
+
+        // Show and animate progress bar
+        modal.find('.progress').show().css('width', '0%');
+        modal.find('.progress-bar').css('width', '100%');
+        
+        // Clear existing timeout
+        if (timeoutId) clearTimeout(timeoutId);
+        
+        // Show modal
+        responseModal.show();
+        
+        // Auto-hide after delay
+        timeoutId = setTimeout(() => {
+          responseModal.hide();
+        }, type === 'success' ? 3000 : 5000);
+      }
+
+      // Reset modal on close
+      $('#responseModal').on('hidden.bs.modal', function () {
+        $(this).find('.progress-bar').removeClass('bg-success bg-danger');
+      });
     });
-  }
-</script>
+  </script>
