@@ -63,14 +63,14 @@ class BaseInfoModel(models.Model):
 class SEO(StatusTimestampBase):
     PAGE_NAME_CHOICES = [
         ("", "Select the Page"),
-        ("hm", "Home"),
-        ("abt", "About"),
-        ("brd", "Brand"),
-        ("prd", "Products"),
-        ("car", "Career"),
-        ("con", "Contact"),
-        ("blg", "Blogs"),
-        ("nws", "News Room"),
+        ("/", "Home"),
+        ("/about/", "About"),
+        ("/brands/oceano", "Brand"),
+        ("/product", "Products"),
+        ("/career", "Career"),
+        ("/contact", "Contact"),
+        ("/blog", "Blogs"),
+        ("/news-room", "News Room"),
     ]
     page_name = models.CharField(max_length=20, choices=PAGE_NAME_CHOICES, unique=True)
     meta_title = models.CharField(max_length=100)
@@ -143,9 +143,21 @@ class News(StatusTimestampBase, BaseInfoModel):
     content = models.TextField(
         null=True
     )  # TODO Need to change to the one in the blog model
-
+    slug = AutoSlugField(
+        populate_from="name",
+        editable=True,
+        always_update=True,
+        null=True,
+        blank=True,
+        unique=True,
+        max_length=100,
+    )
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse("news_details", kwargs={"slug": self.slug})
+
 
 
 class NewsImage(TimestampBase, ImageBase):
@@ -206,6 +218,9 @@ class Blog(StatusTimestampBase, BaseInfoModel):
     class Meta:
         verbose_name = "Blog Detail"
         verbose_name_plural = "Blog Details"
+
+    def get_absolute_url(self):
+        return reverse("blog_details", kwargs={"slug": self.slug})
 
 
 class BlogImage(TimestampBase, ImageBase):

@@ -1,4 +1,4 @@
-alert("s")
+
 let cropper;
 const image = document.createElement('img');
 

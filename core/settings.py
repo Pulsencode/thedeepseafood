@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "adminsortable2",
     "django_summernote",
+    "django.contrib.sitemaps",
+
 ]
 
 MIDDLEWARE = [
@@ -54,8 +56,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "public_interface.context_processors.company_total_year",
-                "public_interface.context_processors.blogs",
+                "public_interface.context_processors.global_context",
             ],
         },
     },

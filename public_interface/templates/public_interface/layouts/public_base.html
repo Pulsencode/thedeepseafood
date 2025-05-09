@@ -4,6 +4,15 @@
       <head>
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <!-- Meta Description -->
+            <meta name="description" content="{{ seo.meta_description }}">
+            <!-- Meta Keywords -->
+            <meta name="keywords" content="{{ seo.meta_keywords }}">
+            <!-- Meta Author -->
+            <meta name="author" content="{{ seo.meta_author }}">
+            <!-- Admin added scripts -->
+            <script type="application/ld+json">{{ seo.meta_json_ld|safe }}</script>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <meta http-equiv="X-UA-Compatible" content="IE=edge" />
             <!-- Google tag (gtag.js) -->
             <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZ20QPH6D6"></script>
@@ -25,10 +34,6 @@
                   content="https://{{ request.get_host }}{% static 'website/images/logo.png' %}" />
             <meta property="og:description"
                   content="We supply our products domestically and internationally depending on market needs. We offer extensive seafood baskets that are live, chilled, fresh, and frozen." />
-            <meta name="description"
-                  content="{% if data.metatag %}{{ data.metatag }}{% endif %}" />
-            <meta name="keywords"
-                  content="{% if data.keyword %}{{ data.keyword }}{% endif %}" />
             {% include "public_interface/layouts/links.html" %}
             <!-- jquery -->
             <script src="{% static 'website/modules/jquery/jquery-3.3.1.min.js' %}"
