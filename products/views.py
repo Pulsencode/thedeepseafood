@@ -362,15 +362,6 @@ class ProductCreateView(LoginRequiredMixin, SuperuserOrAdminRequiredMixin, Creat
     }
 
     def form_valid(self, form):
-
-        # image_data = self.request.POST.get("brand-image")
-        # if image_data:
-        #     format, imgstr = image_data.split(";base64,")
-        #     ext = format.split("/")[-1]
-        #     img_file = ContentFile(base64.b64decode(imgstr), name=f"temp.{ext}")
-        #     form.instance.image.save(
-        #         f"{form.cleaned_data['name']}.{ext}", img_file, save=False
-        #     )
         messages.success(self.request, "Product Added Successfully...!!")
         return super().form_valid(form)
 
