@@ -995,8 +995,6 @@ body.modal-open .modal {
 .slick-dots li {
   margin: 5px;
 }
-.slick-dots li button {
-}
 .slick_history_for .slick-dots {
   bottom: -34px;
 }
@@ -3624,6 +3622,10 @@ textarea.form-control.h-100-px {
   color: #0d5189 !important;
 }
 
+#career .modal-career #id_phone_number {
+  padding-left: 50px;
+}
+
 #career .modal-career .form-default ::-moz-placeholder {
   /* Firefox 19+ */
   color: #0d5189 !important;
@@ -3648,7 +3650,7 @@ textarea.form-control.h-100-px {
 }
 
 #contact .get-in-touch .card .form [class^="col-"] {
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
 
 #contact .get-in-touch .card .form .form-control {
@@ -5284,9 +5286,6 @@ ul.dropdown-menu.dropdown-menu-end.oceano-navbar.show {
   .section-head h1 {
     margin-top: 20px;
   }
-  .ps-60-zero-sm {
-    /* padding:0px 10px !important; */
-  }
   #years_36 .item {
     width: 100%;
   }
@@ -5306,9 +5305,6 @@ ul.dropdown-menu.dropdown-menu-end.oceano-navbar.show {
     width: 100%;
   }
 
-  h1.text-white.font-lnterbold {
-    /* padding-top: 40px; */
-  }
   .arrows-vector .slick-next,
   .arrows-vector .slick-prev,
   .arrows-vector .slick-next:before,
@@ -5350,8 +5346,6 @@ ul.dropdown-menu.dropdown-menu-end.oceano-navbar.show {
   }
   .more-card-overlay {
     display: none;
-  }
-  .oceano-navbar li {
   }
   .card-hover-zoom:hover {
     transform: none;
@@ -5406,11 +5400,6 @@ ul.dropdown-menu.dropdown-menu-end.oceano-navbar.show {
   }
   #indro .slider .slick-prev {
     left: 0 !important;
-  }
-  button#findJobButton {
-    /* width: fit-content; */
-    /* padding: 0px 10px; */
-    /* font-size:15px; */
   }
   .amount-k button {
     margin-top: 0px;
@@ -5584,4 +5573,42 @@ a.fa.fa-arrow-down.fa-1x {
   -webkit-line-clamp: 1; /* number of lines to show */
   line-clamp: 1;
   -webkit-box-orient: vertical;
+}
+
+/* Phone number field */
+#contact .get-in-touch .card .form #id_phone_number {
+  padding-left: 50px;
+}
+
+.phone-number-col{
+  margin-bottom: 20px !important;
+}
+
+.iti.iti--allow-dropdown {
+  width: 100% !important;
+}
+
+.iti__country, .iti__dial-code {
+  font-size: 0.75rem !important;
+  color: #0d5189 !important;
+}
+
+.iti__country-list{
+  max-height: 175px !important;
+  max-width: 330px !important;
+}
+
+@media (max-width: 680px) {
+  .iti-mobile .iti--container {
+    left: 10vw !important;
+    right: 10vw !important;
+  }
+  .iti__country, .iti__dial-code {
+    font-size: 0.75rem !important;
+
+  }
+  .iti__country-list{
+    max-height: 175px !important;
+    max-width: 500px !important;
+  }
 }
