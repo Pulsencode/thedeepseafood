@@ -13,8 +13,8 @@
         {% if all_subcategory %}
             {% for subcategory in all_subcategory %}
                 <tr>
-                    <td>{{ forloop.counter }}00000000000000000000000000000000000</td>
-                    <td>{{ subcategory.name }}99</td>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ subcategory.name }}</td>
                     <td>
                         <form method ="post">
                             {% csrf_token %}
