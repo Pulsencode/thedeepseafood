@@ -4,7 +4,7 @@
   <div class="wrapper aos-init aos-animate"
        data-aos="fade-down"
        data-aos-duration="1000"
-       {% if request.resolver_match.url_name == "about" %}data-aos-once="true"{% endif %}>
+       {% if request.resolver_match.url_name in 'about,newsroom' %}data-aos-once="true"{% endif %}>
     <div class="row justify-content-center">
       <div class="col-lg-8 text-center">
         <a class="a-logo active" href="{% url "home" %}">
@@ -41,7 +41,7 @@
             <div class="country_nav_url aos-init aos-animate"
                  data-aos="fade-up"
                  data-aos-duration="1000"
-                 {% if request.resolver_match.url_name == "about" %}data-aos-once="true"{% endif %}>
+                 {% if request.resolver_match.url_name in "about,newsroom" %}data-aos-once="true"{% endif %}>
               <a class="a-item" href="{% url 'contact' %}?branch=UAE">UAE</a>
               <a class="a-item" href="{% url 'contact' %}?branch=KSA">KSA</a>
               <a class="a-item" href="{% url 'contact' %}?branch=QATAR">QATAR</a>
