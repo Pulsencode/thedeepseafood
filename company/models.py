@@ -152,12 +152,12 @@ class News(StatusTimestampBase, BaseInfoModel):
         unique=True,
         max_length=100,
     )
+
     def __str__(self):
         return self.title
-    
+
     def get_absolute_url(self):
         return reverse("news_details", kwargs={"slug": self.slug})
-
 
 
 class NewsImage(TimestampBase, ImageBase):
