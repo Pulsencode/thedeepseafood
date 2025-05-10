@@ -21,7 +21,7 @@
                 <h5 class="font-lnterbold">
                   <a href="{% url 'home' %}">Home</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
-                  <a>News Room</a>
+                  <a href="{% url "newsroom" %}">News Room</a>
                 </h5>
               </div>
             </div>
@@ -47,136 +47,11 @@
           </div>
           <div class="row">
             <div class="col-lg-12 col-md-12 col-12">
-              <div class="row" id="newsroom-data">
-                {% include "public_interface/components/news/event_gallery.html" with all_events=all_events %}
-              </div>
+              <div class="row" id="newsroom-data">{% include "public_interface/components/news/event_gallery.html" %}</div>
             </div>
           </div>
         </div>
       </div>
     </section>
   </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Initialize first slider
-      initSliders();
-
-      // Set up tab click handlers
-      document.querySelector(".list_side").addEventListener("click", function (e) {
-        const target = e.target.closest("a");
-        if (!target) return;
-        e.preventDefault();
-        loadSection(target.hash);
-      });
-
-      // Handle initial page load
-      const initialHash = window.location.hash || "#events";
-      if (!window.location.hash) {
-        window.history.replaceState(null, "", "#events");
-      }
-      updateActiveTab(initialHash);
-    });
-
-    function loadSection(hash) {
-      const endpointMap = {
-        "#events": "/get_events/",
-        "#company-news": "/get_news/",
-        "#global-news": "/get_global_news/",
-      };
-
-      $.ajax({
-        url: endpointMap[hash],
-        method: "GET",
-        success: function (data) {
-          if (data.status) {
-            // Clear existing content and sliders
-            $(".slick_slider_1").slick("unslick");
-            $("#newsroom-data").html(data.template);
-
-            // Initialize new sliders
-            initSliders();
-
-            // Update load more button visibility
-            const loadMoreId =
-              hash === "#events" ? "#loadMoreEvents" : "#loadMoreNews";
-            const $loadMore = $(loadMoreId);
-            if ($loadMore.length) {
-              $loadMore.toggle(data.total > 3);
-            }
-
-            // Update UI states
-            updateHistory(hash);
-            updateActiveTab(hash);
-          }
-        },
-        error: function (xhr, status, error) {
-          console.error("Error loading content:", error);
-        },
-      });
-    }
-
-    function initSliders() {
-      $(".slick_slider_1").not(".slick-initialized").slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        dots: true,
-        arrows: false,
-        autoplay: true,
-        autoplaySpeed: 3000,
-        pauseOnFocus: false,
-        pauseOnHover: false,
-        pauseOnDotsHover: false,
-      });
-    }
-
-    function updateActiveTab(hash) {
-      $(".list_side a").removeClass("active");
-      $(`.list_side a[href="${hash}"]`).addClass("active");
-    }
-
-    function updateHistory(hash) {
-      if (window.location.hash !== hash) {
-        window.history.pushState(null, "", hash);
-      }
-    }
-
-    // Universal load more handler
-    function handleLoadMore(endpoint) {
-      const $button = $(event.target).closest("a");
-      const currentCount = $("#newsroom-data .news-box").length;
-
-      $.ajax({
-        url: endpoint,
-        data: {
-          offset: currentCount,
-          limit: 4,
-          type: $button.data("type") || "",
-        },
-        success: function (response) {
-          if (response.data) {
-            // Remove existing load more button
-            $button.closest(".btn-more").remove();
-
-            // Append new content
-            $("#newsroom-data").append(response.data);
-
-            // Reinitialize sliders
-            initSliders();
-          }
-        },
-        error: function (xhr) {
-          console.error("Load more failed:", xhr.responseText);
-        },
-      });
-    }
-
-    // Specific load more functions
-    function loadmore() {
-      handleLoadMore("/load_more_news/");
-    }
-
-    function loadmoreEvents() {
-      handleLoadMore("/load_more_events/");
-    }
-  </script>
 {% endblock content %}
