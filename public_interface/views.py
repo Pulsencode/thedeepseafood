@@ -185,7 +185,7 @@ def job_application(request):
 def news_room(request):
     context = {
         "page_title": "Latest News & Updates",
-        "all_events": Event.objects.filter(status=True).order_by("sequence")[:3],
+        "all_events": Event.objects.filter(status=True).order_by("sequence"),
         "total_events": Event.objects.filter(status=True).count(),
     }
     return render(request, "public_interface/news-room.html", context)
@@ -741,6 +741,7 @@ class LoadEvents(BaseAjaxView):
     model = Event
     template = "public_interface/components/news/event_gallery.html"
     context_key = "all_events"
+    default_limit = None
 
 
 class LoadNews(BaseAjaxView):
@@ -760,41 +761,45 @@ class LoadPromotions(BaseAjaxView):
 
 
 def load_more_news(request):
-    return handle_load_more(
-        request, News, "public_interface/components/news/loadmore_news.html"
-    )
+    try:
+        offset = int(request.GET["offset"])
+        limit = int(request.GET["limit"])
+        news_type = request.GET["type"]
+
+        if news_type not in ['company-news', 'global-news']:
+            raise ValueError("Invalid news type")
+
+        queryset = News.objects.filter(
+            status=True,
+            type=news_type
+        ).order_by("sequence")
+
+        total_items = queryset.count()
+        has_more = (offset + limit) < total_items
+
+        data = queryset[offset:offset + limit]
+
+        html = render_to_string(
+            "public_interface/components/news/news_list.html",
+            {"data": data, "type": news_type, "has_more": has_more},
+        )
+
+        return JsonResponse({
+            "data": html,
+            "has_more": has_more
+        })
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
 
 
 def load_more_events(request):
-    return handle_load_more(
-        request, Event, "public_interface/components/news/loadmore_events.html"
-    )
-
-
-def handle_load_more(request, model, template_name):
     try:
-        params = {
-            "offset": int(request.GET.get("offset", 0)),
-            "limit": int(request.GET.get("limit", 4)),
-            "type": request.GET.get("type", ""),
-        }
-
-        filters = {"status": True}
-        if params["type"]:
-            filters["type__iexact"] = params["type"]
-
-        qs = model.objects.filter(**filters).order_by("sequence")
-        items = qs[params["offset"] : params["offset"] + params["limit"]]
-        total = qs.count()
-
         html = render_to_string(
-            f"public_interface/components/news/{template_name}",
-            {"data": items, "has_more": (params["offset"] + params["limit"]) < total},
+            "public_interface/components/news/event_gallery.html",
         )
 
-        return JsonResponse(
-            {"data": html, "has_more": (params["offset"] + params["limit"]) < total}
-        )
+        return JsonResponse({"data": html})
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
