@@ -4,8 +4,11 @@ from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.conf import settings
 from django.core.validators import validate_email
+
+from django.http import HttpResponseRedirect, JsonResponse
+
 import logging
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+
 from django.template import loader
 from django.template.loader import render_to_string
 from django.views import View
@@ -34,23 +37,30 @@ from public_interface.forms import EnquiryForm
 
 
 def home(request):
-    all_products = Product.objects.all().order_by("sequence")
-    homepage_products = Product.objects.filter(homepage=True).order_by("sequence")[:9]
+    selected_type = request.GET.get("type")
 
-    # If no homepage marked, show the first 9 of all products
-    if not homepage_products:
-        display_products = all_products[:9]
+    products = Product.objects.filter(status=True, homepage=True).order_by("sequence")
+
+    if selected_type:
+        products = products.filter(type=selected_type)
     else:
-        display_products = homepage_products
+        products = products[:9]
 
     context = {
+        "all_products": products,
         "page_title": "Wholesale Seafood Export & Import Supplier in UAE, Middle East",
         "all_certifications": Certification.objects.filter(status=True),
         "all_brands": Brand.objects.filter(status=True).order_by("sequence"),
-        "all_products": homepage_products,
         "all_testimonials": CompanyTestimonial.objects.filter(status=True),
-        "display_products": display_products,
+        "view_more_button": True,
     }
+
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        html = render_to_string(
+            "public_interface/components/products/product_lists.html", context
+        )
+        return JsonResponse({"html": html})
+
     return render(request, "public_interface/home.html", context)
 
 
@@ -80,8 +90,12 @@ def blog_details(request, slug):
 
 def product(request):
     search = request.GET.get("search")
+    selected_type = request.GET.get("type")
 
     products = Product.objects.filter(status=True)
+
+    if selected_type:
+        products = products.filter(type=selected_type)
 
     if search:
         products = products.filter(name__icontains=search)
@@ -89,17 +103,16 @@ def product(request):
     products = products.order_by("sequence")
 
     context = {
-        "page_title": "Seafood Products",
         "all_products": products,
+        "page_title": "Seafood Products",
     }
 
-    # Check if this is an AJAX request
+    # AJAX request handling
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
         html = render_to_string(
-            "public_interface/components/products/product_lists.html",
-            {"all_products": products},
+            "public_interface/components/products/product_lists.html", context
         )
-        return HttpResponse(html)
+        return JsonResponse({"html": html})
 
     return render(request, "public_interface/products.html", context)
 
@@ -221,57 +234,6 @@ def terms_and_condition(request):
 
 def privacy_policy(request):
     return render(request, "privacy_policy.html")
-
-
-# class IndexView(TemplateView):
-#     template_name = "website/index/index.html"
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         brand = (
-#             Brand.objects.filter(status=True)
-#             .exclude(name="Deep Sea")
-#             .order_by("sequence")
-#         )
-#         category = Category.objects.filter(status=True).order_by("-id")
-#         product = Product.objects.filter(
-#             brand__name="Deep Sea", status=True, homepage=True
-#         ).order_by("sequence")[:9]
-#         blog = Blog.objects.filter(status=True).order_by("-id")
-#         testimonial = CompanyTestimonial.objects.filter(status=True).order_by("-id")
-#         type = ""
-#         certification = Certification.objects.filter(status=True).order_by("-id")
-
-#         context["certification"] = certification
-#         context["testimonial"] = testimonial
-#         context["type"] = type
-
-#         context["product"] = product
-#         context["category"] = category
-#         context["brands"] = brand
-#         return context
-
-
-# class ProductView(TemplateView):
-#     template_name = "website/products/products.html"
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         type = self.request.GET.get("type")
-#         if type:
-#             product = Product.objects.filter(
-#                 brand__name="Deep Sea", type=type, status=True
-#             ).order_by("sequence")
-#         else:
-#             product = Product.objects.filter(
-#                 brand__name="Deep Sea", status=True
-#             ).order_by("sequence")
-#         blog = Blog.objects.filter(status=True).order_by("-id")
-#         # context["data"] = SEO.objects.filter(page="Product").first()
-#         context["blog"] = blog
-#         context["type"] = type
-#         context["product"] = product
-#         return context
 
 
 # class ProductDetailsView(TemplateView):

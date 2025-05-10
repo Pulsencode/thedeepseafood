@@ -1,3 +1,4 @@
+{% load static %}
 <section id="section_products bott" class="bg-x-light-blue pb-50">
     <div class="arrowbounce">
         <div class="animarea">
@@ -20,35 +21,56 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12 pt-25 res-pt-15">
+            <form method="get" id="filter">
                 <div class="position-relative">
-                    <ul class="nav nav-tabs nav-tabs-bg border-0 justify-content-center"
+                    <ul class="nav nav-tabs nav-tabs-bg border-0  prod_tab_sc"
                         data-aos="fade-up"
-                        data-aos-duration="1500">
+                        data-aos-duration="1000">
                         <li class="nav-item">
-                            <a class="nav-link active ALLCAT" onclick="get_product_list('All',this)">All</a>
+                            <button type="submit"
+                                    name="type"
+                                    value=""
+                                    class="nav-link btn border-0 {% if request.GET.type == None %}active{% endif %}">
+                                All
+                            </button>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link  ALLCAT"
-                               onclick="get_product_list('Local Catch',this)">Local Catch</a>
+                            <button type="submit"
+                                    name="type"
+                                    value="local catch"
+                                    class="nav-link btn border-0 {% if request.GET.type == 'local catch' %}active{% endif %}">
+                                Local Catch
+                            </button>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link CATSELE" onclick="get_product_list('Imported',this)">Imported</a>
+                            <button type="submit"
+                                    name="type"
+                                    value="imported"
+                                    class="nav-link btn border-0 {% if request.GET.type == 'imported' %}active{% endif %}">
+                                Imported
+                            </button>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link CATSELE"
-                               onclick="get_product_list('Value Added',this)">Value Added</a>
+                            <button type="submit"
+                                    name="type"
+                                    value="value added"
+                                    class="nav-link btn border-0 {% if request.GET.type == 'value added' %}active{% endif %}">
+                                Value Added
+                            </button>
                         </li>
                     </ul>
-                </div>
+                </form>
                 <div class="tab-content pt-md-30">
                     <div class="tab-pane fade show active"
                          data-aos="fade-up"
                          data-aos-duration="1500">
-                        <div class="row card-white-image APPENDPRO" id="index_product">{% include "public_interface/components/home/product_list.html" %}</div>
+                        <div class="row card-white-image APPENDPRO" id="index_product">
+                            {% include "public_interface/components/products/product_lists.html" %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<script src="{% static 'public_interface/js/search_filter.js' %}"></script>
