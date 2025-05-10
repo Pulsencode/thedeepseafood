@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.conf import settings
 from django.core.validators import validate_email
+import logging
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.template.loader import render_to_string
@@ -710,6 +711,9 @@ class BrandsListView(TemplateView):
     template_name = "public_interface/components/brands/brands_list.html"
 
 
+logger = logging.getLogger(__name__)
+
+
 class BaseAjaxView(View):
     model = None
     template = None
@@ -722,19 +726,26 @@ class BaseAjaxView(View):
             "sequence"
         )
 
+    def get_context_data(self, **kwargs):
+        context = {
+            self.context_key: self.get_queryset()[: self.default_limit],
+            "total": self.get_queryset().count(),
+        }
+        return context
+
     def get(self, request):
         if not request.headers.get("x-requested-with") == "XMLHttpRequest":
             return JsonResponse({"error": "Invalid request"}, status=400)
 
         try:
-            qs = self.get_queryset()[: self.default_limit]
-            context = {self.context_key: qs, "total": self.get_queryset().count()}
+            context = self.get_context_data()
             html = render_to_string(self.template, context)
             return JsonResponse(
                 {"status": True, "template": html, "total": context["total"]}
             )
         except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
+            logger.error(f"Error in {self.__class__.__name__}: {str(e)}", exc_info=True)
+            return JsonResponse({"error": "Server error"}, status=500)
 
 
 class LoadEvents(BaseAjaxView):
@@ -754,55 +765,49 @@ class LoadGlobalNews(LoadNews):
     filters = {"type__iexact": "global news"}
 
 
-class LoadPromotions(BaseAjaxView):
-    model = Promotion
-    template = "public_interface/components/news/promotions_list.html"
-    default_limit = None
-
-
 def load_more_news(request):
     try:
-        offset = int(request.GET["offset"])
-        limit = int(request.GET["limit"])
-        news_type = request.GET["type"]
-
-        if news_type not in ['company-news', 'global-news']:
-            raise ValueError("Invalid news type")
+        offset = int(request.GET.get("offset", 0))
+        limit = int(request.GET.get("limit", 4))
+        news_type = request.GET.get("type", "company-news")
 
         queryset = News.objects.filter(
-            status=True,
-            type=news_type
+            status=True, type__iexact=news_type.replace("-", " ")
         ).order_by("sequence")
 
         total_items = queryset.count()
         has_more = (offset + limit) < total_items
 
-        data = queryset[offset:offset + limit]
-
+        data = queryset[offset : offset + limit]
         html = render_to_string(
             "public_interface/components/news/news_list.html",
-            {"data": data, "type": news_type, "has_more": has_more},
+            {"items": data, "total": total_items},
         )
 
-        return JsonResponse({
-            "data": html,
-            "has_more": has_more
-        })
+        return JsonResponse({"data": html, "has_more": has_more})
 
     except Exception as e:
-        return JsonResponse({"error": str(e)}, status=400)
+        logger.error(f"Load more error: {str(e)}", exc_info=True)
+        return JsonResponse({"error": "Invalid request"}, status=400)
 
 
 def load_more_events(request):
     try:
+        events = Event.objects.filter(status=True).order_by("sequence")
         html = render_to_string(
             "public_interface/components/news/event_gallery.html",
+            {"all_events": events},
         )
-
         return JsonResponse({"data": html})
-
     except Exception as e:
-        return JsonResponse({"error": str(e)}, status=400)
+        logger.error(f"Load events error: {str(e)}", exc_info=True)
+        return JsonResponse({"error": "Server error"}, status=500)
+
+
+class LoadPromotions(BaseAjaxView):
+    model = Promotion
+    template = "public_interface/components/news/promotions_list.html"
+    default_limit = None
 
 
 class PromotionView(TemplateView):
