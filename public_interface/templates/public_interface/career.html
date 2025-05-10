@@ -88,7 +88,10 @@
                         <a href="#"
                            class="read-more-cnt"
                            id="readmore-btn{{ forloop.counter }}"
-                           onclick="readmore('{{ forloop.counter }}')">Read More</a>
+                           data-counter="{{ forloop.counter }}"
+                           role="button"
+                           aria-expanded="false"
+                           aria-controls="desc{{ forloop.counter }}">Read More</a>
                       {% endwith %}
                     </div>
                     <div class="d-flex align-items-end">
@@ -254,13 +257,18 @@
         });
       };
 
-      function readmore(counter) {
-        $("#desc" + counter).toggleClass("line_2");
-        if ($("#desc" + counter).hasClass("line_2")) {
-          $("#readmore-btn" + counter).html("Read More");
-        } else {
-          $("#readmore-btn" + counter).html("Read Less");
-        }
-      }
+      $(document).ready(function() {
+        $('.read-more-cnt').on('click', function(e) {
+          e.preventDefault();
+          const counter = $(this).data('counter');
+          const $desc = $("#desc" + counter);
+          const isCollapsed = $desc.hasClass("line_2");
+          
+          $desc.toggleClass("line_2");
+          
+          $(this).text(isCollapsed ? "Read Less" : "Read More")
+                .attr('aria-expanded', isCollapsed);
+        });
+      });
   </script>
 {% endblock content %}
