@@ -30,20 +30,7 @@ urlpatterns = [
     path("privacy-policy/", views.privacy_policy, name="privacy_policy"),
     path(
         "terms-and-conditions/", views.terms_and_condition, name="terms_and_conditions"
-    ),  # path("", views.IndexView.as_view(), name="index"),
-    # path("career", views.CareerView.as_view(), name="careers"),
-    # path("blogs/<slug:slug>/", views.BlogDetailsView.as_view(), name="blog_details"),
-    # path("product", views.ProductView.as_view(), name="product"),
-    # path(
-    #     "product-details/<slug:slug_product>/",
-    #     views.ProductDetailsView.as_view(),
-    #     name="product_details",
-    # ),
-    # path("news-room", views.NewsRoomView.as_view(), name="newsroom"),
-    # path(
-    #     "news-details/<int:id>/", views.NewsDetailsView.as_view(), name="news_details"
-    # ),
-    # path("brands/oceano", views.BrandView.as_view(), name="brands"),
+    ),
     path(
         "get_product_index/", views.IndexProductView.as_view(), name="get_product_index"
     ),
