@@ -23,7 +23,7 @@ class VacancyDetails(StatusTimestampBase):
         ("full time", "Full-Time"),
         ("part time", "Part-Time"),
         ("remote", "Remote"),
-        ("contract", "Contract"),
+        ("hybrid", "Hybrid"),
     )
     category = models.ForeignKey(
         JobCategory,

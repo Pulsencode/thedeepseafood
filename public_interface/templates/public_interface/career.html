@@ -2,270 +2,267 @@
 {% load static %}
 {% load custom_filters %}
 {% block content %}
-  <div class="main-div pt-0 header-bg-transparent header-logo-white">
-    <!-- career -->
-    <section id="career" class="pt-0">
-      <div class="banner-cover">
-        <img class="img-primary"
-             width=""
-             height=""
-             loading="lazy"
-             alt="Career Banner"
-             src="{% static 'public_interface/images/career/banner-cover/career-banner.jpeg' %}">
-        <div class="caption w-100 text-center">
-          <div class="wrapper">
-            <div class="row text-white">
-              <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
-                <h3 class="font-lnterbold">CAREER</h3>
-                <h5 class="font-lnterbold">
-                  <a href="{% url 'home' %}">Home</a>
-                  <i class="fa fa-angle-right" aria-hidden="true"></i>
-                  <a>Career</a>
-                </h5>
-              </div>
+<div class="main-div pt-0 header-bg-transparent header-logo-white">
+  <!-- career -->
+  <section id="career" class="pt-0">
+    <div class="banner-cover">
+      <img class="img-primary" width="" height="" loading="lazy" alt="Career Banner"
+        src="{% static 'public_interface/images/career/banner-cover/career-banner.jpeg' %}">
+      <div class="caption w-100 text-center">
+        <div class="wrapper">
+          <div class="row text-white">
+            <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
+              <h3 class="font-lnterbold">CAREER</h3>
+              <h5 class="font-lnterbold">
+                <a href="{% url 'home' %}">Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a>Career</a>
+              </h5>
             </div>
           </div>
         </div>
       </div>
-      <div class="career-page">
-        <div class="container-fluid common-padding">
-          <div class="row">
-            <div class="boxaa">
-              <div class="row">
-                <div class="twm-bnr-search-bar">
-                  <form id="jobSearchForm">
-                    <div class="row">
-                      <!--Title-->
-                      <div class="form-group col-xl-3 col-lg-6 col-md-12 col-12">
-                        <label>Job Title</label>
-                        <select class="select2 wt-search-bar-select" id="jobTitleSelect">
-                          <option value="">Select an option</option>
-                          {% for job in all_jobs %}<option value="{{ job.title }}">{{ job.title }}</option>{% endfor %}
-                        </select>
-                      </div>
-                      <!--All Category-->
-                      <div class="form-group col-xl-4 col-lg-6 col-md-12 col-12">
-                        <label>Job Type</label>
-                        <select class="select2 wt-search-bar-select" id="jobTypeSelect">
-                          <option value="">Select an option</option>
-                          <option value="Full Time">Full Time</option>
-                          <option value="Part Time">Part Time</option>
-                          <option value="Hybrid">Hybrid</option>
-                          <option value="Remote">Remote</option>
-                        </select>
-                      </div>
-                      <!--Location-->
-                      <div class="form-group col-xl-3 col-lg-6 col-md-12 col-12">
-                        <label>Location</label>
-                        <select name="location" class="select2 wt-search-bar-select">
-                          <option value="">Select Location</option>
-                          {% for job in all_jobs %}<option value="{{ job.location }}">{{ job.location }}</option>{% endfor %}
-                        </select>
-                      </div>
-                      <!--Find job btn-->
-                      <div class="form-group col-xl-2 col-lg-6 col-md-12 col-12 text-end d-flex justify-content-md-center align-items-center">
-                        <button type="button"
-                                id="findJobButton"
-                                class="site-button"
-                                onclick="filtercareer()">Find Job</button>
+    </div>
+    <div class="career-page">
+      <div class="container-fluid common-padding">
+        <div class="row">
+          <div class="boxaa">
+            <div class="row">
+              <div class="twm-bnr-search-bar">
+                <form method="get" id="jobSearchForm">
+                  <div class="row">
+                    <!--Title-->
+                    <div class="form-group col-xl-3 col-lg-6 col-md-12 col-12">
+                      <label>Job Title</label>
+                      <select class="select2 wt-search-bar-select" name="job_title" id="jobTitleSelect">
+                        <option value="">Select an option</option>
+                        {% for job in unique_titles %}<option value="{{ job }}">{{ job}}</option>{% endfor %}
+                      </select>
+                    </div>
+                    <!--All Category-->
+                    <div class="form-group col-xl-4 col-lg-6 col-md-12 col-12">
+                      <label>Job Type</label>
+                      <select class="select2 wt-search-bar-select" name="job_type" id="jobTypeSelect">
+                        <option value="">Select an option</option>
+                        <option value="Full Time">Full Time</option>
+                        <option value="Part Time">Part Time</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="Remote">Remote</option>
+                      </select>
+                    </div>
+                    <!--Location-->
+                    <div class="form-group col-xl-3 col-lg-6 col-md-12 col-12">
+                      <label>Location</label>
+                      <select name="location" class="select2 wt-search-bar-select">
+                        <option value="">Select Location</option>
+                        {% for job in unique_locations %}<option value="{{ job }}">{{ job }}</option>{% endfor %}
+                      </select>
+                    </div>
+                    <!--Find job btn-->
+                    <div
+                      class="form-group col-xl-2 col-lg-6 col-md-12 col-12 text-end d-flex justify-content-md-center align-items-center">
+                      <button type="submit" id="findJobButton" class="site-button">Find Job</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="box-bb mb-4 " id="searchResults">
+            {% for job in all_jobs %}
+            <div class="row software-eng">
+              <div class="col-lg-8">
+                <h3 class="ctitle">{{ job.title }}</h3>
+                <div>
+                  <div class="description line_2" id="desc{{ forloop.counter }}">{{ job.description|safe }}</div>
+                  {% with description_length=job.description|length %}
+                  <a href="#" class="read-more-cnt" id="readmore-btn{{ forloop.counter }}"
+                    data-counter="{{ forloop.counter }}" role="button" aria-expanded="false"
+                    aria-controls="desc{{ forloop.counter }}">Read More</a>
+                  {% endwith %}
+                </div>
+                <div class="d-flex align-items-end">
+                  <div class="fes location-box text-center">
+                    <p class="loc">{{ job.location }}</p>
+                  </div>
+                  {% if job.hiring_status %}
+                  <div class="career-job-types ms-2 location-box">
+                    <p class="loc">{{ job.hiring_status }}</p>
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="col-lg-4 amount-k">
+                {% if job.salary %}
+                <h3>
+                  {{ job.salary }} <span>/Year</span>
+                </h3>
+                {% else %}
+                <h3>Not Disclosed</h3>
+                {% endif %}
+                {% comment %} <button class="btn bg-blue text-white rounded-25 btn-zoom-hover font-lntermedium"
+                  onclick="show_modal('{{ job.title }}')">Apply Now</button> {% endcomment %}
+                <button type="button" class="btn bg-blue text-white rounded-25 btn-zoom-hover font-lntermedium"
+                  data-bs-toggle="modal" data-bs-target="#job{{ job.id }}">Apply Now</button>
+              </div>
+            </div>
+            <!-- career_modal -->
+            <div class="modal fade modal-career" id="job{{ job.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                  <form method="post" class="form" enctype="multipart/form-data" action="{% url 'job_email' %}"
+                    id="careerform">
+                    <input type="hidden" name="job_id" value="{{ job.id }}">
+                    {% csrf_token %}
+                    <div class="modal-header text-blue d-block text-center p-b-0 border-0">
+                      <h4 class="font-bold">JOB APPLICATION FORM</h4>
+                      <h6>Thank you for your interest in working with us.</h6>
+                      <button type="button" class="btn text-blue btn-zoom-hover close-btn" data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <i class="fa fa-times-circle" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="form-default">
+                        <div class="form-body">
+                          <div class="row justify-content-center">
+                            {% if form.errors %}
+                            <div class="col-lg-12">
+                              <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+                                {% for field in form %}
+                                {% for error in field.errors %}<p>{{ field.label }}: {{ error }}</p>{% endfor %}
+                                {% endfor %}
+                              </div>
+                            </div>
+                            {% endif %}
+                            {{ form.honey }}
+                            <div class="col-lg-6">
+                              <label class="form-label">First Name*</label>
+                              {{ form.first_name }}
+                              <input type="hidden" name="applied" id="applied">
+                            </div>
+                            <div class="col-lg-6">
+                              <label class="form-label">Last Name*</label>
+                              {{ form.last_name }}
+                            </div>
+                            <div class="col-lg-6">
+                              <label class="form-label">Date Of Birth</label>
+                              {{ form.date_of_birth }}
+                            </div>
+                            <div class="col-lg-6" id="email">
+                              <label class="form-label">Email</label>
+                              {{ form.email }}
+                              <b><span class="text-danger formerror"></span></b>
+                            </div>
+                            <div class="col-lg-6">
+                              <label class="form-label">Phone*</label>
+                              {{ form.phone_number }}
+                            </div>
+                            <div class="col-lg-6">
+                              <label class="form-label">Linkedin URL</label>
+                              {{ form.linkedin_url }}
+                              <input type="hidden" name="honey">
+                            </div>
+                            <div class="col-lg-6">
+                              <label class="form-label">Portfolio URL</label>
+                              {{ form.portfolio_url }}
+                            </div>
+                            <div class="col-lg-6">
+                              <label class="form-label">Notice period*</label>
+                              {{ form.notice_period }}
+                            </div>
+                            <div class="col-lg-6">
+                              <label class="form-label">Upload CV*</label>
+                              <label class="attach-label-btn">
+                                <div class="attach-label">Choose File*</div>
+                                {{ form.upload_cv }}
+                              </label>
+                            </div>
+                            <div class="col-lg-6">
+                              <label class="form-label">Cover Letter</label>
+                              <label class="attach-label-btn">
+                                <div class="attach-label">Cover Letter</div>
+                                {{ form.cover_letter }}
+                              </label>
+                            </div>
+                            <div class="col-lg-12">
+                              <label class="form-label">Message</label>
+                              {{ form.message }}
+                            </div>
+                            <div class="col-lg-12">
+                              <button type="submit"
+                                class="btn bg-blue text-white rounded-25 min-width-100-px BTN_SUBMIT">
+                                Submit Application
+                              </button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </form>
                 </div>
               </div>
             </div>
-            <div class="box-bb mb-4" id="searchResults">
-              {% for job in all_jobs %}
-                <div class="row software-eng">
-                  <div class="col-lg-8">
-                    <h3 class="ctitle">{{ job.title }}</h3>
-                    <div>
-                      <div class="description line_2" id="desc{{ forloop.counter }}">{{ job.description|safe }}</div>
-                      {% with description_length=job.description|length %}
-                        <a href="#"
-                           class="read-more-cnt"
-                           id="readmore-btn{{ forloop.counter }}"
-                           data-counter="{{ forloop.counter }}"
-                           role="button"
-                           aria-expanded="false"
-                           aria-controls="desc{{ forloop.counter }}">Read More</a>
-                      {% endwith %}
-                    </div>
-                    <div class="d-flex align-items-end">
-                      <div class="fes location-box text-center">
-                        <p class="loc">{{ job.location }}</p>
-                      </div>
-                      {% if job.hiring_status %}
-                        <div class="career-job-types ms-2 location-box">
-                          <p class="loc">{{ job.hiring_status }}</p>
-                        </div>
-                      {% endif %}
-                    </div>
-                  </div>
-                  <div class="col-lg-4 amount-k">
-                    {% if job.salary %}
-                      <h3>
-                        {{ job.salary }} <span>/Year</span>
-                      </h3>
-                    {% else %}
-                      <h3>Not Disclosed</h3>
-                    {% endif %}
-                    {% comment %} <button class="btn bg-blue text-white rounded-25 btn-zoom-hover font-lntermedium" onclick="show_modal('{{ job.title }}')">Apply Now</button> {% endcomment %}
-                    <button type="button"
-                            class="btn bg-blue text-white rounded-25 btn-zoom-hover font-lntermedium"
-                            data-bs-toggle="modal"
-                            data-bs-target="#job{{ job.id }}">Apply Now</button>
-                  </div>
-                </div>
-                <!-- career_modal -->
-                <div class="modal fade modal-career"
-                     id="job{{ job.id }}"
-                     tabindex="-1"
-                     aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
-                  <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-                      <form method="post"
-                            class="form"
-                            enctype="multipart/form-data"
-                            action="{% url 'job_email' %}"
-                            id="careerform">
-                        <input type="hidden" name="job_id"   value="{{ job.id }}">
-                        {% csrf_token %}
-                        <div class="modal-header text-blue d-block text-center p-b-0 border-0">
-                          <h4 class="font-bold">JOB APPLICATION FORM</h4>
-                          <h6>Thank you for your interest in working with us.</h6>
-                          <button type="button"
-                                  class="btn text-blue btn-zoom-hover close-btn"
-                                  data-bs-dismiss="modal"
-                                  aria-label="Close">
-                            <i class="fa fa-times-circle" aria-hidden="true"></i>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <div class="form-default">
-                            <div class="form-body">
-                              <div class="row justify-content-center">
-                                {% if form.errors %}
-                                  <div class="col-lg-12">
-                                    <div class="alert alert-danger">
-                                      {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
-                                      {% for field in form %}
-                                        {% for error in field.errors %}<p>{{ field.label }}: {{ error }}</p>{% endfor %}
-                                      {% endfor %}
-                                    </div>
-                                  </div>
-                                {% endif %}
-                                {{ form.honey }}
-                                <div class="col-lg-6">
-                                  <label class="form-label">First Name*</label>
-                                  {{ form.first_name }}
-                                  <input type="hidden" name="applied" id="applied">
-                                </div>
-                                <div class="col-lg-6">
-                                  <label class="form-label">Last Name*</label>
-                                  {{ form.last_name }}
-                                </div>
-                                <div class="col-lg-6">
-                                  <label class="form-label">Date Of Birth</label>
-                                  {{ form.date_of_birth }}
-                                </div>
-                                <div class="col-lg-6" id="email">
-                                  <label class="form-label">Email</label>
-                                  {{ form.email }}
-                                  <b><span class="text-danger formerror"></span></b>
-                                </div>
-                                <div class="col-lg-6">
-                                  <label class="form-label">Phone*</label>
-                                  {{ form.phone_number }}
-                                </div>
-                                <div class="col-lg-6">
-                                  <label class="form-label">Linkedin URL</label>
-                                  {{ form.linkedin_url }}
-                                  <input type="hidden" name="honey">
-                                </div>
-                                <div class="col-lg-6">
-                                  <label class="form-label">Portfolio URL</label>
-                                  {{ form.portfolio_url }}
-                                </div>
-                                <div class="col-lg-6">
-                                  <label class="form-label">Notice period*</label>
-                                  {{ form.notice_period }}
-                                </div>
-                                <div class="col-lg-6">
-                                  <label class="form-label">Upload CV*</label>
-                                  <label class="attach-label-btn">
-                                    <div class="attach-label">Choose File*</div>
-                                    {{ form.upload_cv }}
-                                  </label>
-                                </div>
-                                <div class="col-lg-6">
-                                  <label class="form-label">Cover Letter</label>
-                                  <label class="attach-label-btn">
-                                    <div class="attach-label">Cover Letter</div>
-                                    {{ form.cover_letter }}
-                                  </label>
-                                </div>
-                                <div class="col-lg-12">
-                                  <label class="form-label">Message</label>
-                                  {{ form.message }}
-                                </div>
-                                <div class="col-lg-12">
-                                  <button type="submit"
-                                          class="btn bg-blue text-white rounded-25 min-width-100-px BTN_SUBMIT">
-                                    Submit Application
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              {% endfor %}
-            </div>
+            {% endfor %}
           </div>
         </div>
       </div>
-    </section>
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-          async
-          defer></script>
-  <script>
-      // Initialize the selectpicker
-      $(document).ready(function () {
-        $('.selectpicker').selectpicker();
+    </div>
+  </section>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+<script>
+  // Initialize the selectpicker
+  $(document).ready(function () {
+    $('.selectpicker').selectpicker();
+  });
+
+  $(document).ready(function () {
+    $(".select2").select2({
+      placeholder: "Select an option"
+    });
+
+  });
+
+  var onloadCallback = function () {
+    grecaptcha.render('html_element', {
+      'sitekey': ' 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+    });
+  };
+
+  $(document).ready(function () {
+    $('.read-more-cnt').on('click', function (e) {
+      e.preventDefault();
+      const counter = $(this).data('counter');
+      const $desc = $("#desc" + counter);
+      const isCollapsed = $desc.hasClass("line_2");
+
+      $desc.toggleClass("line_2");
+
+      $(this).text(isCollapsed ? "Read Less" : "Read More")
+        .attr('aria-expanded', isCollapsed);
+    });
+  });
+///career filtration
+  $(document).ready(function () {
+    $("#jobSearchForm").submit(function (event) {
+      event.preventDefault();
+
+      $.ajax({
+        type: "GET",
+        url: "{{ request.path }}",
+        data: $(this).serialize(),
+        success: function (response) {
+          $("#searchResults").html($(response).find("#searchResults").html());
+        },
+        error: function (xhr, status, error) {
+          console.log("Error:", error);
+        }
       });
-
-      $(document).ready(function () {
-        $(".select2").select2({
-            placeholder: "Select an option"
-        });
-
-      });
-
-      var onloadCallback = function () {
-        grecaptcha.render('html_element', {
-          'sitekey': ' 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
-        });
-      };
-
-      $(document).ready(function() {
-        $('.read-more-cnt').on('click', function(e) {
-          e.preventDefault();
-          const counter = $(this).data('counter');
-          const $desc = $("#desc" + counter);
-          const isCollapsed = $desc.hasClass("line_2");
-          
-          $desc.toggleClass("line_2");
-          
-          $(this).text(isCollapsed ? "Read Less" : "Read More")
-                .attr('aria-expanded', isCollapsed);
-        });
-      });
-  </script>
+    });
+  });
+</script>
 {% endblock content %}
