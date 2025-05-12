@@ -145,11 +145,53 @@ def contact(request):
     return render(request, "public_interface/contact.html", context)
 
 
+# def career(request):
+#     all_jobs = VacancyDetails.objects.filter(status=True)
+#     if request.method == "GET":
+#         job_title = request.GET.get("job_title")
+#         location = request.GET.get("location")
+#         job_type = request.GET.get("job_type")
+#         if job_title:
+#             all_jobs = VacancyDetails.objects.filter(title__icontains=job_title)
+#         elif location:
+#             all_jobs = VacancyDetails.objects.filter(location__icontains=location)
+#         elif job_type:
+#             all_jobs = VacancyDetails.objects.filter(type__icontains=job_type)
+
+#     context = {
+#         "page_title": "Careers at The Deep Seafood Company",
+#         "all_jobs": all_jobs,
+#         "form": ApplicationDetailsForm(),
+#     }
+#     return render(request, "public_interface/career.html", context)
+
+
 def career(request):
+    all_jobs = VacancyDetails.objects.filter(status=True)
+    unique_locations = VacancyDetails.objects.values_list(
+        "location", flat=True
+    ).distinct()
+
+    unique_titles = VacancyDetails.objects.values_list("title", flat=True).distinct()
+
+    if request.method == "GET":
+        job_title = request.GET.get("job_title")
+        location = request.GET.get("location")
+        job_type = request.GET.get("job_type")
+
+        if job_title:
+            all_jobs = all_jobs.filter(title__icontains=job_title)
+        if location:
+            all_jobs = all_jobs.filter(location__icontains=location)
+        if job_type:
+            all_jobs = all_jobs.filter(type__icontains=job_type)
+
     context = {
         "page_title": "Careers at The Deep Seafood Company",
-        "all_jobs": VacancyDetails.objects.filter(status=True),
+        "all_jobs": all_jobs,
         "form": ApplicationDetailsForm(),
+        "unique_locations": unique_locations,
+        "unique_titles": unique_titles,
     }
     return render(request, "public_interface/career.html", context)
 

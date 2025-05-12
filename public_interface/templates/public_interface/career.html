@@ -36,48 +36,48 @@
             <div class="boxaa">
               <div class="row">
                 <div class="twm-bnr-search-bar">
-                  <form id="jobSearchForm">
+                  <form  method ="get" id="jobSearchForm">
                     <div class="row">
                       <!--Title-->
-                      <div class="form-group col-xl-3 col-lg-6 col-md-12 col-12">
+                    <div class="form-group col-xl-3 col-lg-6 col-md-12 col-12">
                         <label>Job Title</label>
-                        <select class="select2 wt-search-bar-select" id="jobTitleSelect">
+                        <select class="select2 wt-search-bar-select" name="job_title" id="jobTitleSelect">
                           <option value="">Select an option</option>
-                          {% for job in all_jobs %}<option value="{{ job.title }}">{{ job.title }}</option>{% endfor %}
+                          {% for job in unique_titles %}<option value="{{ job }}">{{ job}}</option>{% endfor %}
                         </select>
-                      </div>
+                      </div> 
                       <!--All Category-->
                       <div class="form-group col-xl-4 col-lg-6 col-md-12 col-12">
                         <label>Job Type</label>
-                        <select class="select2 wt-search-bar-select" id="jobTypeSelect">
+                        <select class="select2 wt-search-bar-select" name="job_type" id="jobTypeSelect">
                           <option value="">Select an option</option>
                           <option value="Full Time">Full Time</option>
                           <option value="Part Time">Part Time</option>
                           <option value="Hybrid">Hybrid</option>
                           <option value="Remote">Remote</option>
                         </select>
-                      </div>
+                      </div> 
                       <!--Location-->
-                      <div class="form-group col-xl-3 col-lg-6 col-md-12 col-12">
+                       <div class="form-group col-xl-3 col-lg-6 col-md-12 col-12">
                         <label>Location</label>
                         <select name="location" class="select2 wt-search-bar-select">
                           <option value="">Select Location</option>
-                          {% for job in all_jobs %}<option value="{{ job.location }}">{{ job.location }}</option>{% endfor %}
+                          {% for job in unique_locations %}<option value="{{ job }}">{{ job }}</option>{% endfor %}
                         </select>
                       </div>
                       <!--Find job btn-->
                       <div class="form-group col-xl-2 col-lg-6 col-md-12 col-12 text-end d-flex justify-content-md-center align-items-center">
-                        <button type="button"
+                        <button type="submit"
                                 id="findJobButton"
                                 class="site-button"
-                                onclick="filtercareer()">Find Job</button>
+                              >Find Job</button>
                       </div>
                     </div>
                   </form>
                 </div>
               </div>
             </div>
-            <div class="box-bb mb-4" id="searchResults">
+            <div class="box-bb mb-4 " id="searchResults">
               {% for job in all_jobs %}
                 <div class="row software-eng">
                   <div class="col-lg-8">
@@ -270,5 +270,40 @@
                 .attr('aria-expanded', isCollapsed);
         });
       });
+
+
+
+
+
+      $(document).ready(function () {
+    $("#jobSearchForm").submit(function (event) {
+        event.preventDefault();
+
+        $.ajax({
+            type: "GET",
+            url: "{{ request.path }}",
+            data: $(this).serialize(),
+            success: function (response) {
+                $("#searchResults").html($(response).find("#searchResults").html());
+            },
+            error: function (xhr, status, error) {
+                console.log("Error:", error);
+            }
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
   </script>
 {% endblock content %}
