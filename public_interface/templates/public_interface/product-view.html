@@ -24,8 +24,8 @@
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
                   <a href="{% url 'product' %}">Product</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
-                  {% comment %} ----------------- NOTE: product type is changed to choices in model ----------------- {% endcomment %}
-                  <a href="{% url 'product' %}?type={{ product.type }}">{{ product.type }}</a>
+                  <a href="{% url 'product' %}?type={{ product.product.type|urlencode }}"
+                     class="text-capitalize">{{ product.product.type }}</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
                   <a>{{ product.name }}</a>
                 </h5>
@@ -36,27 +36,7 @@
       </div>
       <div class="container common-padding padd_t_b_70 bg-section">
         <div class="row padd_top_50">
-          <div class="col-lg-12">
-            <ul class="nav nav-tabs nav-tabs-bg border-0 justify-content-center mb-4"
-                data-aos="fade-up"
-                data-aos-duration="1000">
-              <li class="nav-item">
-                <a data-id="all"
-                   class="nav-link {% if product.type == 'Local Catch' %}active{% endif %}"
-                   href="{% url 'product' %}?type=Local Catch">Local Catch</a>
-              </li>
-              <li class="nav-item">
-                <a data-id="all"
-                   class="nav-link {% if product.type == 'Imported' %}active{% endif %}"
-                   href="{% url 'product' %}?type=Imported">Imported</a>
-              </li>
-              <li class="nav-item">
-                <a data-id="all"
-                   class="nav-link {% if product.type == 'Value Added' %}active{% endif %}"
-                   href="{% url 'product' %}?type=Value Added">Value added</a>
-              </li>
-            </ul>
-          </div>
+          <div class="col-lg-12">{% include "public_interface/components/products/product_filter.html" %}</div>
           <div class="col-lg-12 row">
             <div class="col-md-4" data-aos="fade-down" data-aos-duration="2500">
               <img class="img-fluid rounded-25 img-product-99"

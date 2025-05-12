@@ -247,8 +247,8 @@ def news_room(request):
     return render(request, "public_interface/news-room.html", context)
 
 
-def news_detail(request, pk):
-    news = get_object_or_404(News, id=pk)
+def news_detail(request, slug):
+    news = get_object_or_404(News, slug=slug)
     recent_news = News.objects.filter(status=True).exclude(id=news.id)
     context = {"news_detail": news, "recent_news": recent_news}
     return render(request, "public_interface/news-view.html", context)
