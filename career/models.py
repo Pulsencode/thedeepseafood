@@ -86,7 +86,7 @@ class ApplicationDetails(StatusTimestampBase):
         verbose_name_plural = "Application Details"
 
     def __str__(self):
-        return f"Job - {self.job} - {self.first_name}"
+        return f"Job - {self.vacancy} - {self.first_name}"
 
     def save(self, *args, **kwargs):
         if not self.start_date:

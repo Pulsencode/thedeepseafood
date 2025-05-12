@@ -2,18 +2,14 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
-from django.conf import settings
+# from django.conf import settings
 from django.core.validators import validate_email
-
 from django.http import HttpResponseRedirect, JsonResponse
-
 import logging
-
 from django.template import loader
 from django.template.loader import render_to_string
 from django.views import View
 from django.views.generic import TemplateView
-
 from company.models import (
     # AboutUs,
     Blog,
@@ -70,6 +66,7 @@ def about(request):
         # "about": AboutUs.objects.filter(status=True),
         "management_team": ManagementTeam.objects.filter(status=True),
         "history": History.objects.all(),
+        "form": EnquiryForm(),
     }
     return render(request, "public_interface/about.html", context)
 
@@ -141,29 +138,11 @@ def distribution_channel(request):
 
 
 def contact(request):
-    context = {"page_title": "Contact The Deep Seafood Company"}
+    context = {
+        "page_title": "Contact The Deep Seafood Company",
+        "form": EnquiryForm,
+    }
     return render(request, "public_interface/contact.html", context)
-
-
-# def career(request):
-#     all_jobs = VacancyDetails.objects.filter(status=True)
-#     if request.method == "GET":
-#         job_title = request.GET.get("job_title")
-#         location = request.GET.get("location")
-#         job_type = request.GET.get("job_type")
-#         if job_title:
-#             all_jobs = VacancyDetails.objects.filter(title__icontains=job_title)
-#         elif location:
-#             all_jobs = VacancyDetails.objects.filter(location__icontains=location)
-#         elif job_type:
-#             all_jobs = VacancyDetails.objects.filter(type__icontains=job_type)
-
-#     context = {
-#         "page_title": "Careers at The Deep Seafood Company",
-#         "all_jobs": all_jobs,
-#         "form": ApplicationDetailsForm(),
-#     }
-#     return render(request, "public_interface/career.html", context)
 
 
 def career(request):
@@ -209,25 +188,26 @@ def job_application(request):
 
             application.save()
             # Build the absolute URL for the uploaded CV
-            cv_url = request.build_absolute_uri(application.upload_cv.url)
+            """'email configurtaion"""
+            # cv_url = request.build_absolute_uri(application.upload_cv.url)
 
-            # Send email to admin
-            subject = "New Job Submitted"
-            message = (
-                f"A new job application has been submitted.\n\n"
-                f"Job Applied: {job.title}\n"
-                f"Applicant Name: {application.first_name}\n"
-                f"Applicant CV: {cv_url}"
-            )
+            # # Send email to admin
+            # subject = "New Job Submitted"
+            # message = (
+            #     f"A new job application has been submitted.\n\n"
+            #     f"Job Applied: {job.title}\n"
+            #     f"Applicant Name: {application.first_name}\n"
+            #     f"Applicant CV: {cv_url}"
+            # )
             # admin_email = "info@thedeepseafood.com"  # host email
-            admin_email = "sinankodur24@gmail.com"
-            send_mail(
-                subject,
-                message,
-                settings.EMAIL_HOST_USER,
-                [admin_email],
-                fail_silently=False,
-            )
+            # admin_email = "sinankodur24@gmail.com"
+            # send_mail(
+            #     subject,
+            #     message,
+            #     settings.EMAIL_HOST_USER,
+            #     [admin_email],
+            #     fail_silently=False,
+            # )
 
             messages.success(request, "Application  Submitted successfully ")
             return redirect("career")
@@ -276,99 +256,6 @@ def terms_and_condition(request):
 
 def privacy_policy(request):
     return render(request, "privacy_policy.html")
-
-
-# class ProductDetailsView(TemplateView):
-#     template_name = "website/products/product-view.html"
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         slug_product = self.kwargs["slug_product"]
-#         product = Product.objects.get(slug_product=slug_product)
-#         cat = (
-#             product.product_details.filter(status=True)
-#             .order_by("category__sequence")
-#             .values_list("category__id", flat=True)
-#             .distinct()
-#             .first()
-#         )
-#         cat_name = (
-#             product.product_details.filter(status=True)
-#             .order_by("category__sequence")
-#             .values_list("category__name", flat=True)
-#             .distinct()
-#             .first()
-#         )
-# cat = Category.objects.filter(status=True,brand__name='Deep Sea').order_by('-id').first()
-# data = ProductDetails.objects.filter(product=product,category=cat)
-# print(data.price)
-# try:
-#     data = ProductDetails.objects.filter(product=product, category=cat).first()
-# except ProductDetails.DoesNotExist:
-#     data = None
-# list = (
-#     Product.objects.filter(status=True, brand__name="Deep Sea")
-#     .exclude(slug_product=slug_product)
-#     .order_by("sequence")[:6]
-# )
-# category = Category.objects.filter(
-#     status=True, brand__name="Deep Sea"
-# ).order_by("sequence")
-# blog = Blog.objects.filter(status=True).order_by("-id")
-# context["blog"] = blog
-# context["category"] = category
-# context["cat_name"] = cat_name
-# context["cat"] = cat
-# context["list"] = list
-# context["data"] = data
-# context["product"] = product
-# return context
-
-
-# class BlogDetailsView(TemplateView):
-#     template_name = "website/blog/blog-view.html"
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         slug = self.kwargs["slug"]
-#         data = Blog.objects.get(slug=slug)
-#         blog = Blog.objects.filter(status=True).exclude(slug=slug).order_by("-id")
-#         # list = BlogDetails.objects.filter(status=True).order_by('-id')
-#         # context['blog'] = list
-#         context["data"] = data
-#         context["blogs"] = blog
-#         return context
-
-
-# class NewsRoomView(TemplateView):
-#     template_name = "website/news/news-room.html"
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         gallery = Event.objects.filter(status=True).order_by("sequence")
-#         total_events = Event.objects.filter(status=True).count()
-
-#         blog = Blog.objects.filter(status=True).order_by("-id")
-#         # context["data"] = SEO.objects.filter(page="News Room").first()
-#         context["blog"] = blog
-#         context["gallery"] = gallery
-#         context["total_events"] = total_events
-#         return context
-
-
-# class NewsDetailsView(TemplateView):
-#     template_name = "website/news/news-view.html"
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         id = self.kwargs["id"]
-#         data = News.objects.get(pk=id)
-#         news = News.objects.filter(status=True).exclude(id=id).order_by("-id")
-#         # blog = BlogDetails.objects.filter(status=True).order_by('-id')
-#         # context['blog'] = blog
-#         context["data"] = data
-#         context["news"] = news
-#         return context
 
 
 class NewsListsView(TemplateView):
@@ -853,49 +740,6 @@ def enquiry(request):
     )
 
 
-# class SendEmailView(View):
-#     def post(self, request, *args, **kwargs):
-#         name = request.POST["name"]
-#         location = request.POST["location"]
-#         phone = request.POST["phone"]
-#         email = request.POST["email"]
-#         message = request.POST["message"]
-#         honey = request.POST["honey"]
-#         # Validate email
-#         try:
-#             validate_email(email)
-#         except ValidationError as e:
-#             print(e)
-#             messages.error(request, "Invalid email..Please try again..!!")
-#             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
-#         if honey:
-#             # Honey field is not empty, indicating potential spam
-#             messages.error(request, "Error: Form submission not allowed.")
-#         else:
-#             # Honey field is empty, proceed with sending the email
-#             if name and location and phone and email:
-#                 contact = ContactUs(
-#                     name=name,
-#                     email=email,
-#                     location=location,
-#                     mobile_no=phone,
-#                     message=message,
-#                 )
-#                 contact.save()
-#                 subject = "New Form Submission-Deep Seafood Company Website"
-#                 message_body = f"Name: {name}\nLocation: {location}\nMobile: {phone}\nEmail: {email}\nMessage: {message}"
-#                 from_email = "deepseafood.connect@gmail.com"
-#                 to_email = "info@thedeepseafood.com"
-#                 send_mail(subject, message_body, from_email, [to_email])
-
-#                 messages.info(request, "Your Request Shared Successfully")
-#             else:
-#                 messages.warning(request, "Please Fill All Fields Correctly!")
-
-#         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
-
 class ProductEnquiryView(View):
     def post(self, request, *args, **kwargs):
         name = request.POST["name"]
@@ -939,76 +783,3 @@ class ProductEnquiryView(View):
                 messages.warning(request, "Please Fill All Fields Correctly!")
 
         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
-
-# class CareerEmailView(View):
-#     def post(self, request, *args, **kwargs):
-#         honey = request.POST.get("honey")
-#         if honey:
-#             messages.error(request, "Error: Form submission not allowed.")
-#             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
-#         # Create mutable copies
-#         adjusted_post = request.POST.copy()
-#         adjusted_files = request.FILES.copy()
-
-#         # Map field names to match form
-#         field_mappings = {
-#             "applied": "job",
-#             "phone": "phone_number",
-#             "linkedin": "linkedin_url",
-#             "portfolio": "portfolio_url",
-#             "date": "date_of_birth",
-#             "attachment": "upload_cv",
-#             "cover": "cover_letter",
-#         }
-
-#         for old_name, new_name in field_mappings.items():
-#             if old_name in adjusted_post:
-#                 adjusted_post[new_name] = adjusted_post[old_name]
-#             if old_name in adjusted_files:
-#                 adjusted_files[new_name] = adjusted_files[old_name]
-
-#         form = ApplicationDetailsForm(adjusted_post, adjusted_files)
-
-#         if form.is_valid():
-#             application = form.save(commit=False)
-
-#             # Prepare email
-#             email = EmailMessage(
-#                 "New Form Submission-Deep Seafood Company Website",
-#                 self._build_email_body(form.cleaned_data),
-#                 "deepseafood.connect@gmail.com",
-#                 ["info@thedeepseafood.com"],
-#             )
-
-#             self._attach_files(email, form)
-#             email.send()
-#             application.save()
-
-#             messages.success(request, "Your Request Shared Successfully")
-#         else:
-#             self._handle_form_errors(request, form)
-
-#         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
-#     def _build_email_body(self, cleaned_data):
-#         return f"""First Name: {cleaned_data['first_name']}
-#                 Last Name: {cleaned_data['last_name']}
-#                 Date Of Birth: {cleaned_data['date_of_birth']}
-#                 Mobile: {cleaned_data['phone_number']}
-#                 Email: {cleaned_data['email']}
-#                 Notice Period: {cleaned_data['notice_period']}
-#                 Portfolio: {cleaned_data['portfolio_url']}
-#                 LinkedIn: {cleaned_data['linkedin_url']}
-#                 Message: {cleaned_data.get('message', '')}"""
-
-#     def _attach_files(self, email, form):
-#         for field in ["upload_cv", "cover_letter"]:
-#             if file := form.cleaned_data.get(field):
-#                 email.attach(file.name, file.read(), file.content_type)
-
-#     def _handle_form_errors(self, request, form):
-#         for field, errors in form.errors.items():
-#             for error in errors:
-#                 messages.error(request, f"{form.fields[field].label}: {error}")

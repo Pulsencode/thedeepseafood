@@ -1,3 +1,4 @@
+{% load static %}
 <form method="post"
       class="form"
       action="{% url 'enquiry' %}"
@@ -6,47 +7,21 @@
   <div class="body">
     <div class="row">
       <div class="col-12">
-        <input class="form-control text-blue"
-               name="name"
-               type="text"
-               maxlength="50"
-               placeholder="Your Name"
-               required>
+      {{form.name}}
       </div>
       <div class="col-12 phone-number-col">
-        <input class="form-control text-blue"
-               name="phone_number"
-               id="id_phone_number"
-               type="text"
-               maxlength="15"
-               placeholder="Phone Number"
-               required
-               onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+        {{form.phone_number}}
           <input type="text" name="honey" class="d-none">
         </div>
         <div class="col-12" id="email">
-          <input class="form-control text-blue"
-                 name="email"
-                 type="email"
-                 maxlength="100"
-                 placeholder="Email"
-                 required>
-          <b><span class="text-danger formerror"></span></b>
+          {{form.email}}
+
         </div>
         <div class="col-12">
-          <input class="form-control text-blue"
-                 name="location"
-                 type="text"
-                 maxlength="100"
-                 placeholder="Location"
-                 required>
+         {{form.location}}
         </div>
         <div class="col-12">
-          <textarea class="form-control text-blue h-70-px"
-                    name="message"
-                    maxlength="500"
-                    placeholder="Message"
-                    required></textarea>
+        {{form.message}}
         </div>
       </div>
     </div>
@@ -57,92 +32,6 @@
     </div>
   </form>
   <!-- Enhanced Modal -->
-  <div class="modal fade"
-       id="responseModal"
-       tabindex="-1"
-       aria-hidden="true"
-       data-bs-backdrop="false">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-      <div class="modal-content rounded-4 shadow-lg">
-        <div class="modal-body text-center p-2">
-          <div class="icon-status mb-3">
-            <i class="fa fa-check-circle fa-3x text-success d-none"></i>
-            <i class="fa fa-times-circle fa-3x text-danger d-none"></i>
-          </div>
-          <h5 class="modal-title mb-3"></h5>
-          <p class="modal-message mb-0"></p>
-          <div class="progress mt-3">
-            <div class="progress-bar w-100" role="progressbar"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script>
-    $(document).ready(function () {
-      const responseModal = new bootstrap.Modal('#responseModal', {
-        backdrop: false,
-        keyboard: false
-      });
-      let timeoutId;
+{% include "crop_modal.html"%}
+  <script src="{% static 'public_interface/js/enquiry.js' %}"></script>
 
-      $("#contact_form").submit(function (event) {
-        event.preventDefault();
-        const $form = $(this);
-
-        $.ajax({
-          type: "POST",
-          url: $form.attr("action"),
-          data: $form.serialize(),
-          success: function (response) {
-            showModal("Success", "Enquiry submitted successfully!", "success");
-            $form[0].reset();
-          },
-          error: function (xhr) {
-            const errorMessage =
-              JSON.parse(xhr.responseText).message || "An error occurred.";
-            showModal("Error", errorMessage, "danger");
-          }
-        });
-      });
-
-      function showModal(title, message, type) {
-        const modal = $('#responseModal');
-        const iconStatus = modal.find('.icon-status');
-        
-        // Reset modal content
-        modal.find('.fa-check-circle, .fa-times-circle').addClass('d-none');
-        modal.find('.modal-title').text(title);
-        modal.find('.modal-message').text(message);
-        
-        // Update styling based on type
-        if (type === 'success') {
-          iconStatus.find('.fa-check-circle').removeClass('d-none');
-          modal.find('.progress-bar').addClass('bg-success');
-        } else {
-          iconStatus.find('.fa-times-circle').removeClass('d-none');
-          modal.find('.progress-bar').addClass('bg-danger');
-        }
-
-        // Show and animate progress bar
-        modal.find('.progress').show().css('width', '0%');
-        modal.find('.progress-bar').css('width', '100%');
-        
-        // Clear existing timeout
-        if (timeoutId) clearTimeout(timeoutId);
-        
-        // Show modal
-        responseModal.show();
-        
-        // Auto-hide after delay
-        timeoutId = setTimeout(() => {
-          responseModal.hide();
-        }, type === 'success' ? 3000 : 5000);
-      }
-
-      // Reset modal on close
-      $('#responseModal').on('hidden.bs.modal', function () {
-        $(this).find('.progress-bar').removeClass('bg-success bg-danger');
-      });
-    });
-  </script>
