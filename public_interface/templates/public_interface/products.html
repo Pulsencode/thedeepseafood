@@ -1,7 +1,4 @@
 {% extends "public_interface/layouts/public_base.html" %}
-{% block page_title %}
-  {{ page_title }}
-{% endblock page_title %}
 {% load static %}
 {% block content %}
   <div class="main-div pt-0 header-bg-transparent header-logo-white">
@@ -10,6 +7,8 @@
       <div class="banner-cover">
         <img class="img-primary"
              alt="Product Banner"
+             width=""
+             height=""
              loading="lazy"
              src="{% static 'public_interface/images/product-view/banner-cover/banner-top.jpg' %}">
         <div class="caption w-100 text-center">
@@ -47,42 +46,7 @@
             <div class="col-12 pt-25">
               <form method="get" id="filter">
                 <div class="position-relative">
-                  <ul class="nav nav-tabs nav-tabs-bg border-0  prod_tab_sc"
-                      data-aos="fade-up"
-                      data-aos-duration="1000">
-                    <li class="nav-item">
-                      <button type="submit"
-                              name="type"
-                              value=""
-                              class="nav-link btn border-0 {% if request.GET.type == None %}active{% endif %}">
-                        All
-                      </button>
-                    </li>
-                    <li class="nav-item">
-                      <button type="submit"
-                              name="type"
-                              value="local catch"
-                              class="nav-link btn border-0 {% if request.GET.type == 'local catch' %}active{% endif %}">
-                        Local Catch
-                      </button>
-                    </li>
-                    <li class="nav-item">
-                      <button type="submit"
-                              name="type"
-                              value="imported"
-                              class="nav-link btn border-0 {% if request.GET.type == 'imported' %}active{% endif %}">
-                        Imported
-                      </button>
-                    </li>
-                    <li class="nav-item">
-                      <button type="submit"
-                              name="type"
-                              value="value added"
-                              class="nav-link btn border-0 {% if request.GET.type == 'value added' %}active{% endif %}">
-                        Value Added
-                      </button>
-                    </li>
-                  </ul>
+                  {% include "public_interface/components/products/product_filter.html" %}
                 </form>
                 <!-- Search -->
                 <div class="search-form position-top-right">
@@ -108,7 +72,9 @@
               </div>
             </div>
           </div>
-        </section>
+        </div>
       </div>
-      <script src="{% static 'public_interface/js/search_filter.js' %}"></script>
-    {% endblock content %}
+    </section>
+  </div>
+  <script src="{% static 'public_interface/js/search_filter.js' %}"></script>
+{% endblock content %}
