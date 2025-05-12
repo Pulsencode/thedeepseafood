@@ -22,44 +22,7 @@
         </div>
         <div class="row">
             <form method="get" id="filter">
-                <div class="position-relative">
-                    <ul class="nav nav-tabs nav-tabs-bg border-0  prod_tab_sc"
-                        data-aos="fade-up"
-                        data-aos-duration="1000">
-                        <li class="nav-item">
-                            <button type="submit"
-                                    name="type"
-                                    value=""
-                                    class="nav-link btn border-0 {% if request.GET.type == None %}active{% endif %}">
-                                All
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="submit"
-                                    name="type"
-                                    value="local catch"
-                                    class="nav-link btn border-0 {% if request.GET.type == 'local catch' %}active{% endif %}">
-                                Local Catch
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="submit"
-                                    name="type"
-                                    value="imported"
-                                    class="nav-link btn border-0 {% if request.GET.type == 'imported' %}active{% endif %}">
-                                Imported
-                            </button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="submit"
-                                    name="type"
-                                    value="value added"
-                                    class="nav-link btn border-0 {% if request.GET.type == 'value added' %}active{% endif %}">
-                                Value Added
-                            </button>
-                        </li>
-                    </ul>
-                </form>
+                <div class="position-relative">{% include "public_interface/components/products/product_filter.html" %}</div>
                 <div class="tab-content pt-md-30">
                     <div class="tab-pane fade show active"
                          data-aos="fade-up"
@@ -69,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </section>
