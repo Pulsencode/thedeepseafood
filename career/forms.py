@@ -67,7 +67,9 @@ class ApplicationDetailsForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
+        self.fields["phone_number"].widget.attrs.update(
+            {"id": "id_phone_number_application"}
+        )
         for fname, field in self.fields.items():
             widget = field.widget
             if isinstance(widget, forms.FileInput):
