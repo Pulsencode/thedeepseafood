@@ -1,11 +1,11 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
-from django.core.exceptions import ValidationError
-from django.core.mail import send_mail
+
+# from django.core.mail import send_mail
+from django.urls import reverse
 
 # from django.conf import settings
-from django.core.validators import validate_email
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 import logging
 from django.template import loader
 from django.template.loader import render_to_string
@@ -18,7 +18,6 @@ from company.models import (
     Certification,
     CompanyTestimonial,
     # ContactUs,
-    Enquiry,
     Event,
     History,
     ManagementTeam,
@@ -30,7 +29,7 @@ from company.models import (
 from career.models import VacancyDetails
 from products.models import Category, Product, ProductDetails
 from career.forms import ApplicationDetailsForm
-from public_interface.forms import EnquiryForm
+from company.forms import EnquiryForm, ProductEnquiryForm
 
 
 def home(request):
@@ -68,6 +67,7 @@ def about(request):
         "management_team": ManagementTeam.objects.filter(status=True),
         "history": History.objects.all(),
         "form": EnquiryForm(),
+        "action_url": reverse("enquiry"),
     }
     return render(request, "public_interface/about.html", context)
 
@@ -128,6 +128,8 @@ def product_details(request, slug):
         "product": product,
         "related_products": related_products,
         "categories": categories,
+        "form": ProductEnquiryForm(),
+        "action_url": reverse("product_enquiry"),
     }
 
     return render(request, "public_interface/product-view.html", context)
@@ -643,49 +645,31 @@ def enquiry(request):
     )
 
 
-class ProductEnquiryView(View):
-    def post(self, request, *args, **kwargs):
-        name = request.POST["name"]
-        location = request.POST["location"]
-        phone = request.POST["phone"]
-        email = request.POST["email"]
-        product = request.POST["product"]
-        message = request.POST["message"]
-        honey = request.POST["honey"]
-        # Validate email
-        try:
-            validate_email(email)
-        except ValidationError as e:
-            print(e)
-            messages.error(request, "Invalid email..Please try again..!!")
-            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
-        if honey:
-            # Honey field is not empty, indicating potential spam
-            messages.error(request, "Error: Form submission not allowed.")
+def product_enquiry(request):
+    if request.method == "POST":
+        product_slug = request.POST.get("product_slug")
+        product = get_object_or_404(ProductDetails, slug=product_slug)
+        form = ProductEnquiryForm(request.POST)
+        if form.is_valid():
+            enquiry = form.save(commit=False)
+            enquiry.product = product
+            enquiry.save()
+            return JsonResponse(
+                {"message": "Enquiry Submitted Successfully", "status": "success"}
+            )
         else:
-            # Honey field is empty, proceed with sending the email
-            if name and location and phone and email:
-                enquiry = Enquiry(
-                    product=product,
-                    name=name,
-                    email=email,
-                    location=location,
-                    mobile_no=phone,
-                    message=message,
-                )
-                enquiry.save()
-                subject = "New Form Submission-Deep Seafood Company Website"
-                message_body = f"Enquiry for: {product}\nName: {name}\nLocation: {location}\nMobile: {phone}\nEmail: {email}\nMessage: {message}"
-                from_email = "deepseafood.connect@gmail.com"
-                to_email = "info@thedeepseafood.com"
-                send_mail(subject, message_body, from_email, [to_email])
+            errors = []
+            for error_list in form.errors.values():
+                for error in error_list:
+                    errors.append(error)
+            return JsonResponse(
+                {
+                    "message": errors[0] if errors else "Invalid form data",
+                    "status": "error",
+                },
+                status=400,
+            )
 
-                messages.info(request, "Your Request Shared Successfully")
-            else:
-                messages.warning(request, "Please Fill All Fields Correctly!")
-
-        return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
-
-
+    return JsonResponse(
+        {"message": "Error when submitting", "status": "error"}, status=400
+    )

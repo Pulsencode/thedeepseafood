@@ -278,10 +278,13 @@ class Supermarkets(StatusTimestampBase, ImageBase):
 
 
 class Enquiry(StatusTimestampBase):
+    product = models.ForeignKey(
+        "products.ProductDetails", on_delete=models.CASCADE, null=True
+    )
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     email = models.EmailField(null=True, blank=True)
-    mobile_number = PhoneNumberField(blank=True)
+    phone_number = PhoneNumberField(blank=True)
     message = models.TextField(null=True)
 
 

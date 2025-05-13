@@ -11,6 +11,8 @@ from company.models import (
     History,
     Promotion,
     Blog,
+    ContactUs,
+    Enquiry,
 )
 from django_summernote.widgets import SummernoteWidget
 
@@ -209,4 +211,31 @@ class NewsForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs.update(
                 {"class": "form-control", "placeholder": field.label, "rows": 4}
+            )
+
+
+class EnquiryForm(forms.ModelForm):
+    class Meta:
+        model = ContactUs
+        fields = ["name", "phone_number", "email", "location", "message"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["phone_number"].widget.attrs.update({"id": "id_phone_number"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 2}
+            )
+
+
+class ProductEnquiryForm(forms.ModelForm):
+    class Meta:
+        model = Enquiry
+        fields = ["name", "phone_number", "email", "location", "message"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 2}
             )
