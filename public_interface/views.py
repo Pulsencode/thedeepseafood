@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
+
 # from django.conf import settings
 from django.core.validators import validate_email
 from django.http import HttpResponseRedirect, JsonResponse
@@ -227,6 +228,15 @@ def news_room(request):
     return render(request, "public_interface/news-room.html", context)
 
 
+# def news_event(request):
+#     context = {
+#         "page_title": "Latest News & Updates",
+#         "all_events": Event.objects.filter(status=True).order_by("sequence"),
+#         "total_events": Event.objects.filter(status=True).count(),
+#     }
+#     return render(request, "public_interface/news-room.html", context)
+
+
 def news_detail(request, slug):
     news = get_object_or_404(News, slug=slug)
     recent_news = News.objects.filter(status=True).exclude(id=news.id)
@@ -258,151 +268,47 @@ def privacy_policy(request):
     return render(request, "privacy_policy.html")
 
 
-class NewsListsView(TemplateView):
-    template_name = "public_interface/news.html"
+# class SearchProductView(View):
+#     template_name = "public_interface/components/products/search_product.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        news = News.objects.filter(status=True).order_by("-id")
-        context["news"] = news
-        return context
+#     def get(self, request):
+#         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+#             input = request.GET.get("input")
+#             type = request.GET.get("type")
+#             # print(type,'***type')
 
+#             try:
+#                 if type != "" and type != "All":
+#                     product = Product.objects.filter(
+#                         status=True,
+#                         brand__name="Deep Sea",
+#                         type=type,
+#                         name__icontains=input,
+#                     ).order_by("sequence")
 
-class IndexProductView(View):
-    template_name = "public_interface/components/home/product_list.html"
+#                 # print(product)
+#                 else:
+#                     product = Product.objects.filter(
+#                         status=True, brand__name="Deep Sea", name__icontains=input
+#                     ).order_by("sequence")
 
-    def get(self, request):
-        if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
-            type = request.GET.get("ptype")
-            print(type, "**")
-            try:
-                if type == "All":
-                    product = Product.objects.filter(
-                        status=True, brand__name="Deep Sea", homepage=True
-                    ).order_by("sequence")[:9]
-                    context = {"product": product}
-                else:
-                    product = Product.objects.filter(
-                        status=True, brand__name="Deep Sea", type=type, homepage=True
-                    ).order_by("sequence")[:9]
-
-                    context = {"product": product, "type": type}
-
-                template = loader.get_template(self.template_name)
-                html_content = template.render(context, request)
-                return JsonResponse({"status": True, "template": html_content})
-            except Product.DoesNotExist:
-                return JsonResponse({"error": "Product not found"}, status=404)
-        else:
-            return JsonResponse({"error": "Invalid request"}, status=400)
-
-
-class ProductListingView(View):
-    template_name = "public_interface/components/products/product_lists.html"
-
-    def get(self, request):
-        if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
-            type = request.GET.get("ptype")
-            print(type, "**")
-            try:
-                if type == "All":
-                    product = Product.objects.filter(
-                        status=True, brand__name="Deep Sea"
-                    ).order_by("sequence")
-                else:
-                    product = Product.objects.filter(
-                        status=True, brand__name="Deep Sea", type=type
-                    ).order_by("sequence")
-
-                context = {
-                    "product": product,
-                }
-
-                template = loader.get_template(self.template_name)
-                html_content = template.render(context, request)
-                return JsonResponse({"status": True, "template": html_content})
-            except Product.DoesNotExist:
-                return JsonResponse({"error": "Product not found"}, status=404)
-        else:
-            return JsonResponse({"error": "Invalid request"}, status=400)
-
-
-class GeneralProductDetailsView(View):
-    template_name = "public_interface/components/products/details.html"
-
-    def get(self, request):
-        if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
-            cid = request.GET.get("cid")
-            pid = request.GET.get("pid")
-
-            try:
-                # category = Category.objects.filter(brand__name='Oceano',status=True).order_by('-id')
-                cat = Category.objects.get(id=cid)
-                products = Product.objects.get(id=pid)
-                # data = ProductDetails.objects.get(product=products,category=cat)
-                try:
-                    data = ProductDetails.objects.get(product=products, category=cat)
-                except ProductDetails.DoesNotExist:
-                    data = None
-                context = {
-                    "cat_name": cat,
-                    "data": data,
-                }
-                template = loader.get_template(self.template_name)
-                html_content = template.render(context, request)
-                return JsonResponse(
-                    {
-                        "status": True,
-                        "template": html_content,
-                    }
-                )
-            except Product.DoesNotExist:
-                return JsonResponse({"error": "Product not found"}, status=404)
-        else:
-            return JsonResponse({"error": "Invalid request"}, status=400)
-
-
-class SearchProductView(View):
-    template_name = "public_interface/components/products/search_product.html"
-
-    def get(self, request):
-        if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
-            input = request.GET.get("input")
-            type = request.GET.get("type")
-            # print(type,'***type')
-
-            try:
-                if type != "" and type != "All":
-                    product = Product.objects.filter(
-                        status=True,
-                        brand__name="Deep Sea",
-                        type=type,
-                        name__icontains=input,
-                    ).order_by("sequence")
-
-                # print(product)
-                else:
-                    product = Product.objects.filter(
-                        status=True, brand__name="Deep Sea", name__icontains=input
-                    ).order_by("sequence")
-
-                # Get distinct categories related to the retrieved products
-                categories = Category.objects.filter(
-                    product_category__product__in=product
-                ).distinct()
-                context = {"product": product, "categories": categories}
-                template = loader.get_template(self.template_name)
-                html_content = template.render(context, request)
-                return JsonResponse(
-                    {
-                        "status": True,
-                        "template": html_content,
-                    }
-                )
-            except Product.DoesNotExist:
-                return JsonResponse({"error": "Product not found"}, status=404)
-        else:
-            return JsonResponse({"error": "Invalid request"}, status=400)
+#                 # Get distinct categories related to the retrieved products
+#                 categories = Category.objects.filter(
+#                     product_category__product__in=product
+#                 ).distinct()
+#                 context = {"product": product, "categories": categories}
+#                 template = loader.get_template(self.template_name)
+#                 html_content = template.render(context, request)
+#                 return JsonResponse(
+#                     {
+#                         "status": True,
+#                         "template": html_content,
+#                     }
+#                 )
+#             except Product.DoesNotExist:
+#                 return JsonResponse({"error": "Product not found"}, status=404)
+#         else:
+#             return JsonResponse({"error": "Invalid request"}, status=400)
 
 
 class BrandView(TemplateView):
@@ -524,7 +430,8 @@ class OceanoProductDetailsView(View):
                 category = Category.objects.filter(
                     brand__name="Oceano", status=True
                 ).order_by("sequence")
-                # cat = Category.objects.filter(brand__name='Oceano',status=True).order_by('-id').first()
+                # cat = Category.objects.filter(brand__name='Oceano',status=True).order_by('-id')
+                # .first()
 
                 products = Product.objects.get(id=id)
                 print(products)
@@ -596,10 +503,6 @@ class OceanoModalProductDetailsView(View):
                 return JsonResponse({"error": "Product not found"}, status=404)
         else:
             return JsonResponse({"error": "Invalid request"}, status=400)
-
-
-class BrandsListView(TemplateView):
-    template_name = "public_interface/components/brands/brands_list.html"
 
 
 logger = logging.getLogger(__name__)
@@ -783,3 +686,6 @@ class ProductEnquiryView(View):
                 messages.warning(request, "Please Fill All Fields Correctly!")
 
         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+
+
