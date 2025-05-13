@@ -8,21 +8,8 @@
                 <h3 class="card-title">List Of All Contact us</h3>
             </div>
             <div class="card-body">
-                <form>
-                    <div class="row">
-                        <div class="form-group col-lg-2 col-12">
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder="Keyword Search"
-                                   id="search">
-                        </div>
-                   
-                        <div class="form-group col-lg-3 col-12">
-                            <a class="btn btn-primary mr-1" id="conatct_search">Search</a>
-                            <a class="btn btn-default" href="{% url 'contact_view' %}">Reset</a>
-                        </div>
-                    </div>
-                </form>
+              <!--search_filter.html-->
+              {% include "search_filter.html"%}
                 <div class="table-responsive" id="contact-table">
                     <table class="table border-top table-bordered mb-0 table-hover">
                         <thead>

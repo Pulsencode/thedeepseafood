@@ -23,7 +23,6 @@
         {% endif %}
         {% if search_date %}
             <div class="form-group col-lg-2 col-12">
-                <label>Start Date</label>
                 <input type="date" class="form-control" id="start_date" name="search">
             </div>
             {% comment %} <div class="form-group col-lg-2 col-12">
@@ -34,6 +33,9 @@
         <div class="form-group col-lg-3 col-12">
             <button type="submit" class="btn btn-primary mr-1">Search</button>
             <a class="btn btn-default" href="{{ request.path }}">Reset</a>
+            {% if  export%}
+            <a class="btn btn-primary mr-1" id="excel_export" onclick="exportEnquiry()">Export</a>
+            {% endif %}
         </div>
     </form>
 </div>

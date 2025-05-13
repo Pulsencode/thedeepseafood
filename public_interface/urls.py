@@ -41,7 +41,7 @@ urlpatterns = [
         views.PromotionView.as_view(),
         name="promotion_details",
     ),
-    path("enquiry_email/", views.ProductEnquiryView.as_view(), name="enquiry_email"),
+    # path("enquiry_email/", views.ProductEnquiryView.as_view(), name="enquiry_email"),
     # oceano related url
     path(
         "get_product_details/",
@@ -62,5 +62,5 @@ urlpatterns = [
     path("get_events/", views.LoadEvents.as_view(), name="get_events"),
     path("get_promotions/", views.LoadPromotions.as_view(), name="get_promotions"),
     path("load_more_news/", views.load_more_news, name="load_more_news"),
-    path("enquiry_email/", views.ProductEnquiryView.as_view(), name="enquiry_email"),
+    path("product/enquiry/", views.product_enquiry, name="product_enquiry"),
 ]

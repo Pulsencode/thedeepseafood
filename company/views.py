@@ -1022,10 +1022,12 @@ class ContactListView(
     model = ContactUs
     context_object_name = "all_contacts"
     paginate_by = 10
+    ordering = ["-id"]
     template_name = "superadmin/contact/contact_view.html"
     search_field = "name"
     extra_context = {
         "page_title": "Contact",
+        "status": True,
     }
 
 
@@ -1040,9 +1042,13 @@ class EnquiryListView(
     context_object_name = "all_enquiry"
     paginate_by = 10
     template_name = "superadmin/enquiry/enquiry.html"
-    search_field = "year"
+    search_field = "name"
+    search_field = "created"
     extra_context = {
         "page_title": "Enquiry",
+        "search_date": True,
+        "status": True,
+        "export": True,
     }
 
 
@@ -1060,7 +1066,7 @@ class ExportExcel(View):
                         "name": enquiry.name,
                         "location": enquiry.location,
                         "email": enquiry.email,
-                        "mobile_no": enquiry.mobile_no,
+                        "phone_no": enquiry.mobile_no,
                         "message": enquiry.message,
                         "created": enquiry.created.strftime("%Y-%m-%d %H:%M:%S"),
                     }

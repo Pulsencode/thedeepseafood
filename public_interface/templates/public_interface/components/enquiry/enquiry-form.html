@@ -7,7 +7,8 @@
   <div class="head text-center">
     <div class="title text-blue font-lnterbold">SEND US YOUR ENQUIRY</div>
   </div>
-  <form method="post" class="form"  id="contact_form" action="{% url 'enquiry'%}">
+  <form method="post" class="form"  id="contact_form" action="{{action_url}}">
+ <input type="hidden" name="product_slug" value="{{ product.slug }}"> 
     {% csrf_token %}
     <div class="body">
       <div class="row">
