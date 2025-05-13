@@ -1050,11 +1050,6 @@ body.modal-open .modal {
   height: 50px;
 }
 
-/* wow_item */
-.wow_item {
-  visibility: hidden;
-}
-
 /* search-form */
 .search-form {
   position: relative;

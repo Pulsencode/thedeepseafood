@@ -417,17 +417,7 @@ $(".remove_src_2").click(function () {
   $("#file_src_2").replaceWith($("#file_src_2").clone().attr("src", ""));
 });
 
-// WOW
-$(document).ready(function () {
-  new WOW().init();
-});
-function addWowDelay() {
-  $(".wow_item").each(function (i) {
-    d = i * 0.2;
-    $(this).attr("data-wow-delay", d + "ms");
-  });
-}
-addWowDelay();
+
 
 //
 $(function () {

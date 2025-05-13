@@ -12,10 +12,9 @@
             <div class="slick_slider_6">
                 {% for certificate in all_certifications %}
                     <div class="item">
-                        <div class="wow fadeInUp wow_item">
+                        <div data-aos="fade-up" data-aos-duration="500">
                             <img width=""
                                  height=""
-                                 alt=""
                                  class="img-primary"
                                  src="{{ certificate.image.url }}"
                                  alt="{{ certificate.image_alt }}">

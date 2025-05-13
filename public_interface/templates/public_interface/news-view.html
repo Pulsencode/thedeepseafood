@@ -50,7 +50,7 @@
                 {% for event in recent_news %}
                   <a href="{% url 'news_details' event.slug %}"
                      class="text-decoration-none">
-                    <div class="item border-b wow fadeInUp wow_item news-item">
+                    <div class="item border-b news-item" data-aos="fade-up" data-aos-duration="500">
                       <div class="row align-items-center">
                         <p class="d-none">{{ event.title }}</p>
                         <div class="col-3">
