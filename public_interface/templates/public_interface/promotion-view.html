@@ -47,7 +47,7 @@
                 {% for upcoming_promotion in data %}
                   <a href="{% url 'promotion_details' upcoming_promotion.id %}"
                      class="text-decoration-none">
-                    <div class="item border-b wow fadeInUp wow_item promotion-item">
+                    <div class="item border-b promotion-item" data-aos="fade-up" data-aos-duration="500">
                       <div class="row align-items-center">
                         <p class="d-none">{{ upcoming_promotion.title }}</p>
                         <div class="col-3">

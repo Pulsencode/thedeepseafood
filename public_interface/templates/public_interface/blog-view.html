@@ -50,7 +50,7 @@
                 {% for blog in recent_blogs %}
                   <a href="{% url 'blog_details' blog.slug %}"
                      class="text-decoration-none">
-                    <div class="item border-b wow fadeInUp wow_item blog-items">
+                    <div class="item border-b blog-items" data-aos="fade-up" data-aos-duration="500">
                       <div class="row align-items-center">
                         <div class="col-3">
                           <img class="img-fluid"

@@ -38,7 +38,7 @@
           <div class="row news-dtl-mn">
             {% for event in news %}
               <div class="col-lg-4 col-sm-6 pt-30">
-                <div class="item bg-x-light-blue wow fadeInUp wow_item">
+                <div class="item bg-x-light-blue" data-aos="fade-up" data-aos-duration="500">
                   <div class="title font-lnterbold">{{ event.title }}</div>
                   <div class="dec font-lntermedium">{{ event.description|slice:":100"|default_if_none:'' }}</div>
                   <div class="date font-lntermedium">{{ event.date|date:"M d, Y" }}</div>

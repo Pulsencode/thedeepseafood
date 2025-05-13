@@ -13,7 +13,7 @@
                 <div class="col-12">
                     <div class="slick_slider_3 arrows-vector">
                         {% for testimonial in all_testimonials %}
-                            <div class="item wow fadeInUp wow_item">
+                            <div class="item" data-aos="fade-up" data-aos-duration="500">
                                 <div class="words">
                                     <img width=""
                                          height=""
@@ -24,7 +24,11 @@
                                         <div class="empty"></div>
                                     </div>
                                 </div>
-                                <img width="" height="" alt="" class="user" src="{{ testimonial.image.url }}">
+                                <img width=""
+                                     height=""
+                                     alt="{{ testimonial.image_alt }}"
+                                     class="user"
+                                     src="{{ testimonial.image.url }}">
                                 <div class="name font-lnterbold">{{ testimonial.name }}</div>
                             </div>
                         {% endfor %}
