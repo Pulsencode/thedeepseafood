@@ -10,6 +10,7 @@ class EnquiryForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["phone_number"].widget.attrs.update({"id": "id_phone_number"})
         for field_name, field in self.fields.items():
             field.widget.attrs.update(
                 {"class": "form-control", "placeholder": field.label, "rows": 2}
