@@ -33,7 +33,7 @@ class ApplicationDetailsAdmin(admin.ModelAdmin):
         "vacancy",
     )
     list_filter = ("notice_period", "vacancy")
-    search_fields = ("first_name", "last_name", "email", "job")
+    search_fields = ("first_name", "last_name", "email")
     autocomplete_fields = ("vacancy",)
 
     fieldsets = (
@@ -52,7 +52,7 @@ class ApplicationDetailsAdmin(admin.ModelAdmin):
         (
             "Job Info",
             {
-                "fields": ("job", "vacancy", "start_date", "notice_period"),
+                "fields": ( "vacancy", "start_date", "notice_period"),
             },
         ),
         (

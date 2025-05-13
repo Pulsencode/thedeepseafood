@@ -127,16 +127,6 @@
                       <div class="form-default">
                         <div class="form-body">
                           <div class="row justify-content-center">
-                            {% if form.errors %}
-                            <div class="col-lg-12">
-                              <div class="alert alert-danger">
-                                {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
-                                {% for field in form %}
-                                {% for error in field.errors %}<p>{{ field.label }}: {{ error }}</p>{% endfor %}
-                                {% endfor %}
-                              </div>
-                            </div>
-                            {% endif %}
                             {{ form.honey }}
                             <div class="col-lg-6">
                               <label class="form-label">First Name*</label>
