@@ -150,7 +150,7 @@
                         <li></li>
                     </ul>
                 </li>
-                <li class="slide">
+                {% comment %} <li class="slide">
                     <a class="side-menu__item has-link" href="#">
                         <i class="side-menu__icon fe fe-layers"></i>
                         <span class="side-menu__label">Recipe</span>
@@ -161,7 +161,7 @@
                         <i class="side-menu__icon fa fa-adn"></i>
                         <span class="side-menu__label">Supermarket</span>
                     </a>
-                </li>
+                </li> {% endcomment %}
                 <li class="slide">
                     <a class="side-menu__item has-link"
                        href="{% url 'list_certification' %}">
@@ -203,6 +203,12 @@
                     <a class="side-menu__item has-link" href="{% url 'list_testimonial' %}">
                         <i class="side-menu__icon fe fe-users"></i>
                         <span class="side-menu__label">Testimonial</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'job_category_view' %}">
+                        <i class="side-menu__icon fe fe-grid"></i>
+                        <span class="side-menu__label">Job Category</span>
                     </a>
                 </li>
                 <li class="slide">
