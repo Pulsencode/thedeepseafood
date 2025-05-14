@@ -122,159 +122,167 @@
                             </a>
                         </li>
                         <li class="slide">
-                            <a class="side-menu__item" href="javascript:void(0)">
-                                <i class="side-menu__icon fe fe-book-open"></i>
-                                <span class="side-menu__label ms-2">Product</span>
-                                <i class="angle fe fe-chevron-right"></i>
-                            </a>
-                            <ul class="slide-menu">
-                                <li>
-                                    <a href="{% url 'product_view' %}" class="slide-item">DeepSea Product</a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'product_details_view' %}" class="slide-item">Product Details</a>
-                                </li>
-                                {% comment %} <li>
-                                    <a href="{% url 'brand_product_view' %}" class="slide-item">Brands Product</a>
-                                </li> 
-                                <li>
-                                    <a href="{% url 'brand_product_details_view' %}" class="slide-item">Brands Product Details</a>
-                                </li> {% endcomment %}
-                            </ul>
-                        </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link" href="#">
-                                <i class="side-menu__icon fe fe-layers"></i>
-                                <span class="side-menu__label">Recipe</span>
+                            <a class="side-menu__item has-link" href="{% url 'subcategory_view' %}">
+                                <i class="side-menu__icon fe fe-grid"></i>
+                                <span class="side-menu__label">Sub Category</span>
                             </a>
                         </li>
                         <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'list_supermarket' %}">
-                                <i class="side-menu__icon fa fa-adn"></i>
-                                <span class="side-menu__label">Supermarket</span>
-                            </a>
+                        <a class="side-menu__item "
+                           data-bs-toggle="slide"
+                           href="javascript:void(0)"><i class="side-menuicon fe fe-book-open"></i><span class="side-menu_label ms-2">Product</span><i class="angle fe fe-chevron-right"></i>
+                    </a>
+                    <ul class="slide-menu" style="display: none;">
+                        <li>
+                            <a href="{% url "product_view" %}" class="slide-item">DeepSea Product</a>
                         </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link"
-                               href="{% url 'list_certification' %}">
-                                <i class="side-menu__icon fa fa-adn"></i>
-                                <span class="side-menu__label">Certifications</span>
-                            </a>
+                        <li>
+                            <a href="{% url "product_details_view" %}" class="slide-item">Product Details</a>
                         </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'gallery_view' %}">
-                                <i class="side-menu__icon fe fe-book-open"></i>
-                                <span class="side-menu__label">Event Gallery</span>
-                            </a>
+                        <li></li>
+                        {% comment %} <li>
+                            <a href="{% url "" %}" class="slide-item">Brands Product</a>
                         </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'news_view' %}">
-                                <i class="side-menu__icon fe fe-folder"></i>
-                                <span class="side-menu__label">News</span>
-                            </a>
-                        </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'promotion_view' %}">
-                                <i class="side-menu__icon fa fa-empire"></i>
-                                <span class="side-menu__label">Promotion Information</span>
-                            </a>
-                        </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'blog_view' %}">
-                                <i class="side-menu__icon fe fe-tv"></i>
-                                <span class="side-menu__label">Blog</span>
-                            </a>
-                        </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'list_team' %}">
-                                <i class="side-menu__icon fa fa-gg-circle"></i>
-                                <span class="side-menu__label">Management Team</span>
-                            </a>
-                        </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'list_testimonial' %}">
-                                <i class="side-menu__icon fe fe-users"></i>
-                                <span class="side-menu__label">Testimonial</span>
-                            </a>
-                        </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'career_view' %}">
-                                <i class="side-menu__icon fe fe-box"></i>
-                                <span class="side-menu__label">Career</span>
-                            </a>
-                        </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'application_view' %}">
-                                <i class="side-menu__icon fe fe-settings"></i>
-                                <span class="side-menu__label">Application</span>
-                            </a>
-                        </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'history_view' %}">
-                                <i class="side-menu__icon fe fe-zap"></i>
-                                <span class="side-menu__label">History</span>
-                            </a>
-                        </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'contact_view' %}">
-                                <i class="side-menu__icon fe fe-file-text"></i>
-                                <span class="side-menu__label">Contact Us</span>
-                            </a>
-                        </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'enquiry_view' %}">
-                                <i class="side-menu__icon fe fe-smartphone"></i>
-                                <span class="side-menu__label">Enquiry</span>
-                            </a>
-                        </li>
-                        <li class="slide">
-                            <a class="side-menu__item has-link" href="{% url 'list_seo' %}">
-                                <i class="side-menu__icon fe fe-smartphone"></i>
-                                <span class="side-menu__label">SEO</span>
-                            </a>
-                        </li>
+                        <li></li>
+                        <li>
+                            <a href="{% url "" %}" class="slide-item">Brands Product Details</a>
+                        </li> {% endcomment %}
+                        <li></li>
                     </ul>
-                    <div class="slide-right" id="slide-right">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             fill="#7b8191"
-                             width="24"
-                             height="24"
-                             viewBox="0 0 24 24">
-                            <path d="M10 6.293l-5.707 5.707 5.707 5.707 1.414-1.414L7.414 12l4.293-4.293z" />
-                        </svg>
-                    </div>
-                </div>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="#">
+                        <i class="side-menu__icon fe fe-layers"></i>
+                        <span class="side-menu__label">Recipe</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'list_supermarket' %}">
+                        <i class="side-menu__icon fa fa-adn"></i>
+                        <span class="side-menu__label">Supermarket</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link"
+                       href="{% url 'list_certification' %}">
+                        <i class="side-menu__icon fa fa-adn"></i>
+                        <span class="side-menu__label">Certifications</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'gallery_view' %}">
+                        <i class="side-menu__icon fe fe-book-open"></i>
+                        <span class="side-menu__label">Event Gallery</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'news_view' %}">
+                        <i class="side-menu__icon fe fe-folder"></i>
+                        <span class="side-menu__label">News</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'promotion_view' %}">
+                        <i class="side-menu__icon fa fa-empire"></i>
+                        <span class="side-menu__label">Promotion Information</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'blog_view' %}">
+                        <i class="side-menu__icon fe fe-tv"></i>
+                        <span class="side-menu__label">Blog</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'list_team' %}">
+                        <i class="side-menu__icon fa fa-gg-circle"></i>
+                        <span class="side-menu__label">Management Team</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'list_testimonial' %}">
+                        <i class="side-menu__icon fe fe-users"></i>
+                        <span class="side-menu__label">Testimonial</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'career_view' %}">
+                        <i class="side-menu__icon fe fe-box"></i>
+                        <span class="side-menu__label">Career</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'application_view' %}">
+                        <i class="side-menu__icon fe fe-settings"></i>
+                        <span class="side-menu__label">Application</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'history_view' %}">
+                        <i class="side-menu__icon fe fe-zap"></i>
+                        <span class="side-menu__label">History</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'contact_view' %}">
+                        <i class="side-menu__icon fe fe-file-text"></i>
+                        <span class="side-menu__label">Contact Us</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'enquiry_view' %}">
+                        <i class="side-menu__icon fe fe-smartphone"></i>
+                        <span class="side-menu__label">Enquiry</span>
+                    </a>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item has-link" href="{% url 'list_seo' %}">
+                        <i class="side-menu__icon fe fe-smartphone"></i>
+                        <span class="side-menu__label">SEO</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="slide-right" id="slide-right">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="#7b8191"
+                     width="24"
+                     height="24"
+                     viewBox="0 0 24 24">
+                    <path d="M10 6.293l-5.707 5.707 5.707 5.707 1.414-1.414L7.414 12l4.293-4.293z" />
+                </svg>
             </div>
         </div>
-        <!--app-content open-->
-        <div class="main-content app-content mt-0">
-            <div class="side-app">
-                <!-- CONTAINER -->
-                <div class="main-container container-fluid">
-                    <!-- PAGE-HEADER -->
-                    <div class="page-header">
-                        <h1 class="page-title">{{ page_title }}</h1>
-                        {% if add_item %}
-                            <div>
-                                <a class="btn btn-primary" href={{ path_url }}><i class="side-menu__icon fe fe-plus mx-1"></i>{{ path_name }}</a>
-                            </div>
-                        {% endif %}
-                        {% if view_item %}
-                            <div>
-                                <a class="btn btn-primary" href={{ path_url }}><i class="side-menu__icon fe fe-eye mx-1"></i>{{ path_name }}</a>
-                            </div>
-                        {% endif %}
+    </div>
+</div>
+<!--app-content open-->
+<div class="main-content app-content mt-0">
+    <div class="side-app">
+        <!-- CONTAINER -->
+        <div class="main-container container-fluid">
+            <!-- PAGE-HEADER -->
+            <div class="page-header">
+                <h1 class="page-title">{{ page_title }}</h1>
+                {% if add_item %}
+                    <div>
+                        <a class="btn btn-primary" href={{ path_url }}><i class="side-menu__icon fe fe-plus mx-1"></i>{{ path_name }}</a>
                     </div>
-                    {% for message in messages %}
-                        <div class="alert alert-primary alert-dismissible fade show m-0 text-center border-0"
-                             id="success"
-                             role="alert">
-                            {{ message }}
-                            <button type="button"
-                                    class="btn-close text-dark "
-                                    data-bs-dismiss="alert"
-                                    aria-label="Close">x</button>
-                        </div>
-                    {% endfor %}
-                </body>
-            </html>
+                {% endif %}
+                {% if view_item %}
+                    <div>
+                        <a class="btn btn-primary" href={{ path_url }}><i class="side-menu__icon fe fe-eye mx-1"></i>{{ path_name }}</a>
+                    </div>
+                {% endif %}
+            </div>
+            {% for message in messages %}
+                <div class="alert alert-primary alert-dismissible fade show m-0 text-center border-0"
+                     id="success"
+                     role="alert">
+                    {{ message }}
+                    <button type="button"
+                            class="btn-close text-dark "
+                            data-bs-dismiss="alert"
+                            aria-label="Close">x</button>
+                </div>
+            {% endfor %}
+        </body>
+    </html>
