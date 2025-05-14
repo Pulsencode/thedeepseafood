@@ -222,21 +222,28 @@ def job_application(request):
 
 
 def news_room(request):
+    news_type = request.GET.get("news_type")
+    all_news = None
+    all_events = None
+
+    if news_type:
+        all_news = News.objects.filter(status=True, type=news_type).order_by(
+            "sequence"
+        )[:3]
+    else:
+        all_events = Event.objects.filter(status=True).order_by("sequence")
+
     context = {
-        "page_title": "Latest News & Updates",
-        "all_events": Event.objects.filter(status=True).order_by("sequence"),
+        "all_news": all_news,
+        "all_events": all_events,
         "total_events": Event.objects.filter(status=True).count(),
+        "page_title": "Latest News & Updates",
     }
+
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        return render(request, "public_interface/news-room.html", context)
+
     return render(request, "public_interface/news-room.html", context)
-
-
-# def news_event(request):
-#     context = {
-#         "page_title": "Latest News & Updates",
-#         "all_events": Event.objects.filter(status=True).order_by("sequence"),
-#         "total_events": Event.objects.filter(status=True).count(),
-#     }
-#     return render(request, "public_interface/news-room.html", context)
 
 
 def news_detail(request, slug):
@@ -268,49 +275,6 @@ def terms_and_condition(request):
 
 def privacy_policy(request):
     return render(request, "privacy_policy.html")
-
-
-# class SearchProductView(View):
-#     template_name = "public_interface/components/products/search_product.html"
-
-#     def get(self, request):
-#         if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
-#             input = request.GET.get("input")
-#             type = request.GET.get("type")
-#             # print(type,'***type')
-
-#             try:
-#                 if type != "" and type != "All":
-#                     product = Product.objects.filter(
-#                         status=True,
-#                         brand__name="Deep Sea",
-#                         type=type,
-#                         name__icontains=input,
-#                     ).order_by("sequence")
-
-#                 # print(product)
-#                 else:
-#                     product = Product.objects.filter(
-#                         status=True, brand__name="Deep Sea", name__icontains=input
-#                     ).order_by("sequence")
-
-#                 # Get distinct categories related to the retrieved products
-#                 categories = Category.objects.filter(
-#                     product_category__product__in=product
-#                 ).distinct()
-#                 context = {"product": product, "categories": categories}
-#                 template = loader.get_template(self.template_name)
-#                 html_content = template.render(context, request)
-#                 return JsonResponse(
-#                     {
-#                         "status": True,
-#                         "template": html_content,
-#                     }
-#                 )
-#             except Product.DoesNotExist:
-#                 return JsonResponse({"error": "Product not found"}, status=404)
-#         else:
-#             return JsonResponse({"error": "Invalid request"}, status=400)
 
 
 class BrandView(TemplateView):
@@ -544,47 +508,44 @@ class BaseAjaxView(View):
             return JsonResponse({"error": "Server error"}, status=500)
 
 
-class LoadEvents(BaseAjaxView):
-    model = Event
-    template = "public_interface/components/news/event_gallery.html"
-    context_key = "all_events"
-    default_limit = None
+#
 
 
-class LoadNews(BaseAjaxView):
-    model = News
-    template = "public_interface/components/news/news_list.html"
-    filters = {"type__iexact": "company news"}
+# def load_more_news(request):
+#     try:
+#         offset = int(request.GET.get("offset", 0))
+#         limit = int(request.GET.get("limit", 4))
+#         news_type = request.GET.get("type", "company-news")
+
+#         queryset = News.objects.filter(
+#             status=True, type__iexact=news_type.replace("-", " ")
+#         ).order_by("sequence")
+
+#         total_items = queryset.count()
+#         has_more = (offset + limit) < total_items
+
+#         data = queryset[offset : offset + limit]
+#         html = render_to_string(
+#             "public_interface/components/news/news_list.html",
+#             {"items": data, "total": total_items},
+#         )
+
+#         return JsonResponse({"data": html, "has_more": has_more})
 
 
-class LoadGlobalNews(LoadNews):
-    filters = {"type__iexact": "global news"}
-
-
+#     except Exception as e:
+#         logger.error(f"Load more error: {str(e)}", exc_info=True)
+#         return JsonResponse({"error": "Invalid request"}, status=400)
 def load_more_news(request):
-    try:
-        offset = int(request.GET.get("offset", 0))
-        limit = int(request.GET.get("limit", 4))
-        news_type = request.GET.get("type", "company-news")
+    offset = int(request.GET.get("offset", 0))
+    limit = int(request.GET.get("limit", 4))
 
-        queryset = News.objects.filter(
-            status=True, type__iexact=news_type.replace("-", " ")
-        ).order_by("sequence")
+    news_qs = News.objects.all().order_by("-date")[offset : offset + limit]
 
-        total_items = queryset.count()
-        has_more = (offset + limit) < total_items
-
-        data = queryset[offset : offset + limit]
-        html = render_to_string(
-            "public_interface/components/news/news_list.html",
-            {"items": data, "total": total_items},
-        )
-
-        return JsonResponse({"data": html, "has_more": has_more})
-
-    except Exception as e:
-        logger.error(f"Load more error: {str(e)}", exc_info=True)
-        return JsonResponse({"error": "Invalid request"}, status=400)
+    html = render_to_string(
+        "public_interface/components/news/news_list.html", {"all_news": news_qs}
+    )
+    return JsonResponse({"html": html})
 
 
 def load_more_events(request):
