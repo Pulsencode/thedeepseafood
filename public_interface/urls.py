@@ -41,7 +41,6 @@ urlpatterns = [
         views.PromotionView.as_view(),
         name="promotion_details",
     ),
-    # path("enquiry_email/", views.ProductEnquiryView.as_view(), name="enquiry_email"),
     # oceano related url
     path(
         "get_product_details/",
@@ -55,11 +54,8 @@ urlpatterns = [
     ),
     # load pages
     path("load_more_product/", views.load_more_product, name="load_more_product"),
-    path("get_news/", views.LoadNews.as_view(), name="get_news"),
-    path("get_global_news/", views.LoadGlobalNews.as_view(), name="get_global_news"),
-    # path("load_more_news/", views.load_more_news, name="load_more_news"),
+    path("load_more_news/", views.load_more_news, name="load_more_news"),
     path("load_more_events/", views.load_more_events, name="load_more_events"),
-    path("get_events/", views.LoadEvents.as_view(), name="get_events"),
     path("get_promotions/", views.LoadPromotions.as_view(), name="get_promotions"),
     path("load_more_news/", views.load_more_news, name="load_more_news"),
     path("product/enquiry/", views.product_enquiry, name="product_enquiry"),

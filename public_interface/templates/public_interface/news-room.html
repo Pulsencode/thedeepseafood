@@ -25,30 +25,61 @@
           </div>
         </div>
       </div>
+
       <div class="event-gallery padd_t_b_70">
         <div class="wrapper">
           <div class="row text-center">
             <div class="col-lg-12 col-md-12 col-12">
-              <div class="list_side d-flex prod_tab_sc">
+              <div class="list_side d-flex prod_tab_sc justify-content-center" id="news_filter_buttons">
                 <div class="NEWS-NWE exhibition">
-                  <a href="#events" class="active">Events/Exhibitions</a>
+                  <a href="#" data-type="events" class="{% if not request.GET.news_type %}active{% endif %}">Events/Exhibitions</a>
                 </div>
                 <div class="NEWS-NWE company">
-                  <a href="#company-news">Company News</a>
+                  <a href="#" data-type="company news" class="{% if request.GET.news_type == 'company news' %}active{% endif %}">Company News</a>
                 </div>
                 <div class="NEWS-NWE global">
-                  <a href="#global-news">Global News</a>
+                  <a href="#" data-type="global news" class="{% if request.GET.news_type == 'global news' %}active{% endif %}">Global News</a>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-lg-12 col-md-12 col-12">
-              <div class="row" id="newsroom-data">{% include "public_interface/components/news/event_gallery.html" %}</div>
-            </div>
+
+          <div class="row" id="newsroom-data">
+            {% if request.GET.news_type %}
+              {% include "public_interface/components/news/news_list.html" %}
+            {% else %}
+              {% include "public_interface/components/news/event_gallery.html" %}
+            {% endif %}
           </div>
         </div>
       </div>
     </section>
   </div>
+  <script>
+  $(document).ready(function () {
+    $("#news_filter_buttons").on("click", "a", function (event) {
+      event.preventDefault();
+      const newsType = $(this).data("type");
+
+      $.ajax({
+        url: window.location.pathname,
+        type: "GET",
+        data: newsType === "events" ? {} : { news_type: newsType },
+        success: function (response) {
+          const updatedContent = $(response).find("#newsroom-data").html();
+          $("#newsroom-data").html(updatedContent);
+
+          // Active class toggle
+          $("#news_filter_buttons a").removeClass("active");
+          $(`#news_filter_buttons a[data-type='${newsType}']`).addClass("active");
+        },
+        error: function () {
+          alert("Something went wrong while loading news.");
+        }
+      });
+    });
+  });
+</script>
 {% endblock content %}
+
+
