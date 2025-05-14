@@ -54,7 +54,7 @@ urlpatterns = [
     ),
     # load pages
     path("load_more_product/", views.load_more_product, name="load_more_product"),
-    path("load_more_news/", views.load_more_news, name="load_more_news"),
+    path("load-more-news/", views.load_more_news, name="load_more_news"),
     path("load_more_events/", views.load_more_events, name="load_more_events"),
     path("get_promotions/", views.LoadPromotions.as_view(), name="get_promotions"),
     path("load_more_news/", views.load_more_news, name="load_more_news"),

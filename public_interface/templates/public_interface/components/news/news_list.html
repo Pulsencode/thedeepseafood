@@ -1,48 +1,74 @@
-{% load static %}
-{% for news_item in all_news %}
-  <div class="col-lg-4 col-sm-6 pt-30 news-box">
-    <div class="item bg-x-light-blue news_card">
-      <div>
-        {% if news_item.news_image.all %}
-          <img src="{{ news_item.news_image.first.image.url }}"
-               class="fixed_img"
-               alt="{{ news_item.news_image.first.image_alt }}">
-        {% endif %}
-      </div>
-      <div class="news_footer">
+ {% load static %}
+<div class="row" id="news-container">
+  {% for news_item in all_news %}
+    <div class="col-lg-4 col-sm-6 pt-30 news-box">
+      <div class="item bg-x-light-blue news_card">
         <div>
-          <div class="title font-lnterbold">{{ news_item.title|truncatechars:40 }}</div>
-          <div class="dec font-lntermedium txt_news">{{ news_item.content|striptags|truncatechars:120 }}</div>
-        </div>
-        <div>
-          <div class="date font-lntermedium">{{ news_item.date|date:'d/m/Y' }}</div>
-          {% if news_item.location %}
-            <div class="date font-lntermedium">
-              <i class="fa fa-map-marker me-2" aria-hidden="true"></i>{{ news_item.location }}
-            </div>
+          {% if news_item.news_image.all %}
+            <img src="{{ news_item.news_image.first.image.url }}"
+                 class="fixed_img"
+                 alt="{{ news_item.news_image.first.image_alt }}">
           {% endif %}
-          <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover mt-3"
-             href="{% url 'news_details' news_item.slug %}">
-            <span>Read More</span>
-            <img src="{% static 'public_interface/images/icons/right-arrow.png' %}" alt="Right Arrow">
-          </a>
+        </div>
+        <div class="news_footer">
+          <div>
+            <div class="title font-lnterbold">{{ news_item.title|truncatechars:40 }}</div>
+            <div class="dec font-lntermedium txt_news">{{ news_item.content|striptags|truncatechars:120 }}</div>
+          </div>
+          <div>
+            <div class="date font-lntermedium">{{ news_item.date|date:'d/m/Y' }}</div>
+            {% if news_item.location %}
+              <div class="date font-lntermedium">
+                <i class="fa fa-map-marker me-2" aria-hidden="true"></i>{{ news_item.location }}
+              </div>
+            {% endif %}
+            <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover mt-3"
+               href="{% url 'news_details' news_item.slug %}">
+              <span>Read More</span>
+              <img src="{% static 'public_interface/images/icons/right-arrow.png' %}" alt="Right Arrow">
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-{% endfor %}
+  {% endfor %}
+</div>
 
 {% if show_load_more %}
   <div class="col-12 text-center mt-40 load-more-container">
-    <div class="load-more-content">
-      <a class="btn load-more-btn bg-white text-blue rounded-25 btn-icon btn-zoom-hover news-load-more"
-         href="#"
-         data-limit="{{ limit }}"
-         data-total="{{ total }}"
-         data-type="{{ news_type }}">
-        <span>Load More</span>
-        <img src="{% static 'public_interface/images/icons/right-arrow-blue.png' %}" alt="Right Arrow">
-      </a>
-    </div>
+    <a class="btn load-more-btn bg-white text-blue rounded-25 btn-icon btn-zoom-hover news-load-more"
+       href="#"
+       data-limit="{{ limit }}"
+       data-total="{{ total }}"
+       data-type="{{ news_type }}">
+      <span>Load More</span>
+      <img src="{% static 'public_interface/images/icons/right-arrow-blue.png' %}" alt="Right Arrow">
+    </a>
   </div>
 {% endif %}
+
+<script>
+$(document).on("click", ".news-load-more", function (e) {
+    e.preventDefault();
+
+    let btn = $(this);
+    let limit = parseInt(btn.data("limit"));
+    let offset = $(".news-box").length;
+    let news_type = btn.data("type");
+
+    $.ajax({
+        url: "/load-more-news/",
+        data: {
+            offset: offset,
+            limit: limit,
+            news_type: news_type
+        },
+        success: function (data) {
+            $("#news-container").append(data.html);
+            if (!data.has_more) {
+                $(".load-more-container").remove();
+            }
+        }
+    });
+});
+</script> 

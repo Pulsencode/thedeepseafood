@@ -225,23 +225,26 @@ def news_room(request):
     news_type = request.GET.get("news_type")
     all_news = None
     all_events = None
+    limit = 3
 
     if news_type:
         all_news = News.objects.filter(status=True, type=news_type).order_by(
             "sequence"
-        )[:3]
+        )[:limit]
+        total = News.objects.filter(status=True, type=news_type).count()
     else:
         all_events = Event.objects.filter(status=True).order_by("sequence")
-
+        total = 0
     context = {
         "all_news": all_news,
         "all_events": all_events,
         "total_events": Event.objects.filter(status=True).count(),
         "page_title": "Latest News & Updates",
+        "show_load_more": total > limit,
+        "limit": limit,
+        "total": total,
+        "news_type": news_type,
     }
-
-    if request.headers.get("x-requested-with") == "XMLHttpRequest":
-        return render(request, "public_interface/news-room.html", context)
 
     return render(request, "public_interface/news-room.html", context)
 
@@ -508,44 +511,22 @@ class BaseAjaxView(View):
             return JsonResponse({"error": "Server error"}, status=500)
 
 
-#
-
-
-# def load_more_news(request):
-#     try:
-#         offset = int(request.GET.get("offset", 0))
-#         limit = int(request.GET.get("limit", 4))
-#         news_type = request.GET.get("type", "company-news")
-
-#         queryset = News.objects.filter(
-#             status=True, type__iexact=news_type.replace("-", " ")
-#         ).order_by("sequence")
-
-#         total_items = queryset.count()
-#         has_more = (offset + limit) < total_items
-
-#         data = queryset[offset : offset + limit]
-#         html = render_to_string(
-#             "public_interface/components/news/news_list.html",
-#             {"items": data, "total": total_items},
-#         )
-
-#         return JsonResponse({"data": html, "has_more": has_more})
-
-
-#     except Exception as e:
-#         logger.error(f"Load more error: {str(e)}", exc_info=True)
-#         return JsonResponse({"error": "Invalid request"}, status=400)
 def load_more_news(request):
     offset = int(request.GET.get("offset", 0))
-    limit = int(request.GET.get("limit", 4))
+    limit = int(request.GET.get("limit", 3))
+    news_type = request.GET.get("news_type")
 
-    news_qs = News.objects.all().order_by("-date")[offset : offset + limit]
+    news_qs = News.objects.filter(status=True).order_by("sequence")
+    if news_type:
+        news_qs = news_qs.filter(type=news_type)
+
+    total = news_qs.count()
+    news_qs = news_qs[offset : offset + limit]
 
     html = render_to_string(
         "public_interface/components/news/news_list.html", {"all_news": news_qs}
     )
-    return JsonResponse({"html": html})
+    return JsonResponse({"html": html, "has_more": offset + limit < total})
 
 
 def load_more_events(request):
