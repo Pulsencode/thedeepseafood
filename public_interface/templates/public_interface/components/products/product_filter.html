@@ -16,7 +16,7 @@
                 name="type"
                 {% if request.resolver_match.url_name == 'product_details' %} onclick="location.href='{% url 'product' %}?type=local catch'" {% endif %}
                 value="local catch"
-                class="nav-link btn border-0 {% if request.GET.type == 'local catch' %}active{% endif %}">
+                class="nav-link btn border-0 {% if request.resolver_match.url_name == 'product_details' and product.product.type == 'local catch' or request.GET.type == 'local catch' %}active{% endif %}">
             Local Catch
         </button>
     </li>
@@ -25,7 +25,7 @@
                 name="type"
                 {% if request.resolver_match.url_name == 'product_details' %} onclick="location.href='{% url 'product' %}?type=imported'" {% endif %}
                 value="imported"
-                class="nav-link btn border-0 {% if request.GET.type == 'imported' %}active{% endif %}">
+                class="nav-link btn border-0 {% if request.resolver_match.url_name == 'product_details' and product.product.type == 'imported' or request.GET.type == 'imported' %}active{% endif %}">
             Imported
         </button>
     </li>
@@ -34,7 +34,7 @@
                 name="type"
                 {% if request.resolver_match.url_name == 'product_details' %} onclick="location.href='{% url 'product' %}?type=value added'" {% endif %}
                 value="value added"
-                class="nav-link btn border-0 {% if request.GET.type == 'value added' %}active{% endif %}">
+                class="nav-link btn border-0 {% if request.resolver_match.url_name == 'product_details' and product.product.type == 'value added' or request.GET.type == 'value added' %}active{% endif %}">
             Value Added
         </button>
     </li>

@@ -25,7 +25,7 @@ from company.models import (
     Promotion,
 )
 from career.models import VacancyDetails
-from products.models import Category, Product, ProductDetails
+from products.models import Category, Product, ProductDetails, Subcategory
 from career.forms import ApplicationDetailsForm
 from company.forms import EnquiryForm, ProductEnquiryForm
 
@@ -118,14 +118,16 @@ def product_details(request, slug):
     related_products = (
         Product.objects.filter(status=True)
         .exclude(id=product.product_id)
-        .order_by("sequence")
+        .order_by("sequence")[:6]
     )
     categories = Category.objects.all()
+    sub_categories = Subcategory.objects.all()
 
     context = {
         "product": product,
         "related_products": related_products,
         "categories": categories,
+        "sub_categories": sub_categories,
         "form": ProductEnquiryForm(),
         "action_url": reverse("product_enquiry"),
     }
