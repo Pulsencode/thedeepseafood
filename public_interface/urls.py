@@ -15,6 +15,7 @@ urlpatterns = [
     path("career", views.career, name="career"),
     path("job_application/", views.job_application, name="job_email"),
     path("product", views.product, name="product"),
+    path("product/enquiry/", views.product_enquiry, name="product_enquiry"),
     path(
         "product-details/<slug:slug>/",
         views.product_details,
@@ -53,10 +54,6 @@ urlpatterns = [
         name="get_modal_product_details",
     ),
     # load pages
-    path("load_more_product/", views.load_more_product, name="load_more_product"),
     path("load-more-news/", views.load_more_news, name="load_more_news"),
-    path("load_more_events/", views.load_more_events, name="load_more_events"),
     path("get_promotions/", views.LoadPromotions.as_view(), name="get_promotions"),
-    path("load_more_news/", views.load_more_news, name="load_more_news"),
-    path("product/enquiry/", views.product_enquiry, name="product_enquiry"),
 ]
