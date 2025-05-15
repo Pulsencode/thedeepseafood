@@ -10,12 +10,12 @@ from django.contrib import messages
 from company.mixin import StatusUpdateAndDeleteMixin, SearchAndStatusFilterMixin
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from accounts.mixin import HROnlyAccessMixin, SuperuserOrAdminRequiredMixin
+from accounts.mixin import SuperuserOrAdminRequiredMixin, SuperAdminOrHrRequiredMixin
 
 
 class JobCategoryListView(
     LoginRequiredMixin,
-    SuperuserOrAdminRequiredMixin,
+    SuperAdminOrHrRequiredMixin,
     StatusUpdateAndDeleteMixin,
     SearchAndStatusFilterMixin,
     ListView,
@@ -86,7 +86,7 @@ class JobCategoryUpdateView(
 
 class CareerListView(
     LoginRequiredMixin,
-    HROnlyAccessMixin,
+    SuperAdminOrHrRequiredMixin,
     StatusUpdateAndDeleteMixin,
     SearchAndStatusFilterMixin,
     ListView,
@@ -105,7 +105,7 @@ class CareerListView(
     }
 
 
-class CareerCreateView(LoginRequiredMixin, HROnlyAccessMixin, CreateView):
+class CareerCreateView(LoginRequiredMixin, SuperAdminOrHrRequiredMixin, CreateView):
     model = VacancyDetails
     success_url = reverse_lazy("career_view")
     form_class = VacancyDetailForm
@@ -129,7 +129,7 @@ class CareerCreateView(LoginRequiredMixin, HROnlyAccessMixin, CreateView):
         return super().form_invalid(form)
 
 
-class CareerUpdateView(LoginRequiredMixin, HROnlyAccessMixin, UpdateView):
+class CareerUpdateView(LoginRequiredMixin, SuperAdminOrHrRequiredMixin, UpdateView):
     model = VacancyDetails
     success_url = reverse_lazy("career_view")
     form_class = VacancyDetailForm
@@ -155,7 +155,7 @@ class CareerUpdateView(LoginRequiredMixin, HROnlyAccessMixin, UpdateView):
 
 class ApplicationListView(
     LoginRequiredMixin,
-    HROnlyAccessMixin,
+    SuperAdminOrHrRequiredMixin,
     SearchAndStatusFilterMixin,
     StatusUpdateAndDeleteMixin,
     ListView,

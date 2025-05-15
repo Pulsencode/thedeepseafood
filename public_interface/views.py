@@ -1,9 +1,7 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
-
 # from django.core.mail import send_mail
 from django.urls import reverse
-
 # from django.conf import settings
 from django.http import JsonResponse
 import logging
@@ -280,41 +278,6 @@ def privacy_policy(request):
     return render(request, "privacy_policy.html")
 
 
-class BrandView(TemplateView):
-    template_name = "public_interface/brands.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        supermarkets = Supermarkets.objects.filter(status=True).order_by("-id")
-        # recipes = RecipeDetails.objects.filter(status=True).order_by("-id")
-        category = Category.objects.filter(brand__name="Oceano", status=True).order_by(
-            "sequence"
-        )
-        first_category = category.first()
-        products = Product.objects.filter(
-            status=True, brand__name="Oceano", product_details__category=first_category
-        ).order_by("sequence")[:4]
-        total_product = (
-            Product.objects.filter(
-                status=True,
-                brand__name="Oceano",
-                product_details__category=first_category,
-            )
-            .order_by("-id")
-            .count()
-        )
-        blog = Blog.objects.filter(status=True).order_by("-id")
-        # context["data"] = SEO.objects.filter(page="Oceano").first()
-        context["blog"] = blog
-        # print(total_product,'***')
-        context["category"] = category
-        context["total_product"] = total_product
-        context["products"] = products
-        # context["recipes"] = recipes
-        context["supermarkets"] = supermarkets
-        return context
-
-
 class ProductContentView(View):
     template_name = "public_interface/components/brands/products_list.html"
 
@@ -357,35 +320,6 @@ class ProductContentView(View):
                 return JsonResponse({"error": "Product not found"}, status=404)
         else:
             return JsonResponse({"error": "Invalid request"}, status=400)
-
-
-def load_more_product(request):
-    try:
-        offset = int(request.GET["offset"])
-        limit = int(request.GET["limit"])
-        type = request.GET["type"]
-
-        total_count = (
-            Product.objects.filter(
-                status=True, brand__name="Oceano", product_details__category__name=type
-            )
-            .order_by("-id")
-            .count()
-        )
-        # print(total_count,'***')
-        data = Product.objects.filter(
-            status=True, brand__name="Oceano", product_details__category__name=type
-        ).order_by("sequence")[offset : offset + limit]
-
-        t = render_to_string(
-            "website/brands/product_load.html",
-            {"data": data, "total_count": total_count},
-        )
-        return JsonResponse({"data": t, "status": True, "total_count": total_count})
-    except Product.DoesNotExist:
-        return JsonResponse({"error": "type not found"}, status=404)
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
 
 
 class OceanoProductDetailsView(View):
@@ -527,19 +461,6 @@ def load_more_news(request):
         "public_interface/components/news/news_list.html", {"all_news": news_qs}
     )
     return JsonResponse({"html": html, "has_more": offset + limit < total})
-
-
-def load_more_events(request):
-    try:
-        events = Event.objects.filter(status=True).order_by("sequence")
-        html = render_to_string(
-            "public_interface/components/news/event_gallery.html",
-            {"all_events": events},
-        )
-        return JsonResponse({"data": html})
-    except Exception as e:
-        logger.error(f"Load events error: {str(e)}", exc_info=True)
-        return JsonResponse({"error": "Server error"}, status=500)
 
 
 class LoadPromotions(BaseAjaxView):
