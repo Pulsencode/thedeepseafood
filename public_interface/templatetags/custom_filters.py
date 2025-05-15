@@ -56,3 +56,23 @@ def product_belongs_to_category_filter(product_id, category_id):
         ).exists()
     except Product.DoesNotExist:
         return False
+
+
+@register.filter(name="product_belongs_to_subcategory")
+def product_belongs_to_subcategory_filter(product_id, subcategory_id):
+    """
+    Template filter to check if a product (by its ID) belongs to a specific sub category (by its ID).
+    It checks the product's related 'product_details' for a matching active (status=True) category.
+    Returns True or False.
+    Example in template: {% if product.id|product_belongs_to_subcategory:subcategory.id %}
+    """
+    try:
+        # Get the product object by ID
+        product = Product.objects.get(id=product_id, status=True)
+        # Check if it has any active product_details in the given category
+        return product.product_details.filter(
+            sub_categories_id=subcategory_id,
+            status=True
+        ).exists()
+    except Product.DoesNotExist:
+        return False

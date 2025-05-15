@@ -31,11 +31,11 @@ MANIFEST
 
 # === Django-specific ===
 local_settings.py
-db.sqlite3
+# db.sqlite3
 db.sqlite3-journal
 *.sqlite
-*.sqlite3
-media/
+# *.sqlite3
+# media/
 staticfiles/
 
 # === Static / Media Files ===
