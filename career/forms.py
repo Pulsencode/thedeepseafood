@@ -7,7 +7,15 @@ from django_summernote.widgets import SummernoteWidget
 class VacancyDetailForm(forms.ModelForm):
     class Meta:
         model = VacancyDetails
-        fields = ["title", "location", "description", "type", "salary", "category"]
+        fields = [
+            "title",
+            "location",
+            "description",
+            "type",
+            "salary",
+            "hiring_status",
+            "category",
+        ]
 
         widgets = {
             "description": SummernoteWidget(),
