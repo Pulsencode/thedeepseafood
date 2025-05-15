@@ -33,12 +33,12 @@
     </div>
   {% endfor %}
 </div>
-
 {% if show_load_more %}
   <div class="col-12 text-center mt-40 load-more-container">
     <a class="btn load-more-btn bg-white text-blue rounded-25 btn-icon btn-zoom-hover news-load-more"
        href="#"
        data-limit="{{ limit }}"
+       data-offset="{{ limit }}"  
        data-total="{{ total }}"
        data-type="{{ news_type }}">
       <span>Load More</span>
@@ -50,24 +50,44 @@
 <script>
 $(document).on("click", ".news-load-more", function (e) {
     e.preventDefault();
-
+    
     let btn = $(this);
+    let isRequestInProgress = btn.data('in-progress');
+    
+    // Prevent multiple clicks while request is in progress
+    if (isRequestInProgress) return;
+    
+    // Mark request as in progress
+    btn.data('in-progress', true);
+    
     let limit = parseInt(btn.data("limit"));
-    let offset = $(".news-box").length;
+    let currentOffset = parseInt(btn.data("offset")) || 0;
     let news_type = btn.data("type");
 
     $.ajax({
         url: "/load-more-news/",
         data: {
-            offset: offset,
+            offset: currentOffset,
             limit: limit,
-            news_type: news_type
+            news_type: news_type,
+            _: new Date().getTime() // Cache buster
         },
         success: function (data) {
-            $("#news-container").append(data.html);
-            if (!data.has_more) {
-                $(".load-more-container").remove();
+            if (data.html.trim()) {
+                $("#news-container").append(data.html);
+                btn.data("offset", currentOffset + limit);
             }
+            
+            if (!data.has_more) {
+                btn.remove();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        },
+        complete: function() {
+            // Mark request as complete
+            btn.data('in-progress', false);
         }
     });
 });
