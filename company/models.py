@@ -143,7 +143,7 @@ class News(StatusTimestampBase, BaseInfoModel):
         null=True
     )  # TODO Need to change to the one in the blog model
     slug = AutoSlugField(
-        populate_from="content",
+        populate_from="title",
         editable=True,
         always_update=True,
         null=True,
