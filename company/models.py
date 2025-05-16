@@ -4,7 +4,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 from autoslug import AutoSlugField
 from django.core.validators import MinValueValidator, MaxValueValidator
 import uuid
-from accounts.models import User
 
 
 def image_upload_path(instance, filename):
@@ -53,8 +52,8 @@ class BaseInfoModel(models.Model):
     """Common base model for items with title,location,date"""
 
     title = models.CharField(max_length=350)
-    location = models.CharField(max_length=255)
-    date = models.DateField(null=True)
+    location = models.CharField(max_length=255, null=True, blank=True)
+    date = models.DateField(null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -108,7 +107,7 @@ class Brand(StatusTimestampBase, ImageBase):
 
 class Event(StatusTimestampBase, BaseInfoModel):
     sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
-    name = models.CharField(max_length=150)
+    name = models.CharField(null=True, blank=True)
     description = models.TextField(null=True)
 
     def __str__(self):
@@ -138,7 +137,7 @@ class News(StatusTimestampBase, BaseInfoModel):
         ("global news", "Global News"),
     )
     sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
-    name = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(null=True)
     type = models.CharField(max_length=200, choices=TYPE_CHOICES)
     content = models.TextField(
         null=True
@@ -200,7 +199,7 @@ class PromotionImage(TimestampBase, ImageBase):
 
 
 class Blog(StatusTimestampBase, BaseInfoModel):
-    name = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(null=True)
     content = models.TextField(null=True)
     slug = AutoSlugField(
         populate_from="title",
@@ -293,7 +292,7 @@ class History(StatusTimestampBase):
         null=True, validators=[MinValueValidator(1000), MaxValueValidator(9999)]
     )
     title = models.CharField(max_length=500)
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Histories"
