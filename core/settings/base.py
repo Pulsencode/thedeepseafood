@@ -5,13 +5,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", default=False)
-
-ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -20,18 +18,29 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "company",
-    "administration",
-    "accounts",
-    "products",
-    "public_interface",
-    "career",
-    "phonenumber_field",
-    "adminsortable2",
-    "django_summernote",
-    "django.contrib.sitemaps",
-
 ]
+
+EXTERNAL_APPS = [
+    "accounts.apps.AccountsConfig",
+    "career.apps.CareerConfig",
+    "products.apps.ProductsConfig",
+    "administration.apps.AdministrationConfig",
+    "company.apps.CompanyConfig",
+    "phonenumber_field",
+    "django.contrib.sitemaps",
+    "django_summernote",
+    "public_interface",
+]
+
+INSTALLED_APPS += EXTERNAL_APPS
+
+LOGIN_URL = "login_view"
+
+LOGIN_REDIRECT_URL = "admin_dashboard"
+
+LOGOUT_REDIRECT_URL = "home"
+
+AUTH_USER_MODEL = "accounts.User"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -42,6 +51,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
 
 ROOT_URLCONF = "core.urls"
 
@@ -64,15 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",  # noqa: F405
-    }
-}
-
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -89,40 +90,85 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Kolkata"
 
 USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+MEDIA_URL = "/media/"
+
+STATIC_ROOT = BASE_DIR / "assets"
+
+MEDIA_ROOT = BASE_DIR / "media"
+
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Email configuration
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+EMAIL_DEBUG = os.getenv("EMAIL_DEBUG")
 
-AUTH_USER_MODEL = "accounts.User"
-LOGIN_URL = "login_view"
 
-LOGIN_REDIRECT_URL = "admin_dashboard"
-
-LOGOUT_REDIRECT_URL = "home"
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+        },
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": "general.log",
+            "formatter": "verbose",
+        },
+        "test_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "test_logs.log",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "INFO",
+            "propagate": True,
+        },
+        "test": {
+            "handlers": ["test_file"],
+            "level": "DEBUG",
+            "propagate": False,  # Ensure logs don't propagate to the root or other loggers
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
+    },
+}
 
 
 SUMMERNOTE_CONFIG = {
@@ -139,14 +185,6 @@ SUMMERNOTE_CONFIG = {
         ["view", ["fullscreen", "codeview", "help"]],
     ],
 }
-
-
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ""
 
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 200 * 1024 * 1024
