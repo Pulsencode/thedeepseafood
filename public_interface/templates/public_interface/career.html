@@ -222,9 +222,6 @@
     </section>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-          async
-          defer></script>
   <script>
   // Initialize the selectpicker
   $(document).ready(function () {
@@ -237,12 +234,6 @@
     });
 
   });
-
-  var onloadCallback = function () {
-    grecaptcha.render('html_element', {
-      'sitekey': ' 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
-    });
-  };
 
   $(document).ready(function () {
     $('.read-more-cnt').on('click', function (e) {
