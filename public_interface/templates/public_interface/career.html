@@ -63,7 +63,7 @@
                         <label>Location</label>
                         <select name="location" class="select2 wt-search-bar-select">
                           <option value="">Select Location</option>
-                          {% for job in unique_locations %}<option value="{{ job }}">{{ job }}</option>{% endfor %}
+                          {% for location in unique_locations %}<option value="{{ location }}">{{ location }}</option>{% endfor %}
                         </select>
                       </div>
                       <!--Find job btn-->
@@ -111,7 +111,6 @@
                     {% else %}
                       <h3>Not Disclosed</h3>
                     {% endif %}
-                    {% comment %} <button class="btn bg-blue text-white rounded-25 btn-zoom-hover font-lntermedium" onclick="show_modal('{{ job.title }}')">Apply Now</button> {% endcomment %}
                     <button type="button"
                             class="btn bg-blue text-white rounded-25 btn-zoom-hover font-lntermedium"
                             data-bs-toggle="modal"
@@ -269,6 +268,7 @@
         data: $(this).serialize(),
         success: function (response) {
           $("#searchResults").html($(response).find("#searchResults").html());
+          window.initializePhoneInputs();
         },
         error: function (xhr, status, error) {
           console.log("Error:", error);
