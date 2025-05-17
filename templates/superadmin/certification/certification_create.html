@@ -15,9 +15,8 @@
                            data-bs-height="180"
                            name="image"
                            id="image-upload"
-                           required>
-                    <img {% if certification.image %}src="{{ certification.image.url }}"{% else %}src="" {% endif %}
-                         class="" />
+                           {% if certification.image %}data-default-file="{{ certification.image.url }}"{% endif %}
+                           {% if not certification.image %}required{% endif %} />
                     <label class="form-label">Image alt</label>
                     {{ form.image_alt }}
                     <div class="form-group col-lg-12 col-12">

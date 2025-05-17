@@ -123,6 +123,7 @@ class TeamListView(
     LoginRequiredMixin,
     SuperuserOrAdminRequiredMixin,
     SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
     ListView,
 ):
     model = ManagementTeam
@@ -130,7 +131,7 @@ class TeamListView(
     ordering = ["-id"]
     context_object_name = "all_teams"
     template_name = "superadmin/team/management_team_view.html"
-    search_field = "role"
+    search_field = "name"
     extra_context = {
         "page_title": "Management Team",
         "path_name": "Add New",
@@ -606,7 +607,7 @@ class EventListView(
     paginate_by = 10
     ordering = ["-id"]
     template_name = "superadmin/event gallery/event_gallery_view.html"
-    search_field = "name"
+    search_field = "title"
 
     extra_context = {
         "page_title": "Event Gallery",

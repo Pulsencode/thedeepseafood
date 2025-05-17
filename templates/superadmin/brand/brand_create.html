@@ -17,8 +17,8 @@
                                data-bs-height="180"
                                name="image"
                                id="image-upload"
-                               {% if list.logo %}data-default-file="{{ list.image.url }}"{% endif %}
-                               {% if not list.logo %}required{% endif %} />
+                               {% if brand.image %}data-default-file="{{ brand.image.url }}"{% endif %}
+                               {% if not brand.image %}required{% endif %} />
                         <div class="col-lg-12"></div>
                     </div>
                 </div>
