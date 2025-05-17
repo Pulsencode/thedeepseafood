@@ -4451,13 +4451,6 @@ footer.footer-1.brand-ftr button {
 }
 
 .twm-bnr-search-bar .site-button {
-  /* width: fit-content; */
-  /* padding: 9px 30px; */
-  /* height: 100%; */
-  /* background: #112b5c; */
-  /* font-size: 19px; */
-  /* color: #fff; */
-  /* border-radius: 9px; */
   background: #0d5189;
   font-size: 15px;
   color: #fff;
@@ -5575,7 +5568,7 @@ a.fa.fa-arrow-down.fa-1x {
   padding-left: 50px;
 }
 
-.phone-number-col{
+.phone-number-col {
   margin-bottom: 20px !important;
 }
 
@@ -5583,12 +5576,13 @@ a.fa.fa-arrow-down.fa-1x {
   width: 100% !important;
 }
 
-.iti__country, .iti__dial-code {
+.iti__country,
+.iti__dial-code {
   font-size: 0.75rem !important;
   color: #0d5189 !important;
 }
 
-.iti__country-list{
+.iti__country-list {
   max-height: 175px !important;
   max-width: 330px !important;
 }
@@ -5598,11 +5592,11 @@ a.fa.fa-arrow-down.fa-1x {
     left: 10vw !important;
     right: 10vw !important;
   }
-  .iti__country, .iti__dial-code {
+  .iti__country,
+  .iti__dial-code {
     font-size: 0.75rem !important;
-
   }
-  .iti__country-list{
+  .iti__country-list {
     max-height: 175px !important;
     max-width: 500px !important;
   }
@@ -5610,22 +5604,22 @@ a.fa.fa-arrow-down.fa-1x {
 
 /* Add transition for smoother tab switching */
 #newsroom-data {
-    transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .loading-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .loading-active .loading-overlay {
-    display: flex;
+  display: flex;
 }
