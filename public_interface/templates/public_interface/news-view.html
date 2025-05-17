@@ -50,9 +50,10 @@
                 {% for event in recent_news %}
                   <a href="{% url 'news_details' event.slug %}"
                      class="text-decoration-none">
-                    <div class="item border-b news-item" data-aos="fade-up" data-aos-duration="500">
+                    <div class="item border-b news-item"
+                         data-aos="fade-up"
+                         data-aos-duration="500">
                       <div class="row align-items-center">
-                        <p class="d-none">{{ event.title }}</p>
                         <div class="col-3">
                           <img class="img-fluid"
                                width=""
@@ -61,7 +62,7 @@
                                alt="{{ event.image_alt }}">
                         </div>
                         <div class="col-9 ps-0">
-                          <div class="tilte">{{ event.content|truncatechars:50|safe }}</div>
+                          <div class="tilte">{{ event.content|striptags|truncatechars:50 }}</div>
                         </div>
                       </div>
                     </div>
