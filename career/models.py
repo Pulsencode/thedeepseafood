@@ -1,11 +1,10 @@
-from django.db import models
+from datetime import date, timedelta
 
-from company.models import StatusTimestampBase
+from django.db import models
+from multiselectfield import MultiSelectField
 from phonenumber_field.modelfields import PhoneNumberField
 
-
-from multiselectfield import MultiSelectField
-from datetime import date, timedelta
+from company.models import StatusTimestampBase
 
 
 class JobCategory(StatusTimestampBase):

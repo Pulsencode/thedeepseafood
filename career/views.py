@@ -1,16 +1,13 @@
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView
-from career.models import JobCategory, VacancyDetails, ApplicationDetails
-from career.forms import VacancyDetailForm, JobCategoryForm
-
-# from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib import messages
-
-# from django.http import JsonResponse
-from company.mixin import StatusUpdateAndDeleteMixin, SearchAndStatusFilterMixin
-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from accounts.mixin import SuperuserOrAdminRequiredMixin, SuperAdminOrHrRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView, UpdateView
+
+from accounts.mixin import SuperAdminOrHrRequiredMixin, SuperuserOrAdminRequiredMixin
+from career.forms import JobCategoryForm, VacancyDetailForm
+from career.models import ApplicationDetails, JobCategory, VacancyDetails
+
+from company.mixin import SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin
 
 
 class JobCategoryListView(

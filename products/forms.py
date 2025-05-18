@@ -1,15 +1,6 @@
-# import base64
-# import uuid
-# from django.core.files.base import ContentFile
 from django import forms
-from .models import (
-    Product,
-    Category,
-    Brand,
-    # RecipeDetails,
-    # RecipeIngredients,
-    ProductDetails,
-)
+
+from .models import Brand, Category, Product, ProductDetails
 
 
 class CategoryForm(forms.ModelForm):
@@ -27,57 +18,6 @@ class CategoryForm(forms.ModelForm):
             self.fields[field].widget.attrs.update(
                 {"class": "form-control", "placeholder": self.fields[field].label}
             )
-
-
-# class RecipeForm(forms.ModelForm):
-#     class Meta:
-#         model = RecipeDetails
-#         fields = [
-#             "title",
-#             "brand",
-#             "description",
-#             "image_alt",
-#         ]  # the description --need to check on that-- instructions
-#         widgets = {
-#             "description": forms.Textarea(attrs={"class": "form-control"}),
-#             "image_alt": forms.TextInput(attrs={"class": "form-control"}),
-#         }
-
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.fields["brand"].queryset = Brand.objects.filter(status=True).exclude(
-#             name="Deep Sea"
-#         )
-#         self.fields["brand"].widget.attrs.update(
-#             {"class": "form-control form-select select2"}
-#         )
-#         self.fields["title"].widget.attrs.update(
-#             {"class": "form-control", "placeholder": "Title"}
-#         )
-
-
-# class RecipeIngredientForm(forms.ModelForm):
-#     class Meta:
-#         model = RecipeIngredients
-#         fields = ["title"]
-#         widgets = {
-#             "title": forms.Textarea(
-#                 attrs={
-#                     "class": "form-control form-control-lg",
-#                     "placeholder": "Ingredient",
-#                     "rows": 2,
-#                 }
-#             ),
-#         }
-
-
-# RecipeIngredientFormSet = forms.inlineformset_factory(
-#     RecipeDetails,
-#     RecipeIngredients,
-#     form=RecipeIngredientForm,
-#     extra=1,
-#     can_delete=True,
-# )
 
 
 class ProductForm(forms.ModelForm):
@@ -98,19 +38,6 @@ class ProductForm(forms.ModelForm):
                         {"class": "form-control", "placeholder": field.label}
                     )
 
-    # def save(self, commit=True):
-    #     instance = super().save(commit=False)
-    #     data_url = self.cleaned_data.get("image")
-    #     if data_url:
-    #         header, b64data = data_url.split(";base64,")
-    #         ext = header.split("/")[-1]  # e.g. "png"
-    #         filename = f"{uuid.uuid4().hex}.{ext}"
-    #         decoded_file = base64.b64decode(b64data)
-    #         instance.image = ContentFile(decoded_file, name=filename)
-    #     if commit:
-    #         instance.save()
-    #     return instance
-
 
 class ProductDetailsForm(forms.ModelForm):
     class Meta:
@@ -122,6 +49,7 @@ class ProductDetailsForm(forms.ModelForm):
             "product_code",
             "net_weight",
             "price",
+            "shelf_life",
             "origin",
             "grade",
             "packing",

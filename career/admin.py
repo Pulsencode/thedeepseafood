@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import JobCategory, VacancyDetails, ApplicationDetails
+
+from .models import ApplicationDetails, JobCategory, VacancyDetails
 
 
 @admin.register(JobCategory)
@@ -16,7 +17,19 @@ class VacancyDetailsAdmin(admin.ModelAdmin):
     autocomplete_fields = ("category",)
 
     fieldsets = (
-        (None, {"fields": ("title", "category", "location", "type", "salary", "hiring_status")}),
+        (
+            None,
+            {
+                "fields": (
+                    "title",
+                    "category",
+                    "location",
+                    "type",
+                    "salary",
+                    "hiring_status",
+                )
+            },
+        ),
         ("Description", {"classes": ("collapse",), "fields": ("description",)}),
     )
 
@@ -52,7 +65,7 @@ class ApplicationDetailsAdmin(admin.ModelAdmin):
         (
             "Job Info",
             {
-                "fields": ( "vacancy", "start_date", "notice_period"),
+                "fields": ("vacancy", "start_date", "notice_period"),
             },
         ),
         (

@@ -1,13 +1,6 @@
 from django.contrib import admin
-from .models import (
-    Category,
-    # RecipeDetails,
-    # RecipeIngredients,
-    Product,
-    ProductDetails,
-    # RecipeImage,
-    Subcategory,
-)
+
+from .models import Category, Product, ProductDetails, Subcategory
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -16,18 +9,6 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ("name",)
     ordering = ("sequence",)
     prepopulated_fields = {"name": ("name",)}
-
-
-# class RecipeIngredientsInline(admin.TabularInline):
-#     model = RecipeIngredients
-#     extra = 1
-
-
-# class RecipeDetailsAdmin(admin.ModelAdmin):
-#     list_display = ("title", "brand", "created")
-#     search_fields = ("title",)
-#     list_filter = ("brand",)
-#     # inlines = [RecipeIngredientsInline]
 
 
 class ProductDetailsInline(admin.TabularInline):
@@ -50,11 +31,6 @@ class ProductDetailsAdmin(admin.ModelAdmin):
     search_fields = ("product__name", "product_code", "origin")
 
 
-# class RecipeImageAdmin(admin.ModelAdmin):
-#     list_display = ("recipe", "created")
-#     search_fields = ("recipe__title",)
-
-
 class SubcategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)
     search_fields = ("name__name",)
@@ -62,8 +38,6 @@ class SubcategoryAdmin(admin.ModelAdmin):
 
 # Registering all
 admin.site.register(Category, CategoryAdmin)
-# admin.site.register(RecipeDetails, RecipeDetailsAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductDetails, ProductDetailsAdmin)
-# admin.site.register(RecipeImage, RecipeImageAdmin)
 admin.site.register(Subcategory, SubcategoryAdmin)

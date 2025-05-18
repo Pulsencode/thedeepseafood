@@ -1,7 +1,8 @@
+from autoslug import AutoSlugField
 from django.db import models
 from django.urls import reverse
-from company.models import Brand, StatusTimestampBase, ImageBase
-from autoslug import AutoSlugField
+
+from company.models import Brand, ImageBase, StatusTimestampBase
 
 
 class Category(StatusTimestampBase, ImageBase):
@@ -32,17 +33,10 @@ class Product(StatusTimestampBase, ImageBase):
     )
     name = models.CharField(max_length=150)
     homepage = models.BooleanField(default=False)
-    # brand = models.ForeignKey(
-    #     Brand,
-    #     null=True,
-    #     blank=True,
-    #     related_name="product_brand",
-    #     on_delete=models.CASCADE,
-    # )
     sequence = models.PositiveIntegerField(default=0)
     type = models.CharField(max_length=200, choices=TYPE_CHOICES)
     slug = AutoSlugField(
-        populate_from="name",
+        populate_from="product__name",
         editable=True,
         always_update=True,
         null=True,

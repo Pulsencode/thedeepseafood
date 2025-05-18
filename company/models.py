@@ -1,9 +1,10 @@
+import uuid
+
+from autoslug import AutoSlugField
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
-from autoslug import AutoSlugField
-from django.core.validators import MinValueValidator, MaxValueValidator
-import uuid
 
 
 def image_upload_path(instance, filename):

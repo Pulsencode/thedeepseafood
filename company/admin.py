@@ -11,14 +11,14 @@ from company.models import (
     CompanyTestimonial,
     Event,
     EventImage,
+    History,
+    HistoryImage,
     ManagementTeam,
     News,
     NewsImage,
     Promotion,
     PromotionImage,
     Supermarkets,
-    History,
-    HistoryImage
 )
 
 

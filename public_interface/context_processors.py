@@ -1,5 +1,6 @@
 from datetime import datetime
-from company.models import Blog, SEO
+
+from company.models import SEO, Blog
 
 
 def global_context(request):

@@ -1,7 +1,7 @@
 """for search filter & status filter to avoid Code repetition"""
 
-from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect
 
 
 class SearchAndStatusFilterMixin:

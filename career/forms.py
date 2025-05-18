@@ -1,7 +1,7 @@
 from django import forms
-from career.models import VacancyDetails, JobCategory
-from career.models import ApplicationDetails
 from django_summernote.widgets import SummernoteWidget
+
+from career.models import ApplicationDetails, JobCategory, VacancyDetails
 
 
 class VacancyDetailForm(forms.ModelForm):

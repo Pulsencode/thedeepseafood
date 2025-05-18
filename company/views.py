@@ -1,29 +1,26 @@
-from django.urls import reverse_lazy
-from django.views.generic import (
-    # TemplateView,
-    View,
-    CreateView,
-    UpdateView,
-    ListView,
-    DeleteView,
-)
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView, View
+
+from accounts.mixin import SuperuserOrAdminRequiredMixin
 from company.forms import (
-    HistoryForm,
-    NewsForm,
-    SEOForm,
-    ManagementForm,
-    TestimonialForm,
-    CertificationForm,
-    SupermarketForm,
-    BrandForm,
     BlogForm,
+    BrandForm,
+    CertificationForm,
     EventForm,
+    HistoryForm,
+    ManagementForm,
+    NewsForm,
     PromotionForm,
+    SEOForm,
+    SupermarketForm,
+    TestimonialForm,
 )
+from company.mixin import SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin
 from company.models import (
-    # AboutUs,
+    SEO,
     Blog,
     BlogImage,
     Brand,
@@ -40,15 +37,8 @@ from company.models import (
     NewsImage,
     Promotion,
     PromotionImage,
-    SEO,
     Supermarkets,
 )
-from company.mixin import (
-    SearchAndStatusFilterMixin,
-    StatusUpdateAndDeleteMixin,
-)
-from django.contrib.auth.mixins import LoginRequiredMixin
-from accounts.mixin import SuperuserOrAdminRequiredMixin
 
 
 class SeoListView(

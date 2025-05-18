@@ -1,33 +1,30 @@
-from django.shortcuts import redirect, render, get_object_or_404
-from django.contrib import messages
-# from django.core.mail import send_mail
-from django.urls import reverse
-# from django.conf import settings
-from django.http import JsonResponse
 import logging
+
+from django.contrib import messages
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template import loader
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.views import View
 from django.views.generic import TemplateView
+
+from career.forms import ApplicationDetailsForm
+from career.models import VacancyDetails
+from company.forms import EnquiryForm, ProductEnquiryForm
 from company.models import (
-    # AboutUs,
     Blog,
     Brand,
     Certification,
     CompanyTestimonial,
-    # ContactUs,
     Event,
     History,
     ManagementTeam,
     News,
-    # SEO,
-    Supermarkets,
     Promotion,
+    Supermarkets,
 )
-from career.models import VacancyDetails
 from products.models import Category, Product, ProductDetails, Subcategory
-from career.forms import ApplicationDetailsForm
-from company.forms import EnquiryForm, ProductEnquiryForm
 
 
 def home(request):
@@ -61,7 +58,6 @@ def home(request):
 def about(request):
     context = {
         "page_title": "About The Deep Seafood Company | Leading Seafood Supplier in UAE",
-        # "about": AboutUs.objects.filter(status=True),
         "management_team": ManagementTeam.objects.filter(status=True),
         "history": History.objects.all(),
         "form": EnquiryForm(),
@@ -190,28 +186,6 @@ def job_application(request):
             application.vacancy = job
 
             application.save()
-            # Build the absolute URL for the uploaded CV
-            """'email configurtaion"""
-            # cv_url = request.build_absolute_uri(application.upload_cv.url)
-
-            # # Send email to admin
-            # subject = "New Job Submitted"
-            # message = (
-            #     f"A new job application has been submitted.\n\n"
-            #     f"Job Applied: {job.title}\n"
-            #     f"Applicant Name: {application.first_name}\n"
-            #     f"Applicant CV: {cv_url}"
-            # )
-            # admin_email = "info@thedeepseafood.com"  # host email
-            # admin_email = "sinankodur24@gmail.com"
-            # send_mail(
-            #     subject,
-            #     message,
-            #     settings.EMAIL_HOST_USER,
-            #     [admin_email],
-            #     fail_silently=False,
-            # )
-
             messages.success(request, "Application  Submitted successfully ")
             return redirect("career")
         else:
@@ -335,8 +309,6 @@ class OceanoProductDetailsView(View):
                 category = Category.objects.filter(
                     brand__name="Oceano", status=True
                 ).order_by("sequence")
-                # cat = Category.objects.filter(brand__name='Oceano',status=True).order_by('-id')
-                # .first()
 
                 products = Product.objects.get(id=id)
                 print(products)

@@ -1,20 +1,21 @@
 from django import forms
+from django_summernote.widgets import SummernoteWidget
+
 from company.models import (
     SEO,
-    ManagementTeam,
-    CompanyTestimonial,
-    Supermarkets,
-    Certification,
-    Brand,
-    News,
-    Event,
-    History,
-    Promotion,
     Blog,
+    Brand,
+    Certification,
+    CompanyTestimonial,
     ContactUs,
     Enquiry,
+    Event,
+    History,
+    ManagementTeam,
+    News,
+    Promotion,
+    Supermarkets,
 )
-from django_summernote.widgets import SummernoteWidget
 
 
 class SEOForm(forms.ModelForm):

@@ -1,13 +1,11 @@
 from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path, re_path
-from django.views.static import serve
-from django.views.generic.base import TemplateView
 from django.contrib.sitemaps.views import sitemap
-from .sitemaps import StaticViewSitemap,BlogSitemap,NewsSitemap
+from django.urls import include, path, re_path
+from django.views.generic.base import TemplateView
+from django.views.static import serve
 
-
-
+from .sitemaps import BlogSitemap, NewsSitemap, StaticViewSitemap
 
 sitemaps = {
     "static": StaticViewSitemap,
@@ -15,9 +13,6 @@ sitemaps = {
     "blog": BlogSitemap,
     "news": NewsSitemap,
 }
-
-
-
 
 
 urlpatterns = [

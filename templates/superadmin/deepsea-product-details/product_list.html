@@ -4,20 +4,18 @@
         <tr class="text-center">
             <th>Sl No</th>
             <th class="psticky">Product</th>
-            <!-- <th>brand</th> -->
             <th>category</th>
             <th>sub category</th>
-            <!-- <th>type</th> -->
-            <th>product code</th>
+            {% comment %} <th>product code</th> {% endcomment %}
             <th>price</th>
             <th>net weight</th>
             <th>origin</th>
             <th>grade</th>
-            <th>packing</th>
-            <th>ingredients</th>
-            <th>instruction</th>
+            {% comment %} <th>packing</th> {% endcomment %}
+            {% comment %} <th>ingredients</th> {% endcomment %}
+            {% comment %} <th>instruction</th> {% endcomment %}
             <th>storage instruction</th>
-            <th>causion</th>
+            <th>caution</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
@@ -42,12 +40,12 @@
                            data-bs-target="#subcategory{{ product.id }}"><i class="side-menu__icon fe fe-eye"></i></a>
                     </td>
                     <!-- <td>{{d.type}}</td> -->
-                    <td>
+                    {% comment %} <td>
                         <a class="btn btn-success btn-sm mb-1"
                            href="#"
                            data-bs-toggle="modal"
                            data-bs-target="#code{{ product.id }}"><i class="side-menu__icon fe fe-eye"></i></a>
-                    </td>
+                    </td> {% endcomment %}
                     <td>
                         <a class="btn btn-success btn-sm mb-1"
                            href="#"
@@ -72,7 +70,7 @@
                            data-bs-toggle="modal"
                            data-bs-target="#grade{{ product.id }}"><i class="side-menu__icon fe fe-eye"></i></a>
                     </td>
-                    <td>
+                    {% comment %} <td>
                         <a class="btn btn-success btn-sm mb-1"
                            href="#"
                            data-bs-toggle="modal"
@@ -89,7 +87,7 @@
                            href="#"
                            data-bs-toggle="modal"
                            data-bs-target="#instruction{{ product.id }}"><i class="side-menu__icon fe fe-eye"></i></a>
-                    </td>
+                    </td> {% endcomment %}
                     <td>
                         <a class="btn btn-success btn-sm mb-1"
                            href="#"
