@@ -123,6 +123,7 @@ class TeamListView(
     LoginRequiredMixin,
     SuperuserOrAdminRequiredMixin,
     SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
     ListView,
 ):
     model = ManagementTeam
