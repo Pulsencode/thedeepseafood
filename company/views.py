@@ -1,41 +1,26 @@
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.urls import reverse_lazy
-from django.views.generic import (
-    TemplateView,
-    View,
-    CreateView,
-    UpdateView,
-    ListView,
-    DeleteView,
-)
-from deepapp.helper import is_ajax, renderhelper
-from datetime import datetime
-
-from django.db.models import Q
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView, View
 
-# from django.shortcuts import redirect, render
-from django.template import loader
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-
-from django.core.files.base import ContentFile
-import base64
+from accounts.mixin import SuperuserOrAdminRequiredMixin
 from company.forms import (
-    HistoryForm,
-    NewsForm,
-    SEOForm,
-    ManagementForm,
-    TestimonialForm,
-    CertificationForm,
-    SupermarketForm,
-    BrandForm,
     BlogForm,
+    BrandForm,
+    CertificationForm,
     EventForm,
+    HistoryForm,
+    ManagementForm,
+    NewsForm,
     PromotionForm,
+    SEOForm,
+    SupermarketForm,
+    TestimonialForm,
 )
+from company.mixin import SearchAndStatusFilterMixin, StatusUpdateAndDeleteMixin
 from company.models import (
-    # AboutUs,
+    SEO,
     Blog,
     BlogImage,
     Brand,
@@ -52,89 +37,42 @@ from company.models import (
     NewsImage,
     Promotion,
     PromotionImage,
-    SEO,
     Supermarkets,
 )
 
 
-class SeoListView(ListView):
+class SeoListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
     model = SEO
-    context_object_name = "all_seo"
     paginate_by = 10
+    ordering = ["-id"]
+    context_object_name = "all_seo"
     template_name = "superadmin/seo/seo-view.html"
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        search = self.request.GET.get("search")
-        status_filter = self.request.GET.get("status_filter")
-
-        if search:
-            queryset = queryset.filter(page_name__icontains=search)
-
-        # Default to True if no status_filter is given
-        if status_filter == "False":
-            queryset = queryset.filter(status=False)
-        else:
-            queryset = queryset.filter(status=True)
-
-        return queryset
-
-    # def test_func(self):
-    #     return self.request.user.username == "DeepSeaAdmin"
-
-    # def get(self, request, *args, **kwargs):
-    #     context = {}
-    # path = "seo"
-    # page = request.GET.get("page", 1)
-
-    # search = request.GET.get("search")
-    # delete = request.GET.get("delete")
-    # status = request.GET.get("status")
-    # sts = request.GET.get("sts")
-
-    # # cd = SEO.objects.all().order_by("-id")
-
-    # if is_ajax(request):
-    #     if search:
-    #         cd = cd.filter(page__icontains=search)
-    #     if sts:
-    #         cd = cd.filter(status=sts)
-    #     if status:
-    #         if status == "1":
-    #             status = True
-    #         else:
-    #             status = False
-    #         item_id = request.GET.get("item_id")
-    #         SEO.objects.filter(id=item_id).update(status=status)
-    #     if delete:
-    #         item_id = request.GET.get("item_id")
-    #         try:
-    #             datas = SEO.objects.get(id=item_id)
-    #         except SEO.DoesNotExist:
-    #             datas = None
-    #         if datas:
-    #             datas.delete()
-
-    #     paginator = Paginator(cd, 10)
-    #     try:
-    #         datas = paginator.get_page(page)
-    #     except PageNotAnInteger:
-    #         datas = paginator.get_page(1)
-    #     except EmptyPage:
-    #         datas = paginator.get_page(paginator.num_pages)
-    #     # context["datas"] = datas
-    #     context["page"] = page
-    #     template = loader.get_template(self.template_name)
-    #     html_content = template.render(context, request)
-    #     return JsonResponse({"status": True, "template": html_content})
+    search_field = "page_name"
+    extra_context = {
+        "page_title": "SEO",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("seo_add"),
+    }
 
 
-class SeoCreateView(CreateView):
+class SeoCreateView(LoginRequiredMixin, CreateView):
     model = SEO
     form_class = SEOForm
     template_name = "superadmin/seo/seo-create.html"
-    extra_context = {"page_title": "Create SEO"}
     success_url = reverse_lazy("list_seo")
+    extra_context = {
+        "page_title": "SEO",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_seo"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Seo Added Successfully...!!")
@@ -147,12 +85,18 @@ class SeoCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class SeoUpdateView(UpdateView):
+class SeoUpdateView(LoginRequiredMixin, UpdateView):
     model = SEO
     form_class = SEOForm
     template_name = "superadmin/seo/seo-create.html"
     extra_context = {"page_title": "Update SEO"}
     success_url = reverse_lazy("list_seo")
+    extra_context = {
+        "page_title": "SEO",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_seo"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Seo Updated Successfully...!!")
@@ -165,97 +109,37 @@ class SeoUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class TeamListView(ListView):
+class TeamListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    ListView,
+):
     model = ManagementTeam
     paginate_by = 10
+    ordering = ["-id"]
     context_object_name = "all_teams"
     template_name = "superadmin/team/management_team_view.html"
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        search = self.request.GET.get("search")
-        status_filter = self.request.GET.get("search_filter")
-        if search:
-            queryset = queryset.filter(role__icontains=search)
-        if status_filter == "False":
-            queryset = queryset.filter(status=False)
-        else:
-            queryset = queryset.filter(status=True)
-
-        return queryset
+    search_field = "role"
+    extra_context = {
+        "page_title": "Management Team",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("team_add"),
+    }
 
 
-# class TeamListView(UserPassesTestMixin, TemplateView):
-# template_name = "superadmin/team/management_team_view.html"
-
-# def test_func(self):
-#     return self.request.user.username == "DeepSeaAdmin"
-
-# def get(self, request, *args, **kwargs):
-#     context = {}
-#     path = "Team"
-#     page = request.GET.get("page", 1)
-
-#     search = request.GET.get("search")
-#     delete = request.GET.get("delete")
-#     status = request.GET.get("status")
-#     sts = request.GET.get("sts")
-
-#     cd = ManagementTeam.objects.all().order_by("-id")
-
-#     if is_ajax(request):
-#         if search:
-#             cd = cd.filter(name__icontains=search)
-#         if sts:
-#             cd = cd.filter(status=sts)
-#         if status:
-#             if status == "1":
-#                 status = True
-#             else:
-#                 status = False
-#             item_id = request.GET.get("item_id")
-#             ManagementTeam.objects.filter(id=item_id).update(status=status)
-#         if delete:
-#             item_id = request.GET.get("item_id")
-#             try:
-#                 datas = ManagementTeam.objects.get(id=item_id)
-#             except ManagementTeam.DoesNotExist:
-#                 datas = None
-#             if datas:
-#                 datas.delete()
-#         paginator = Paginator(cd, 10)
-#         try:
-#             datas = paginator.get_page(page)
-#         except PageNotAnInteger:
-#             datas = paginator.get_page(1)
-#         except EmptyPage:
-#             datas = paginator.get_page(paginator.num_pages)
-#         context["datas"] = datas
-#         context["page"] = page
-#         template = loader.get_template(self.template_name)
-#         html_content = template.render(context, request)
-#         return JsonResponse({"status": True, "template": html_content})
-
-#     paginator = Paginator(cd, 10)
-#     try:
-#         datas = paginator.get_page(page)
-#     except PageNotAnInteger:
-#         datas = paginator.get_page(1)
-#     except EmptyPage:
-#         datas = paginator.get_page(paginator.num_pages)
-#     context["datas"] = datas
-#     context["page"] = page
-#     context["path"] = path
-
-#     return renderhelper(request, "team", "management_team_view", context)
-
-
-class TeamCreateView(CreateView):
+class TeamCreateView(LoginRequiredMixin, CreateView):
     model = ManagementTeam
     form_class = ManagementForm
     success_url = reverse_lazy("list_team")
     template_name = "superadmin/team/management_team_create.html"
-    extra_context = {"page_title": "Create Team"}
+    extra_context = {
+        "page_title": "Management Team",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_team"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Team Added Successfully...!!")
@@ -268,12 +152,22 @@ class TeamCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class TeamUpdateView(UpdateView):
+class TeamUpdateView(LoginRequiredMixin, UpdateView):
     model = ManagementTeam
     form_class = ManagementForm
     success_url = reverse_lazy("list_team")
     template_name = "superadmin/team/management_team_create.html"
-    extra_context = {"page_title": "Update Team"}
+    extra_context = {
+        "page_title": "Management Team",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_team"),
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["team"] = self.object
+        return context
 
     def form_valid(self, form):
         messages.success(self.request, "Team Updated  Successfully...!!")
@@ -286,97 +180,66 @@ class TeamUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class TestimonialListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/testimonial/testimonial_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Testimonial"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = CompanyTestimonial.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(name__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                CompanyTestimonial.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = CompanyTestimonial.objects.get(id=item_id)
-                except CompanyTestimonial.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return renderhelper(request, "testimonial", "testimonial_view", context)
+class TestimonialListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
+    model = CompanyTestimonial
+    paginate_by = 10
+    ordering = ["-id"]
+    context_object_name = "all_testimonials"
+    template_name = "superadmin/testimonial/testimonial_view.html"
+    search_field = "name"
+    extra_context = {
+        "page_title": "Testimonial",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("testimonial_add"),
+    }
 
 
-class TestimonialCreateView(CreateView):
+class TestimonialCreateView(LoginRequiredMixin, CreateView):
     model = CompanyTestimonial
     form_class = TestimonialForm
     success_url = reverse_lazy("list_testimonial")
     template_name = "superadmin/testimonial/testimonial_create.html"
+    extra_context = {
+        "page_title": "Testimonial",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_testimonial"),
+    }
 
     def form_valid(self, form):
-        # Handle cropped image
-        cropped_image = self.request.POST.get('testi-image')
-        if cropped_image:
-            # Convert base64 to Django file
-            format, imgstr = cropped_image.split(';base64,') 
-            ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgstr), name=f'cropped.{ext}')
-            form.instance.image = data
-
         messages.success(self.request, "Testimonial Added Successfully...!!")
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        for error_list in form.errors.values():
+            for errors in error_list:
+                messages.error(self.request, errors)
+        return super().form_invalid(form)
 
-class TestimonialUpdateView(UpdateView):
+
+class TestimonialUpdateView(LoginRequiredMixin, UpdateView):
     model = CompanyTestimonial
     form_class = TestimonialForm
     success_url = reverse_lazy("list_testimonial")
     template_name = "superadmin/testimonial/testimonial_create.html"
-    extra_context = {"page_title": "Update Testimonial"}
+    extra_context = {
+        "page_title": "Testimonial",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_testimonial"),
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["testimonial"] = self.object
+        return context
 
     def form_valid(self, form):
         messages.success(self.request, "Testimonial Updated Successfully...!!")
@@ -390,77 +253,39 @@ class TestimonialUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class CertificationListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/certification/certification_list.html"
+class CertificationListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
+    model = Certification
+    context_object_name = "all_certification"
+    paginate_by = 10
+    ordering = ["-id"]
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "certification"
-        page = request.GET.get("page", 1)
-
-        # search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = Certification.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            # if search:
-            #     cd = cd.filter(name__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                Certification.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Certification.objects.get(id=item_id)
-                except Certification.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-        return renderhelper(request, "certification", "certification_view", context)
+    template_name = "superadmin/certification/certification_view.html"
+    extra_context = {
+        "page_title": "Certification",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("certification_add"),
+        "search": True,
+    }
 
 
-class CertificationCreateView(CreateView):
+class CertificationCreateView(LoginRequiredMixin, CreateView):
     model = Certification
     form_class = CertificationForm
     success_url = reverse_lazy("list_certification")
     template_name = "superadmin/certification/certification_create.html"
-    extra_context = {"page_title": "Create Certification"}
+    extra_context = {
+        "page_title": "Certification",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_certification"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Certification Added Successfully...!!")
@@ -475,12 +300,22 @@ class CertificationCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class CertificationUpdateView(UpdateView):
+class CertificationUpdateView(LoginRequiredMixin, UpdateView):
     model = Certification
     form_class = CertificationForm
     success_url = reverse_lazy("list_certification")
     template_name = "superadmin/certification/certification_create.html"
-    extra_context = {"page_title": "Update Certification"}
+    extra_context = {
+        "page_title": "Certification",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_certification"),
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["certification"] = self.object
+        return context
 
     def form_valid(self, form):
         messages.success(self.request, "Certification Updated Successfully...!!")
@@ -495,90 +330,25 @@ class CertificationUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class SupermarketListView(ListView):
+class SupermarketListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
     model = Supermarkets
     context_object_name = "all_supermarkets"
     paginate_by = 10
-    template_name = "superadmin/supermarket/supermarket_list.html"
+    ordering = ["-id"]
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        search = self.request.GET.get("search")
-        status_filter = self.request.GET.get("search_filter")
-        if search:
-            queryset = queryset.filter(role__icontains=search)
-        if status_filter == "False":
-            queryset = queryset.filter(status=False)
-        else:
-            queryset = queryset.filter(status=True)
-
-        return queryset
-
-
-# class SupermarketListView(UserPassesTestMixin, TemplateView):
-
-# template_name = "superadmin/supermarket/supermarket_list.html"
-
-# def test_func(self):
-#     return self.request.user.username == "DeepSeaAdmin"
-
-# def get(self, request, *args, **kwargs):
-#     context = {}
-#     path = "supermarket"
-#     page = request.GET.get("page", 1)
-
-#     # search = request.GET.get("search")
-#     delete = request.GET.get("delete")
-#     status = request.GET.get("status")
-#     sts = request.GET.get("sts")
-
-#     cd = Supermarkets.objects.all().order_by("-id")
-
-#     if is_ajax(request):
-#         # if search:
-#         #     cd = cd.filter(name__icontains=search)
-#         if sts:
-#             cd = cd.filter(status=sts)
-#         if status:
-#             if status == "1":
-#                 status = True
-#             else:
-#                 status = False
-#             item_id = request.GET.get("item_id")
-#             Supermarkets.objects.filter(id=item_id).update(status=status)
-#         if delete:
-#             item_id = request.GET.get("item_id")
-#             try:
-#                 datas = Supermarkets.objects.get(id=item_id)
-#             except Supermarkets.DoesNotExist:
-#                 datas = None
-#             if datas:
-#                 datas.delete()
-
-#         paginator = Paginator(cd, 10)
-#         try:
-#             datas = paginator.get_page(page)
-#         except PageNotAnInteger:
-#             datas = paginator.get_page(1)
-#         except EmptyPage:
-#             datas = paginator.get_page(paginator.num_pages)
-#         context["datas"] = datas
-#         context["page"] = page
-#         template = loader.get_template(self.template_name)
-#         html_content = template.render(context, request)
-#         return JsonResponse({"status": True, "template": html_content})
-
-#     paginator = Paginator(cd, 10)
-#     try:
-#         datas = paginator.get_page(page)
-#     except PageNotAnInteger:
-#         datas = paginator.get_page(1)
-#     except EmptyPage:
-#         datas = paginator.get_page(paginator.num_pages)
-#     context["datas"] = datas
-#     context["page"] = page
-#     context["path"] = path
-#     return renderhelper(request, "supermarket", "supermarket_view", context)
+    template_name = "superadmin/supermarket/supermarket_view.html"
+    extra_context = {
+        "page_title": "Supermarkets",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("supermarket_add"),
+    }
 
 
 class SupermarketCreateView(CreateView):
@@ -586,7 +356,12 @@ class SupermarketCreateView(CreateView):
     model = Supermarkets
     form_class = SupermarketForm
     success_url = reverse_lazy("list_supermarket")
-    extra_context = {"page_title": "Create Supermarket"}
+    extra_context = {
+        "page_title": "Supermarkets",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_supermarket"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Supermarket Added Successfully...!!")
@@ -601,12 +376,22 @@ class SupermarketCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class SupermarketUpdateView(UpdateView):
+class SupermarketUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "superadmin/supermarket/supermarket_create.html"
     model = Supermarkets
     form_class = SupermarketForm
     success_url = reverse_lazy("list_supermarket")
-    extra_context = {"page_title": "Create Supermarket"}
+    extra_context = {
+        "page_title": "Supermarkets",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("list_supermarket"),
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["supermarkets"] = self.object
+        return context
 
     def form_valid(self, form):
         messages.success(self.request, "Supermarket Updated Successfully...!!")
@@ -621,77 +406,39 @@ class SupermarketUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class BrandListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/brand/brand_list.html"
+class BrandListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
+    model = Brand
+    context_object_name = "all_brands"
+    paginate_by = 10
+    ordering = ["-id"]
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Brand"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = Brand.objects.exclude(name="Deep Sea").order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(name__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                Brand.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Brand.objects.get(id=item_id)
-                except Brand.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-        # print(cd)
-        return renderhelper(request, "brand", "brand_view", context)
+    template_name = "superadmin/brand/brand_view.html"
+    search_field = "name"
+    extra_context = {
+        "page_title": "Brand",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("brand_add"),
+    }
 
 
-class BrandCreateView(CreateView):
+class BrandCreateView(LoginRequiredMixin, CreateView):
     model = Brand
     form_class = BrandForm
     success_url = reverse_lazy("brand_view")
-    success_url = reverse_lazy("list_brand")
     template_name = "superadmin/brand/brand_create.html"
+    extra_context = {
+        "page_title": "Brand",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("brand_view"),
+    }
 
     def form_valid(self, form):
         messages.success(self.request, "Brand Created Successfully...!!")
@@ -706,13 +453,23 @@ class BrandCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class BrandUpdateView(UpdateView):
+class BrandUpdateView(LoginRequiredMixin, UpdateView):
 
     model = Brand
     form_class = BrandForm
     success_url = reverse_lazy("brand_view")
-    # success_url=reverse_lazy("list_brand")
     template_name = "superadmin/brand/brand_create.html"
+    extra_context = {
+        "page_title": "Brand",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("brand_view"),
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["brand"] = self.object
+        return context
 
     def form_valid(self, form):
         messages.success(self.request, "Brand Updated Successfully...!!")
@@ -727,82 +484,44 @@ class BrandUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class BlogListView(UserPassesTestMixin, ListView):
+class BlogListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
+    model = Blog
+    context_object_name = "all_blogs"
+    paginate_by = 10
+    ordering = ["-id"]
     template_name = "superadmin/blog/Blog_view.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Blog"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = Blog.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(Q(name__icontains=search) | Q(title__icontains=search))
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                Blog.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Blog.objects.get(id=item_id)
-                except Blog.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return renderhelper(request, "blog", "Blog_view", context)
+    search_field = "name"
+    extra_context = {
+        "page_title": "Blog",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("blog_add"),
+    }
 
 
-class BlogCreateView(CreateView):
+class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Blog
     form_class = BlogForm
     template_name = "superadmin/blog/Blog_create.html"
     success_url = reverse_lazy("blog_view")
+    extra_context = {
+        "page_title": "Blog",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("blog_view"),
+    }
 
     def form_valid(self, form):
         self.object = form.save()
 
         images = self.request.FILES.getlist("images")
-        image_alt = self.request.POST["id_image_alt"]
+        image_alt = self.request.POST["image_alt"]
         for image in images:
             BlogImage.objects.create(blog=self.object, image=image, image_alt=image_alt)
         messages.success(self.request, "Blog Added Successfully")
@@ -815,11 +534,17 @@ class BlogCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
     model = Blog
     form_class = BlogForm
     success_url = reverse_lazy("blog_view")
     template_name = "superadmin/blog/Blog_create.html"
+    extra_context = {
+        "page_title": "Blog",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("blog_view"),
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -830,10 +555,12 @@ class BlogUpdateView(UpdateView):
     def form_valid(self, form):
         self.object = form.save()
         images = self.request.FILES.getlist("images")
-        image_alt = self.request.POST["id_image_alt"]
+        image_alt = self.request.POST["image_alt"]
 
         for image in images:
             BlogImage.objects.create(blog=self.object, image=image, image_alt=image_alt)
+
+        self.object.blog_image.update(image_alt=image_alt)
         messages.success(self.request, "Blog Updated  Successfully")
         return super().form_valid(form)
 
@@ -844,86 +571,63 @@ class BlogUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-######################################
+class BlogImageDelete(LoginRequiredMixin, DeleteView):
+    model = BlogImage
 
-
-class EventListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/event gallery/event_gallery_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
+    def get_success_url(self):
+        return reverse_lazy("blog_update", kwargs={"pk": self.object.blog.pk})
 
     def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Event Gallery"
-        page = request.GET.get("page", 1)
+        return super().delete(request, *args, **kwargs)
 
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = Event.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(title__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                Event.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Event.objects.get(id=item_id)
-                except Event.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return renderhelper(request, "event gallery", "event_gallery_view", context)
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
 
 
-class EventCreateView(CreateView):
+class EventListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
+    model = Event
+    context_object_name = "all_events"
+    paginate_by = 10
+    ordering = ["-id"]
+    template_name = "superadmin/event gallery/event_gallery_view.html"
+    search_field = "name"
+
+    extra_context = {
+        "page_title": "Event Gallery",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("gallery_add"),
+    }
+
+
+class EventCreateView(LoginRequiredMixin, CreateView):
     model = Event
     form_class = EventForm
     success_url = reverse_lazy("gallery_view")
     template_name = "superadmin/event gallery/event_gallery_create.html"
 
+    extra_context = {
+        "page_title": "Event Gallery",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("gallery_view"),
+    }
+
     def form_valid(self, form):
         self.object = form.save()
         images = self.request.FILES.getlist("images")
+        image_alt = self.request.POST["image_alt"]
 
         for image in images:
-            EventImage.objects.create(event=self.object, image=image)
+            EventImage.objects.create(
+                event=self.object, image=image, image_alt=image_alt
+            )
 
         messages.success(self.request, "Event Created Successfully")
         return super().form_valid(form)
@@ -935,11 +639,17 @@ class EventCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class EventUpdateView(UpdateView):
+class EventUpdateView(LoginRequiredMixin, UpdateView):
     model = Event
     form_class = EventForm
     success_url = reverse_lazy("gallery_view")
     template_name = "superadmin/event gallery/event_gallery_create.html"
+    extra_context = {
+        "page_title": "Event Gallery",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("gallery_view"),
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -950,10 +660,13 @@ class EventUpdateView(UpdateView):
     def form_valid(self, form):
         self.object = form.save()
         images = self.request.FILES.getlist("images")
+        image_alt = self.request.POST["image_alt"]
 
         for image in images:
-            EventImage.objects.create(event=self.object, image=image)
-
+            EventImage.objects.create(
+                event=self.object, image=image, image_alt=image_alt
+            )
+        self.object.event_image.update(image_alt=image_alt)
         messages.success(self.request, "Event Updated Successfully")
         return super().form_valid(form)
 
@@ -964,20 +677,11 @@ class EventUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-# def delete_slider(request, image_id):
-#     try:
-#         # Get the image by its ID and delete it
-#         image = Event.objects.get(pk=image_id)
-#         image.image.delete()  # Delete the image file
-#         image.delete()  # Delete the database record
-#         return JsonResponse({"success": True})
-#     except EventImage.DoesNotExist:
-#         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
-#     except Exception as e:
-#         return JsonResponse({"success": False, "error": str(e)}, status=500)
-class EventImageDelete(DeleteView):
+class EventImageDelete(LoginRequiredMixin, DeleteView):
     model = EventImage
-    success_url = reverse_lazy("gallery_view")
+
+    def get_success_url(self):
+        return reverse_lazy("gallery_update", kwargs={"pk": self.object.event.pk})
 
     def get(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
@@ -986,82 +690,47 @@ class EventImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class NewsListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/news/news_list.html"
+class NewsListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
+    model = News
+    context_object_name = "all_news"
+    paginate_by = 10
+    ordering = ["-id"]
+    template_name = "superadmin/news/news_view.html"
+    search_field = "name"
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "News"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = News.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(Q(name__icontains=search) | Q(title__icontains=search))
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                News.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = News.objects.get(id=item_id)
-                except News.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return renderhelper(request, "news", "news_view", context)
+    extra_context = {
+        "page_title": "News",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("news_add"),
+    }
 
 
-class NewsCreateView(CreateView):
+class NewsCreateView(LoginRequiredMixin, CreateView):
     model = News
     form_class = NewsForm
     success_url = reverse_lazy("news_view")
     template_name = "superadmin/news/news_create.html"
+    extra_context = {
+        "page_title": "News",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("news_view"),
+    }
 
     def form_valid(self, form):
         self.object = form.save()
         images = self.request.FILES.getlist("images")
+        image_alt = self.request.POST["image_alt"]
+
         for image in images:
-            NewsImage.objects.create(news=self.object, image=image)
+            NewsImage.objects.create(news=self.object, image=image, image_alt=image_alt)
         messages.success(self.request, "News Added Successfully...!!")
 
         return super().form_valid(form)
@@ -1073,11 +742,17 @@ class NewsCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class NewsUpdateView(UpdateView):
+class NewsUpdateView(LoginRequiredMixin, UpdateView):
     model = News
     form_class = NewsForm
     success_url = reverse_lazy("news_view")
     template_name = "superadmin/news/news_create.html"
+    extra_context = {
+        "page_title": "News",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("news_view"),
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1087,8 +762,11 @@ class NewsUpdateView(UpdateView):
     def form_valid(self, form):
         self.object = form.save()
         images = self.request.FILES.getlist("images")
+        image_alt = self.request.POST["image_alt"]
+
         for image in images:
-            NewsImage.objects.create(news=self.object, image=image)
+            NewsImage.objects.create(news=self.object, image=image, image_alt=image_alt)
+        self.object.news_image.update(image_alt=image_alt)
         messages.success(self.request, "News Updated Successfully...!!")
 
         return super().form_valid(form)
@@ -1100,20 +778,11 @@ class NewsUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-# def delete_newsslider(request, image_id):
-#     try:
-#         # Get the image by its ID and delete it
-#         image = NewsImage.objects.get(pk=image_id)
-#         image.image.delete()  # Delete the image file
-#         image.delete()  # Delete the database record
-#         return JsonResponse({"success": True})
-#     except EventImage.DoesNotExist:
-#         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
-#     except Exception as e:
-#         return JsonResponse({"success": False, "error": str(e)}, status=500)
-class NewsImageDelete(DeleteView):
+class NewsImageDelete(LoginRequiredMixin, DeleteView):
     model = NewsImage
-    success_url = reverse_lazy("news_view")
+
+    def get_success_url(self):
+        return reverse_lazy("news_update", kwargs={"pk": self.object.news.pk})
 
     def get(self, request, *args, **kwargs):
 
@@ -1123,82 +792,50 @@ class NewsImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class PromotionListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/promotion/promotion_info_list.html"
+class PromotionListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
+    model = Promotion
+    context_object_name = "all_promotions"
+    paginate_by = 10
+    ordering = ["-id"]
 
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Promotion"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = Promotion.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(Q(name__icontains=search) | Q(title__icontains=search))
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                Promotion.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Promotion.objects.get(id=item_id)
-                except Promotion.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return renderhelper(request, "promotion", "promotion_info_view", context)
+    template_name = "superadmin/promotion/promotion_info_view.html"
+    search_field = "name"
+    extra_context = {
+        "page_title": "Promotion information",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("promotion_add"),
+    }
 
 
-class PromotionCreateView(CreateView):
+class PromotionCreateView(LoginRequiredMixin, CreateView):
     model = Promotion
     form_class = PromotionForm
     template_name = "superadmin/promotion/promotion_info_create.html"
     success_url = reverse_lazy("promotion_view")
+    extra_context = {
+        "page_title": "Promotion information",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("promotion_view"),
+    }
 
     def form_valid(self, form):
         self.object = form.save()
         images = self.request.FILES.getlist("images")
+        # image_alt = self.request.POST["image_alt"]
+
         for image in images:
-            PromotionImage.objects.create(promotion=self.object, image=image)
+            PromotionImage.objects.create(
+                promotion=self.object,
+                image=image,
+            )
         messages.success(self.request, "Promotion Added Successfully...!!")
 
         return super().form_valid(form)
@@ -1211,11 +848,17 @@ class PromotionCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class PromotionUpdateView(UpdateView):
+class PromotionUpdateView(LoginRequiredMixin, UpdateView):
     model = Promotion
     form_class = PromotionForm
     template_name = "superadmin/promotion/promotion_info_create.html"
     success_url = reverse_lazy("promotion_view")
+    extra_context = {
+        "page_title": "Promotion information",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("promotion_view"),
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1239,20 +882,11 @@ class PromotionUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-# def delete_promotionslider(request, image_id):
-#     try:
-#         # Get the image by its ID and delete it
-#         image = PromotionImage.objects.get(pk=image_id)
-#         image.image.delete()  # Delete the image file
-#         image.delete()  # Delete the database record
-#         return JsonResponse({"success": True})
-#     except EventImage.DoesNotExist:
-#         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
-#     except Exception as e:
-#         return JsonResponse({"success": False, "error": str(e)}, status=500)
-class PromotionImageDelete(DeleteView):
+class PromotionImageDelete(LoginRequiredMixin, DeleteView):
     model = PromotionImage
-    success_url = reverse_lazy("promotion_view")
+
+    def get_success_url(self):
+        return reverse_lazy("promotion_update", kwargs={"pk": self.object.promotion.pk})
 
     def get(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
@@ -1261,93 +895,48 @@ class PromotionImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class BlogImageDelete(DeleteView):
-    model = BlogImage
-    success_url = reverse_lazy("blog_view")
-
-    def get(self, request, *args, **kwargs):
-        return super().delete(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return super().delete(request, *args, **kwargs)
-
-
-class HistoryListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/history/history_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "History"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        status = request.GET.get("status")
-        sts = request.GET.get("sts")
-
-        cd = History.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(title__icontains=search)
-            if sts:
-                cd = cd.filter(status=sts)
-            if status:
-                if status == "1":
-                    status = True
-                else:
-                    status = False
-                item_id = request.GET.get("item_id")
-                History.objects.filter(id=item_id).update(status=status)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = History.objects.get(id=item_id)
-                except History.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return renderhelper(request, "history", "history_view", context)
+class HistoryListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
+    model = History
+    context_object_name = "all_history"
+    paginate_by = 10
+    ordering = ["-id"]
+    template_name = "superadmin/history/history_view.html"
+    search_field = "year"
+    extra_context = {
+        "page_title": "History",
+        "path_name": "Add New",
+        "add_item": True,
+        "path_url": reverse_lazy("history_add"),
+    }
 
 
-class HistoryCreateView(CreateView):
+class HistoryCreateView(LoginRequiredMixin, CreateView):
     model = History
     form_class = HistoryForm
     template_name = "superadmin/history/history_create.html"
     success_url = reverse_lazy("history_view")
+    extra_context = {
+        "page_title": "History",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("history_view"),
+    }
 
     def form_valid(self, form):
         self.objects = form.save()
         images = self.request.FILES.getlist("images")
+        image_alt = self.request.POST["image_alt"]
+
         for image in images:
-            HistoryImage.objects.create(history=self.objects, image=image)
+            HistoryImage.objects.create(
+                history=self.objects, image=image, image_alt=image_alt
+            )
         messages.success(self.request, "History Added Successfully...!!")
 
         return super().form_valid(form)
@@ -1360,11 +949,17 @@ class HistoryCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class HistoryUpdateView(UpdateView):
+class HistoryUpdateView(LoginRequiredMixin, UpdateView):
     model = History
     form_class = HistoryForm
     template_name = "superadmin/history/history_create.html"
     success_url = reverse_lazy("history_view")
+    extra_context = {
+        "page_title": "History",
+        "path_name": "View All",
+        "view_item": True,
+        "path_url": reverse_lazy("history_view"),
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1374,8 +969,14 @@ class HistoryUpdateView(UpdateView):
     def form_valid(self, form):
         self.objects = form.save()
         images = self.request.FILES.getlist("images")
+        image_alt = self.request.POST.get("image_alt")
+
         for image in images:
-            HistoryImage.objects.create(history=self.objects, image=image)
+            HistoryImage.objects.create(
+                history=self.objects, image=image, image_alt=image_alt
+            )
+        self.object.history_image.update(image_alt=image_alt)
+
         messages.success(self.request, "History Updated Successfully...!!")
 
         return super().form_valid(form)
@@ -1388,22 +989,11 @@ class HistoryUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-# def delete_historyslider(request, image_id):
-#     try:
-#         # Get the image by its ID and delete it
-#         image = HistoryImage.objects.get(pk=image_id)
-#         image.image.delete()  # Delete the image file
-#         image.delete()  # Delete the database record
-#         return JsonResponse({"success": True})
-#     except EventImage.DoesNotExist:
-#         return JsonResponse({"success": False, "error": "Image not found"}, status=404)
-#     except Exception as e:
-#         return JsonResponse({"success": False, "error": str(e)}, status=500)
-
-
-class HistoryImageDelete(DeleteView):
+class HistoryImageDelete(LoginRequiredMixin, DeleteView):
     model = HistoryImage
-    success_url = reverse_lazy("history_view")
+
+    def get_success_url(self):
+        return reverse_lazy("history_update", kwargs={"pk": self.object.history.pk})
 
     def get(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
@@ -1412,133 +1002,44 @@ class HistoryImageDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class ContactListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/contact/contact_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Contat"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        # status = request.GET.get("status")
-        # sts = request.GET.get("sts")
-
-        cd = ContactUs.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(name__icontains=search)
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = ContactUs.objects.get(id=item_id)
-                except ContactUs.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return renderhelper(request, "contact", "contact_view", context)
+class ContactListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
+    model = ContactUs
+    context_object_name = "all_contacts"
+    paginate_by = 10
+    ordering = ["-id"]
+    template_name = "superadmin/contact/contact_view.html"
+    search_field = "name"
+    extra_context = {
+        "page_title": "Contact",
+        "status": True,
+    }
 
 
-class EnquiryListView(UserPassesTestMixin, TemplateView):
-    template_name = "superadmin/enquiry/enquiry_list.html"
-
-    def test_func(self):
-        return self.request.user.username == "DeepSeaAdmin"
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        path = "Enquiry"
-        page = request.GET.get("page", 1)
-
-        search = request.GET.get("search")
-        delete = request.GET.get("delete")
-        # status = request.GET.get("status")
-        # sts = request.GET.get("sts")
-        start = request.GET.get("start")
-        end = request.GET.get("end")
-        start_date = None
-        end_date = None
-
-        if start and end:
-            start_date = datetime.strptime(start, "%m/%d/%Y").date()
-            end_date = datetime.strptime(end, "%m/%d/%Y").date()
-
-        cd = Enquiry.objects.all().order_by("-id")
-
-        if is_ajax(request):
-            if search:
-                cd = cd.filter(
-                    Q(name__icontains=search) | Q(created__range=(start, end))
-                )
-            if delete:
-                item_id = request.GET.get("item_id")
-                try:
-                    datas = Enquiry.objects.get(id=item_id)
-                except Enquiry.DoesNotExist:
-                    datas = None
-                if datas:
-                    datas.delete()
-
-            if start_date and end_date:
-                cd = cd.filter(
-                    created__date__gte=start_date, created__date__lte=end_date
-                )
-
-            paginator = Paginator(cd, 10)
-            try:
-                datas = paginator.get_page(page)
-            except PageNotAnInteger:
-                datas = paginator.get_page(1)
-            except EmptyPage:
-                datas = paginator.get_page(paginator.num_pages)
-            context["datas"] = datas
-            context["page"] = page
-            template = loader.get_template(self.template_name)
-            html_content = template.render(context, request)
-            return JsonResponse({"status": True, "template": html_content})
-
-        paginator = Paginator(cd, 10)
-        try:
-            datas = paginator.get_page(page)
-        except PageNotAnInteger:
-            datas = paginator.get_page(1)
-        except EmptyPage:
-            datas = paginator.get_page(paginator.num_pages)
-        context["datas"] = datas
-        context["page"] = page
-        context["path"] = path
-
-        return renderhelper(request, "enquiry", "enquiry", context)
+class EnquiryListView(
+    LoginRequiredMixin,
+    SuperuserOrAdminRequiredMixin,
+    SearchAndStatusFilterMixin,
+    StatusUpdateAndDeleteMixin,
+    ListView,
+):
+    model = Enquiry
+    context_object_name = "all_enquiry"
+    paginate_by = 10
+    template_name = "superadmin/enquiry/enquiry.html"
+    search_field = "name"
+    search_field = "created"
+    extra_context = {
+        "page_title": "Enquiry",
+        "search_date": True,
+        "status": True,
+        "export": True,
+    }
 
 
 class ExportExcel(View):
@@ -1555,7 +1056,7 @@ class ExportExcel(View):
                         "name": enquiry.name,
                         "location": enquiry.location,
                         "email": enquiry.email,
-                        "mobile_no": enquiry.mobile_no,
+                        "phone_no": enquiry.mobile_no,
                         "message": enquiry.message,
                         "created": enquiry.created.strftime("%Y-%m-%d %H:%M:%S"),
                     }

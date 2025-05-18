@@ -1,0 +1,27 @@
+{% load static %}
+<form method="post"
+      class="form"
+      action="{% url 'enquiry' %}"
+      id="contact_form">
+  {% csrf_token %}
+  <div class="body">
+    <div class="row">
+      <div class="col-12">{{ form.name }}</div>
+      <div class="col-12 phone-number-col">
+        {{ form.phone_number }}
+        <input type="text" name="honey" class="d-none">
+      </div>
+      <div class="col-12" id="email">{{ form.email }}</div>
+      <div class="col-12">{{ form.location }}</div>
+      <div class="col-12">{{ form.message }}</div>
+    </div>
+  </div>
+  <div class="foot text-center">
+    <button type="submit"
+            id="submitButton"
+            class="BTN_SUBMIT btn btn-primary font-lntermedium">Send Enquiry</button>
+  </div>
+</form>
+<!-- Enhanced Modal -->
+{% include "crop_modal.html" %}
+<script src="{% static 'public_interface/js/enquiry.js' %}"></script>

@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
 
+from . import views
 
 urlpatterns = [
     path(
@@ -14,14 +14,14 @@ urlpatterns = [
         name="job_category_add",
     ),
     path(
-        "job-category-update/<int:id>/",
+        "job-category-update/<int:pk>/",
         views.JobCategoryUpdateView.as_view(),
         name="job_category_update",
     ),
     path("career-view", views.CareerListView.as_view(), name="career_view"),
     path("career-add", views.CareerCreateView.as_view(), name="career_add"),
     path(
-        "career-update/<int:id>/",
+        "career-update/<int:pk>/",
         views.CareerUpdateView.as_view(),
         name="career_update",
     ),

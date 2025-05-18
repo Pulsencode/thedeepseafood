@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -10,6 +11,11 @@
         <meta name="description"
               content="Privacy Policy of The Deep Seafood Company">
         <meta name="author" content="The Deep Seafood Company">
+        <link rel="shortcut icon"
+              type="image/ico"
+              href="{% static 'website/images/logo.png' %}" />
+        <meta property="og:image"
+              content="https://{{ request.get_host }}{% static 'website/images/logo.png' %}" />
         <title>Privacy Policy - The Deep Seafood Company</title>
         <!-- Bootstrap CSS CDN -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -30,7 +36,7 @@
                 </p>
                 <ul>
                     <li>
-                        Visit our website at <a href="https://thedeepseafood.com/">https://thedeepseafood.com/</a>, or any website of ours that links to this Privacy Notice
+                        Visit our public_interface at <a href="https://thedeepseafood.com/">https://thedeepseafood.com/</a>, or any public_interface of ours that links to this Privacy Notice
                     </li>
                     <li>Engage with us in other related ways, including any sales, marketing, or events</li>
                 </ul>
@@ -234,7 +240,7 @@
             analytics and advertising, including to help manage and display advertisements, to tailor advertisements to
             your interests, or to send abandoned shopping cart reminders (depending on your communication preferences).
             The third parties and service providers use their technology to provide advertising about products and
-            services tailored to your interests which may appear either on our Services or on other websites.
+            services tailored to your interests which may appear either on our Services or on other public_interfaces.
         </p>
         <p>
             Specific information about how we use such technologies and how you can refuse certain cookies is set out in

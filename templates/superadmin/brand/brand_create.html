@@ -1,113 +1,62 @@
 {% include 'superadmin/layout/header.html' %}
 {% load static %}
-<!--app-content open-->
-<div class="main-content app-content mt-0">
-    <div class="side-app">
-        <!-- CONTAINER -->
-        <div class="main-container container-fluid">
-            <!-- PAGE-HEADER -->
-            <div class="page-header">
-                <h1 class="page-title">Brand</h1>
-                <div>
-                    <a class="btn btn-primary" href="{% url 'brand_view' %}"><i class="side-menu__icon fe fe-eye mx-1"></i>View
-                        All</a>
+<!-- ROW OPEN -->
+<form method="post" enctype="multipart/form-data" id="myform">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-4 col-xl-4 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Add New Brand Logo*</h4>
                 </div>
-            </div>
-            <!-- PAGE-HEADER END -->
-
-            <!-- ROW OPEN -->
-            <form method="post" enctype="multipart/form-data" id="myform">
-                {% csrf_token %}
-            <div class="row">
-                <div class="col-md-4 col-xl-4 col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Add New Brand Logo*</h4>
-                        </div>
-                        <div class="card-body">
-                            
-                                <div class="row">
-                                    <!-- <div class="col-lg-12 col-sm-12 mb-4 mb-lg-0"> -->
-                                        <!-- <input type="file" class="dropify" data-bs-height="180" name="image" id="image-upload" {% if list.logo %} data-default-file="{{list.logo.url}}" {% endif %} {% if not list.logo %}required {% endif %}/> -->
-                                    <!-- </div> -->
-									<div class="col-lg-12">
-										<img {% if list.logo %}src="{{list.logo.url}}"{% else %}src="" {% endif %} class=""/>
-										<label class="cabinet center-block">
-										  
-											<figure>
-												<img src="" class="gambar1 img-responsive img-thumbnail1" id="item-img-output1" />
-												<figcaption><i class="fa fa-camera"></i></figcaption>
-											</figure>
-											<input type="file" class="item-img1 file center-block" name="file_photo"  />
-										</label>
-									</div>
-									<input type="hidden" id="cropped-img" name="brand-image">
-									<!-- 1 -->
-									<div class="modal modal1 fade" id="cropImagePop1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
-										aria-hidden="true">
-										<div class="modal-dialog">
-											<div class="modal-content">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-														aria-hidden="true">&times;</span></button>
-													<h4 class="modal-title" id="myModalLabel1">Edit Photo</h4>
-												</div>
-												<div class="modal-body">
-													<div id="upload-demo1" class="center-block"></div>
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-													<button type="button" id="cropImageBtn1" class="btn btn-primary">Crop</button>
-												</div>
-											</div>
-										</div>
-									</div>
-                               </div>
-                            
-                        </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- <div class="col-lg-12 col-sm-12 mb-4 mb-lg-0"> -->
+                        <input type="file"
+                               class="dropify"
+                               data-bs-height="180"
+                               name="image"
+                               id="image-upload"
+                               {% if list.logo %}data-default-file="{{ list.image.url }}"{% endif %}
+                               {% if not list.logo %}required{% endif %} />
+                        <div class="col-lg-12"></div>
                     </div>
                 </div>
-
-                <div class="col-md-8 col-xl-8 col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            
-                                <div class="row col-lg-12">
-                                    <div class="form-group col-lg-6">
-                                        <label for="" class="form-label"> Name*</label>
-                                        <input type="text" class="form-control" id="" placeholder="Name" name="name" value="{{list.name}}" required>
-                                    </div>
-									<div class="form-group col-lg-6">
-                                        <label for="" class="form-label"> Sequence*</label>
-                                        <input type="text" class="form-control" id="" placeholder="Sequence" name="sequence" value="{{list.sequence}}" onkeypress="return event.charCode >= 48 && event.charCode <= 57" required>
-                                    </div>
-									<div class="form-group col-lg-6">
-                                        <label for="" class="form-label"> Image Alt</label>
-                                        <input type="text" class="form-control" id="" placeholder="" name="image_alt" value="{{list.image_alt}}" >
-                                    </div>
-                                    <div class="form-group col-lg-12 col-12">
-                                        <button type="submit" class="btn btn-primary mt-4 mb-0"
-                                            id="submitButton">Submit</button>
-                                        <a href="{% url 'brand_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
-                                    </div>
-                                </div>
-                            
-                        </div>
-                    </div>
-                    <!-- ROW CLOSED -->
-                </div>
-                <!-- CONTAINER END -->
             </div>
-            </form>
         </div>
+        <!-- crop modal -->
+        <div class="col-md-8 col-xl-8 col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row col-lg-12">
+                        <div class="form-group col-lg-6">
+                            <label class="form-label">Name*</label>
+                            {{ form.name }}
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label class="form-label">Sequence*</label>
+                            {{ form.sequence }}
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="" class="form-label">Image Alt</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id=""
+                                   placeholder="Image Alt"
+                                   name="image_alt"
+                                   value="{{ list.image_alt }}">
+                        </div>
+                        <div class="form-group col-lg-12 col-12">
+                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                            <a href="{% url 'brand_view' %}" class="btn btn-danger mt-4 mb-0">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ROW CLOSED -->
+        </div>
+        <!-- CONTAINER END -->
     </div>
-    <!--app-content close-->
-
-    <form method="post" enctype="multipart/form-data" id="myform">
-        {% csrf_token %}
-          {{form.as_p}}
-          <button type="submit">ok</button>
-
-    </form>
-
-    {% include 'superadmin/layout/footer.html' %}
+</form>
+{% include 'superadmin/layout/footer.html' %}
+<script src="{% static 'superadmin/js/crop_image.js' %}"></script>

@@ -1,0 +1,75 @@
+{% extends "public_interface/layouts/public_base.html" %}
+{% load static %}
+{% block content %}
+  <div class="main-div pt-0 header-bg-transparent header-logo-white">
+    <section id="blog" class="pt-0 pb-0 view-items-page">
+      <div class="banner-cover">
+        <img class="img-primary"
+             width=""
+             height=""
+             alt="Blog Banner"
+             loading="lazy"
+             src="{% static 'public_interface/images/blog/banner-cover/banner-top.jpg' %}">
+        <div class="caption w-100 text-center">
+          <div class="wrapper">
+            <div class="row text-white">
+              <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
+                <h3 class="font-lnterbold">BLOG</h3>
+                <h5 class="font-lnterbold">
+                  <a href="{% url 'home' %}">Home</a>
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  <a href="#">Blog</a>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="padd_t_b_70">
+        <div class="wrapper">
+          <div class="row ">
+            {% for blog in all_blogs %}
+              <div class="col-lg-4 ">
+                <div class="view-section text-blue {% if forloop.counter > 3 %}mt-30{% endif %}"
+                     data-aos="fade-up"
+                     data-aos-duration="2000">
+                  <div class="title font-lnterbold dfg">{{ blog.title }}</div>
+                  <div class="div-col">
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    <span>{{ blog.date|date:"M d, Y" }}</span>
+                  </div>
+                  <div class="div-col">
+                    <i class="fa fa-user-o" aria-hidden="true"></i>
+                    <span>{{ blog.name|default_if_none:"" }}</span>
+                  </div>
+                  <div class="text-center mt-30">
+                    <div class="slick_slider_1 slick-dots-blue mb-0">
+                      {% for img in blog.blog_image.all %}
+                        <div class="item">
+                          <img class="img-fluid news-img11"
+                               width=""
+                               height=""
+                               src="{{ img.image.url }}"
+                               alt="{{ blog.image_alt }}-{{ forloop.counter }}">
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="dfg mt-1">{{ blog.content|safe }}</div>
+                  <a class="btn bg-blue text-white rounded-25 btn-sm mt-15 btn-icon"
+                     href="{% url 'blog_details' blog.slug %}">
+                    <span>Read More</span>
+                    <img width=""
+                         height=""
+                         alt="Right Arrow"
+                         src="{% static 'public_interface/images/icons/right-arrow.png' %}">
+                  </a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock content %}

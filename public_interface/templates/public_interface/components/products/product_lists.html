@@ -1,0 +1,38 @@
+{% load static %}
+{% for product in all_products %}
+    <div class="col-lg-3 col-md-4 col-6 pt-20">
+        <div class="item card-hover-up">
+            <img class="img-primary"
+                 width=""
+                 height=""
+                 src="{{ product.image.url }}"
+                 alt="{{ product.image_alt }}">
+            <div class="info">
+                <div class="title font-lntermedium">{{ product.name }}</div>
+                <img width=""
+                     height=""
+                     alt="right-arrow"
+                     src="{% static 'public_interface/images/icons/right-arrow-blue.png' %}"
+                     class="product-img-33">
+            </div>
+            <a class="primary-btn" href="{% url 'product_details' product.slug %}"></a>
+        </div>
+    </div>
+{% endfor %}
+{% if view_more_button %}
+    <div class="col-lg-3 col-md-4 col-6 pt-20">
+        <div class="item card-hover-up">
+            <img class="img-primary"
+                 width=""
+                 height=""
+                 alt="Image for More Products"
+                 src="{% static 'public_interface/images/index/products/new-card1.jpg' %}">
+            <div class="info bg-blue">
+                <div class="title font-lntermedium text-white">VIEW MORE</div>
+                <i class="fa fa-angle-double-right fs-20 text-white " aria-hidden="true"></i>
+            </div>
+            <a class="primary-btn"
+               {% if type %}href="{% url 'product' %}?type={{ type }}"{% else %}href="{% url 'product' %}"{% endif %}></a>
+        </div>
+    </div>
+{% endif %}

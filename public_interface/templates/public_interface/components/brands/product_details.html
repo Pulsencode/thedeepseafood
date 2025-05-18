@@ -1,0 +1,35 @@
+{% load static %}
+{% load custom_filters %}
+<div class="col-md-4" data-aos="fade-down" data-aos-duration="1000">
+    <img class="img-fluid rounded-25 PIMG pr-img"
+         width=""
+         height=""
+         src="{{ products.image.url }}"
+         alt="{{ products.image_alt }}">
+</div>
+<div class="col-md-8 mt-50-zero-sm"
+     data-aos="fade-up"
+     data-aos-duration="500">
+    <div class="col-lg-12">
+        <ul class="nav nav-tabs nav-tabs-bg border-0 justify-content-left"
+            data-aos="fade-up"
+            data-aos-duration="500"
+            id="pro-dtl">
+            {% for c in category %}
+                {% if products.id|product_belongs_to_category:c.id %}
+                    <li class="nav-item">
+                        <a href="#"
+                           class="nav-link mb-5 category-link {% if cat == c.id %}active{% endif %}"
+                           data-category-id="{{ c.id }}"
+                           onclick="loadpmodaldata(this)">{{ c.name }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="section-head pb-15">
+        <h1 class="text-blue font-lnterbold PNAME">{{ products.name }}</h1>
+        <input type="hidden" id="pid" value="{{ products.id }}">
+    </div>
+    <div class="product-details text-blue" id="modalpdata">{% include "public_interface/brands/product_data.html" %}</div>
+</div>

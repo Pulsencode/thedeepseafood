@@ -1,0 +1,83 @@
+{% extends "public_interface/layouts/public_base.html" %}
+{% load static %}
+{% block content %}
+  <div class="main-div pt-0 header-bg-transparent header-logo-white">
+    <section id="news-room" class="pt-0 pb-0">
+      <div class="banner-cover">
+        <img class="img-primary"
+             width=""
+             height=""
+             loading="lazy"
+             alt="News Room Banner"
+             src="{% static 'public_interface/images/news-room/banner-cover/news-room-banner.jpg' %}">
+        <div class="caption w-100 text-center">
+          <div class="wrapper">
+            <div class="row text-white">
+              <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
+                <h3 class="font-lnterbold">NEWS ROOM</h3>
+                <h5 class="font-lnterbold">
+                  <a href="{% url 'home' %}">Home</a>
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  <a href="{% url "newsroom" %}">News Room</a>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="event-gallery padd_t_b_70">
+        <div class="wrapper">
+          <div class="row text-center">
+            <div class="col-lg-12 col-md-12 col-12">
+              <div class="list_side d-flex prod_tab_sc justify-content-center" id="news_filter_buttons">
+                <div class="NEWS-NWE exhibition">
+                  <a href="#" data-type="events" class="{% if not request.GET.news_type %}active{% endif %}">Events/Exhibitions</a>
+                </div>
+                <div class="NEWS-NWE company">
+                  <a href="#" data-type="company news" class="{% if request.GET.news_type == 'company news' %}active{% endif %}">Company News</a>
+                </div>
+                <div class="NEWS-NWE global">
+                  <a href="#" data-type="global news" class="{% if request.GET.news_type == 'global news' %}active{% endif %}">Global News</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" id="newsroom-data">
+            {% if request.GET.news_type %}
+              {% include "public_interface/components/news/news_list.html" %}
+            {% else %}
+              {% include "public_interface/components/news/event_gallery.html" %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+  $(document).ready(function () {
+    $("#news_filter_buttons").on("click", "a", function (event) {
+      event.preventDefault();
+      const newsType = $(this).data("type");
+
+      $.ajax({
+        url: window.location.pathname,
+        type: "GET",
+        data: newsType === "events" ? {} : { news_type: newsType },
+        success: function (response) {
+          const updatedContent = $(response).find("#newsroom-data").html();
+          $("#newsroom-data").html(updatedContent);
+
+          // Active class toggle
+          $("#news_filter_buttons a").removeClass("active");
+          $(`#news_filter_buttons a[data-type='${newsType}']`).addClass("active");
+        },
+        error: function () {
+          alert("Something went wrong while loading news.");
+        }
+      });
+    });
+  });
+</script>
+{% endblock content %}

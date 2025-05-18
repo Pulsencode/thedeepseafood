@@ -1,0 +1,98 @@
+{% load custom_filters %}
+<div class="div-col">
+    <div class="data">
+        {% for sub_category in sub_categories %}
+            {% if product.product.id|product_belongs_to_subcategory:sub_category.id %}
+                <button class="sub-d-btn">{{ sub_category }}</button>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+<div class="div-col mt-2">
+    <label class="font-lnterbold">Category :</label>
+    <div class="data text-uppercase">{{ product.category }}</div>
+</div>
+{% if product.grade %}
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Grade :</label>
+        <div class="data">{{ product.grade }}</div>
+    </div>
+{% endif %}
+{% if product.origin %}
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Origin :</label>
+        <div class="data">{{ product.origin }}</div>
+    </div>
+{% endif %}
+{% if product.price %}
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Price :</label>
+        <div class="data">{{ product.price }}</div>
+    </div>
+{% endif %}
+{% if product.net_weight %}
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Net Weight :</label>
+        <div class="data">{{ product.net_weight }}</div>
+    </div>
+{% endif %}
+{% if product.instructions %}
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Usage Instructions :</label>
+        <div class="data d-block">{{ product.instructions }}</div>
+    </div>
+{% endif %}
+{% if product.packing %}
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Package Details :</label>
+        <div class="data d-block">{{ product.packing }}</div>
+    </div>
+{% endif %}
+{% if product.ingredients %}
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Ingredients List :</label>
+        <div class="data d-block">{{ product.ingredients }}</div>
+    </div>
+{% endif %}
+{% if product.storage_instructions %}
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Storage Recommendations :</label>
+        <div class="data d-block">{{ product.storage_instructions }}</div>
+    </div>
+{% endif %}
+{% if product.nutrition %}
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Nutritional Information :</label>
+        <div class="data d-block">{{ product.nutrition }}</div>
+    </div>
+{% endif %}
+{% if product.allergic %}
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Allergen Information :</label>
+        <div class="data d-block">{{ product.allergic }}</div>
+    </div>
+{% endif %}
+{% if product.shelf_life %}
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Shelf Life :</label>
+        <div class="data d-block">{{ product.shelf_life }}</div>
+    </div>
+{% endif %}
+{% if product.how_to_cook %}
+    <hr class="bg-blue">
+    <div class="div-col">
+        <label class="font-lnterbold">Cooking Instructions :</label>
+        <div class="data d-block">{{ product.how_to_cook }}</div>
+    </div>
+{% endif %}

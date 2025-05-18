@@ -1,113 +1,114 @@
 from django import forms
+from django_summernote.widgets import SummernoteWidget
+
 from company.models import (
     SEO,
-    ManagementTeam,
-    CompanyTestimonial,
-    Supermarkets,
-    Certification,
+    Blog,
     Brand,
-    News,
+    Certification,
+    CompanyTestimonial,
+    ContactUs,
+    Enquiry,
     Event,
     History,
+    ManagementTeam,
+    News,
     Promotion,
-    Blog,
+    Supermarkets,
 )
 
 
 class SEOForm(forms.ModelForm):
     class Meta:
-        fields = "__all__"
         model = SEO
+        fields = [
+            "page_name",
+            "meta_title",
+            "meta_author",
+            "meta_description",
+            "meta_keywords",
+            "meta_json_ld",
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            if isinstance(self.fields[field].widget, forms.CheckboxInput):
-                self.fields[field].widget.attrs.update({"class": "form-check-input"})
-            else:
-                self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 3}
+            )
 
 
 class ManagementForm(forms.ModelForm):
     class Meta:
         model = ManagementTeam
-        fields = "__all__"
+        fields = ["image", "name", "sequence", "role", "image_alt"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            if isinstance(self.fields[field].widget, forms.CheckboxInput):
-                self.fields[field].widget.attrs.update({"class": "form-check-input"})
-            else:
-                self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label}
+            )
 
 
 class TestimonialForm(forms.ModelForm):
     class Meta:
         model = CompanyTestimonial
-        fields = "__all__"
-        widgets = {
-            'quote': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
-        }
+        fields = ["name", "quote", "image", "image_alt"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['image'].required = False
-        for field in self.fields:
-            if field == 'image':
-                self.fields[field].widget.attrs.update({'class': 'item-img5 file center-block'})
-            elif isinstance(self.fields[field].widget, forms.CheckboxInput):
-                self.fields[field].widget.attrs.update({"class": "form-check-input"})
+        self.fields["image"].required = False
+        for field_name, field in self.fields.items():
+            if field_name == "image":
+                field.widget.attrs.update({"class": "item-img5 file center-block"})
             else:
-                self.fields[field].widget.attrs.update({"class": "form-control"})
+                field.widget.attrs.update(
+                    {"class": "form-control", "rows": 4, "placeholder": field.label}
+                )
 
 
 class CertificationForm(forms.ModelForm):
     class Meta:
         model = Certification
-        fields = "__all__"
+        fields = ["image", "image_alt"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            if isinstance(self.fields[field].widget, forms.CheckboxInput):
-                self.fields[field].widget.attrs.update({"class": "form-check-input"})
-            else:
-                self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 4}
+            )
 
 
 class SupermarketForm(forms.ModelForm):
     class Meta:
         model = Supermarkets
-        fields = "__all__"
+        fields = ["image", "image_alt"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
-            if isinstance(self.fields[field].widget, forms.CheckboxInput):
-                self.fields[field].widget.attrs.update({"class": "form-check-input"})
-            else:
-                self.fields[field].widget.attrs.update({"class": "form-control"})
+            self.fields[field].widget.attrs.update({"class": "form-control"})
 
 
 class BrandForm(forms.ModelForm):
     class Meta:
         model = Brand
-        fields = "__all__"
+        fields = ["name", "image", "sequence", "image_alt"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            if isinstance(self.fields[field].widget, forms.CheckboxInput):
-                self.fields[field].widget.attrs.update({"class": "form-check-input"})
-            else:
-                self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label}
+            )
 
 
 class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
-        fields = "__all__"
+        fields = ["name", "content", "title", "location", "date"]
         widgets = {
             "date": forms.DateInput(
                 attrs={
@@ -115,21 +116,21 @@ class BlogForm(forms.ModelForm):
                     "class": "form-control",
                 }
             ),
+            "content": SummernoteWidget(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            if isinstance(self.fields[field].widget, forms.CheckboxInput):
-                self.fields[field].widget.attrs.update({"class": "form-check-input"})
-            else:
-                self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 4}
+            )
 
 
 class PromotionForm(forms.ModelForm):
     class Meta:
         model = Promotion
-        fields = "__all__"
+        fields = ["name", "location", "date", "description", "title"]
         widgets = {
             "date": forms.DateInput(
                 attrs={
@@ -137,21 +138,21 @@ class PromotionForm(forms.ModelForm):
                     "class": "form-control",
                 }
             ),
+            "description": SummernoteWidget(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            if isinstance(self.fields[field].widget, forms.CheckboxInput):
-                self.fields[field].widget.attrs.update({"class": "form-check-input"})
-            else:
-                self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 4}
+            )
 
 
 class HistoryForm(forms.ModelForm):
     class Meta:
         model = History
-        fields = "__all__"
+        fields = ["year", "title", "description"]
         widgets = {
             "date": forms.DateInput(
                 attrs={
@@ -159,21 +160,21 @@ class HistoryForm(forms.ModelForm):
                     "class": "form-control",
                 }
             ),
+            "description": SummernoteWidget(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            if isinstance(self.fields[field].widget, forms.CheckboxInput):
-                self.fields[field].widget.attrs.update({"class": "form-check-input"})
-            else:
-                self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 4}
+            )
 
 
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = "__all__"
+        fields = ["sequence", "name", "description", "location", "date", "title"]
         widgets = {
             "date": forms.DateInput(
                 attrs={
@@ -181,21 +182,21 @@ class EventForm(forms.ModelForm):
                     "class": "form-control",
                 }
             ),
+            "description": SummernoteWidget(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            if isinstance(self.fields[field].widget, forms.CheckboxInput):
-                self.fields[field].widget.attrs.update({"class": "form-check-input"})
-            else:
-                self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 4}
+            )
 
 
 class NewsForm(forms.ModelForm):
     class Meta:
         model = News
-        fields = "__all__"
+        fields = ["type", "name", "content", "sequence", "title", "location", "date"]
         widgets = {
             "date": forms.DateInput(
                 attrs={
@@ -203,12 +204,39 @@ class NewsForm(forms.ModelForm):
                     "class": "form-control",
                 }
             ),
+            "content": SummernoteWidget(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            if isinstance(self.fields[field].widget, forms.CheckboxInput):
-                self.fields[field].widget.attrs.update({"class": "form-check-input"})
-            else:
-                self.fields[field].widget.attrs.update({"class": "form-control"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 4}
+            )
+
+
+class EnquiryForm(forms.ModelForm):
+    class Meta:
+        model = ContactUs
+        fields = ["name", "phone_number", "email", "location", "message"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["phone_number"].widget.attrs.update({"id": "id_phone_number"})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 2}
+            )
+
+
+class ProductEnquiryForm(forms.ModelForm):
+    class Meta:
+        model = Enquiry
+        fields = ["name", "phone_number", "email", "location", "message"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update(
+                {"class": "form-control", "placeholder": field.label, "rows": 2}
+            )

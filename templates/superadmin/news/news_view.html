@@ -14,79 +14,26 @@
         object-fit: cover;
     }
 </style>
-<!--app-content open-->
-<div class="main-content app-content mt-0">
-    <div class="side-app">
-        <!-- CONTAINER -->
-        <div class="main-container container-fluid">
-            <!-- PAGE-HEADER -->
-            <div class="page-header">
-                <h1 class="page-title">News</h1>
-                <div>
-                    <a class="btn btn-primary" href="{% url 'news_add' %}"><i class="side-menu__icon fe fe-plus mx-1"></i>Add
-                    New</a>
+<!-- ROW OPEN -->
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">List Of News</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!---search_filter-->
+                    {% include "search_filter.html" %}
+                </div>
+                <div class="table-responsive" id="certification-table">
+                    {% include "superadmin/news/news_list.html" %}
+                    <div class="modal  fade"
+                         id="deleteModal{{ certification.id }}"
+                         tabindex="-1"
+                         role="dialog"></div>
                 </div>
             </div>
-            <!-- PAGE-HEADER END -->
-            {% for message in messages %}
-                <div class="alert alert-primary alert-dismissible fade show m-0 text-center"
-                     id="success"
-                     role="alert"
-                     style="border-radius: 0">
-                    {{ message }}
-                    <button type="button"
-                            class="btn-close text-dark "
-                            data-bs-dismiss="alert"
-                            aria-label="Close">x</button>
-                </div>
-            {% endfor %}
-            <!-- ROW OPEN -->
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">List Of News</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <!---search_filter-->
-                                {% include "search_filter.html" %}
-                                <div class="form-group col-lg-5 col-7">
-                                    <span id ="message002" style="color:green;display:none"><b>Latest Project Status Updated Successfully</b></span>
-                                </div>
-                            </div>
-                            <div class="table-responsive" id="news-table">
-                                {% include 'superadmin/news/news_list.html' with page=page data=data %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ROW CLOSED -->
-        </div>
-        <!-- CONTAINER END -->
-    </div>
-</div>
-<div class="modal  fade" id="modaldemo5" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-md modal-dialog-centered text-center"
-         role="document">
-        <div class="modal-content ">
-            <div class="modal-body">
-                <button aria-label="Close"
-                        class="btn-close position-absolute"
-                        data-bs-dismiss="modal">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
-                <input type="hidden" id="hid">
-                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
-                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
-                <button class="btn btn-success" onclick="confirm_delete_news()">Yes</button>
-                <button aria-label="Close"
-                        class="btn btn-danger pd-x-25"
-                        data-bs-dismiss="modal">Cancel</button>
-            </div>
-            <div class="modal-footer"></div>
         </div>
     </div>
 </div>

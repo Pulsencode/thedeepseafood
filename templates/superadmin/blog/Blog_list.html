@@ -1,13 +1,12 @@
 {% load static %}
-<input type="hidden" id="page" name="page" value="{{ page }}">
 <table class="table border-top table-bordered mb-0 table-hover">
     <thead>
-        <tr>
+        <tr class="text-center">
             <th>Sl No</th>
             <th>Title</th>
             <th>Name</th>
             <th>Date</th>
-            <th>Description</th>
+            <th>Content</th>
             <th>Location</th>
             <th>Image</th>
             <th>Status</th>
@@ -15,57 +14,72 @@
         </tr>
     </thead>
     <tbody>
-        {% if datas %}
-            {% for d in datas %}
-                <tr>
-                    <td>{{ datas.start_index|add:forloop.counter0 }}</td>
-                    <td>{{ d.title }}</td>
-                    <td>{{ d.name }}</td>
-                    <td>{{ d.date|date:"d/m/Y" }}</td>
+        {% if all_blogs %}
+            {% for blog in all_blogs %}
+                <tr class="text-center">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ blog.title }}</td>
+                    <td>{{ blog.name }}</td>
+                    <td>{{ blog.date|date:"d/m/Y" }}</td>
                     <td>
-                        <a href="javascript:void(0)"
+                        <a href
                            class="btn btn-success"
                            data-bs-toggle="modal"
-                           data-bs-target="#desc{{ d.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                           data-bs-target="#desc{{ blog.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
                     </td>
-                    <td>{{ d.location }}</td>
+                    <td>{{ blog.location }}</td>
                     <td>
-                        <a href="javascript:void(0)"
+                        <a href
                            class="btn btn-success"
                            data-bs-toggle="modal"
-                           data-bs-target="#slider{{ d.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                           data-bs-target="#slider{{ blog.id }}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
                     </td>
                     <td>
-                        <div class="material-switch">
-                            <input id="someSwitchOptionSuccess{{ d.id }}"
-                                   name="someSwitchOption001"
-                                   type="checkbox"
-                                   {% if d.status == True %} onclick="changeblogstatus({{ d.id }},0)" checked {% else %}onclick="changeblogstatus({{ d.id }},1)" {% endif %} />
-                            <label for="someSwitchOptionSuccess{{ d.id }}" class="label-success"></label>
-                        </div>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="status_id" value="{{ blog.id }}">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="customSwitch1"
+                                       name="status"
+                                       {% if blog.status %}checked{% endif %}
+                                       onchange="this.form.submit()">
+                            </div>
+                        </form>
                     </td>
                     <td>
-                        <a class="btn btn-info btn-sm mb-1" href="{% url 'blog_update' d.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
-                        <button class="btn btn-danger btn-sm mb-1">
-                            <i class="side-menu__icon fe fe-trash"  onclick="show_modal({{ d.id }})"></i>
+                        <a class="btn btn-info btn-sm mb-1"
+                           href="{% url 'blog_update'  blog.id %}"><i class="side-menu__icon fe fe-edit"></i></a>
+                        <button type="button"
+                                class="btn btn-danger btn-sm mb-1"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal{{ blog.id }}">
+                            <i class="side-menu__icon fe fe-trash"></i>
                         </button>
                     </td>
                 </tr>
                 <!-- modal for description-->
-                <div class="modal  fade" id="desc{{ d.id }}" tabindex="-1" role="dialog">
+                <div class="modal  fade"
+                     id="desc{{ blog.id }}"
+                     tabindex="-1"
+                     role="dialog">
                     <div class="modal-dialog modal-md modal-dialog-centered text-center"
                          role="document">
                         <div class="modal-content ">
                             <div class="modal-body">
                                 <div>
-                                    <p>{{ d.description|safe }}</p>
+                                    <p>{{ blog.content|safe }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- modal for slider-->
-                <div class="modal  fade" id="slider{{ d.id }}" tabindex="-1" role="dialog">
+                <div class="modal  fade"
+                     id="slider{{ blog.id }}"
+                     tabindex="-1"
+                     role="dialog">
                     <div class="modal-dialog modal-md modal-dialog-centered text-center"
                          role="document">
                         <div class="modal-content ">
@@ -77,8 +91,8 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                {% if d.blog_image.exists %}
-                                    {% for slider in d.blog_image.all %}
+                                {% if  blog.blog_image.exists %}
+                                    {% for slider in  blog.blog_image.all %}
                                         <a href="{{ slider.image.url }}" data-lightbox="images" data-title="">
                                             <img src="{{ slider.image.url }}" height="100" width="100">
                                         </a>
@@ -93,6 +107,33 @@
                         </div>
                     </div>
                 </div>
+                <div class="modal  fade"
+                     id="deleteModal{{ blog.id }}"
+                     tabindex="-1"
+                     role="dialog">
+                    <div class="modal-dialog modal-md modal-dialog-centered text-center"
+                         role="document">
+                        <div class="modal-content ">
+                            <div class="modal-body">
+                                <button aria-label="Close"
+                                        class="btn-close position-absolute"
+                                        data-bs-dismiss="modal"></button>
+                                <i class="icon icon-close fs-70 text-danger lh-1 my-5 d-inline-block"></i>
+                                <h4 class="text-danger">Are You Sure Do You Want To Delete ?</h4>
+                                <p class="mg-b-20 mg-x-20">Item Will be Deleted Permanently</p>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="delete_id" value="{{ blog.id }}">
+                                    <button type="submit" class="btn btn-success btn-sm">Yes</button>
+                                    <button type="button"
+                                            class="btn btn-danger pd-x-25 btn-sm"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer"></div>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
         {% else %}
             <tr>
@@ -103,5 +144,6 @@
         {% endif %}
     </tbody>
 </table>
-{% include 'pagination.html' %}
-</div>
+{% if all_blogs %}
+    <div class=" mt-2">{% include 'pagination.html' %}</div>
+{% endif %}

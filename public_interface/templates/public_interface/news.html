@@ -1,0 +1,61 @@
+{% include "public_interface/layouts/public_base.html" %}
+{% load static %}
+{% block content %}
+  <div class="main-div pt-0 header-bg-transparent header-logo-white">
+    <section id="news" class="pt-0 pb-0">
+      <div class="banner-cover">
+        <img class="img-primary"
+             width=""
+             height=""
+             loading="lazy"
+             alt="News Banner"
+             src="{% static 'public_interface/images/news/banner-cover/banner-top.jpg' %}">
+        <div class="caption w-100 text-center">
+          <div class="wrapper">
+            <div class="row text-white">
+              <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
+                <h3 class="font-lnterbold">NEWS</h3>
+                <h5 class="font-lnterbold">
+                  <a href="{% url 'home' %}">Home</a>
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  <a>News</a>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="news pt-70 pb-70 bg-blue">
+        <div class="wrapper">
+          <div class="row text-center">
+            <div class="col-12">
+              <div class="section-head" data-aos="fade-up" data-aos-duration="1000">
+                <h1 class="text-white font-lnterbold">NEWS</h1>
+                <h5 class="text-white">Find all the latest news, press releases and company announcements.</h5>
+              </div>
+            </div>
+          </div>
+          <div class="row news-dtl-mn">
+            {% for event in news %}
+              <div class="col-lg-4 col-sm-6 pt-30">
+                <div class="item bg-x-light-blue" data-aos="fade-up" data-aos-duration="500">
+                  <div class="title font-lnterbold">{{ event.title }}</div>
+                  <div class="dec font-lntermedium">{{ event.description|slice:":100"|default_if_none:'' }}</div>
+                  <div class="date font-lntermedium">{{ event.date|date:"M d, Y" }}</div>
+                  <a class="btn bg-blue text-white rounded-25 btn-icon btn-zoom-hover mt-3"
+                     href="{% url 'news_details' event.id %}">
+                    <span>Read More</span>
+                    <img width=""
+                         height=""
+                         alt="Right Arrow"
+                         src="{% static 'public_interface/images/icons/right-arrow.png' %}">
+                  </a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock content %}

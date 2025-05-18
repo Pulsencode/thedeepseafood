@@ -1,0 +1,28 @@
+{% load static %}
+{% for category in categories %}
+    {% for item in product %}
+        <div class="col-lg-3 col-md-4 col-6 pt-20">
+            <div class="item card-hover-up">
+                <img class="img-primary"
+                     width=""
+                     height=""
+                     src="{{ item.image.url }}"
+                     alt="{{ item.image_alt }}">
+                <div class="info">
+                    <div>
+                        <div class="title font-lntermedium serach_nameme">{{ item.name }}</div>
+                        <div class="category">{{ category.name }}</div>
+                    </div>
+                    <a class="btn btn-icon w-fit">
+                        <img width=""
+                             height=""
+                             alt="Right Arrow"
+                             src="{% static 'public_interface/images/icons/right-arrow-blue.png' %}">
+                    </a>
+                </div>
+                <a class="primary-btn "
+                   href="{% url 'product_details' item.slug_product %}"></a>
+            </div>
+        </div>
+    {% endfor %}
+{% endfor %}

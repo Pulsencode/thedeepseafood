@@ -1,9 +1,10 @@
+import uuid
+
+from autoslug import AutoSlugField
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
-from autoslug import AutoSlugField
-from django.core.validators import MinValueValidator, MaxValueValidator
-import uuid
 
 
 def image_upload_path(instance, filename):
@@ -52,8 +53,8 @@ class BaseInfoModel(models.Model):
     """Common base model for items with title,location,date"""
 
     title = models.CharField(max_length=350)
-    location = models.CharField(max_length=255)
-    date = models.DateField(null=True)
+    location = models.CharField(max_length=255, null=True, blank=True)
+    date = models.DateField(null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -61,14 +62,15 @@ class BaseInfoModel(models.Model):
 
 class SEO(StatusTimestampBase):
     PAGE_NAME_CHOICES = [
-        ("hm", "Home"),
-        ("abt", "About"),
-        ("brd", "Brand"),
-        ("prd", "Products"),
-        ("car", "Career"),
-        ("con", "Contact"),
-        ("blg", "Blogs"),
-        ("nws", "News Room"),
+        ("", "Select the Page"),
+        ("/", "Home"),
+        ("/about/", "About"),
+        ("/brands/oceano", "Brand"),
+        ("/product", "Products"),
+        ("/career", "Career"),
+        ("/contact", "Contact"),
+        ("/blog", "Blogs"),
+        ("/news-room", "News Room"),
     ]
     page_name = models.CharField(max_length=20, choices=PAGE_NAME_CHOICES, unique=True)
     meta_title = models.CharField(max_length=100)
@@ -84,6 +86,10 @@ class SEO(StatusTimestampBase):
         blank=True,
         unique=True,
     )
+
+    class Meta:
+        verbose_name = "SEO"
+        verbose_name_plural = "SEOs"
 
     def __str__(self):
         return self.page_name
@@ -102,7 +108,7 @@ class Brand(StatusTimestampBase, ImageBase):
 
 class Event(StatusTimestampBase, BaseInfoModel):
     sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
-    name = models.CharField(max_length=150)
+    name = models.CharField(null=True, blank=True)
     description = models.TextField(null=True)
 
     def __str__(self):
@@ -117,26 +123,41 @@ class EventImage(StatusTimestampBase, ImageBase):
         on_delete=models.CASCADE,
     )
 
+    class Meta:
+        verbose_name = "Event Image"
+        verbose_name_plural = "Event Images"
+
     def __str__(self):
         return f"{self.event.title} - Slider {self.pk}"
 
 
 class News(StatusTimestampBase, BaseInfoModel):
-    TYPE_CHOICES = (("company news", "Company News"), ("global news", "Global News"))
+    TYPE_CHOICES = (
+        ("", "Select the Type"),
+        ("company news", "Company News"),
+        ("global news", "Global News"),
+    )
     sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
-    name = models.CharField(
-        max_length=200
-    )  # TODO Need to change to user and add a foreign key
+    name = models.CharField(null=True)
     type = models.CharField(max_length=200, choices=TYPE_CHOICES)
     content = models.TextField(
         null=True
     )  # TODO Need to change to the one in the blog model
+    slug = AutoSlugField(
+        populate_from="title",
+        editable=True,
+        always_update=True,
+        null=True,
+        blank=True,
+        unique=True,
+        max_length=100,
+    )
 
     def __str__(self):
         return self.title
 
-    class Meta:
-        verbose_name_plural = "News Details"
+    def get_absolute_url(self):
+        return reverse("news_details", kwargs={"slug": self.slug})
 
 
 class NewsImage(TimestampBase, ImageBase):
@@ -146,6 +167,10 @@ class NewsImage(TimestampBase, ImageBase):
         related_name="news_image",
         on_delete=models.CASCADE,
     )
+
+    class Meta:
+        verbose_name = "News Image"
+        verbose_name_plural = "News Images"
 
     def __str__(self):
         return f"{self.news.title} - Slider {self.pk}"
@@ -169,11 +194,14 @@ class PromotionImage(TimestampBase, ImageBase):
         on_delete=models.CASCADE,
     )
 
+    class Meta:
+        verbose_name = "Promotion Image"
+        verbose_name_plural = "Promotion Images"
+
 
 class Blog(StatusTimestampBase, BaseInfoModel):
-    name = models.CharField(max_length=255)
+    name = models.CharField(null=True)
     content = models.TextField(null=True)
-
     slug = AutoSlugField(
         populate_from="title",
         editable=True,
@@ -188,7 +216,11 @@ class Blog(StatusTimestampBase, BaseInfoModel):
         return self.title
 
     class Meta:
+        verbose_name = "Blog Detail"
         verbose_name_plural = "Blog Details"
+
+    def get_absolute_url(self):
+        return reverse("blog_details", kwargs={"slug": self.slug})
 
 
 class BlogImage(TimestampBase, ImageBase):
@@ -199,20 +231,32 @@ class BlogImage(TimestampBase, ImageBase):
         on_delete=models.CASCADE,
     )
 
+    class Meta:
+        verbose_name = "Blog Image"
+        verbose_name_plural = "Blog Images"
+
 
 class ManagementTeam(StatusTimestampBase, ImageBase):
     name = models.CharField(max_length=150)
     role = models.CharField(max_length=150)
     sequence = models.PositiveIntegerField(null=True)  # TODO Need to change
 
+    class Meta:
+        verbose_name = "Management Team"
+        verbose_name_plural = "Management Teams"
+
 
 class CompanyTestimonial(StatusTimestampBase, ImageBase):
     name = models.CharField(max_length=350)
     quote = models.TextField()
 
+    class Meta:
+        verbose_name = "Company Testimonial"
+        verbose_name_plural = "Company Testimonials"
+
 
 class Certification(StatusTimestampBase, ImageBase):
-    sequence = models.IntegerField(null=True)  # TODO no change needed
+    sequence = models.IntegerField(null=True, blank=True)  # TODO no change needed
 
     class Meta:
         ordering = ["sequence"]
@@ -234,10 +278,13 @@ class Supermarkets(StatusTimestampBase, ImageBase):
 
 
 class Enquiry(StatusTimestampBase):
+    product = models.ForeignKey(
+        "products.ProductDetails", on_delete=models.CASCADE, null=True
+    )
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     email = models.EmailField(null=True, blank=True)
-    mobile_number = PhoneNumberField(blank=True)
+    phone_number = PhoneNumberField(blank=True)
     message = models.TextField(null=True)
 
 
@@ -246,7 +293,10 @@ class History(StatusTimestampBase):
         null=True, validators=[MinValueValidator(1000), MaxValueValidator(9999)]
     )
     title = models.CharField(max_length=500)
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Histories"
 
     def __str__(self):
         return str(self.year)
@@ -260,3 +310,7 @@ class HistoryImage(StatusTimestampBase, ImageBase):  # active
         related_name="history_image",
         on_delete=models.CASCADE,
     )
+
+    class Meta:
+        verbose_name = "History Image"
+        verbose_name_plural = "History Images"

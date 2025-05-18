@@ -1,0 +1,38 @@
+<section id="brands_we_deal">
+    <div class="wrapper">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="section-head">
+                    <h1 class="text-blue font-lnterbold">OUR BRANDS</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row row-item pt-20">
+            <div class="slick-slidera">
+                {% for brand in all_brands %}
+                    {% if brand.image %}
+                        <div class="item card-hover-up">
+                            {% if brand.name == 'Oceano' %}
+                                <a class="primary-url" href="{% url 'brands' %}">
+                                    <img width=""
+                                         height=""
+                                         alt=""
+                                         class="img-fluid m-h-120-px pe-10-md-all"
+                                         src="{{ brand.image.url }}"
+                                         alt="{{ brand.image_alt }}">
+                                </a>
+                            {% else %}
+                                <img width=""
+                                     height=""
+                                     alt=""
+                                     class="img-fluid m-h-120-px pe-10-md-all"
+                                     src="{{ brand.image.url }}"
+                                     alt="{{ brand.image_alt }}">
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

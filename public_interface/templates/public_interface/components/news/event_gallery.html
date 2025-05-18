@@ -1,0 +1,30 @@
+{% load static %}
+{% for event in all_events %}
+  <div class="col-12 padd_t_50 row-item news-box">
+    <div class="item text-blue">
+      <div class="row">
+        <div class="{% if forloop.counter|divisibleby:'2' %}col-lg-5{% else %}col-lg-6{% endif %} col-item">
+          <div class="info">
+            <div class="title font-lnterbold">{{ event.title }}</div>
+            <div class="dec">{{ event.description|safe }}</div>
+            <div class="date">{{ event.date|date:'d/m/Y' }}</div>
+            <div class="location">{{ event.location }}</div>
+          </div>
+        </div>
+        <div class="{% if forloop.counter|divisibleby:'2' %}col-lg-7{% else %}col-lg-6{% endif %} col-item">
+          <div class="slick_slider_1 slick-dots-blue">
+            {% for img in event.event_image.all %}
+              <div class="item">
+                <img class="img-fluid"
+                     width=""
+                     height=""
+                     src="{{ img.image.url }}"
+                     alt="{{ event.image_alt }}-{{ forloop.counter }}">
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}

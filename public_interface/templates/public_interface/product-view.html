@@ -1,0 +1,105 @@
+{% extends "public_interface/layouts/public_base.html" %}
+{% block page_title %}
+  {{ product.name }}
+{% endblock page_title %}
+{% load static %}
+{% load custom_filters %}
+{% block content %}
+  <div class="main-div pt-0 header-bg-transparent header-logo-white enquiry-btn-bg-transparent">
+    <!-- product-view -->
+    <section id="product-view" class="pt-0">
+      <div class="banner-cover">
+        <img class="img-primary"
+             width=""
+             height=""
+             alt="{{ product.product.image_alt }}"
+             src="{{ product.product.image.url }}">
+        <div class="caption w-100 text-center">
+          <div class="wrapper">
+            <div class="row text-white">
+              <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
+                <h3 class="font-lnterbold">PRODUCT</h3>
+                <h5 class="font-lnterbold">
+                  <a href="{% url 'home' %}">Home</a>
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  <a href="{% url 'product' %}">Product</a>
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  <a href="{% url 'product' %}?type={{ product.product.type|urlencode }}"
+                     class="text-capitalize">{{ product.product.type }}</a>
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  <a>{{ product.name }}</a>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container common-padding padd_t_b_70 bg-section">
+        <div class="row padd_top_50">
+          <div class="col-lg-12">{% include "public_interface/components/products/product_filter.html" %}</div>
+          <div class="col-lg-12 row">
+            <div class="col-md-4" data-aos="fade-down" data-aos-duration="2500">
+              <img class="img-fluid rounded-25 img-product-99"
+                   width=""
+                   height=""
+                   src="{{ product.product.image.url }}"
+                   alt="{{ product.product.image_alt }}">
+            </div>
+            <div class="col-md-8 mt-50-zero-sm"
+                 data-aos="fade-up"
+                 data-aos-duration="1000">
+              <div class="section-head pb-15">
+                <h1 class="text-blue font-lnterbold">{{ product.name }}</h1>
+              </div>
+              <div class="col-lg-12">
+                <ul class="nav nav-tabs nav-tabs-bg border-0 justify-content-left"
+                    data-aos="fade-up"
+                    data-aos-duration="2000"
+                    id="pro-dtl">
+                  {% for category in categories %}
+                    {% if product.product.id|product_belongs_to_category:category.id %}
+                      <li class="nav-item">
+                        <a data-id="all" class="nav-link category-link active">{{ category.name }}</a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+              <div class="product-details text-blue" id="prod">
+                {% include "public_interface/components/products/details.html" %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="related-products">
+        <div class="wrapper padd_t_70">
+          <div class="row">
+            <div class="col-12">
+              <div class="section-head">
+                <h1 class="text-blue font-lntermedium">RELATED PRODUCTS</h1>
+              </div>
+            </div>
+          </div>
+          <div class="row text-center" data-aos="fade-up" data-aos-duration="1500">
+            {% for item in related_products %}
+              <div class="col-lg-2 col-md-3 colsm-4 col-6 mt-25">
+                <div class="item card-hover-up">
+                  <img class="img-primary"
+                       width=""
+                       height=""
+                       src="{{ item.image.url }}"
+                       alt="{{ item.image_alt }}">
+                  <div class="title font-lntermedium text-blue">{{ item.name }}</div>
+                  <a class="url-primary" href="{% url 'product_details' item.slug %}#drt"></a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /product-view -->
+  </div>
+  {% include "public_interface/components/enquiry/enquiry-form.html" %}
+{% endblock content %}

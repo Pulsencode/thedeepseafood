@@ -1,0 +1,27 @@
+<section id="satisfaction">
+    <div class="wrapper">
+        <div class="row pt-30 text-center">
+            <div class="col-12">
+                <div class="section-head" data-aos="fade-down" data-aos-duration="500">
+                    <h1 class="text-blue font-lnterbold">CERTIFICATIONS AND ACCREDITATIONS</h1>
+                    <h5 class="text-blue text-center">Committed to customer satisfaction.</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-35">
+            <div class="slick_slider_6">
+                {% for certificate in all_certifications %}
+                    <div class="item">
+                        <div data-aos="fade-up" data-aos-duration="500">
+                            <img width=""
+                                 height=""
+                                 class="img-primary"
+                                 src="{{ certificate.image.url }}"
+                                 alt="{{ certificate.image_alt }}">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

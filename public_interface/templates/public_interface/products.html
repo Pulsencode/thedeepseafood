@@ -1,0 +1,80 @@
+{% extends "public_interface/layouts/public_base.html" %}
+{% load static %}
+{% block content %}
+  <div class="main-div pt-0 header-bg-transparent header-logo-white">
+    <!-- products -->
+    <section id="products" class="pt-0 pb-0">
+      <div class="banner-cover">
+        <img class="img-primary"
+             alt="Product Banner"
+             width=""
+             height=""
+             loading="lazy"
+             src="{% static 'public_interface/images/product-view/banner-cover/banner-top.jpg' %}">
+        <div class="caption w-100 text-center">
+          <div class="wrapper">
+            <div class="row text-white">
+              <div class="col-12" data-aos="fade-down" data-aos-duration="2000">
+                <h3 class="font-lnterbold">PRODUCT</h3>
+                <h5 class="font-lnterbold">
+                  <a href="{% url 'home' %}">Home</a>
+                  <i class="fa fa-angle-right"></i>
+                  <a>Product</a>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="section-products"
+           class="section-products bg-x-light-blue padd_t_b_70">
+        <div class="wrapper">
+          <div class="row">
+            <div class="col-12">
+              <div class="section-head text-center"
+                   data-aos="fade-down"
+                   data-aos-duration="1000">
+                <h1 class="text-blue font-lnterbold">OUR PRODUCTS</h1>
+                <h5 class="text-x-light-blue">
+                  We provide a wide range of seafood baskets, including live, chilled, fresh,
+                  frozen, and value-added items. Our items are sold both domestically and globally.
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 pt-25">
+              <form method="get" id="filter">
+                <div class="position-relative">
+                  {% include "public_interface/components/products/product_filter.html" %}
+                </form>
+                <!-- Search -->
+                <div class="search-form position-top-right">
+                  <form method="get" id="search_form">
+                    <input class="form-control"
+                           name="search"
+                           id="inputvalue"
+                           type="search"
+                           placeholder="Search..."
+                           maxlength="200">
+                    <button type="submit" class="btn bg-blue text-white">Search</button>
+                  </form>
+                </div>
+              </div>
+              <!-- Product list container -->
+              <div class="tab-content pt-30">
+                <div class="tab-pane fade show active">
+                  <div class="row card-white-image APPENDPRO"
+                       data-aos="fade-up"
+                       data-aos-duration="1500"
+                       id="prodlist">{% include "public_interface/components/products/product_lists.html" %}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="{% static 'public_interface/js/search_filter.js' %}"></script>
+{% endblock content %}

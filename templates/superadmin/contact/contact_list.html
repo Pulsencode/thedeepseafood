@@ -1,8 +1,8 @@
-{% load static %}
+{% comment %} {% load static %}
 <input type="hidden" id="page" name="page" value="{{page}}">
 <table class="table border-top table-bordered mb-0 table-hover">
     <thead>
-        <tr>
+        <tr class="text-center">
             <th>Sl No</th>
             <th>name</th>
             <th>location</th>
@@ -13,33 +13,33 @@
         </tr>
     </thead>
     <tbody>
-        {% if datas %}
-        {% for d in datas %}
-        <tr>
-            <td>{{datas.start_index|add:forloop.counter0}}</td>
-            <td>{{d.name}}</td>
-            <td>{{d.location}}</td>
-            <td>{{d.email}}</td>
-            <td>{{d.mobile_no}}</td>
+        {% if all_contacts %}
+        {% for contact in all_contacts %}
+        <tr class="text-center">
+            <td>{{forloop.counter}}</td>
+            <td>{{ contact.name}}</td>
+            <td>{{ contact.location}}</td>
+            <td>{{ contact.email}}</td>
+            <td>{{ contact.phone_number}}</td>
             <td>
-                <a href="javascript:void(0)" class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#desc{{d.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
+                <a href="javascript:void(0)" class="btn btn-success btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#desc{{ contact.id}}"><i class="side-menu__icon fe fe-eye mx-1"></i></a>
             </td>
             
             <td>
-                <button type="button" class="btn btn-danger btn-sm mb-1"  ><i class="side-menu__icon fe fe-trash"  onclick="show_modal({{d.id}})"></i></button>
+                <button type="button" class="btn btn-danger btn-sm mb-1"  ><i class="side-menu__icon fe fe-trash"  onclick="show_modal({{ contact.id}})"></i></button>
 
             </td>
         </tr>
         <!-- modal for description-->
 
-        <div class="modal  fade" id="desc{{d.id}}" tabindex="-1" role="dialog">
+        <div class="modal  fade" id="desc{{ contact.id}}" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-md modal-dialog-centered text-center" role="document">
                 <div class="modal-content ">
 
                     <div class="modal-body">
                         <div>
                             <p>
-                            {{d.message}}
+                            {{ contact.message}}
                             </p>
                         </div>
                     </div>
@@ -58,63 +58,4 @@
     </tbody>
 </table>
 
-<div class="pagination_section pb-5">
-    {% if datas %}
-    Showing {{ datas.start_index }}-{{ datas.end_index }} of {{ datas.paginator.count }}
-    {% endif %}
-    <!--Pagination-->
-    {% if datas.has_other_pages %}
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            {% if datas.has_previous %}
-            <li class="page-item">
-            <a class="page-link" href="javascript:void(0)" onclick="return contact_view('{{ datas.previous_page_number }}');">Previous</a>
-            </li>
-        {% else %}
-            <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Previous</a>
-            </li>
-        {% endif %}
-        {% if datas.number == 1 %}
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">First</a>
-            </li>
-        {% else %}
-        <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return contact_view('{{ 1 }}');">First</a></li>
-        {% endif %}
-        {% for i in datas.paginator.page_range %}
-            {% if datas.number > i and i > datas.number|add:-5 %}
-            <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return contact_view('{{ i }}');">{{ i }}</a></li>
-            {% endif %}
-            {% if datas.number == i %}
-            <li class="page-item active" aria-current="page">
-            <span class="page-link">
-                {{ i }}
-                <span class="sr-only">(current)</span>
-            </span>
-            </li>
-            {% endif  %}
-            {% if datas.number < i and i < datas.number|add:5 %}
-            <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return contact_view('{{ i }}');">{{ i }}</a></li>
-            {% endif %}
-        {% endfor %}
-        {% if datas.number == datas.paginator.num_pages %}
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Last</a>
-            </li>
-        {% else %}
-        <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return contact_view('{{ datas.paginator.num_pages }}');">Last</a></li>
-        {% endif %}
-        {% if datas.has_next %}
-            <li class="page-item">
-            <a class="page-link"  href="javascript:void(0)" onclick="return contact_view('{{ datas.next_page_number }}');">Next</a>
-            </li>
-        {% else %}
-            <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Next</a>
-            </li>
-        {% endif %}
-        </ul>
-    </nav>
-    {% endif %}
-</div> 
+{% include "pagination.html"%} {% endcomment %}

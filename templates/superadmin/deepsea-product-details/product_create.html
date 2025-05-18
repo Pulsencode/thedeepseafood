@@ -27,106 +27,78 @@
         cursor: pointer;
     }
 </style>
-<div class="main-content app-content mt-0">
-    <div class="side-app">
-        <div class="main-container container-fluid">
-            <div class="page-header">
-                <h1 class="page-title">Deep Sea Product Details</h1>
-                <div>
-                    <a class="btn btn-primary" href="{% url 'product_details_view' %}">
-                        <i class="side-menu__icon fe fe-eye mx-1"></i>View All
-                    </a>
-                </div>
-            </div>
-            <form method="post" id="myform">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-8 col-xl-8 col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row col-lg-12">
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.product.label_tag }}
-                                        {{ form.product }}
-                                        {{ form.product.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.category.label_tag }}
-                                        {{ form.category }}
-                                        {{ form.category.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.sub_categories.label_tag }}
-                                        {{ form.sub_categories }}
-                                        {{ form.sub_categories.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.product_code.label_tag }}
-                                        {{ form.product_code }}
-                                        {{ form.product_code.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.net_weight.label_tag }}
-                                        {{ form.net_weight }}
-                                        {{ form.net_weight.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.price.label_tag }}
-                                        {{ form.price }}
-                                        {{ form.price.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.origin.label_tag }}
-                                        {{ form.origin }}
-                                        {{ form.origin.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.grade.label_tag }}
-                                        {{ form.grade }}
-                                        {{ form.grade.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.packing.label_tag }}
-                                        {{ form.packing }}
-                                        {{ form.packing.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.description.label_tag }}
-                                        {{ form.description }}
-                                        {{ form.description.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.ingredients.label_tag }}
-                                        {{ form.ingredients }}
-                                        {{ form.ingredients.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.instructions.label_tag }}
-                                        {{ form.instructions }}
-                                        {{ form.instructions.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.storage_instructions.label_tag }}
-                                        {{ form.storage_instructions }}
-                                        {{ form.storage_instructions.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        {{ form.allergic.label_tag }}
-                                        {{ form.allergic }}
-                                        {{ form.allergic.errors }}
-                                    </div>
-                                    <div class="form-group col-lg-12 col-12">
-                                        <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
-                                        <a href="{% url 'product_details_view' %}"
-                                           class="btn btn-danger mt-4 mb-0">Cancel</a>
-                                    </div>
-                                </div>
-                            </div>
+<form method="post" id="myform">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-8 col-xl-8 col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row col-lg-12">
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Product</label>
+                            {{ form.product }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Category*</label>
+                            {{ form.category }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Sub Category</label>
+                            {{ form.sub_categories }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Product Code</label>
+                            {{ form.product_code }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Net Weight</label>
+                            {{ form.net_weight }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Price</label>
+                            {{ form.price }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Origin</label>
+                            {{ form.origin }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Grade</label>
+                            {{ form.grade }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Packing</label>
+                            {{ form.packing }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Ingredients</label>
+                            {{ form.ingredients }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Instructions</label>
+                            {{ form.instructions }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Shelf Life</label>
+                            {{ form.shelf_life }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Storage Instructions</label>
+                            {{ form.storage_instructions }}
+                        </div>
+                        <div class="form-group col-lg-6 col-12">
+                            <label class="form-label">Allergic</label>
+                            {{ form.allergic }}
+                        </div>
+                        <div class="form-group col-lg-12 col-12">
+                            <button type="submit" class="btn btn-primary mt-4 mb-0" id="submitButton">Submit</button>
+                            <a href="{% url 'product_details_view' %}"
+                               class="btn btn-danger mt-4 mb-0">Cancel</a>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+</form>
 {% include "superadmin/layout/footer.html" %}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+      <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <!-- Meta Description -->
+            <meta name="description" content="{{ seo.meta_description }}">
+            <!-- Meta Keywords -->
+            <meta name="keywords" content="{{ seo.meta_keywords }}">
+            <!-- Meta Author -->
+            <meta name="author" content="{{ seo.meta_author }}">
+            <!-- Admin added scripts -->
+            <script type="application/ld+json">{{ seo.meta_json_ld|safe }}</script>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <!-- Google tag (gtag.js) -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZ20QPH6D6"></script>
+            <script>
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+
+                  gtag('config', 'G-RZ20QPH6D6');
+            </script>
+            <link rel
+                  canonical
+                  href
+                  {% if data.canonical %}{{ data.canonical }}{% endif %} />
+            <link rel="shortcut icon"
+                  type="image/ico"
+                  href="{% static 'website/images/logo.png' %}" />
+            <meta property="og:image"
+                  content="https://{{ request.get_host }}{% static 'website/images/logo.png' %}" />
+            <meta property="og:description"
+                  content="We supply our products domestically and internationally depending on market needs. We offer extensive seafood baskets that are live, chilled, fresh, and frozen." />
+            {% include "public_interface/layouts/links.html" %}
+            <!-- jquery -->
+            <script src="{% static 'website/modules/jquery/jquery-3.3.1.min.js' %}"
+                    type="text/javascript"></script>
+            <title>
+                  {% block page_title %}
+                        {{ page_title }}
+                  {% endblock page_title %}
+                  | The Deep Seafood Company
+            </title>
+      </head>
+      <body>
+            <!-- Pre loader -->
+            <div class="pre_loader pre-loader"></div>
+            <!-- Header -->
+            {% include "public_interface/layouts/header.html" %}
+            <!-- Content -->
+            {% block content %}
+            {% endblock content %}
+            <!-- Footer -->
+            {% include "public_interface/layouts/footer.html" %}
+            <!-- Scripts -->
+            {% include "public_interface/layouts/scripts.html" %}
+            <!-- message -->
+            {% for message in messages %}
+                  <div class="alert alert-primary alert-dismissible fade show m-0 text-center border-0"
+                       id="success"
+                       role="alert">
+                        {{ message }}
+                        <button type="button"
+                                class="btn-close text-dark "
+                                data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                  </div>
+            {% endfor %}
+      </body>
+</html>
