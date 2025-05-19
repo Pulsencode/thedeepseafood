@@ -47,7 +47,7 @@ class VacancyDetails(StatusTimestampBase):
         verbose_name_plural = "Vacancy Details"
 
     def __str__(self):
-        return f"{self.title} - {self.category}"
+        return f"{self.title}"
 
 
 class ApplicationDetails(StatusTimestampBase):

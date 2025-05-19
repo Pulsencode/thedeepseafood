@@ -21,7 +21,7 @@ $('.item-img6').on('change', function (e) {
 // Initialize cropper once the modal is shown
 $('#cropImagePop6').on('shown.bs.modal', function () {
     cropper = new Cropper(image, {
-        aspectRatio: 1,
+        aspectRatio: NaN,
         viewMode: 1,
         background: false,
         zoomable: true,
